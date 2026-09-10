@@ -1,54 +1,93 @@
-# Phase 1D — MaleCNS-native receptive-field feasibility audit
+# Phase 1D-B — bounded MaleCNS body-to-visual-space feasibility validation
 
 **Audit date:** 2026-09-10
 **Candidate:** `looming_giant_fiber_v1`
 **Dataset:** `male-cns:v1.0`
-**Scope:** evidence and data feasibility only. No neural dynamics, sensory
-encoder, or morphology framework is introduced.
+**Scope:** bounded read-only feasibility validation. No neural dynamics,
+production receptive-field mapper, or morphology framework is introduced.
 
-## Current status (not a final D1–D4 decision)
+## Current status
 
-The Phase 1C boundary remains the smallest defensible sensory boundary. The
-public MaleCNS resources inspected in this audit provide column/ROI and
-synapse-level ingredients, but no provenance-verifiable, body-keyed receptive
-field table for the selected LC4 or LPLC2 bodies. The public resources also do
-not expose a sufficiently specified, reproducible column-to-visual-coordinate
-transform for this use. This is an evidence-status statement, not evidence
-that body-level mapping is impossible or fundamentally indefensible in
-MaleCNS. Morphology/ROI/optic-column feasibility remains unresolved until the
-bounded Gate 3 live study is run.
+Phase 1D-A found no ready-made, provenance-verified `MaleCNS bodyId -> visual
+receptive field` table in the inspected public resources. Phase 1D-B completed
+the deterministic offline sample and snapshot annotation checks, then stopped
+the live neuPrint component because credentials were unavailable. The current
+snapshot alone therefore does not support per-body receptive-field assignment.
 
-| Population | Current status | Consequence |
+The Phase 1C population-level approximation remains the current operational
+sensory boundary. Morphology, input-ROI, optic-column linkage, and the complete
+column-to-eye-map transform remain unresolved until the bounded live study is
+run. This is not evidence that body-level mapping is impossible or
+fundamentally indefensible in MaleCNS, and it is not a final D2/D3/D4
+adjudication.
+
+| Population | Phase 1D-B status | Current consequence |
 | --- | --- | --- |
-| LC4 | **Unresolved — not currently defensible from the inspected public resources; Gate 3 remains pending.** | Keep the Phase 1C population association with angular expansion velocity while feasibility remains unresolved. |
-| LPLC2 | **Unresolved — not currently defensible from the inspected public resources; Gate 3 remains pending.** | Keep the Phase 1C population association with angular size while feasibility remains unresolved. |
+| LC4 | **Unresolved — live body-to-input-anatomy validation pending credentials.** | Keep the Phase 1C angular-expansion-velocity population approximation. |
+| LPLC2 | **Unresolved — live body-to-input-anatomy validation pending credentials.** | Keep the Phase 1C angular-size population approximation. |
 
-No morphology was acquired. Gate 3 was stopped before any live request because
-`NEUPRINT_APPLICATION_CREDENTIALS` is unavailable. This is a deliberate stop,
-not a synthetic morphology result.
+No live body, synapse, ROI, or skeleton query was made. This is a deliberate
+stop, not a synthetic negative result.
 
 ## Repository findings
 
 The audit began with the repository as the source of truth:
 
 - branch: `main`, tracking `origin/main`;
-- HEAD: `fd5de1bde3119072b44e1b1cb6dfe3ac7bc5faab` (`phase 1C`);
+- HEAD: `ad6b597` (`docs: record receptive-field feasibility audit`);
 - initial worktree status: clean;
-- Phase 1C is committed and includes `sensory.py`, `benchmarks.py`, the sensory
-  evidence document, and their offline tests;
+- Phase 1D-A is committed and contains the prior public-resource audit;
+- `src/neurofly/malecns/` remains the existing acquisition/contract/sensory
+  implementation; no production code was added in this validation;
 - local ignored snapshot: `data/derived/malecns/looming_giant_fiber_v1/`;
 - snapshot manifest: candidate version 1, `male-cns:v1.0`, Janelia neuPrint,
   acquired `2026-09-10T20:39:56.889520+00:00`;
 - snapshot counts: 126 LC4 (71 left, 55 right), 185 LPLC2 (94 left, 91 right),
   2 DNp01, 313 neurons total, 20,607 induced chemical edges;
 - `credential_available`: **false** (the credential value was not printed,
-  logged, or serialized).
+  logged, or serialized);
+- ignored feasibility artifact: `data/derived/malecns/looming_giant_fiber_v1/phase_1d_b_feasibility.json`.
 
 The contract contains normalized annotations and chemical body-level edges.
 It intentionally contains no skeleton nodes, synapse coordinates, optic-lobe
 column IDs, or registered visual frame. `soma_side`, body ID, node order, and
 structural edge weight are annotations/structural quantities, not visual
 coordinates or receptive-field weights.
+
+## Deterministic 16-body sample
+
+The validated Phase 1B contract was used as the complete source population.
+For each `(type, soma_side)` stratum, the UTF-8 string
+`looming_giant_fiber_v1|<type>|<side>|<body_id>` was SHA-256 hashed, ranked
+lexicographically by digest (body ID is the secondary key), and the first four
+were selected. Selection is independent of morphology and has no biological
+meaning. All four strata contain at least four eligible bodies.
+
+| Type | Side | Rank | Body ID | Digest | Instance | Status / status label |
+| --- | --- | ---: | ---: | --- | --- | --- |
+| LC4 | L | 1 | 35616 | `04bbbf78e15215c6c0ad19d823829efc90bafc1b98d3de120baa0e12cd12a3e5` | `LC4_L` | `Traced` / `Prelim Roughly traced` |
+| LC4 | L | 2 | 18432 | `0665c51c24d98f7deb0f591ec9b0833a2838b65714cb2eb8ac627db73c178c26` | `LC4_L` | `Traced` / `Prelim Roughly traced` |
+| LC4 | L | 3 | 524899 | `06fdf853734a317dabbfbc0d6401924dbd312116734125514a21cea992e57177` | `LC4_L` | `Traced` / `Prelim Roughly traced` |
+| LC4 | L | 4 | 30087 | `074cffe5e42223293711737c6607d8c1576ca14ad5cd89efa236d085c4eb68b3` | `LC4_L` | `Traced` / `Prelim Roughly traced` |
+| LC4 | R | 1 | 16138 | `03fc185f7ccc89e76ed9d215628182e8ec6779ad1f1424597ea94cdc392910e7` | `LC4_R` | `Traced` / `Roughly traced` |
+| LC4 | R | 2 | 23098 | `0a2c6d41e8e062fc2290ae8257e91e29d683cfdff78d36ce1ff0a4e52b5d784c` | `LC4_R` | `Traced` / `Roughly traced` |
+| LC4 | R | 3 | 19954 | `0cbbc51f6781c054ca0a163602b40194b08f57a714776585f363386b4d927a94` | `LC4_R` | `Traced` / `Roughly traced` |
+| LC4 | R | 4 | 19260 | `1000c5933fefbb8d1349d217457444419e770395bc735b2da223eb702d13ebf6` | `LC4_R` | `Traced` / `Roughly traced` |
+| LPLC2 | L | 1 | 20329 | `00d833ee81db87c4d56953143ce7007e12317bd7fdacc0051415a9cf2c17ffd9` | `LPLC2_L` | `Traced` / `Prelim Roughly traced` |
+| LPLC2 | L | 2 | 18936 | `06ed076001c6220ea97044f5487810d06b10720459943d9d21f838990faeb79c` | `LPLC2_L` | `Traced` / `Prelim Roughly traced` |
+| LPLC2 | L | 3 | 524366 | `0d66369f97c7511e02f4fba1d15dd4a259ca4ee8748da9ff93e3ec3e9758d4d8` | `LPLC2_L` | `Traced` / `Prelim Roughly traced` |
+| LPLC2 | L | 4 | 30893 | `187f13205510e6be0b1bacc6c78456f634b4b67e449cd14b91409a3813f2165d` | `LPLC2_L` | `Traced` / `Prelim Roughly traced` |
+| LPLC2 | R | 1 | 26915 | `0205f690dc0f63a78249d2805fd7c5b6e917dbb6ec619616bea6dcfe64ec1219` | `LPLC2_R` | `Traced` / `Roughly traced` |
+| LPLC2 | R | 2 | 21808 | `0adabf834f0b2c69d59a0ddaf5063d04050a1beee78b29dfd9690e0e9470a782` | `LPLC2_R` | `Traced` / `Roughly traced` |
+| LPLC2 | R | 3 | 19034 | `0cfa2481ac4840429c4426f991de5503b15a6685fcdbfc7396cd9e4a8d654f87` | `LPLC2_R` | `Traced` / `Roughly traced` |
+| LPLC2 | R | 4 | 20471 | `0ec5702aed8ec367d8d42ecbb03061f1533d5ac3aedefe37f525fc045c43b7a1` | `LPLC2_R` | `Traced` / `Roughly traced` |
+
+All 16 records are `male-cns:v1.0`, `visual_projection` superclass entries and
+remain in their deterministic strata despite the differing reconstruction
+status labels. No body was selected for apparent morphology completeness. The
+same sample, ranks, digests, live-pending state, and provenance categories are
+stored in the ignored machine-readable feasibility manifest at
+`data/derived/malecns/looming_giant_fiber_v1/phase_1d_b_feasibility.json`.
 
 ## Gate 1 — MaleCNS-native literature and resource audit
 
@@ -166,98 +205,98 @@ provides morphology/synapse-based anatomical estimates. Those resources use
 other preparations/datasets (including FAFB/FlyWire-derived material) and are
 methodological background only. No body IDs or coordinates were transferred.
 
-## Gate 2 — ROI and optic-column feasibility
+## Live MaleCNS acquisition status
 
-The official resources make a bounded future derivation plausible, but not
-currently defensible without a targeted, authenticated linkage audit.
+The live component was stopped before any neuPrint request because
+`NEUPRINT_APPLICATION_CREDENTIALS` is unavailable. The exact query categories
+that remain pending are:
 
-### What is available
+- Gate A: authenticated confirmation of the 16 sampled body annotations;
+- Gate B: narrowly scoped input-synapse coordinates, `kind`, and ROI metadata;
+- Gate C: body-synapse linkage to the official optic-column IDs;
+- Gate D: raw skeletons only if Gates B/C cannot identify body-specific visual
+  topology.
 
-1. The `male-cns:v1.0` bulk syn-point table can, in principle, link a selected
-   body to pre/post coordinates and encompassing ROIs. The partner table also
-   carries body pairs and primary post-synaptic neuropil.
-2. MaleCNS neuropil/column ROI segmentation and the left/right column
-   assignment spreadsheet provide an anatomical column vocabulary.
-3. Raw skeletons and coordinate transforms are published as source data, so a
-   future audit need not download meshes or the full connectome.
+Bodies queried: **0**. Skeletons queried: **0**. Input-synapse records queried:
+**0**. Bulk downloads: **none**. No `heal=False` call was made because no
+skeleton was fetched, and no morphology result was fabricated.
 
-### What remains unresolved
+## Gate 2 — ROI and optic-column feasibility (public resources only)
 
-- The current contract has no synapse-level records. A body-level query must
-  distinguish visual/dendritic input synapses from central-brain outputs using
-  explicit `kind`/ROI provenance, not arbitrary coordinate thresholds.
-- A biological rule for which input synapses represent the RF must be stated
-  per type. A broad ROI total or a type-level synapse-density grid cannot stand
-  in for the individual input-column distribution.
-- Raw MaleCNS-to-template coordinate transforms are not themselves a
-  column-to-eye-map transform. The public materials inspected do not provide a
-  validated, machine-readable mapping with orientation conventions and
-  uncertainty for every column used by this candidate.
-- The column resource records left/right columns and documents missing or
-  uncertain assignments (for example sentinel IDs/notes in the spreadsheet).
-  Any future map must preserve that uncertainty rather than silently filling
-  columns.
-- Hierarchical ROI memberships must not be summed naively. Input/output
-  classification must use the source table's semantics and documented ROI
-  provenance.
+The official resources make a bounded future derivation plausible, but the
+body-level Gate B query could not run. Publicly documented ingredients are:
 
-Thus Gate 2 does not establish D2, but it also does not establish a final D4
-conclusion. It establishes the smallest next evidence request: a targeted
-body→input-synapse→column linkage and transform validation, with no
-whole-population bulk download.
+1. The `male-cns:v1.0` syn-point table can link a selected body to pre/post
+   locations, `kind`, and encompassing ROIs; the partner table carries pre/post
+   body IDs and `primary_post`.
+2. MaleCNS neuropil/column ROI segmentation and
+   `optic-column-type-assignments-v1.0.xlsx` provide a bilateral column
+   vocabulary. The spreadsheet is one row per visual column, with a string
+   column identifier such as `ME_R_col_...`, L1/R7/R8 anchor IDs, column type,
+   marker branches, and notes. The L1/R7/R8 IDs annotate columns; they are not
+   LC4/LPLC2 receptive fields.
+3. Raw MaleCNS skeletons and template transforms are published source data,
+   but no morphology or synapse table was downloaded in this bounded run.
+
+### LC4
+
+Useful input-synapse amount/fraction, column-assigned fraction, unassigned
+fraction, ambiguity, and body-to-body variation are **not measured**: zero
+sampled-body synapse records were queried. The public type/side population
+grids do not substitute for those measurements.
+
+### LPLC2
+
+The same quantities are **not measured** for the same reason. Localized,
+tiling receptive fields are a biological motivation, not evidence that the
+selected bodies have been linked to columns in this run.
+
+### Shared linkage limitations
+
+The body-level query must separate visual/dendritic input synapses from
+central-brain outputs using explicit `kind`/ROI provenance, not coordinate
+thresholds. Hierarchical ROI memberships must not be summed naively. The
+published column assignment file documents left/right columns and missing or
+uncertain anchors, but the public materials inspected do not expose a
+validated machine-readable column-to-eye-map coordinate transform with
+orientation and uncertainty semantics for this candidate.
+
+Gate 2 therefore remains pending rather than yielding a D2, D3, or D4
+scientific conclusion.
 
 ## Gate 3 — bounded morphology feasibility
 
-Gate 1 and the public Gate 2 audit were insufficient, so morphology would be
-the next possible evidence source. The live portion was **not run** because
-`NEUPRINT_APPLICATION_CREDENTIALS` was absent. No skeleton or synapse query was
-made, no morphology data was written, and no sampled IDs exist to report.
+Gate 3 was not entered because the credential stop condition applied before
+the live Gate B/D work. No skeleton or synapse query was made, no morphology
+data was written, and no morphology statistics exist. Consequently, raw
+fragmentation, component sizes, bounding boxes, cable lengths, and dendritic
+territories remain unresolved. No skeleton healing occurred.
 
-The pending run is deliberately bounded and deterministic:
+## Independent scientific interpretation
 
-```text
-for each (type, side) in (LC4,L), (LC4,R), (LPLC2,L), (LPLC2,R):
-    digest = SHA256("looming_giant_fiber_v1|<type>|<side>|<body_id>")
-    sort eligible contract body IDs by digest
-    select the first four
-```
+### LC4
 
-The contract has enough bodies for all four strata (71/55 LC4 and 94/91
-LPLC2). A credentialed run must record the 16 exact IDs and retrieve raw
-MaleCNS skeletons with `heal=False`, then inspect raw node/root/component
-counts, bounding boxes, cable length where available, and only narrowly
-necessary input/output ROI data. Because that run did not occur, there are no
-node, fragment, cable, or ROI statistics and no claim that `heal=False` was
-observed. The absence of a query also means no skeleton healing occurred.
+The 16-body sample is valid and deterministic, but no live input anatomy was
+retrieved. An individual LC4 body therefore cannot yet be assigned a
+reproducible visual-input spatial representation from this phase. This is an
+unresolved Gate B/D result, not a D4 conclusion: D2/D3/D4 adjudication remains
+pending the credentialed body-to-input-ROI/column check.
 
-## Independent population status (provisional)
+### LPLC2
 
-No final D1/D2/D3/D4 decision is made for either population in this
-documentation-only phase. The statuses below mean only that the inspected
-public resources do not currently support assignment and that the bounded
-live Gate 3 study is still pending. They do not mean that MaleCNS body-level
-mapping is impossible or fundamentally indefensible.
+The 16-body sample is valid and deterministic, but no live input anatomy or
+four-layer dendritic morphology was retrieved. An individual LPLC2 body
+therefore cannot yet be assigned a reproducible visual-input spatial
+representation from this phase. This is an unresolved Gate B/D result, not a
+D4 conclusion: D2/D3/D4 adjudication remains pending the credentialed
+body-to-input-ROI/column check.
 
-### LC4 — unresolved; Gate 3 pending
+### Future NeuroFly encoder
 
-The selected LC4 bodies have no reusable body-level RF record. Population
-eye-map grids and broad ROI totals cannot identify each cell's visual input
-columns, and the public materials do not supply a validated column-to-visual
-coordinate payload. No MaleCNS morphology was inspected to test a derivation.
-Therefore a per-body LC4 center, extent, polygon, or weight map would require
-unrecorded assumptions. Until Gate 3 is run, NeuroFly should retain only the
-Phase 1C population-level association with angular expansion velocity.
-
-### LPLC2 — unresolved; Gate 3 pending
-
-The published localized/tiled LPLC2 field organization is strong biological
-motivation, but it does not key the physiological fields to these
-`male-cns:v1.0` bodies. The MaleCNS population maps and ROI summaries are not
-individual fields, and no four-layer dendritic feasibility sample was acquired
-because credentials were unavailable. A body-specific LPLC2 field would
-therefore require an unvalidated transform and cannot currently be claimed as
-MaleCNS metadata. This provisional status must not be read as a conclusion
-that a MaleCNS-native mapping cannot be derived.
+Only the Phase 1C population-level sensory boundary is scientifically
+defensible for current operation. Body-specific or column-space encoding is
+not justified yet, and no azimuth/elevation conversion may be introduced.
+This status does not imply that a MaleCNS-native mapping cannot be derived.
 
 ## Proposed sensory metadata contract
 
@@ -291,7 +330,7 @@ NeuroFly-derived, not a MaleCNS field.
 | --- | --- | --- |
 | Direct MaleCNS | Body IDs, type/side annotations, synapse coordinates/ROIs, raw skeleton fields, structural edges. | Existing snapshot contains only the first, second, and structural-edge items. |
 | Published-derived MaleCNS | Hoeller network RF predictions, Berg column/eye-map products, with release and identifier schema retained. | Inspected as evidence; no body-level artifact was adopted. |
-| NeuroFly-derived | Phase 1C looming geometry, benchmark labels, deterministic sample hash, centroids/polygons/normalization if later computed. | No RF derivation or morphology summary was produced. |
+| NeuroFly-derived | Phase 1C looming geometry, benchmark labels, deterministic sample hash, centroids/polygons/normalization if later computed. | The deterministic sample ranks/digests are recorded; no RF derivation or morphology summary was produced. |
 
 The audit did not transfer FAFB/FlyWire body IDs or coordinates, use body ID or
 soma side as a visual coordinate, use DNp01 connectivity or structural weight
@@ -301,9 +340,10 @@ healing occurred because no skeleton was queried.
 ## Smallest next phase
 
 Keep the Phase 1C population-level sensory approximation for experiments. The
-smallest scientifically justified follow-up is a credentialed, read-only
-validation on exactly the 16 deterministic LC4/LPLC2 bodies: confirm
-body→visual-input-synapse→column linkage, bilateral orientation, and a
-versioned column-to-eye-map transform before writing any receptive-field
-encoder. Do not acquire the remaining visual population or implement neural
-dynamics as part of that check.
+smallest scientifically justified follow-up is a credentialed, read-only Gate B
+query on exactly the 16 deterministic LC4/LPLC2 bodies. Confirm body
+annotations, visual-input synapse/ROI linkage, bilateral column identity, and
+the versioned column-to-eye-map transform. Run Gate D raw `heal=False`
+skeleton inspection only if Gate B/C cannot identify body-specific topology.
+Do not acquire the remaining visual population, reverse-engineer rendered eye
+maps, or implement neural dynamics as part of that check.

@@ -3,13 +3,15 @@
 NeuroFly is a planned experimental platform for studying connectome-based
 digital agents inspired by the MaleCNS *Drosophila melanogaster* connectome.
 
-The repository is currently in **Phase 1D: MaleCNS-native receptive-field
-feasibility audit**. It can acquire a deliberately small candidate-circuit
+The repository is currently in **Phase 1D-B: bounded MaleCNS body-to-visual-space
+feasibility validation**. It can acquire a deliberately small candidate-circuit
 snapshot from Janelia neuPrint, then load, verify, and inspect that snapshot
 entirely offline. The current audit found no provenance-verifiable body-level
-LC4/LPLC2 receptive-field mapping for `male-cns:v1.0`; the Phase 1C
-population-level sensory boundary remains in force. It does not implement
-neural dynamics, sensory or motor modelling, behaviour, an API, or a frontend.
+LC4/LPLC2 receptive-field mapping for `male-cns:v1.0`; a deterministic 16-body
+sample is recorded, while live input-anatomy validation remains credential
+gated. The Phase 1C population-level sensory boundary remains in force. It
+does not implement neural dynamics, sensory or motor modelling, behaviour, an
+API, or a frontend.
 
 Scientific integrity is a project constraint: future code must distinguish
 biological/connectomic data from NeuroFly modelling assumptions. The detailed
@@ -117,18 +119,18 @@ DNp01/Giant Fiber integration. These specifications do not generate neural
 inputs or behaviour. See
 [`docs/science/sensory_boundary_evidence.md`](docs/science/sensory_boundary_evidence.md).
 
-## MaleCNS receptive-field feasibility (Phase 1D)
+## MaleCNS receptive-field feasibility (Phase 1D-B)
 
-Phase 1D audits the 2026 MaleCNS visual-pathway work, official optic-column
-and eye-map resources, and the bounded next morphology query. No body-keyed
-LC4 or LPLC2 receptive-field artifact was provenance-verified. Both
-populations are **unresolved — not currently defensible from the inspected
-public resources; Gate 3 remains pending** for per-body visual mapping. This
-is not evidence that MaleCNS body-level mapping is impossible or fundamentally
-indefensible. Gate 3 was not run because neuPrint credentials were
-unavailable; no morphology was acquired or healed. See
+Phase 1D-B audits the 2026 MaleCNS visual-pathway work, official optic-column
+and eye-map resources, and a deterministic sample of 16 real candidate bodies.
+No body-keyed LC4 or LPLC2 receptive-field artifact was provenance-verified.
+Both populations remain **unresolved**: live body-to-input-anatomy validation
+is pending credentials. This is not evidence that MaleCNS body-level mapping
+is impossible or fundamentally indefensible. No live body, input-synapse, ROI,
+or morphology query was made and no morphology was acquired or healed. See
 [`docs/science/receptive_field_feasibility.md`](docs/science/receptive_field_feasibility.md)
-for the evidence ledger, limitations, safeguards, and smallest next phase.
+for the sample manifest, evidence ledger, limitations, safeguards, and smallest
+next phase.
 
 ### Scientific semantics and limitation
 

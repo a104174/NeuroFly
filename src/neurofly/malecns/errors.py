@@ -19,3 +19,7 @@ class MaleCNSValidationError(MaleCNSError):
 
 class SnapshotExportError(MaleCNSError):
     """A local derived snapshot could not be exported safely."""
+
+
+class SnapshotIntegrityError(MaleCNSError):
+    """An offline snapshot does not match its manifest or file schema."""

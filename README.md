@@ -3,11 +3,11 @@
 NeuroFly is a planned experimental platform for studying connectome-based
 digital agents inspired by the MaleCNS *Drosophila melanogaster* connectome.
 
-The repository is currently in **Phase 1A: reproducible MaleCNS data access**.
-It can authenticate to Janelia neuPrint, acquire and validate one deliberately
-small candidate-circuit snapshot, and export transparent derived data. It does
-not implement neural dynamics, sensory or motor modelling, behaviour, an API,
-or a frontend.
+The repository is currently in **Phase 1B: model-neutral scientific circuit
+contract**. It can acquire a deliberately small candidate-circuit snapshot
+from Janelia neuPrint, then load, verify, and inspect that snapshot entirely
+offline. It does not implement neural dynamics, sensory or motor modelling,
+behaviour, an API, or a frontend.
 
 Scientific integrity is a project constraint: future code must distinguish
 biological/connectomic data from NeuroFly modelling assumptions. The detailed
@@ -80,6 +80,30 @@ python -m pytest -m integration
 
 It skips if `NEUPRINT_APPLICATION_CREDENTIALS` is absent. The ordinary
 `python -m pytest` command excludes integration tests.
+
+## Offline circuit contract
+
+Phase 1B separates network-based acquisition from offline consumption. Validate
+the default ignored snapshot and print its deterministic structural summary:
+
+```bash
+python -m neurofly.malecns inspect-snapshot
+```
+
+An alternate snapshot directory can be supplied as the positional argument.
+This command requires neither network access nor neuPrint credentials. It
+verifies the supported candidate and dataset, required files, SHA-256 hashes,
+record counts, biological records, edge endpoints and types, unique body-level
+edges, the complete type-pair summary, and the primary LC4/LPLC2 to DNp01
+invariants before constructing the circuit contract.
+
+Nodes are ordered by biological `body_id`. Contiguous node indices `0..312`
+are a deterministic project implementation convenience; they are not MaleCNS
+identifiers. The contract retains all chemical structural edges, including
+same-type, reverse-direction, low-weight, and DNp01-originating connections.
+
+The contract and its scientific boundaries are documented in
+[`docs/science/circuit_contract.md`](docs/science/circuit_contract.md).
 
 ### Scientific semantics and limitation
 

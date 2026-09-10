@@ -12,3 +12,6 @@ __pycache__/
 .coverage
 htmlcov/
 *.egg-info/
+
+# Reproducible local derived snapshots (never source data)
+data/derived/malecns/

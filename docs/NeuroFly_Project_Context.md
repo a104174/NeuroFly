@@ -3,7 +3,8 @@
 > **Working title:** NeuroFly  
 > The name is provisional and may change later.  
 > **Document purpose:** provide persistent context to ChatGPT Project chats, Codex-oriented implementation chats, architecture discussions, scientific reasoning and future documentation.  
-> **Current status:** concept and high-level architecture defined; implementation has not started.  
+> **Current status:** Phase 1A MaleCNS data-access implementation is present;
+> authenticated live validation requires locally supplied credentials.
 > **Date of this context:** 2026-09-10.
 
 ---
@@ -956,12 +957,14 @@ Already decided:
 - no LLM controlling the organism;
 - no consciousness claims;
 - start with selected circuits/subgraphs and scale progressively;
+- first data-access candidate: `LC4` + `LPLC2` with `DNp01` as the initial
+  endpoint, selected from `male-cns:v1.0` as `looming_giant_fiber_v1`;
 - keep visual immersion and scientific credibility equally important.
 
 Not yet decided/final:
 - final project name;
 - exact repository structure;
-- exact MaleCNS circuit used for the first behavioural loop;
+- exact circuit used for the later first closed-loop behavioural simulation;
 - exact neural dynamics model;
 - exact sensory encoding;
 - exact motor mapping;

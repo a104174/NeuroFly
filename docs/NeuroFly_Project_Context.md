@@ -1,0 +1,988 @@
+# NeuroFly — Project Context / Source of Truth
+
+> **Working title:** NeuroFly  
+> The name is provisional and may change later.  
+> **Document purpose:** provide persistent context to ChatGPT Project chats, Codex-oriented implementation chats, architecture discussions, scientific reasoning and future documentation.  
+> **Current status:** concept and high-level architecture defined; implementation has not started.  
+> **Date of this context:** 2026-09-10.
+
+---
+
+## 1. Project vision
+
+The project aims to build an immersive, scientifically grounded **digital organism / connectome-based agent** inspired by the recently published **MaleCNS Drosophila melanogaster connectome**.
+
+The central idea is to place a digital fly inside interactive 3D environments and observe, measure and compare its behaviour under controlled experimental conditions.
+
+The project should combine two qualities that must remain equally important:
+
+1. **Scientific/technical substance**
+   - behaviour must be linked as directly as realistically possible to neural activity derived from the MaleCNS connectome;
+   - experiments should have explicit variables, hypotheses and measurable outcomes;
+   - the system must distinguish biological data from modelling assumptions introduced by the software;
+   - results must be reproducible and inspectable.
+
+2. **Immersive visual experience**
+   - the user should be able to watch the fly moving through a 3D world in real time;
+   - camera, lighting, environmental effects, animation and UI should make the experience visually strong enough for a portfolio/showcase;
+   - neural activity, sensory state and behavioural metrics should be visible while the experiment runs;
+   - the experience should feel like a scientific simulation product, not a basic graph demo.
+
+The intended result is not merely “a fly playing a game”. It is an **experimental platform for studying behaviour in connectome-based digital agents**.
+
+A possible long-term positioning statement is:
+
+> “An experimental platform for studying emergent behaviour, adaptation and digital individuality in connectome-based agents.”
+
+This wording does **not** claim consciousness.
+
+---
+
+## 2. Scientific foundation
+
+### 2.1 MaleCNS
+
+The project is based on the public MaleCNS connectome of an adult male fruit fly (*Drosophila melanogaster*).
+
+Relevant characteristics already identified during project exploration:
+
+- approximately 166,691 neurons;
+- brain plus ventral nerve cord / central nervous system coverage;
+- very large synaptic connectivity dataset;
+- neuron morphology, annotations, connectivity and other metadata are publicly available;
+- access is possible through official downloadable datasets and neuPrint tooling/API;
+- the dataset can be used as a structural graph of biological neural connectivity.
+
+Official project/data source:
+- MaleCNS / HHMI Janelia
+- Google Research was involved in the connectomics reconstruction pipeline.
+
+### 2.2 Critical scientific distinction
+
+The MaleCNS dataset is primarily a **connectome / structural wiring diagram**.
+
+It does not automatically provide a complete executable biological brain.
+
+The software therefore must distinguish between:
+
+#### Biological data
+Examples:
+- neuron identities;
+- neuron morphology;
+- connectivity;
+- synapse counts/locations where available;
+- cell/neuron types;
+- predicted neurotransmitters where available;
+- anatomical regions.
+
+#### Model assumptions introduced by us
+Examples:
+- neural dynamics model;
+- membrane thresholds;
+- time constants;
+- input encoding;
+- mapping neural outputs to movement;
+- reward signals;
+- plasticity rules;
+- sensor design;
+- environmental interpretation.
+
+Any UI, documentation or portfolio description should make this distinction explicit.
+
+### 2.3 Claims we must NOT make without evidence
+
+Do not claim that the project:
+- recreates a living fly;
+- reproduces the complete biological dynamics of a fly;
+- creates consciousness;
+- proves consciousness;
+- creates “a conscious digital organism”;
+- proves real memory or learning merely because behaviour changes;
+- perfectly simulates all 166k neurons unless that has actually been implemented and validated.
+
+Preferred language:
+- “connectome-based simulation”;
+- “biologically inspired neural dynamics”;
+- “structural connectivity derived from MaleCNS”;
+- “adaptive behaviour” only after suitable experimental evidence;
+- “digital individuality” as an experimental concept, not consciousness.
+
+---
+
+## 3. Core research question
+
+The broad question is:
+
+> **What behaviour emerges when neural connectivity derived from a real biological connectome is placed inside an artificial closed-loop environment?**
+
+The platform should eventually make it possible to investigate questions such as:
+
+- How does the digital organism respond to different visual stimuli?
+- How do obstacle layouts change its trajectory and neural activity?
+- Can selected neural circuits produce consistent sensory-to-motor behaviour?
+- What happens when the environment changes during a run?
+- Can biologically plausible plasticity mechanisms produce measurable adaptation?
+- If two initially identical agents experience different environments, do their later behaviours diverge when they are returned to the same environment?
+- Which neural pathways correlate with specific observable actions?
+- How robust is behaviour to perturbations, sensory noise or selected circuit disruptions?
+
+These are experimental questions. The product should help measure them rather than predetermine the answers.
+
+---
+
+## 4. Closed-loop simulation model
+
+The fundamental runtime loop is:
+
+```text
+3D ENVIRONMENT
+      ↓
+sensory state
+      ↓
+sensory encoding
+      ↓
+connectome-derived neural simulation
+      ↓
+descending / motor outputs
+      ↓
+movement / actions
+      ↓
+environment changes
+      ↓
+new sensory state
+      ↺
+```
+
+The fly must not be controlled by a conventional LLM or manually scripted policy if the experiment is intended to measure connectome-derived behaviour.
+
+The aim is that observable movement is causally connected to the neural simulation as much as practical.
+
+---
+
+## 5. Experimental “worlds”
+
+The project should support multiple controlled worlds/arenas.
+
+Each world is an **experiment**, not just a level.
+
+Each experiment should define:
+
+- hypothesis/question;
+- independent variables;
+- controlled variables;
+- environmental configuration;
+- initial fly/neural state;
+- duration / termination conditions;
+- repeated trials if appropriate;
+- metrics;
+- expected data capture;
+- replay support.
+
+Potential initial worlds:
+
+### World 0 — Baseline
+Simple neutral arena.
+
+Purpose:
+- establish baseline locomotion;
+- detect biases and instability;
+- benchmark simulation.
+
+Possible metrics:
+- total distance;
+- average speed;
+- turn distribution;
+- time stationary;
+- trajectory entropy;
+- neural activity by region/circuit.
+
+### World 1 — Light / Dark
+Arena with controlled illumination zones.
+
+Purpose:
+- examine visual input and spatial preference;
+- relate visual activation to movement.
+
+Possible metrics:
+- time per zone;
+- transition frequency;
+- reaction latency;
+- sensory activity;
+- descending/motor activity.
+
+### World 2 — Obstacle Course
+Obstacles of known geometry.
+
+Purpose:
+- analyse navigation;
+- measure sensory-to-motor response;
+- study repeated collision/avoidance patterns.
+
+Possible metrics:
+- collisions;
+- path length;
+- turning behaviour;
+- time to goal;
+- neural activity around obstacle encounters.
+
+### World 3 — Resource Search
+Introduce a target/reward/resource.
+
+Purpose:
+- study exploration and target-directed behaviour;
+- later serve as a foundation for plasticity experiments.
+
+### World 4 — Adversity / Avoidance
+Introduce controlled aversive zones or stimuli.
+
+Purpose:
+- evaluate avoidance;
+- later test whether previous adverse experience changes future behaviour.
+
+### World 5 — Changing World
+Modify environmental conditions during the same experiment.
+
+Purpose:
+- test robustness and adaptation;
+- compare behaviour before and after a controlled environmental change.
+
+These worlds are a starting taxonomy, not a final fixed list.
+
+---
+
+## 6. Long-term individuality experiment
+
+One of the most interesting later experiments is:
+
+```text
+SAME INITIAL CONNECTOME / SAME INITIAL PARAMETERS
+                    │
+             ┌──────┴──────┐
+             ↓             ↓
+           Fly A         Fly B
+             │             │
+       Experience A   Experience B
+             │             │
+       plastic changes / state changes
+             │             │
+             └──────┬──────┘
+                    ↓
+              SAME TEST WORLD
+                    ↓
+          compare later behaviour
+```
+
+Goal:
+
+Investigate whether different histories lead to persistent behavioural differences when both agents later face the same environment.
+
+This may be described as studying **digital individuality** or **experience-dependent divergence**.
+
+It must not be presented as proof of consciousness or personal identity.
+
+---
+
+## 7. Visual experience
+
+The project should look like an immersive scientific simulation.
+
+The user should be able to:
+
+- watch the fly move in real time;
+- orbit/free-camera around the arena;
+- optionally follow the fly;
+- switch to top-down or analysis cameras;
+- pause/resume;
+- change simulation playback speed;
+- reset a run;
+- view the trajectory/path;
+- inspect current sensory input;
+- inspect neural activity;
+- inspect selected circuits/regions;
+- view live behavioural metrics;
+- replay previous runs;
+- compare multiple runs.
+
+Possible UI structure:
+
+```text
+┌──────────────────────────────────────────────────────────────┐
+│ Experiment / world / run state                               │
+├─────────────────────────────────┬────────────────────────────┤
+│                                 │                            │
+│          3D WORLD               │     LIVE INSPECTOR         │
+│                                 │                            │
+│        digital fly              │ sensory state              │
+│        environment              │ neural activity            │
+│        trajectory               │ motor state                │
+│                                 │ behavioural metrics        │
+│                                 │                            │
+├─────────────────────────────────┴────────────────────────────┤
+│ Play | Pause | Speed | Reset | Timeline | Replay             │
+└──────────────────────────────────────────────────────────────┘
+```
+
+Desired visual direction:
+- scientific laboratory + digital terrarium;
+- immersive but clean;
+- modern, minimal UI;
+- strong lighting and camera work;
+- subtle sci-fi feeling without turning the project into fiction;
+- scientific data remains readable and credible.
+
+---
+
+## 8. 3D and rendering architecture
+
+Blender is **not** intended to be the runtime engine.
+
+### Blender responsibilities
+Use Blender for:
+- creating/editing the fly model;
+- rigging/animation if needed;
+- environmental assets;
+- exporting `.glb` / `.gltf`.
+
+### Browser runtime
+Use:
+- **Three.js**
+- **React Three Fiber**
+- **@react-three/drei**
+- potentially **Rapier / @react-three/rapier** for collisions/physics.
+
+The browser is responsible for:
+- rendering;
+- interpolation between simulation states;
+- camera;
+- lighting;
+- animation;
+- effects;
+- UI/interaction.
+
+The graphics renderer may run at ~60 FPS even if neural simulation ticks are slower.
+
+Example separation:
+
+```text
+NEURAL / BEHAVIOURAL SIMULATION
+10–30+ simulation updates per second
+            ↓
+state snapshots
+            ↓
+       WebSocket
+            ↓
+3D RENDERER
+~60 frames per second
+            ↓
+interpolation / animation
+```
+
+Do not force neural simulation frequency to equal display FPS.
+
+---
+
+## 9. Current proposed technology stack
+
+### Frontend / product UI
+- Next.js
+- React
+- TypeScript
+- React Three Fiber
+- Three.js
+- @react-three/drei
+- optional @react-three/rapier
+- Tailwind CSS for application UI if appropriate
+
+### Simulation / scientific backend
+- Python
+- FastAPI
+- NumPy
+- SciPy / sparse matrices
+- NetworkX initially where convenient for graph exploration
+- neuPrint Python tooling for MaleCNS access
+- possible Numba/Cython/Rust optimisation later if profiling justifies it
+
+### Realtime communication
+- WebSockets between simulation service and frontend.
+
+### Data / persistence
+Potentially:
+- PostgreSQL / Supabase for experiment metadata;
+- object/file storage for larger run/replay files;
+- simple local files during earliest prototypes.
+
+Do not add database infrastructure before it is needed.
+
+### 3D asset creation
+- Blender
+- export GLB/GLTF.
+
+### Deployment
+Early development:
+- simulation runs locally;
+- frontend locally.
+
+Public portfolio version:
+- frontend can be deployed separately;
+- recorded experiment/replay data can be served cheaply;
+- heavy live simulation does not need to be publicly hosted initially.
+
+Potential public split:
+
+```text
+RESEARCH MODE
+live simulation
+local workstation
+        +
+SHOWCASE MODE
+recorded/replay experiments
+public website
+```
+
+Possible future optimisation:
+- WebAssembly;
+- Web Workers;
+- TypedArrays;
+- SharedArrayBuffer where applicable;
+- run some simulation workload on the visitor's device.
+
+This is an optimisation/research phase, not an MVP requirement.
+
+---
+
+## 10. Cost constraints
+
+Goal for initial development: **approximately €0 infrastructure cost**.
+
+Avoid introducing paid services unless:
+- profiling proves they are needed;
+- deployment requirements justify them;
+- the user explicitly approves the expense.
+
+No paid LLM API is required for the core simulation.
+
+An LLM must NOT control the fly.
+
+A future optional AI layer may be used for:
+- querying the connectome in natural language;
+- explaining experimental results;
+- generating summaries;
+- assisting analysis.
+
+That is secondary to the scientific simulation.
+
+---
+
+## 11. Data model: experiment/run concept
+
+A useful conceptual hierarchy is:
+
+```text
+Project
+  └── World / Experiment Definition
+       ├── hypothesis
+       ├── environment parameters
+       ├── neural configuration
+       ├── simulation configuration
+       └── Runs
+            ├── seed
+            ├── initial state
+            ├── timeline
+            ├── sensory data
+            ├── neural summaries
+            ├── motor outputs
+            ├── transforms / trajectory
+            ├── events
+            └── metrics
+```
+
+Runs should become reproducible where possible.
+
+Store enough information to:
+- replay them;
+- compare them;
+- analyse them offline;
+- reproduce them from seed/config when deterministic behaviour is intended.
+
+---
+
+## 12. Telemetry and replay
+
+Replay is a major part of the product, not an afterthought.
+
+A run should eventually capture data such as:
+
+- timestamp / simulation tick;
+- fly position;
+- fly rotation;
+- velocity;
+- sensory inputs;
+- motor outputs;
+- selected neural state or aggregate activity;
+- collisions;
+- events;
+- environment changes;
+- reward/aversive events if applicable;
+- experiment metrics.
+
+The public website may replay precomputed experiments without rerunning expensive neural simulation.
+
+This preserves:
+- strong visuals;
+- inspectability;
+- low hosting costs.
+
+---
+
+## 13. Neural inspection / explainability
+
+A later major feature should allow the user to inspect the neural side of behaviour.
+
+Examples:
+
+- click a region/circuit;
+- inspect activity over time;
+- show relevant upstream/downstream connectivity;
+- select a behaviour event and inspect neural activity around it;
+- compare activation between trials.
+
+Possible conceptual feature:
+
+> “Why did the fly turn left here?”
+
+The UI could trace:
+
+```text
+environmental event
+      ↓
+sensory encoding
+      ↓
+relevant neural activity
+      ↓
+descending/motor outputs
+      ↓
+observed behaviour
+```
+
+This should be based on recorded simulation data and known graph structure, not fabricated explanations.
+
+---
+
+## 14. Performance philosophy
+
+Do not attempt the full 166k-neuron simulation on day one.
+
+Start with:
+- data access;
+- selected circuits;
+- reduced subgraphs;
+- simplified neural dynamics;
+- measurable closed-loop behaviour.
+
+Scale only after the architecture is validated.
+
+Performance work must be profiling-driven.
+
+Potential future steps:
+- compact neuron indexing;
+- sparse adjacency structures;
+- vectorised simulation;
+- NumPy/SciPy sparse;
+- Numba;
+- multiprocessing where suitable;
+- Rust native module / PyO3 if justified;
+- WASM for browser-side simulation experiments.
+
+Do not optimise prematurely.
+
+---
+
+## 15. Implementation roadmap
+
+This roadmap is a working plan. Each phase should have an explicit gate and acceptance criteria.
+
+### Phase 0 — Repository foundation and scientific brief
+Goals:
+- create repository/monorepo structure;
+- establish README and architecture docs;
+- document biological vs model assumptions;
+- define code quality gates;
+- define experiment terminology;
+- keep implementation minimal.
+
+Gate:
+- build/lint/typecheck/test skeleton green;
+- clear project docs;
+- no unnecessary architecture.
+
+### Phase 1 — MaleCNS data access
+Goals:
+- connect to/download a manageable official data subset;
+- create reproducible data ingestion/query tooling;
+- inspect neurons/connectivity;
+- define internal graph representation;
+- cache only what is needed.
+
+Gate:
+- a documented script/query retrieves real MaleCNS data;
+- tests validate parsing/normalisation;
+- no fake connectome data in production path.
+
+### Phase 2 — Neural simulation core
+Goals:
+- implement a small selected circuit/subgraph;
+- implement an explicit neural dynamics model;
+- make all assumptions configurable/documented;
+- deterministic seeded runs where possible;
+- unit tests around the simulation.
+
+Gate:
+- neural state evolves correctly under controlled test inputs;
+- outputs are reproducible;
+- simulation does not yet need 3D.
+
+### Phase 3 — Immersive 3D vertical slice
+Goals:
+- Next.js/React Three Fiber app;
+- simple arena;
+- fly model or temporary high-quality placeholder;
+- follow/orbit camera;
+- lighting/shadows;
+- simple collision system;
+- realtime state interpolation.
+
+The fly may initially use synthetic movement solely to validate the visual pipeline, but this must be clearly temporary.
+
+Gate:
+- visually polished 3D fly/arena runs smoothly;
+- UI and camera usable;
+- architecture ready to receive backend state.
+
+### Phase 4 — Closed-loop sensory → neural → motor
+Goals:
+- define first environment sensor(s);
+- encode sensory input into selected MaleCNS circuit;
+- neural simulation produces motor outputs;
+- motor outputs control the 3D fly;
+- close the loop.
+
+Gate:
+- the fly's movement is generated from the neural simulation;
+- a controlled environmental change causes measurable neural/motor/behavioural response;
+- manual/scripted movement is removed from experimental mode.
+
+### Phase 5 — Experiment framework / first worlds
+Goals:
+- experiment definitions;
+- Baseline;
+- Light/Dark;
+- Obstacle Course;
+- metrics;
+- seeds;
+- repeated runs.
+
+Gate:
+- same experiment can be repeated;
+- metrics are generated;
+- results can be compared.
+
+### Phase 6 — Telemetry, timeline and replay
+Goals:
+- record run data;
+- replay without neural recomputation;
+- timeline;
+- trajectory visualisation;
+- live metrics;
+- selected neural activity panel.
+
+Gate:
+- completed experiment can be replayed accurately;
+- public showcase can display recorded experiments.
+
+### Phase 7 — Plasticity / adaptation
+Goals:
+- research suitable biologically motivated learning/plasticity rule;
+- implement behind explicit configuration;
+- compare control vs plasticity conditions;
+- run repeated trials;
+- avoid calling changes “learning” without evidence.
+
+Gate:
+- statistically/experimentally meaningful behaviour comparison;
+- reproducible protocol;
+- documentation separates observed result from interpretation.
+
+### Phase 8 — Digital individuality experiment
+Goals:
+- identical starting agents;
+- different experience histories;
+- later common test environment;
+- compare behavioural divergence;
+- inspect neural/state differences.
+
+Gate:
+- experiment methodology and results are reproducible;
+- conclusions remain conservative.
+
+### Phase 9 — Scaling / whole-connectome performance research
+Goals:
+- profile real bottlenecks;
+- expand subgraphs/circuit coverage;
+- investigate larger-scale MaleCNS simulation;
+- optimise only where measured.
+
+Gate:
+- benchmarks documented;
+- memory/CPU requirements measured;
+- no claim of full MaleCNS execution unless demonstrated.
+
+### Phase 10 — Public portfolio release
+Goals:
+- polished landing/project narrative;
+- immersive live/replay experience;
+- methodology;
+- architecture;
+- scientific limitations;
+- GitHub documentation;
+- selected benchmark/results;
+- CV/LinkedIn-ready project description.
+
+---
+
+## 16. Repository architecture direction
+
+Do not force this exact layout before inspecting implementation needs, but the intended separation is:
+
+```text
+neurofly/
+├── apps/
+│   └── web/                  # Next.js / R3F product + visualisation
+├── services/
+│   └── simulation/           # Python / FastAPI / neural simulation
+├── packages/
+│   └── contracts/            # optional shared schemas/contracts
+├── data/
+│   └── ...                   # local/cache strategy; large data ignored
+├── docs/
+│   ├── architecture/
+│   ├── science/
+│   ├── experiments/
+│   └── decisions/
+├── scripts/
+└── README.md
+```
+
+Important:
+- large MaleCNS datasets must not accidentally be committed to Git;
+- data acquisition should be reproducible;
+- contracts between frontend/backend should be explicit;
+- avoid premature microservices.
+
+---
+
+## 17. Development principles
+
+1. **Scientific integrity over spectacle**
+   - the visuals may be impressive, but behaviour must not be falsely presented as biological if it is scripted.
+
+2. **Visual quality still matters**
+   - this is intended to be a flagship portfolio project.
+
+3. **Vertical slices**
+   - build thin end-to-end functionality instead of large disconnected systems.
+
+4. **Small circuit before full connectome**
+   - prove the pipeline first.
+
+5. **Measure before optimising**
+   - profiling before Rust/WASM/GPU complexity.
+
+6. **Reproducibility**
+   - seeds, configs, experiment metadata and replay.
+
+7. **Explicit assumptions**
+   - every major modelling decision belongs in documentation.
+
+8. **No hidden LLM brain**
+   - an LLM must not secretly make behavioural decisions in an experiment presented as connectome-driven.
+
+9. **Test important scientific logic**
+   - especially dynamics, data transformation, experiment reproducibility and metrics.
+
+10. **Keep public claims conservative**
+    - interesting results do not justify claims of consciousness.
+
+---
+
+## 18. Role of Codex
+
+Codex is expected to perform much of the repository implementation.
+
+ChatGPT Project chats will be used to:
+- reason about architecture;
+- research approaches;
+- define scientific scope;
+- review Codex output;
+- design implementation phases;
+- generate detailed Codex prompts;
+- analyse test/build results;
+- decide next steps.
+
+Prompts provided to Codex should normally be implementation-ready and single-pass.
+
+Each significant Codex prompt should include:
+
+- current phase and objective;
+- repository context;
+- required read-only inspection first;
+- exact scope;
+- non-goals;
+- architectural invariants;
+- scientific invariants;
+- likely areas/files but instruction to inspect actual repo rather than assume paths;
+- implementation requirements;
+- data-contract requirements;
+- error-handling expectations;
+- test requirements;
+- lint/typecheck/build commands or instruction to discover canonical project gates;
+- acceptance criteria;
+- stop conditions;
+- restrictions on unrelated changes;
+- Git/status/staging/commit instructions when appropriate;
+- expected final report.
+
+Codex must inspect the actual repository state before editing and must report discrepancies rather than blindly following stale assumptions.
+
+---
+
+## 19. Preferred Codex workflow
+
+For non-trivial phases:
+
+```text
+1. Read repository / relevant docs
+2. Report factual current state
+3. Identify conflicts with requested phase
+4. Implement only authorised scope
+5. Add/update tests
+6. Run relevant gates
+7. Review diff
+8. Report:
+   - files changed
+   - architecture decisions
+   - tests/gates
+   - limitations
+   - next recommended step
+9. Commit only when the prompt explicitly authorises it
+```
+
+Avoid:
+- broad opportunistic refactors;
+- dependency churn;
+- rewriting unrelated working code;
+- changing scientific semantics to make tests easier;
+- silently substituting fake data.
+
+---
+
+## 20. Definition of a strong MVP
+
+The first truly meaningful MVP is not simply a rendered fly.
+
+A strong MVP demonstrates:
+
+1. real MaleCNS-derived connectivity for a selected circuit/subgraph;
+2. explicit neural dynamics;
+3. environmental sensory input;
+4. neural processing;
+5. motor output;
+6. autonomous movement in the 3D world;
+7. live telemetry showing that chain;
+8. at least one controlled experiment;
+9. recorded/replayable run;
+10. documentation of model assumptions and limitations.
+
+In one sentence:
+
+> **A user can watch a digital fly move autonomously through a polished 3D environment while real MaleCNS-derived neural connectivity participates in the sensory-to-motor loop, and the resulting neural and behavioural data can be measured and replayed.**
+
+---
+
+## 21. Portfolio objective
+
+This project is intended to become a technically distinctive flagship project.
+
+It should demonstrate a combination of:
+
+- full-stack engineering;
+- TypeScript/React;
+- 3D web graphics;
+- Python backend development;
+- realtime systems;
+- scientific computing;
+- graph processing;
+- neuroscience/connectomics;
+- simulation;
+- data visualisation;
+- performance engineering;
+- testing/reproducibility;
+- technical communication.
+
+A future CV description should focus on what was actually implemented and measured.
+
+Do not list planned technologies/features as completed work.
+
+---
+
+## 22. Current decisions — concise summary
+
+Already decided:
+
+- build an immersive 3D digital-fly experimental platform;
+- use MaleCNS as the biological structural foundation;
+- behaviour should be connectome/neural-simulation driven;
+- multiple worlds are controlled behavioural experiments;
+- scientific metrics and neural inspection are first-class features;
+- frontend: Next.js + React + TypeScript;
+- 3D: Three.js + React Three Fiber;
+- Blender for asset creation, not runtime;
+- backend/simulation: Python + FastAPI;
+- realtime: WebSockets;
+- scientific computation: NumPy/SciPy, with NetworkX useful initially;
+- persistence can use PostgreSQL/Supabase when needed;
+- develop live simulation locally first;
+- public site may replay precomputed runs to avoid hosting costs;
+- potential later WASM/browser simulation;
+- no LLM controlling the organism;
+- no consciousness claims;
+- start with selected circuits/subgraphs and scale progressively;
+- keep visual immersion and scientific credibility equally important.
+
+Not yet decided/final:
+- final project name;
+- exact repository structure;
+- exact MaleCNS circuit used for the first behavioural loop;
+- exact neural dynamics model;
+- exact sensory encoding;
+- exact motor mapping;
+- exact physics model;
+- exact hosting provider for simulation;
+- whether/when to use Rust/WASM;
+- detailed visual art direction/assets;
+- plasticity mechanism;
+- public release date.
+
+These undecided items should be resolved through research, profiling and implementation evidence rather than guessed in advance.
+
+---
+
+## 23. Source-of-truth rule
+
+When a future ChatGPT/Codex conversation conflicts with this document:
+
+- prefer **the actual current repository state** for implementation facts;
+- prefer **official MaleCNS/scientific sources** for biological facts;
+- prefer **new explicit user decisions** over old design assumptions;
+- update this context/document when a major decision changes.
+
+This document describes project intent and current agreed direction. It must not be used as proof that a planned feature has already been implemented.

@@ -23,3 +23,7 @@ class SnapshotExportError(MaleCNSError):
 
 class SnapshotIntegrityError(MaleCNSError):
     """An offline snapshot does not match its manifest or file schema."""
+
+
+class StimulusSpecificationError(ValueError):
+    """A model-neutral stimulus contains invalid physical parameters."""

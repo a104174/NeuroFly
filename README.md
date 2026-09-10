@@ -105,6 +105,16 @@ same-type, reverse-direction, low-weight, and DNp01-originating connections.
 The contract and its scientific boundaries are documented in
 [`docs/science/circuit_contract.md`](docs/science/circuit_contract.md).
 
+## Sensory boundary and looming benchmark (Phase 1C)
+
+Phase 1C specifies a deterministic, model-neutral looming stimulus using
+physical radius, approach velocity, initial distance, visual center, time,
+angular size, and angular expansion velocity. It also records literature-grounded
+benchmarks for LPLC2 selectivity, LC4/LPLC2 feature separation, and combined
+DNp01/Giant Fiber integration. These specifications do not generate neural
+inputs or behaviour. See
+[`docs/science/sensory_boundary_evidence.md`](docs/science/sensory_boundary_evidence.md).
+
 ### Scientific semantics and limitation
 
 Neuron annotations and null values are retained as source data. In connection

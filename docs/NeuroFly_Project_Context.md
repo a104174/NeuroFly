@@ -3,8 +3,8 @@
 > **Working title:** NeuroFly  
 > The name is provisional and may change later.  
 > **Document purpose:** provide persistent context to ChatGPT Project chats, Codex-oriented implementation chats, architecture discussions, scientific reasoning and future documentation.  
-> **Current status:** Phase 1B provides an offline, integrity-checked,
-> model-neutral circuit contract for the Phase 1A MaleCNS snapshot.
+> **Current status:** Phase 1C defines a literature-grounded, model-neutral
+> looming sensory boundary and benchmark; no neural dynamics are implemented.
 > **Date of this context:** 2026-09-10.
 
 ---

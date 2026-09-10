@@ -1,9 +1,0 @@
-README.md
-pyproject.toml
-src/neurofly/__init__.py
-src/neurofly.egg-info/PKG-INFO
-src/neurofly.egg-info/SOURCES.txt
-src/neurofly.egg-info/dependency_links.txt
-src/neurofly.egg-info/requires.txt
-src/neurofly.egg-info/top_level.txt
-tests/test_package.py

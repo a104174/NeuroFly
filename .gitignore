@@ -1,0 +1,13 @@
+
+# Local Python environment and secrets
+.venv/
+.env
+
+# Python caches and local tooling state
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/

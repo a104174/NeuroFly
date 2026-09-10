@@ -3,15 +3,14 @@
 NeuroFly is a planned experimental platform for studying connectome-based
 digital agents inspired by the MaleCNS *Drosophila melanogaster* connectome.
 
-The repository is currently in **Phase 1D-B: bounded MaleCNS body-to-visual-space
-feasibility validation**. It can acquire a deliberately small candidate-circuit
-snapshot from Janelia neuPrint, then load, verify, and inspect that snapshot
-entirely offline. The current audit found no provenance-verifiable body-level
-LC4/LPLC2 receptive-field mapping for `male-cns:v1.0`; a deterministic 16-body
-sample is recorded, while live input-anatomy validation remains credential
-gated. The Phase 1C population-level sensory boundary remains in force. It
-does not implement neural dynamics, sensory or motor modelling, behaviour, an
-API, or a frontend.
+The repository is currently in **Phase 1E: full MaleCNS body-specific
+column-space contract**. It can acquire and inspect a deterministic candidate
+circuit snapshot and a separate 311-body LC4/LPLC2 input-column data product
+entirely offline after credentialed acquisition. Phase 1D established D3 for
+both populations: no provenance-verifiable MaleCNS column-to-angular-visual-
+space transform exists. The Phase 1C population-level sensory boundary remains
+in force. The project does not implement neural dynamics, a sensory encoder,
+motor modelling, behaviour, an API, or a frontend.
 
 Scientific integrity is a project constraint: future code must distinguish
 biological/connectomic data from NeuroFly modelling assumptions. The detailed
@@ -121,16 +120,35 @@ inputs or behaviour. See
 
 ## MaleCNS receptive-field feasibility (Phase 1D-B)
 
-Phase 1D-B audits the 2026 MaleCNS visual-pathway work, official optic-column
+Phase 1D-B audited the 2026 MaleCNS visual-pathway work, official optic-column
 and eye-map resources, and a deterministic sample of 16 real candidate bodies.
-No body-keyed LC4 or LPLC2 receptive-field artifact was provenance-verified.
-Both populations remain **unresolved**: live body-to-input-anatomy validation
-is pending credentials. This is not evidence that MaleCNS body-level mapping
-is impossible or fundamentally indefensible. No live body, input-synapse, ROI,
-or morphology query was made and no morphology was acquired or healed. See
+Credentialed live validation found reproducible body-specific input-column
+topology for both populations (**D3**), but no provenance-verified
+column-to-angular-visual-space transform. No visual-angle receptive-field
+artifact was invented, and no morphology was needed or acquired. See
 [`docs/science/receptive_field_feasibility.md`](docs/science/receptive_field_feasibility.md)
 for the sample manifest, evidence ledger, limitations, safeguards, and smallest
 next phase.
+
+## MaleCNS body-specific column space (Phase 1E)
+
+Phase 1E validates the exact frozen 16-body server aggregation against the raw
+Phase 1D counts, then derives a separate immutable body-column contract for all
+126 LC4 and 185 LPLC2 bodies in the validated `CircuitContract`. The sparse
+records preserve source neuropil (`ME`, `LO`, `LOP`), side, MaleCNS hex indices,
+and postsynaptic input-site counts; missing assignments remain explicit. The
+ignored data product is under
+`data/derived/malecns/looming_giant_fiber_v1/body_columns_v1/` and can be
+verified offline with:
+
+```bash
+python -m neurofly.malecns inspect-column-snapshot
+```
+
+This is column space, not visual-angle space or a physiological input. No
+encoder or neural dynamics are implemented. See
+[`docs/science/body_column_contract.md`](docs/science/body_column_contract.md)
+for the schema, provenance, method-equivalence gate, and population coverage.
 
 ### Scientific semantics and limitation
 

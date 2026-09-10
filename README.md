@@ -3,11 +3,13 @@
 NeuroFly is a planned experimental platform for studying connectome-based
 digital agents inspired by the MaleCNS *Drosophila melanogaster* connectome.
 
-The repository is currently in **Phase 1B: model-neutral scientific circuit
-contract**. It can acquire a deliberately small candidate-circuit snapshot
-from Janelia neuPrint, then load, verify, and inspect that snapshot entirely
-offline. It does not implement neural dynamics, sensory or motor modelling,
-behaviour, an API, or a frontend.
+The repository is currently in **Phase 1D: MaleCNS-native receptive-field
+feasibility audit**. It can acquire a deliberately small candidate-circuit
+snapshot from Janelia neuPrint, then load, verify, and inspect that snapshot
+entirely offline. The current audit found no provenance-verifiable body-level
+LC4/LPLC2 receptive-field mapping for `male-cns:v1.0`; the Phase 1C
+population-level sensory boundary remains in force. It does not implement
+neural dynamics, sensory or motor modelling, behaviour, an API, or a frontend.
 
 Scientific integrity is a project constraint: future code must distinguish
 biological/connectomic data from NeuroFly modelling assumptions. The detailed
@@ -114,6 +116,19 @@ benchmarks for LPLC2 selectivity, LC4/LPLC2 feature separation, and combined
 DNp01/Giant Fiber integration. These specifications do not generate neural
 inputs or behaviour. See
 [`docs/science/sensory_boundary_evidence.md`](docs/science/sensory_boundary_evidence.md).
+
+## MaleCNS receptive-field feasibility (Phase 1D)
+
+Phase 1D audits the 2026 MaleCNS visual-pathway work, official optic-column
+and eye-map resources, and the bounded next morphology query. No body-keyed
+LC4 or LPLC2 receptive-field artifact was provenance-verified. Both
+populations are **unresolved — not currently defensible from the inspected
+public resources; Gate 3 remains pending** for per-body visual mapping. This
+is not evidence that MaleCNS body-level mapping is impossible or fundamentally
+indefensible. Gate 3 was not run because neuPrint credentials were
+unavailable; no morphology was acquired or healed. See
+[`docs/science/receptive_field_feasibility.md`](docs/science/receptive_field_feasibility.md)
+for the evidence ledger, limitations, safeguards, and smallest next phase.
 
 ### Scientific semantics and limitation
 

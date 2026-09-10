@@ -3,9 +3,19 @@
 > **Working title:** NeuroFly  
 > The name is provisional and may change later.  
 > **Document purpose:** provide persistent context to ChatGPT Project chats, Codex-oriented implementation chats, architecture discussions, scientific reasoning and future documentation.  
-> **Current status:** Phase 1C defines a literature-grounded, model-neutral
-> looming sensory boundary and benchmark; no neural dynamics are implemented.
+> **Current status:** Phase 1D audited MaleCNS-native receptive-field
+> resources. No provenance-verified body-level LC4/LPLC2 visual mapping is
+> currently available for `male-cns:v1.0`; the Phase 1C population boundary is
+> retained and no neural dynamics are implemented.
 > **Date of this context:** 2026-09-10.
+
+The Phase 1D evidence ledger is maintained in
+[`docs/science/receptive_field_feasibility.md`](science/receptive_field_feasibility.md).
+It records an unresolved status independently for LC4 and LPLC2: the
+inspected public resources do not yet support body-level assignment, and the
+bounded Gate 3 morphology/ROI feasibility study remains pending. This is not a
+claim that MaleCNS body-level mapping is impossible or fundamentally
+indefensible.
 
 ---
 

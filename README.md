@@ -3,8 +3,9 @@
 NeuroFly is a planned experimental platform for studying connectome-based
 digital agents inspired by the MaleCNS *Drosophila melanogaster* connectome.
 
-The repository is currently in **Phase 2H-A: empirical constraint
-infrastructure**. Phase 2B provides the narrow offline 313-node/311-edge
+The repository is currently in **Phase 3A: reproducible experiment-run
+foundation**. Phase 2H-A provides the empirical constraint
+infrastructure. Phase 2B provides the narrow offline 313-node/311-edge
 deterministic LIF execution slice, Phase 2E implements the E1 encoder, and
 Phase 2F characterizes their complete production path. Phase 2G pre-registers
 source provenance, measurement/model comparability, and fit-versus-held-out
@@ -240,6 +241,15 @@ registry contains metadata only; no experimental trace or fabricated numeric
 payload is included. Inspect it offline with
 `python -m neurofly.empirical_constraints inspect`. See
 [`docs/science/empirical_constraint_infrastructure.md`](docs/science/empirical_constraint_infrastructure.md).
+
+## Reproducible experiment runs (Phase 3A)
+
+`neurofly.experiments` composes the existing production stimulus, Level P E1
+encoder, Phase 2B graph, and deterministic LIF simulator into one immutable,
+replay-verified offline experiment result. All five free modelling parameters
+remain explicit; runs are marked `NOT_EVALUATED` and do not perform empirical
+fitting. See
+[`docs/science/reproducible_experiment_runs.md`](docs/science/reproducible_experiment_runs.md).
 
 ### Scientific semantics and limitation
 

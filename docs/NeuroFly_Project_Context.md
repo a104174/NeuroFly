@@ -3,7 +3,9 @@
 > **Working title:** NeuroFly  
 > The name is provisional and may change later.  
 > **Document purpose:** provide persistent context to ChatGPT Project chats, Codex-oriented implementation chats, architecture discussions, scientific reasoning and future documentation.  
-> **Current status:** Phase 2H-A implements the metadata-only empirical
+> **Current status:** Phase 3A implements the metadata-only empirical
+> constraint infrastructure and a deterministic, replay-verified offline
+> experiment-run foundation. Phase 2H-A implements the metadata-only empirical
 > constraint registry for the Phase 2G protocol. The evidence audit remains
 > G2: only relative, normalized, qualitative, and downstream constraints are
 > currently usable; source-data ingestion and an observation bridge must
@@ -57,6 +59,13 @@ validation protocol are documented in
 The Phase 2H-A immutable constraint metadata registry and pending-source-data
 workflow are documented in
 [`docs/science/empirical_constraint_infrastructure.md`](science/empirical_constraint_infrastructure.md).
+
+Phase 3A's immutable `ExperimentConfig`, selected telemetry, source
+provenance, deterministic replay, and small manifest boundary are documented
+in
+[`docs/science/reproducible_experiment_runs.md`](science/reproducible_experiment_runs.md).
+Runs remain `NOT_EVALUATED`: no empirical fitting, behaviour, Level C, or
+runtime networking is implemented.
 
 ---
 

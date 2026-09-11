@@ -3,13 +3,13 @@
 NeuroFly is a planned experimental platform for studying connectome-based
 digital agents inspired by the MaleCNS *Drosophila melanogaster* connectome.
 
-The repository is currently in **Phase 2F: end-to-end looming trajectory
-characterization**. Phase 2B provides the narrow offline 313-node/311-edge
-deterministic LIF execution slice, Phase 2C probes its free parameters, Phase
-2E implements the E1 encoder, and Phase 2F characterizes their complete
-production path with explicitly synthetic, uncalibrated configurations. Level
-C, visual-angle mapping, motor modelling, behaviour, API, and frontend remain
-unimplemented.
+The repository is currently in **Phase 2G: empirical constraint and validation
+protocol**. Phase 2B provides the narrow offline 313-node/311-edge deterministic
+LIF execution slice, Phase 2E implements the E1 encoder, and Phase 2F
+characterizes their complete production path. Phase 2G pre-registers source
+provenance, measurement/model comparability, and fit-versus-held-out roles; it
+performs no parameter fitting. Level C, visual-angle mapping, motor modelling,
+behaviour, API, and frontend remain unimplemented.
 
 Scientific integrity is a project constraint: future code must distinguish
 biological/connectomic data from NeuroFly modelling assumptions. The detailed
@@ -219,6 +219,16 @@ both DNp01 outputs, reports structural asymmetry and timestep sensitivity, and
 classifies model operating regimes. Every numeric configuration is an
 explicit synthetic benchmark, not a biological calibration. See
 [`docs/science/looming_trajectory_characterization.md`](docs/science/looming_trajectory_characterization.md).
+
+## Empirical constraint protocol (Phase 2G)
+
+Phase 2G audits primary LC4/LPLC2/GF evidence and pre-registers an empirical
+constraint schema, measurement-specific observation transforms, fit and
+held-out validation roles, uncertainty handling, and falsification criteria.
+Its G2 decision permits only relative/normalized constraints until author
+source data and an observation bridge are available; no biological parameter
+was fitted. See
+[`docs/science/empirical_constraint_protocol.md`](docs/science/empirical_constraint_protocol.md).
 
 ### Scientific semantics and limitation
 

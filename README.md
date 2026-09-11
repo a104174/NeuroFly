@@ -3,13 +3,12 @@
 NeuroFly is a planned experimental platform for studying connectome-based
 digital agents inspired by the MaleCNS *Drosophila melanogaster* connectome.
 
-The repository is currently in **Phase 2D: Level P sensory-encoder contract
-selection**. Phase 2B provides the narrow offline 313-node/311-edge
-deterministic LIF execution slice, and Phase 2C probes its free parameters with
-explicitly synthetic population drives. Phase 2D specifies—but does not
-implement or calibrate—the first feature-to-drive contract. No sensory encoder,
-visual-angle mapping, motor modelling, behaviour, API, or frontend is
-implemented.
+The repository is currently in **Phase 2E: deterministic Level P E1 encoder
+implementation**. Phase 2B provides the narrow offline 313-node/311-edge
+deterministic LIF execution slice, Phase 2C probes its free parameters with
+explicitly synthetic population drives, and Phase 2E implements the documented
+E1 contract without calibration. Level C, visual-angle mapping, motor
+modelling, behaviour, API, and frontend remain unimplemented.
 
 Scientific integrity is a project constraint: future code must distinguish
 biological/connectomic data from NeuroFly modelling assumptions. The detailed
@@ -198,6 +197,17 @@ population broadcast, and no added filter or latency. These are documented
 NeuroFly assumptions; no encoder or biological calibration is implemented.
 See
 [`docs/science/level_p_encoder_selection.md`](docs/science/level_p_encoder_selection.md).
+
+## Deterministic Level P encoder (Phase 2E)
+
+`neurofly.sensory_encoder` implements the immutable E1 configuration and
+memoryless bounded feature mapping. It consumes aligned pre-collision
+`LoomingSample` values, broadcasts deterministic LC4/LPLC2 drives to the 311
+visual bodies, and returns the existing Phase 2B `ExternalDriveSchedule`.
+DNp01 remains excluded; no gain or normalization scale is biologically
+calibrated. See
+[`docs/science/level_p_encoder_selection.md`](docs/science/level_p_encoder_selection.md)
+for the contract and provenance.
 
 ### Scientific semantics and limitation
 

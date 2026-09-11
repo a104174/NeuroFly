@@ -1,7 +1,8 @@
 # Phase 2D — Level P sensory-encoder evidence audit and contract selection
 
-**Status:** design specification only. No sensory encoder, gain calibration,
-neural-model change, or visual-angle mapping is implemented.
+**Status:** Phase 2D selection document; the E1 contract is implemented in
+`neurofly.sensory_encoder` (Phase 2E). No gain calibration, neural-model
+change, or visual-angle mapping is implemented.
 
 **Decision:** select **E1 — direct bounded-normalized instantaneous feature
 drive** for the first Level P encoder. The proposed identifier is
@@ -438,3 +439,24 @@ numeric parameters. Its gate, broadcast, zero-baseline, no-filter, and
 no-latency policies are fixed and visibly classified as modelling choices.
 Phase 2E may implement this contract without fitting gains, normalization
 scales, `k_syn`, or biological latency.
+
+## Phase 2E implementation status
+
+The implementation is intentionally small and remains separate from the neural
+simulator:
+
+- `LevelPEncoderConfig` validates the four required finite numeric parameters
+  and fixed policy identifiers;
+- `encode_level_p` consumes aligned, finite, pre-collision `LoomingSample`
+  values and applies the equations above without recomputing geometry;
+- `LevelPEncodingResult` retains raw features, normalized features, generated
+  population drives, deterministic hashes, and provenance metadata; and
+- the returned `ExternalDriveSchedule` targets all 126 LC4 and 185 LPLC2 body
+  IDs, contains no DNp01 drive, and runs through Phase 2B without simulator
+  knowledge of stimulus semantics.
+
+Phase 2E uses no new dependency, performs no calibration, and does not add an
+encoder filter, latency correction, Level C information, or body-level
+heterogeneity. Focused offline coverage is in
+`tests/test_sensory_encoder.py`, including one real-snapshot
+encoder-to-LIF integration test.

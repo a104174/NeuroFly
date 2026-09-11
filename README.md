@@ -3,14 +3,12 @@
 NeuroFly is a planned experimental platform for studying connectome-based
 digital agents inspired by the MaleCNS *Drosophila melanogaster* connectome.
 
-The repository is currently in **Phase 1F: sensory-consumption boundary
-specification**. Phase 1E delivered the validated 311-body LC4/LPLC2
-body-specific column-space contract. Phase 1D/1E established D3 for both
-populations: no provenance-verifiable MaleCNS column-to-angular-visual-space
-transform exists. Phase 1F documents the boundary between environment
+The repository is currently in **Phase 2A: neural-dynamics evidence audit and
+first model selection**. Phase 1F specified the boundary between environment
 observations, a future sensory encoder, structural data, and a future neural
-simulator. No encoder, neural dynamics, motor modelling, behaviour, API, or
-frontend is implemented.
+simulator; Phase 2A selects a minimal LIF hypothesis for the first
+connectome-driven experiment. No encoder, neural simulator, motor modelling,
+behaviour, API, or frontend is implemented.
 
 Scientific integrity is a project constraint: future code must distinguish
 biological/connectomic data from NeuroFly modelling assumptions. The detailed
@@ -159,6 +157,17 @@ related input), while **Level C** preserves body-specific column topology but
 remains disabled until an environment-to-column modelling contract is designed
 and validated. See
 [`docs/science/sensory_consumption_boundary.md`](docs/science/sensory_consumption_boundary.md).
+
+## Neural-model selection (Phase 2A)
+
+Phase 2A compares spiking LIF, continuous/rate, and propagation baselines and
+selects **M1 — LIF with filtered synapses** for the first model hypothesis.
+The initial validation graph is the explicit 311-edge LC4/LPLC2-to-DNp01
+feed-forward subset; all 20,607 structural edges remain preserved in the
+CircuitContract. Parameters, signs, contact-count scaling, deterministic
+Level P drive, GF timing benchmarks, and the future Phase 2B implementation
+boundary are documented in
+[`docs/science/neural_model_selection.md`](docs/science/neural_model_selection.md).
 
 ### Scientific semantics and limitation
 

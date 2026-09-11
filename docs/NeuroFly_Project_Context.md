@@ -3,12 +3,13 @@
 > **Working title:** NeuroFly  
 > The name is provisional and may change later.  
 > **Document purpose:** provide persistent context to ChatGPT Project chats, Codex-oriented implementation chats, architecture discussions, scientific reasoning and future documentation.  
-> **Current status:** Phase 1F specifies the sensory-consumption boundary
-> above the completed Phase 1E body-specific MaleCNS column-space contract.
-> Phase 1D/1E's D3 conclusion remains in force: no provenance-verified
-> body-level LC4/LPLC2 column-to-angular-visual-space transform is available
-> for `male-cns:v1.0`. Level P is the documented population-feature boundary;
-> Level C remains disabled, and no encoder or neural dynamics are implemented.
+> **Current status:** Phase 2A audits neural-dynamics evidence and selects a
+> minimal LIF hypothesis above the completed Phase 1F sensory-consumption
+> boundary. Phase 1D/1E's D3 conclusion remains in force: no
+> provenance-verified body-level LC4/LPLC2 column-to-angular-visual-space
+> transform is available for `male-cns:v1.0`. Level P is the documented
+> population-feature boundary; Level C remains disabled, and no encoder or
+> neural dynamics are implemented.
 > **Date of this context:** 2026-09-11.
 
 The Phase 1D-B evidence ledger is maintained in
@@ -21,6 +22,10 @@ angular receptive fields or implement an encoder.
 
 The Phase 1F sensory-consumption boundary is documented in
 [`docs/science/sensory_consumption_boundary.md`](science/sensory_consumption_boundary.md).
+
+The Phase 2A neural-dynamics evidence audit and model-selection specification
+is documented in
+[`docs/science/neural_model_selection.md`](science/neural_model_selection.md).
 
 ---
 

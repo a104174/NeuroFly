@@ -3,9 +3,10 @@
 NeuroFly is a planned experimental platform for studying connectome-based
 digital agents inspired by the MaleCNS *Drosophila melanogaster* connectome.
 
-The repository is currently in **Phase 3A: reproducible experiment-run
-foundation**. Phase 2H-A provides the empirical constraint
-infrastructure. Phase 2B provides the narrow offline 313-node/311-edge
+The repository is currently in **Phase 3B: portable experiment artifacts**.
+Phase 3A provides the reproducible experiment-run foundation, and Phase 2H-A
+provides the empirical constraint infrastructure. Phase 2B provides the narrow
+offline 313-node/311-edge
 deterministic LIF execution slice, Phase 2E implements the E1 encoder, and
 Phase 2F characterizes their complete production path. Phase 2G pre-registers
 source provenance, measurement/model comparability, and fit-versus-held-out
@@ -250,6 +251,18 @@ replay-verified offline experiment result. All five free modelling parameters
 remain explicit; runs are marked `NOT_EVALUATED` and do not perform empirical
 fitting. See
 [`docs/science/reproducible_experiment_runs.md`](docs/science/reproducible_experiment_runs.md).
+
+## Portable experiment artifacts (Phase 3B)
+
+`neurofly.experiment_artifacts` exports a completed Phase 3A result as an
+atomic, ignored directory of UTF-8 JSON/JSONL files containing the complete
+configuration, selected telemetry, spike and delivered-event records,
+deterministic summaries, provenance, and SHA-256 integrity metadata. The
+strict offline loader validates the artifact without neuPrint, credentials, or
+simulation, while `replay_experiment_artifact` optionally reruns the persisted
+configuration against an explicitly supplied local CircuitContract. Generated
+artifacts belong under `data/derived/experiments/` and remain untracked. See
+[`docs/science/experiment_artifact_contract.md`](docs/science/experiment_artifact_contract.md).
 
 ### Scientific semantics and limitation
 

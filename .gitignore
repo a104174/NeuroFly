@@ -15,3 +15,4 @@ htmlcov/
 
 # Reproducible local derived snapshots (never source data)
 data/derived/malecns/
+data/derived/experiments/

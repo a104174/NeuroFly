@@ -3,9 +3,11 @@
 > **Working title:** NeuroFly  
 > The name is provisional and may change later.  
 > **Document purpose:** provide persistent context to ChatGPT Project chats, Codex-oriented implementation chats, architecture discussions, scientific reasoning and future documentation.  
-> **Current status:** Phase 3A implements the metadata-only empirical
-> constraint infrastructure and a deterministic, replay-verified offline
-> experiment-run foundation. Phase 2H-A implements the metadata-only empirical
+> **Current status:** Phase 3B implements the portable, integrity-checked
+> artifact contract for completed deterministic runs. Phase 3A implements the
+> metadata-only empirical constraint infrastructure and a deterministic,
+> replay-verified offline experiment-run foundation. Phase 2H-A implements the
+> metadata-only empirical
 > constraint registry for the Phase 2G protocol. The evidence audit remains
 > G2: only relative, normalized, qualitative, and downstream constraints are
 > currently usable; source-data ingestion and an observation bridge must
@@ -66,6 +68,14 @@ in
 [`docs/science/reproducible_experiment_runs.md`](science/reproducible_experiment_runs.md).
 Runs remain `NOT_EVALUATED`: no empirical fitting, behaviour, Level C, or
 runtime networking is implemented.
+
+Phase 3B's portable `experiment_artifact_v1` directory, JSON/JSONL telemetry
+and event files, SHA-256 integrity manifest, atomic export, strict offline
+loader, and explicit replay operation are documented in
+[`docs/science/experiment_artifact_contract.md`](science/experiment_artifact_contract.md).
+Generated artifacts are ignored under `data/derived/experiments/`; they do not
+contain third-party empirical source data and do not change the run's
+`NOT_EVALUATED` status.
 
 ---
 

@@ -3,14 +3,14 @@
 NeuroFly is a planned experimental platform for studying connectome-based
 digital agents inspired by the MaleCNS *Drosophila melanogaster* connectome.
 
-The repository is currently in **Phase 1E: full MaleCNS body-specific
-column-space contract**. It can acquire and inspect a deterministic candidate
-circuit snapshot and a separate 311-body LC4/LPLC2 input-column data product
-entirely offline after credentialed acquisition. Phase 1D established D3 for
-both populations: no provenance-verifiable MaleCNS column-to-angular-visual-
-space transform exists. The Phase 1C population-level sensory boundary remains
-in force. The project does not implement neural dynamics, a sensory encoder,
-motor modelling, behaviour, an API, or a frontend.
+The repository is currently in **Phase 1F: sensory-consumption boundary
+specification**. Phase 1E delivered the validated 311-body LC4/LPLC2
+body-specific column-space contract. Phase 1D/1E established D3 for both
+populations: no provenance-verifiable MaleCNS column-to-angular-visual-space
+transform exists. Phase 1F documents the boundary between environment
+observations, a future sensory encoder, structural data, and a future neural
+simulator. No encoder, neural dynamics, motor modelling, behaviour, API, or
+frontend is implemented.
 
 Scientific integrity is a project constraint: future code must distinguish
 biological/connectomic data from NeuroFly modelling assumptions. The detailed
@@ -149,6 +149,16 @@ This is column space, not visual-angle space or a physiological input. No
 encoder or neural dynamics are implemented. See
 [`docs/science/body_column_contract.md`](docs/science/body_column_contract.md)
 for the schema, provenance, method-equivalence gate, and population coverage.
+
+## Sensory-consumption boundary (Phase 1F)
+
+Phase 1F defines two future capability levels without implementing either
+encoder: **Level P** uses the Phase 1C population feature approximation (LC4
+with angular-expansion-velocity-related input and LPLC2 with angular-size-
+related input), while **Level C** preserves body-specific column topology but
+remains disabled until an environment-to-column modelling contract is designed
+and validated. See
+[`docs/science/sensory_consumption_boundary.md`](docs/science/sensory_consumption_boundary.md).
 
 ### Scientific semantics and limitation
 

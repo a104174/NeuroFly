@@ -3,13 +3,12 @@
 > **Working title:** NeuroFly  
 > The name is provisional and may change later.  
 > **Document purpose:** provide persistent context to ChatGPT Project chats, Codex-oriented implementation chats, architecture discussions, scientific reasoning and future documentation.  
-> **Current status:** Phase 2G pre-registers the empirical constraint and
-> held-out validation protocol for the deterministic E1 Level P encoder and
-> Phase 2B LIF simulator. The evidence audit reaches G2: only relative,
-> normalized, qualitative, and downstream constraints are currently usable;
-> source-data ingestion and an observation bridge must precede physiological
-> fitting. No gain, normalization scale, coupling, or biological latency is
-> fitted.
+> **Current status:** Phase 2H-A implements the metadata-only empirical
+> constraint registry for the Phase 2G protocol. The evidence audit remains
+> G2: only relative, normalized, qualitative, and downstream constraints are
+> currently usable; source-data ingestion and an observation bridge must
+> precede physiological fitting. No gain, normalization scale, coupling, or
+> biological latency is fitted.
 > Phase 1D/1E's D3 conclusion remains in
 > force: no provenance-verified body-level
 > LC4/LPLC2 column-to-angular-visual-space
@@ -54,6 +53,10 @@ documented in
 The Phase 2G primary-evidence inventory and pre-registered fit/held-out
 validation protocol are documented in
 [`docs/science/empirical_constraint_protocol.md`](science/empirical_constraint_protocol.md).
+
+The Phase 2H-A immutable constraint metadata registry and pending-source-data
+workflow are documented in
+[`docs/science/empirical_constraint_infrastructure.md`](science/empirical_constraint_infrastructure.md).
 
 ---
 

@@ -3,13 +3,14 @@
 NeuroFly is a planned experimental platform for studying connectome-based
 digital agents inspired by the MaleCNS *Drosophila melanogaster* connectome.
 
-The repository is currently in **Phase 2G: empirical constraint and validation
-protocol**. Phase 2B provides the narrow offline 313-node/311-edge deterministic
-LIF execution slice, Phase 2E implements the E1 encoder, and Phase 2F
-characterizes their complete production path. Phase 2G pre-registers source
-provenance, measurement/model comparability, and fit-versus-held-out roles; it
-performs no parameter fitting. Level C, visual-angle mapping, motor modelling,
-behaviour, API, and frontend remain unimplemented.
+The repository is currently in **Phase 2H-A: empirical constraint
+infrastructure**. Phase 2B provides the narrow offline 313-node/311-edge
+deterministic LIF execution slice, Phase 2E implements the E1 encoder, and
+Phase 2F characterizes their complete production path. Phase 2G pre-registers
+source provenance, measurement/model comparability, and fit-versus-held-out
+roles; Phase 2H-A validates that metadata boundary offline without parameter
+fitting. Level C, visual-angle mapping, motor modelling, behaviour, API, and
+frontend remain unimplemented.
 
 Scientific integrity is a project constraint: future code must distinguish
 biological/connectomic data from NeuroFly modelling assumptions. The detailed
@@ -229,6 +230,16 @@ Its G2 decision permits only relative/normalized constraints until author
 source data and an observation bridge are available; no biological parameter
 was fitted. See
 [`docs/science/empirical_constraint_protocol.md`](docs/science/empirical_constraint_protocol.md).
+
+## Empirical constraint infrastructure (Phase 2H-A)
+
+`neurofly.empirical_constraints` provides immutable metadata records, explicit
+availability/reuse/comparability states, a locked Phase 2G partition, payload
+checksum references, and deterministic registry/protocol hashes. The tracked
+registry contains metadata only; no experimental trace or fabricated numeric
+payload is included. Inspect it offline with
+`python -m neurofly.empirical_constraints inspect`. See
+[`docs/science/empirical_constraint_infrastructure.md`](docs/science/empirical_constraint_infrastructure.md).
 
 ### Scientific semantics and limitation
 

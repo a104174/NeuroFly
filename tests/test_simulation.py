@@ -1,12 +1,15 @@
 """Offline tests for the deterministic Phase 2B LIF execution boundary."""
 
 import json
+from collections import Counter
 from dataclasses import replace
+from pathlib import Path
 from types import SimpleNamespace
 
 import numpy as np
 import pytest
 
+from neurofly.malecns.contract import load_circuit_contract
 from neurofly.malecns.models import CANDIDATE, MALECNS_DATASET, NEUPRINT_ENDPOINT
 from neurofly.simulation import (
     ExternalDriveSchedule,
@@ -32,6 +35,19 @@ def _circuit_contract(snapshot):
 @pytest.fixture
 def simulation_graph(valid_snapshot):
     return build_phase2b_graph(_circuit_contract(valid_snapshot))
+
+
+@pytest.fixture
+def validated_simulation_graph():
+    """Build the active graph from the validated ignored circuit snapshot."""
+    snapshot_path = (
+        Path(__file__).resolve().parents[1]
+        / "data"
+        / "derived"
+        / "malecns"
+        / "looming_giant_fiber_v1"
+    )
+    return build_phase2b_graph(load_circuit_contract(snapshot_path))
 
 
 @pytest.fixture
@@ -276,6 +292,188 @@ def test_dt_convergence_for_exact_passive_decay(simulation_graph) -> None:
         final_values[dt_ms] = result.membrane_mv[-1, _index(result, body_id)]
     assert final_values[0.05] == pytest.approx(final_values[0.1], abs=1e-12)
     assert final_values[0.1] == pytest.approx(final_values[0.2], abs=1e-12)
+
+
+def test_network_dt_convergence_with_delayed_filtered_dnp01_response(
+    validated_simulation_graph,
+) -> None:
+    """Compare one physical-time feed-forward fixture at three solver steps.
+
+    All constants in this test are synthetic numerical-test parameters.  They
+    are not a sensory encoder, a biological calibration, or MaleCNS data.
+    """
+    total_duration_ms = 6.0
+    drive_duration_ms = 1.0
+    synthetic_drive_mveq = 150.0
+    synthetic_k_syn_mv_per_contact = 0.01
+    simulation_graph = validated_simulation_graph
+    visual_body_ids = tuple(
+        node.body_id for node in simulation_graph.nodes if node.type in {"LC4", "LPLC2"}
+    )
+    lc4_body_ids = {
+        node.body_id for node in simulation_graph.nodes if node.type == "LC4"
+    }
+    lplc2_body_ids = {
+        node.body_id for node in simulation_graph.nodes if node.type == "LPLC2"
+    }
+    dnp_ids = (10001, 10010)
+    expected_by_target = {
+        10001: {"LC4": 55, "LPLC2": 91, "total": 146, "weight": 4_800},
+        10010: {"LC4": 71, "LPLC2": 94, "total": 165, "weight": 6_424},
+    }
+    assert simulation_graph.node_count == 313
+    assert simulation_graph.edge_count == 311
+    assert {
+        node.body_id for node in simulation_graph.nodes if node.type == "DNp01"
+    } == set(dnp_ids)
+    assert {edge.target_body_id for edge in simulation_graph.edges} == set(dnp_ids)
+    assert {edge.source_body_id for edge in simulation_graph.edges} == set(
+        visual_body_ids
+    )
+    assert len(visual_body_ids) == 311
+    for target_id, expected in expected_by_target.items():
+        incoming_edges = [
+            edge for edge in simulation_graph.edges if edge.target_body_id == target_id
+        ]
+        assert (
+            sum(edge.source_type == "LC4" for edge in incoming_edges) == expected["LC4"]
+        )
+        assert (
+            sum(edge.source_type == "LPLC2" for edge in incoming_edges)
+            == expected["LPLC2"]
+        )
+        assert len(incoming_edges) == expected["total"]
+        assert (
+            sum(edge.structural_weight for edge in incoming_edges) == expected["weight"]
+        )
+    assert sum(expected["total"] for expected in expected_by_target.values()) == 311
+    assert sum(expected["weight"] for expected in expected_by_target.values()) == 11_224
+    dts = (0.05, 0.1, 0.2)
+    results = {}
+
+    for dt_ms in dts:
+        steps = int(round(total_duration_ms / dt_ms))
+        drive_steps = int(round(drive_duration_ms / dt_ms))
+        drive_values = [
+            synthetic_drive_mveq if step < drive_steps else 0.0 for step in range(steps)
+        ]
+        schedule = ExternalDriveSchedule.from_body_ids(
+            {body_id: drive_values for body_id in visual_body_ids},
+            provenance_id="synthetic_network_convergence_fixture_v1",
+        )
+        config = LIFConfig(
+            k_syn_mv_per_contact=synthetic_k_syn_mv_per_contact,
+            dt_ms=dt_ms,
+        )
+        results[dt_ms] = LIFSimulator(simulation_graph, config).run(
+            schedule,
+            record_body_ids=dnp_ids,
+        )
+
+    for dt_ms, result in results.items():
+        visual_spikes = [
+            event for event in result.spikes if event.neuron_type in {"LC4", "LPLC2"}
+        ]
+        assert len(visual_spikes) == 311
+        assert sum(event.neuron_type == "LC4" for event in visual_spikes) == 126
+        assert sum(event.neuron_type == "LPLC2" for event in visual_spikes) == 185
+        assert {event.body_id for event in visual_spikes} == set(visual_body_ids)
+        assert all(event.time_ms == pytest.approx(1.0) for event in visual_spikes)
+
+        assert len(result.delivered_events) == 311
+        delivered_event_counts = Counter(
+            event.target_body_id for event in result.delivered_events
+        )
+        assert {
+            body_id: delivered_event_counts.get(body_id, 0) for body_id in dnp_ids
+        } == {body_id: expected_by_target[body_id]["total"] for body_id in dnp_ids}
+        assert sum(delivered_event_counts.values()) == 311
+        assert set(delivered_event_counts) == set(dnp_ids)
+        assert (
+            sum(
+                event.source_body_id in lc4_body_ids
+                for event in result.delivered_events
+            )
+            == 126
+        )
+        assert (
+            sum(
+                event.source_body_id in lplc2_body_ids
+                for event in result.delivered_events
+            )
+            == 185
+        )
+        assert all(
+            event.delivery_time_ms == pytest.approx(2.8)
+            for event in result.delivered_events
+        )
+        assert {event.delivery_step for event in result.delivered_events} == {
+            round(2.8 / dt_ms)
+        }
+        assert all(
+            event.target_body_id in set(dnp_ids) for event in result.delivered_events
+        )
+        for target_id, expected in expected_by_target.items():
+            target_events = [
+                event
+                for event in result.delivered_events
+                if event.target_body_id == target_id
+            ]
+            assert sum(
+                event.event_increment_mV_eq for event in target_events
+            ) == pytest.approx(expected["weight"] * synthetic_k_syn_mv_per_contact)
+            target_index = _index(result, target_id)
+            assert result.synaptic_mveq[round(3.0 / dt_ms), target_index] > 0.0
+            assert result.membrane_mv[round(3.0 / dt_ms), target_index] > -52.0
+
+    aligned_times_ms = tuple(
+        round(time_ms, 10) for time_ms in np.arange(0.0, 6.0 + 0.2, 0.2)
+    )
+    aligned_membrane = {}
+    aligned_synaptic = {}
+    for dt_ms, result in results.items():
+        indices = [round(time_ms / dt_ms) for time_ms in aligned_times_ms]
+        aligned_membrane[dt_ms] = {
+            target_id: result.membrane_mv[indices, _index(result, target_id)]
+            for target_id in dnp_ids
+        }
+        aligned_synaptic[dt_ms] = {
+            target_id: result.synaptic_mveq[indices, _index(result, target_id)]
+            for target_id in dnp_ids
+        }
+
+    for dt_ms in dts:
+        for target_id in dnp_ids:
+            assert (
+                np.max(
+                    np.abs(
+                        aligned_membrane[dt_ms][target_id]
+                        - aligned_membrane[0.1][target_id]
+                    )
+                )
+                <= 1e-10
+            )
+            assert (
+                np.max(
+                    np.abs(
+                        aligned_synaptic[dt_ms][target_id]
+                        - aligned_synaptic[0.1][target_id]
+                    )
+                )
+                <= 1e-10
+            )
+
+    for target_id in dnp_ids:
+        first_spike_times = [
+            results[dt_ms].dnp01_first_spike_time_ms[target_id] for dt_ms in dts
+        ]
+        observed_spike_times = [time for time in first_spike_times if time is not None]
+        if observed_spike_times:
+            assert len(observed_spike_times) == len(first_spike_times)
+            # Fixed-step threshold timestamps may move by one tested step;
+            # preserve that resolution rather than treating it as sub-step
+            # biological timing.
+            assert max(observed_spike_times) - min(observed_spike_times) <= max(dts)
 
 
 def test_lc4_lplc2_and_combined_inputs_reach_dnp01(simulator, simulation_graph) -> None:

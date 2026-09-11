@@ -3,12 +3,10 @@
 NeuroFly is a planned experimental platform for studying connectome-based
 digital agents inspired by the MaleCNS *Drosophila melanogaster* connectome.
 
-The repository is currently in **Phase 2A: neural-dynamics evidence audit and
-first model selection**. Phase 1F specified the boundary between environment
-observations, a future sensory encoder, structural data, and a future neural
-simulator; Phase 2A selects a minimal LIF hypothesis for the first
-connectome-driven experiment. No encoder, neural simulator, motor modelling,
-behaviour, API, or frontend is implemented.
+The repository is currently in **Phase 2B: deterministic LIF simulation core**.
+Phase 2A selected the M1 LIF hypothesis and Phase 2B now provides the narrow
+offline 313-node/311-edge execution slice. No sensory encoder, visual-angle
+mapping, motor modelling, behaviour, API, or frontend is implemented.
 
 Scientific integrity is a project constraint: future code must distinguish
 biological/connectomic data from NeuroFly modelling assumptions. The detailed
@@ -144,7 +142,7 @@ python -m neurofly.malecns inspect-column-snapshot
 ```
 
 This is column space, not visual-angle space or a physiological input. No
-encoder or neural dynamics are implemented. See
+sensory encoder or physiological neural-input mapping is implemented. See
 [`docs/science/body_column_contract.md`](docs/science/body_column_contract.md)
 for the schema, provenance, method-equivalence gate, and population coverage.
 
@@ -168,6 +166,15 @@ CircuitContract. Parameters, signs, contact-count scaling, deterministic
 Level P drive, GF timing benchmarks, and the future Phase 2B implementation
 boundary are documented in
 [`docs/science/neural_model_selection.md`](docs/science/neural_model_selection.md).
+
+## Deterministic simulation core (Phase 2B)
+
+`neurofly.simulation` implements the explicit M1 equations, validated central
+LC4/LPLC2-to-DNp01 graph view, deterministic caller-supplied
+`external_drive`, filtered synaptic state, delayed events, threshold/reset/
+refractory behavior, and in-memory telemetry. It does not implement a looming
+encoder or simulate the full induced graph. Details are documented in
+[`docs/science/neural_simulation_core.md`](docs/science/neural_simulation_core.md).
 
 ### Scientific semantics and limitation
 

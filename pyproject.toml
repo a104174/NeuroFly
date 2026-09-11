@@ -9,6 +9,7 @@ description = "Scientific foundation for the NeuroFly connectome-based agent pro
 readme = "README.md"
 requires-python = ">=3.12,<3.13"
 dependencies = [
+    "numpy>=2,<3",
     "neuprint-python==0.6.3",
 ]
 

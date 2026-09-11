@@ -3,13 +3,13 @@
 > **Working title:** NeuroFly  
 > The name is provisional and may change later.  
 > **Document purpose:** provide persistent context to ChatGPT Project chats, Codex-oriented implementation chats, architecture discussions, scientific reasoning and future documentation.  
-> **Current status:** Phase 2A audits neural-dynamics evidence and selects a
-> minimal LIF hypothesis above the completed Phase 1F sensory-consumption
+> **Current status:** Phase 2B implements the deterministic M1 LIF execution
+> core selected in Phase 2A above the completed Phase 1F sensory-consumption
 > boundary. Phase 1D/1E's D3 conclusion remains in force: no
 > provenance-verified body-level LC4/LPLC2 column-to-angular-visual-space
 > transform is available for `male-cns:v1.0`. Level P is the documented
-> population-feature boundary; Level C remains disabled, and no encoder or
-> neural dynamics are implemented.
+> population-feature boundary; Level C remains disabled, and no sensory
+> encoder or behavioural/motor dynamics are implemented.
 > **Date of this context:** 2026-09-11.
 
 The Phase 1D-B evidence ledger is maintained in
@@ -26,6 +26,9 @@ The Phase 1F sensory-consumption boundary is documented in
 The Phase 2A neural-dynamics evidence audit and model-selection specification
 is documented in
 [`docs/science/neural_model_selection.md`](science/neural_model_selection.md).
+
+The Phase 2B deterministic LIF simulation core is documented in
+[`docs/science/neural_simulation_core.md`](science/neural_simulation_core.md).
 
 ---
 

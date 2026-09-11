@@ -3,10 +3,12 @@
 NeuroFly is a planned experimental platform for studying connectome-based
 digital agents inspired by the MaleCNS *Drosophila melanogaster* connectome.
 
-The repository is currently in **Phase 2B: deterministic LIF simulation core**.
-Phase 2A selected the M1 LIF hypothesis and Phase 2B now provides the narrow
-offline 313-node/311-edge execution slice. No sensory encoder, visual-angle
-mapping, motor modelling, behaviour, API, or frontend is implemented.
+The repository is currently in **Phase 2C: parameter sensitivity and
+identifiability benchmarking**. Phase 2B provides the narrow offline
+313-node/311-edge deterministic LIF execution slice; Phase 2C probes that model
+with explicitly synthetic population drives and does not calibrate it to
+biology. No sensory encoder, visual-angle mapping, motor modelling, behaviour,
+API, or frontend is implemented.
 
 Scientific integrity is a project constraint: future code must distinguish
 biological/connectomic data from NeuroFly modelling assumptions. The detailed
@@ -175,6 +177,15 @@ LC4/LPLC2-to-DNp01 graph view, deterministic caller-supplied
 refractory behavior, and in-memory telemetry. It does not implement a looming
 encoder or simulate the full induced graph. Details are documented in
 [`docs/science/neural_simulation_core.md`](docs/science/neural_simulation_core.md).
+
+## Parameter sensitivity benchmark (Phase 2C)
+
+`neurofly.sensitivity` defines deterministic `ZERO`, `LC4_ONLY`, `LPLC2_ONLY`,
+and `COMBINED` synthetic population-drive probes, bounded parameter sweeps,
+compact per-DNp01 summaries, configuration hashes, and exact replay checks.
+The benchmark demonstrates sensitivity and parameter degeneracy; its drive and
+coupling values are not biological calibration results. See
+[`docs/science/parameter_sensitivity.md`](docs/science/parameter_sensitivity.md).
 
 ### Scientific semantics and limitation
 

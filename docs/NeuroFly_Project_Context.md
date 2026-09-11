@@ -3,9 +3,10 @@
 > **Working title:** NeuroFly  
 > The name is provisional and may change later.  
 > **Document purpose:** provide persistent context to ChatGPT Project chats, Codex-oriented implementation chats, architecture discussions, scientific reasoning and future documentation.  
-> **Current status:** Phase 2B implements the deterministic M1 LIF execution
-> core selected in Phase 2A above the completed Phase 1F sensory-consumption
-> boundary. Phase 1D/1E's D3 conclusion remains in force: no
+> **Current status:** Phase 2C adds deterministic parameter-sensitivity and
+> identifiability probes above the Phase 2B M1 LIF execution core. The probes
+> use synthetic population drives and do not constitute biological calibration
+> or a sensory encoder. Phase 1D/1E's D3 conclusion remains in force: no
 > provenance-verified body-level LC4/LPLC2 column-to-angular-visual-space
 > transform is available for `male-cns:v1.0`. Level P is the documented
 > population-feature boundary; Level C remains disabled, and no sensory
@@ -29,6 +30,9 @@ is documented in
 
 The Phase 2B deterministic LIF simulation core is documented in
 [`docs/science/neural_simulation_core.md`](science/neural_simulation_core.md).
+
+The Phase 2C parameter-sensitivity and identifiability benchmark is documented
+in [`docs/science/parameter_sensitivity.md`](science/parameter_sensitivity.md).
 
 ---
 

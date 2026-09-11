@@ -3,14 +3,15 @@
 > **Working title:** NeuroFly  
 > The name is provisional and may change later.  
 > **Document purpose:** provide persistent context to ChatGPT Project chats, Codex-oriented implementation chats, architecture discussions, scientific reasoning and future documentation.  
-> **Current status:** Phase 2C adds deterministic parameter-sensitivity and
-> identifiability probes above the Phase 2B M1 LIF execution core. The probes
-> use synthetic population drives and do not constitute biological calibration
-> or a sensory encoder. Phase 1D/1E's D3 conclusion remains in force: no
+> **Current status:** Phase 2D selects and specifies E1, a deterministic
+> bounded-normalized instantaneous Level P population-feature encoder contract,
+> without implementing or calibrating it. Its gains and normalization scales
+> remain explicit NeuroFly free parameters; it adds no sensory filter or
+> biological latency correction. Phase 1D/1E's D3 conclusion remains in force: no
 > provenance-verified body-level LC4/LPLC2 column-to-angular-visual-space
 > transform is available for `male-cns:v1.0`. Level P is the documented
-> population-feature boundary; Level C remains disabled, and no sensory
-> encoder or behavioural/motor dynamics are implemented.
+> population-feature boundary; Level C remains disabled, and no encoder,
+> biological calibration, or behavioural/motor dynamics are implemented.
 > **Date of this context:** 2026-09-11.
 
 The Phase 1D-B evidence ledger is maintained in
@@ -33,6 +34,10 @@ The Phase 2B deterministic LIF simulation core is documented in
 
 The Phase 2C parameter-sensitivity and identifiability benchmark is documented
 in [`docs/science/parameter_sensitivity.md`](science/parameter_sensitivity.md).
+
+The Phase 2D Level P evidence audit and selected future encoder contract are
+documented in
+[`docs/science/level_p_encoder_selection.md`](science/level_p_encoder_selection.md).
 
 ---
 

@@ -3,12 +3,13 @@
 NeuroFly is a planned experimental platform for studying connectome-based
 digital agents inspired by the MaleCNS *Drosophila melanogaster* connectome.
 
-The repository is currently in **Phase 2C: parameter sensitivity and
-identifiability benchmarking**. Phase 2B provides the narrow offline
-313-node/311-edge deterministic LIF execution slice; Phase 2C probes that model
-with explicitly synthetic population drives and does not calibrate it to
-biology. No sensory encoder, visual-angle mapping, motor modelling, behaviour,
-API, or frontend is implemented.
+The repository is currently in **Phase 2D: Level P sensory-encoder contract
+selection**. Phase 2B provides the narrow offline 313-node/311-edge
+deterministic LIF execution slice, and Phase 2C probes its free parameters with
+explicitly synthetic population drives. Phase 2D specifies—but does not
+implement or calibrate—the first feature-to-drive contract. No sensory encoder,
+visual-angle mapping, motor modelling, behaviour, API, or frontend is
+implemented.
 
 Scientific integrity is a project constraint: future code must distinguish
 biological/connectomic data from NeuroFly modelling assumptions. The detailed
@@ -186,6 +187,17 @@ compact per-DNp01 summaries, configuration hashes, and exact replay checks.
 The benchmark demonstrates sensitivity and parameter degeneracy; its drive and
 coupling values are not biological calibration results. See
 [`docs/science/parameter_sensitivity.md`](docs/science/parameter_sensitivity.md).
+
+## Level P encoder selection (Phase 2D)
+
+Phase 2D selects **E1 — direct bounded-normalized instantaneous feature
+drive** as the next implementation contract. It specifies explicit LC4
+expansion-velocity and expansion-gated LPLC2 size channels, separate free
+normalization scales and `mV_eq` gains, zero baseline, deterministic bilateral
+population broadcast, and no added filter or latency. These are documented
+NeuroFly assumptions; no encoder or biological calibration is implemented.
+See
+[`docs/science/level_p_encoder_selection.md`](docs/science/level_p_encoder_selection.md).
 
 ### Scientific semantics and limitation
 

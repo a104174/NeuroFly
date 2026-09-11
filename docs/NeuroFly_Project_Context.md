@@ -3,11 +3,11 @@
 > **Working title:** NeuroFly  
 > The name is provisional and may change later.  
 > **Document purpose:** provide persistent context to ChatGPT Project chats, Codex-oriented implementation chats, architecture discussions, scientific reasoning and future documentation.  
-> **Current status:** Phase 2E implements the deterministic E1
-> bounded-normalized instantaneous Level P population-feature encoder contract
-> selected in Phase 2D. Its gains and normalization scales remain explicit
-> NeuroFly free parameters; no calibration, sensory filter, or biological
-> latency correction is implemented. Phase 1D/1E's D3 conclusion remains in
+> **Current status:** Phase 2F characterizes complete pre-collision looming
+> trajectories through the deterministic E1 Level P encoder and Phase 2B LIF
+> simulator. The bounded scenario and parameter sets are explicitly synthetic;
+> no gain, normalization scale, coupling, or biological latency is fitted.
+> Phase 1D/1E's D3 conclusion remains in
 > force: no provenance-verified body-level
 > LC4/LPLC2 column-to-angular-visual-space
 > transform is available for `male-cns:v1.0`. Level P is the documented
@@ -43,6 +43,10 @@ documented in
 The Phase 2E deterministic E1 implementation is provided by
 `neurofly.sensory_encoder` and is covered by focused offline tests in
 `tests/test_sensory_encoder.py`.
+
+The Phase 2F end-to-end operating-regime and timestep characterization is
+documented in
+[`docs/science/looming_trajectory_characterization.md`](science/looming_trajectory_characterization.md).
 
 ---
 

@@ -3,12 +3,13 @@
 NeuroFly is a planned experimental platform for studying connectome-based
 digital agents inspired by the MaleCNS *Drosophila melanogaster* connectome.
 
-The repository is currently in **Phase 2E: deterministic Level P E1 encoder
-implementation**. Phase 2B provides the narrow offline 313-node/311-edge
-deterministic LIF execution slice, Phase 2C probes its free parameters with
-explicitly synthetic population drives, and Phase 2E implements the documented
-E1 contract without calibration. Level C, visual-angle mapping, motor
-modelling, behaviour, API, and frontend remain unimplemented.
+The repository is currently in **Phase 2F: end-to-end looming trajectory
+characterization**. Phase 2B provides the narrow offline 313-node/311-edge
+deterministic LIF execution slice, Phase 2C probes its free parameters, Phase
+2E implements the E1 encoder, and Phase 2F characterizes their complete
+production path with explicitly synthetic, uncalibrated configurations. Level
+C, visual-angle mapping, motor modelling, behaviour, API, and frontend remain
+unimplemented.
 
 Scientific integrity is a project constraint: future code must distinguish
 biological/connectomic data from NeuroFly modelling assumptions. The detailed
@@ -208,6 +209,16 @@ DNp01 remains excluded; no gain or normalization scale is biologically
 calibrated. See
 [`docs/science/level_p_encoder_selection.md`](docs/science/level_p_encoder_selection.md)
 for the contract and provenance.
+
+## Looming trajectory characterization (Phase 2F)
+
+`neurofly.trajectory_characterization` runs deterministic pre-collision
+`LoomingStimulus` trajectories through the production E1 encoder and Phase 2B
+simulator. It compares LC4-only, LPLC2-only, and combined pathways, retains
+both DNp01 outputs, reports structural asymmetry and timestep sensitivity, and
+classifies model operating regimes. Every numeric configuration is an
+explicit synthetic benchmark, not a biological calibration. See
+[`docs/science/looming_trajectory_characterization.md`](docs/science/looming_trajectory_characterization.md).
 
 ### Scientific semantics and limitation
 

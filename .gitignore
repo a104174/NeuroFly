@@ -28,3 +28,8 @@ web/.env.local
 web/.env.development.local
 web/.env.test.local
 web/.env.production.local
+
+# Blender-generated editor backups (project .blend sources remain trackable)
+*.blend1
+*.blend2
+*.blend@

@@ -3,8 +3,8 @@
 NeuroFly is a planned experimental platform for studying connectome-based
 digital agents inspired by the MaleCNS *Drosophila melanogaster* connectome.
 
-The repository is currently in **Phase 5B: immersive 3D experiment playback
-foundation**. Phase 3C provides deterministic experiment comparison, Phase 3B
+The repository is currently in **Phase 5C: controlled Blender/glTF fly asset
+pipeline**. Phase 3C provides deterministic experiment comparison, Phase 3B
 provides portable experiment artifacts, Phase 3A provides the reproducible
 experiment-run foundation, and Phase 2H-A
 provides the empirical constraint infrastructure. Phase 2B provides the narrow
@@ -18,8 +18,9 @@ boundary. Level C, visual-angle mapping, motor modelling, and behaviour remain
 unimplemented. Phase 4B adds a thin FastAPI GET-only adapter
 over the Phase 4A boundary; Phase 5A adds a read-only Next.js/React/TypeScript
 browser over that API. Phase 5B adds presentation-only React Three Fiber
-playback of persisted timelines. None of these layers runs simulations or adds
-write routes.
+playback of persisted timelines. Phase 5C replaces the normal procedural fly
+path with a versioned project-created GLB while retaining the procedural
+fallback. None of these layers runs simulations or adds write routes.
 
 Scientific integrity is a project constraint: future code must distinguish
 biological/connectomic data from NeuroFly modelling assumptions. The detailed
@@ -333,6 +334,17 @@ LC4, LPLC2, DNp01 10001, and DNp01 10010 indicators. Play, pause, reset, seek,
 and fixed playback-rate controls do not modify experiment identity or execute
 the model. See
 [`docs/architecture/3d_playback_foundation.md`](docs/architecture/3d_playback_foundation.md).
+
+## Controlled Blender/glTF asset pipeline (Phase 5C)
+
+The project-created `neurofly_fly_visual_v1` source is generated and saved by
+a controlled Blender 4.0.2 script, exported as a small static GLB, and pinned
+by a versioned presentation manifest and SHA-256. Its normalized scale, origin,
+axes, one scene transform, budgets, and no-animation status are explicit. The
+R3F loader uses the GLB only as stationary presentation geometry; the Phase 5B
+procedural mesh remains the loading/error fallback. Asset identity does not
+participate in experiment, result, artifact, or comparison identity. See
+[`docs/architecture/blender_asset_pipeline.md`](docs/architecture/blender_asset_pipeline.md).
 
 ### Scientific semantics and limitation
 

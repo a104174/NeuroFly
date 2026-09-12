@@ -13,7 +13,7 @@ Next.js experiment page (server component)
     -> PlaybackWorkspace (client playback clock and controls)
     -> pure timeline lookup / SceneState derivation
     -> dynamically loaded PlaybackCanvas
-    -> React Three Fiber / Three.js presentation
+    -> versioned FlyVisualAsset + React Three Fiber / Three.js presentation
 ```
 
 The existing server page performs the same parallel summary/timeline HTTP
@@ -84,7 +84,7 @@ state; this hold is a browser visibility convention, not spike shape.
 Persisted scientific values are retained unchanged in scene state and the 2D
 overlay. The following visual properties are explicitly presentation-only:
 
-- the procedural fly's dimensions and position;
+- the versioned fly asset's dimensions and presentation transform;
 - camera position, field of view, grid, fog, and lighting;
 - the looming proxy's mesh scale and scene position;
 - colors, emissive intensity, and indicator sizes;
@@ -101,11 +101,12 @@ brightness is not firing probability or physiological efficacy.
 ## Scene and accessibility
 
 The first scene contains a fixed camera, minimal lights, a reference grid, a
-stationary procedural fly-like placeholder, one looming proxy, and four
-abstract pathway indicators. LC4, LPLC2, DNp01 10001, and DNp01 10010 remain
-visually and textually distinct. The 2D overlay exposes current simulation
-time, selected boundary/interval times, playback status, exact current values,
-and `NOT_EVALUATED` empirical status.
+stationary project-created Blender/glTF presentation asset, one looming proxy,
+and four abstract pathway indicators. The Phase 5B procedural fly remains the
+loading/error fallback. LC4, LPLC2, DNp01 10001, and DNp01 10010 remain visually
+and textually distinct. The 2D overlay exposes current simulation time,
+selected boundary/interval times, playback status, exact current values, and
+`NOT_EVALUATED` empirical status.
 
 The 3D view contains no unique scientific information: the existing readable
 summary and timeline inspector remain authoritative. Controls are ordinary
@@ -116,16 +117,18 @@ summary.
 
 ## Explicit limitations and future boundaries
 
-The placeholder fly is not an anatomical reconstruction. Its wings remain
-static, and DNp01 activity does not make it jump, turn, fly, or otherwise
-behave. A future motor phase must define and validate:
+The Phase 5C asset and its procedural fallback are not anatomical
+reconstructions. Their wings remain static, and DNp01 activity does not make
+the fly jump, turn, fly, or otherwise behave. A future motor phase must define
+and validate:
 
 ```text
 neural output -> motor command -> body/environment update
 ```
 
-before activity can drive movement. A future controlled Blender pipeline may
-replace the primitive mesh with an optimized fly asset and, only where
-scientifically justified, rigging or animation. No Blender file, final asset,
-connectome geometry, physics engine, behavior, Level C, or empirical
-validation is introduced in Phase 5B.
+before activity can drive movement. The controlled Blender source/export/
+manifest boundary is documented in
+[`blender_asset_pipeline.md`](blender_asset_pipeline.md). Future rigging or
+animation requires separately controlled scientific meaning. No connectome
+geometry, physics engine, behavior, Level C, or empirical validation is
+introduced.

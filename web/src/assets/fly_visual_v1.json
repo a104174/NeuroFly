@@ -1,0 +1,84 @@
+{
+  "asset_id": "neurofly_fly_visual_v1",
+  "asset_version": 1,
+  "budget": {
+    "material_limit": 6,
+    "texture_image_limit": 0,
+    "triangle_limit": 20000
+  },
+  "canonical_transform": {
+    "normalized_scale": "runtime long-axis (+Z) extent is 1.0 asset unit",
+    "origin": "thorax center",
+    "runtime_forward_axis": "+Z",
+    "runtime_left_axis": "-X",
+    "runtime_up_axis": "+Y",
+    "scene_position": [
+      0.0,
+      0.78,
+      0.0
+    ],
+    "scene_rotation_euler_rad": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "scene_uniform_scale": 2.0,
+    "source_forward_axis": "-Y",
+    "source_up_axis": "+Z"
+  },
+  "export": {
+    "format": "GLB",
+    "script": "tools/blender/export_fly_visual.py",
+    "settings": {
+      "animations": false,
+      "cameras": false,
+      "draco_compression": false,
+      "export_apply": false,
+      "lights": false,
+      "object_transforms_applied_before_export": true,
+      "runtime_y_up": true,
+      "selection_only": true,
+      "textures": false
+    },
+    "tool": "Blender",
+    "tool_version": "4.0.2"
+  },
+  "measured": {
+    "animation_count": 0,
+    "bounds_max": [
+      0.5790760517120361,
+      0.1603773683309555,
+      0.4433962106704712
+    ],
+    "bounds_min": [
+      -0.5790759325027466,
+      -0.18986131250858307,
+      -0.5566037893295288
+    ],
+    "camera_count": 0,
+    "light_count": 0,
+    "material_count": 3,
+    "texture_image_count": 0,
+    "triangle_count": 3960
+  },
+  "reuse": {
+    "note": "Project-created asset; the repository does not currently declare broader license terms.",
+    "status": "PROJECT_CREATED_TERMS_UNSPECIFIED"
+  },
+  "role": "NEUROFLY_VISUAL_ASSET",
+  "runtime": {
+    "glb_path": "web/public/assets/fly/fly_visual_v1.glb",
+    "public_url": "/assets/fly/fly_visual_v1.glb",
+    "sha256": "bc49dc056a9fee62779de38367e2f868eccdc4356f88412b72401cc149e0c49e"
+  },
+  "schema": "neurofly_visual_asset_manifest_v1",
+  "scientific_status": {
+    "disclaimer": "Stylized project visual asset; not MaleCNS morphology, measured anatomy, an individual reconstruction, or a connectome-derived body model.",
+    "presentation_only": true
+  },
+  "source": {
+    "path": "assets/blender/fly_visual_v1.blend",
+    "provenance": "Created in-project by the deterministic Phase 5C Blender script; no third-party model or texture was used.",
+    "type": "BLENDER"
+  }
+}

@@ -3,8 +3,9 @@
 > **Working title:** NeuroFly  
 > The name is provisional and may change later.  
 > **Document purpose:** provide persistent context to ChatGPT Project chats, Codex-oriented implementation chats, architecture discussions, scientific reasoning and future documentation.  
-> **Current status:** Phase 5B provides a presentation-only React Three Fiber
-> playback surface over Phase 5A's read-only Next.js/React/TypeScript browser,
+> **Current status:** Phase 5C provides a controlled, versioned Blender/glTF
+> presentation-asset pipeline for Phase 5B's React Three Fiber playback
+> surface over Phase 5A's read-only Next.js/React/TypeScript browser,
 > Phase 4B's minimal GET-only HTTP adapter, and
 > Phase 4A's transport-neutral application boundary for portable model-run
 > artifacts. Phase 3C implements
@@ -111,6 +112,14 @@ proxy, and separate pathway/output indicators are documented in
 The R3F renderer consumes persisted telemetry only. It does not step the
 model, interpolate scientific values, infer behavior, or change the run's
 `NOT_EVALUATED` status.
+
+Phase 5C's project-created Blender source, controlled static GLB export,
+versioned manifest, SHA-256 integrity check, normalized axes/scale/origin, R3F
+loader, and procedural fallback are documented in
+[`docs/architecture/blender_asset_pipeline.md`](architecture/blender_asset_pipeline.md).
+The visual asset remains stationary and presentation-only. Its identity does
+not participate in scientific experiment, result, artifact, or comparison
+identity, and it is not MaleCNS morphology or measured anatomy.
 
 ---
 

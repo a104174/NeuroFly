@@ -1,13 +1,23 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { Component, type ErrorInfo, type ReactNode } from "react";
+import {
+  Component,
+  useCallback,
+  useState,
+  type ErrorInfo,
+  type ReactNode,
+} from "react";
 
 import { useExperimentPlayback } from "@/hooks/useExperimentPlayback";
 import type {
   ExperimentTimeline,
   ValidationStatus,
 } from "@/lib/neuroflyClient";
+import {
+  flyAssetStatusMessage,
+  type FlyAssetLoadStatus,
+} from "@/lib/flyVisualAsset";
 import { PLAYBACK_RATES, type PlaybackRate } from "@/lib/playback";
 
 const PlaybackCanvas = dynamic(
@@ -59,6 +69,10 @@ export function PlaybackWorkspace({
 }) {
   const playback = useExperimentPlayback(timeline);
   const scene = playback.sceneState;
+  const [assetStatus, setAssetStatus] = useState<FlyAssetLoadStatus>("loading");
+  const handleAssetStatusChange = useCallback((status: FlyAssetLoadStatus) => {
+    setAssetStatus(status);
+  }, []);
 
   return (
     <section
@@ -70,7 +84,12 @@ export function PlaybackWorkspace({
           <p className="eyebrow">IMMERSIVE PLAYBACK / PRESENTATION VIEW</p>
           <h2 id="playback-heading">Persisted experiment in 3D</h2>
         </div>
-        <span className="loaded-badge">TIMELINE SOURCE · READ ONLY</span>
+        <div className="playback-statuses">
+          <span className="loaded-badge">TIMELINE SOURCE · READ ONLY</span>
+          <span className={`asset-status asset-status-${assetStatus}`}>
+            {flyAssetStatusMessage(assetStatus)}
+          </span>
+        </div>
       </div>
 
       <div className="playback-stage">
@@ -79,7 +98,10 @@ export function PlaybackWorkspace({
           aria-label="Three-dimensional experiment presentation"
         >
           <PlaybackRenderBoundary>
-            <PlaybackCanvas sceneState={scene} />
+            <PlaybackCanvas
+              sceneState={scene}
+              onAssetStatusChange={handleAssetStatusChange}
+            />
           </PlaybackRenderBoundary>
         </div>
         <div className="playback-overlay" aria-live="polite">

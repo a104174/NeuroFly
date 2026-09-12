@@ -3,8 +3,9 @@
 > **Working title:** NeuroFly  
 > The name is provisional and may change later.  
 > **Document purpose:** provide persistent context to ChatGPT Project chats, Codex-oriented implementation chats, architecture discussions, scientific reasoning and future documentation.  
-> **Current status:** Phase 5A provides a first read-only Next.js/React/
-> TypeScript browser over Phase 4B's minimal GET-only HTTP adapter and
+> **Current status:** Phase 5B provides a presentation-only React Three Fiber
+> playback surface over Phase 5A's read-only Next.js/React/TypeScript browser,
+> Phase 4B's minimal GET-only HTTP adapter, and
 > Phase 4A's transport-neutral application boundary for portable model-run
 > artifacts. Phase 3C implements
 > deterministic, directional comparison. Phase 3B implements the portable,
@@ -100,8 +101,16 @@ Phase 5A's first read-only Next.js/React/TypeScript browser, typed Phase 4B
 client, runtime response guards, experiment catalogue, detail route, and
 timeline inspector are documented in
 [`docs/architecture/frontend_foundation.md`](architecture/frontend_foundation.md).
-The browser has no mock production fallback, live simulation, parameter
-editing, Three.js, or empirical-validation claim.
+The Phase 5A slice has no mock production fallback, live simulation, parameter
+editing, or empirical-validation claim.
+
+Phase 5B's simulation-time playback clock, deterministic boundary/interval
+lookup, pure scene-state derivation, procedural fly placeholder, looming
+proxy, and separate pathway/output indicators are documented in
+[`docs/architecture/3d_playback_foundation.md`](architecture/3d_playback_foundation.md).
+The R3F renderer consumes persisted telemetry only. It does not step the
+model, interpolate scientific values, infer behavior, or change the run's
+`NOT_EVALUATED` status.
 
 ---
 

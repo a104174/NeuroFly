@@ -3,8 +3,8 @@
 NeuroFly is a planned experimental platform for studying connectome-based
 digital agents inspired by the MaleCNS *Drosophila melanogaster* connectome.
 
-The repository is currently in **Phase 5A: first read-only TypeScript/React
-vertical slice**. Phase 3C provides deterministic experiment comparison, Phase 3B
+The repository is currently in **Phase 5B: immersive 3D experiment playback
+foundation**. Phase 3C provides deterministic experiment comparison, Phase 3B
 provides portable experiment artifacts, Phase 3A provides the reproducible
 experiment-run foundation, and Phase 2H-A
 provides the empirical constraint infrastructure. Phase 2B provides the narrow
@@ -14,10 +14,12 @@ Phase 2F characterizes their complete production path. Phase 2G pre-registers
 source provenance, measurement/model comparability, and fit-versus-held-out
 roles; Phase 2H-A validates that metadata boundary offline without parameter
 fitting. Phase 4A provides a read-only, transport-neutral artifact/application
-boundary. Level C, visual-angle mapping, motor modelling, behaviour, and 3D
-playback remain unimplemented. Phase 4B adds a thin FastAPI GET-only adapter
+boundary. Level C, visual-angle mapping, motor modelling, and behaviour remain
+unimplemented. Phase 4B adds a thin FastAPI GET-only adapter
 over the Phase 4A boundary; Phase 5A adds a read-only Next.js/React/TypeScript
-browser over that API. Neither layer runs simulations or adds write routes.
+browser over that API. Phase 5B adds presentation-only React Three Fiber
+playback of persisted timelines. None of these layers runs simulations or adds
+write routes.
 
 Scientific integrity is a project constraint: future code must distinguish
 biological/connectomic data from NeuroFly modelling assumptions. The detailed
@@ -314,9 +316,23 @@ real Phase 4B API with a typed, runtime-checked client, lists completed
 artifacts, and provides `/experiments/[artifactId]` detail pages with
 provenance, separate LC4/LPLC2 and DNp01 summaries, and the persisted
 simulation timeline. It has no mock production fallback, live simulation,
-Three.js, charting, or parameter controls. Configure the server-side API URL
+charting, or parameter controls; Phase 5A itself introduced no 3D dependency.
+Configure the server-side API URL
 with `web/.env.example`, then run `npm install && npm run dev` from `web/`.
 See [`docs/architecture/frontend_foundation.md`](docs/architecture/frontend_foundation.md).
+
+## Immersive 3D playback foundation (Phase 5B)
+
+The experiment detail route now passes its already validated timeline into a
+narrow client-side playback workspace. A wall-clock-driven presentation clock
+selects exact persisted state boundaries and intervals in simulation
+milliseconds; it never advances one neural step per frame and never
+interpolates scientific values. The React Three Fiber scene contains a static
+procedural fly placeholder, an angular-size-based looming proxy, and separate
+LC4, LPLC2, DNp01 10001, and DNp01 10010 indicators. Play, pause, reset, seek,
+and fixed playback-rate controls do not modify experiment identity or execute
+the model. See
+[`docs/architecture/3d_playback_foundation.md`](docs/architecture/3d_playback_foundation.md).
 
 ### Scientific semantics and limitation
 

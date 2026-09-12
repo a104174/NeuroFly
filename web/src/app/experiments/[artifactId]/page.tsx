@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 
 import { AppHeader } from "@/components/AppHeader";
 import { ExperimentSummaryView } from "@/components/ExperimentSummaryView";
+import { PlaybackWorkspace } from "@/components/PlaybackWorkspace";
 import { StateMessage } from "@/components/StateMessage";
 import { TimelineInspector } from "@/components/TimelineInspector";
 import {
@@ -65,6 +66,11 @@ export default async function ExperimentPage({
           ← all experiments
         </Link>
         <ExperimentSummaryView summary={data.summary} />
+        <PlaybackWorkspace
+          key={data.timeline.artifact_id}
+          timeline={data.timeline}
+          validationStatus={data.summary.validation_status}
+        />
         <TimelineInspector timeline={data.timeline} />
       </main>
     </div>

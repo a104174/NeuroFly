@@ -3,8 +3,9 @@
 NeuroFly is a planned experimental platform for studying connectome-based
 digital agents inspired by the MaleCNS *Drosophila melanogaster* connectome.
 
-The repository is currently in **Phase 3B: portable experiment artifacts**.
-Phase 3A provides the reproducible experiment-run foundation, and Phase 2H-A
+The repository is currently in **Phase 3C: deterministic experiment
+comparison**. Phase 3B provides portable experiment artifacts, Phase 3A
+provides the reproducible experiment-run foundation, and Phase 2H-A
 provides the empirical constraint infrastructure. Phase 2B provides the narrow
 offline 313-node/311-edge
 deterministic LIF execution slice, Phase 2E implements the E1 encoder, and
@@ -263,6 +264,21 @@ simulation, while `replay_experiment_artifact` optionally reruns the persisted
 configuration against an explicitly supplied local CircuitContract. Generated
 artifacts belong under `data/derived/experiments/` and remain untracked. See
 [`docs/science/experiment_artifact_contract.md`](docs/science/experiment_artifact_contract.md).
+
+## Deterministic experiment comparison (Phase 3C)
+
+`neurofly.experiment_comparison` compares two integrity-validated Phase 3B artifacts
+offline. It reports source/model compatibility, explicit stimulus/encoder/
+neural/pathway/telemetry differences, separate LC4/LPLC2 and DNp01 summaries,
+event differences, and directional model-trajectory metrics only when exact
+time bases permit them. It never interpolates, ranks runs, fits parameters, or
+claims empirical validation. Inspect two artifacts with:
+
+```bash
+python -m neurofly.experiment_comparison <artifact-a> <artifact-b>
+```
+
+See [`docs/science/experiment_comparison.md`](docs/science/experiment_comparison.md).
 
 ### Scientific semantics and limitation
 

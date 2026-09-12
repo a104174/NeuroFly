@@ -3,12 +3,12 @@
 > **Working title:** NeuroFly  
 > The name is provisional and may change later.  
 > **Document purpose:** provide persistent context to ChatGPT Project chats, Codex-oriented implementation chats, architecture discussions, scientific reasoning and future documentation.  
-> **Current status:** Phase 3B implements the portable, integrity-checked
-> artifact contract for completed deterministic runs. Phase 3A implements the
-> metadata-only empirical constraint infrastructure and a deterministic,
-> replay-verified offline experiment-run foundation. Phase 2H-A implements the
-> metadata-only empirical
-> constraint registry for the Phase 2G protocol. The evidence audit remains
+> **Current status:** Phase 3C implements deterministic, directional comparison
+> of portable model-run artifacts. Phase 3B implements the portable,
+> integrity-checked artifact contract for completed deterministic runs. Phase
+> 3A implements the deterministic, replay-verified offline experiment-run
+> foundation. Phase 2H-A implements the metadata-only empirical constraint
+> registry for the Phase 2G protocol. The evidence audit remains
 > G2: only relative, normalized, qualitative, and downstream constraints are
 > currently usable; source-data ingestion and an observation bridge must
 > precede physiological fitting. No gain, normalization scale, coupling, or
@@ -76,6 +76,13 @@ loader, and explicit replay operation are documented in
 Generated artifacts are ignored under `data/derived/experiments/`; they do not
 contain third-party empirical source data and do not change the run's
 `NOT_EVALUATED` status.
+
+Phase 3C's immutable comparison result, source/model compatibility classes,
+configuration-difference report, exact-time-base trajectory metrics, event and
+DNp01 summaries, and no-interpolation policy are documented in
+[`docs/science/experiment_comparison.md`](science/experiment_comparison.md).
+Comparisons remain model-versus-model and `NOT_EVALUATED`; they do not rank
+experiments or perform calibration.
 
 ---
 

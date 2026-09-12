@@ -3,7 +3,7 @@
 > **Working title:** NeuroFly  
 > The name is provisional and may change later.  
 > **Document purpose:** provide persistent context to ChatGPT Project chats, Codex-oriented implementation chats, architecture discussions, scientific reasoning and future documentation.  
-> **Current status:** Phase 5C provides a controlled, versioned Blender/glTF
+> **Current status:** Phase 5D provides a controlled, versioned Blender/glTF
 > presentation-asset pipeline for Phase 5B's React Three Fiber playback
 > surface over Phase 5A's read-only Next.js/React/TypeScript browser,
 > Phase 4B's minimal GET-only HTTP adapter, and
@@ -18,6 +18,8 @@
 > currently usable; source-data ingestion and an observation bridge must
 > precede physiological fitting. No gain, normalization scale, coupling, or
 > biological latency is fitted.
+> Phase 5D adds a centralized presentation-space scene layout and abstract
+> spatial overlays without introducing anatomical coordinates or behavior.
 > Phase 1D/1E's D3 conclusion remains in
 > force: no provenance-verified body-level
 > LC4/LPLC2 column-to-angular-visual-space
@@ -120,6 +122,15 @@ loader, and procedural fallback are documented in
 The visual asset remains stationary and presentation-only. Its identity does
 not participate in scientific experiment, result, artifact, or comparison
 identity, and it is not MaleCNS morphology or measured anatomy.
+
+Phase 5D's `neurofly_scene_layout_v1` centralizes the presentation camera,
+grid, looming corridor, and distinct LC4/LPLC2/DNp01 anchors. Abstract pathway
+lines communicate only the model graph direction; they are not axons or
+anatomical coordinates. A current-value overlay, separate visual-asset
+provenance, and explicit persisted-data versus presentation-mapping legend are
+documented in
+[`docs/architecture/scientific_scene_composition.md`](architecture/scientific_scene_composition.md).
+The fly remains stationary and playback/timeline semantics are unchanged.
 
 ---
 

@@ -12,6 +12,10 @@ export interface FlyVisualAssetManifest {
   asset_id: typeof FLY_VISUAL_ASSET_ID;
   asset_version: typeof FLY_VISUAL_ASSET_VERSION;
   role: "NEUROFLY_VISUAL_ASSET";
+  export: {
+    tool: "Blender";
+    tool_version: string;
+  };
   runtime: {
     glb_path: string;
     public_url: string;
@@ -77,6 +81,14 @@ export function parseFlyVisualAssetManifest(
   ) {
     throw new Error("Fly visual asset runtime reference is invalid.");
   }
+  const assetExport = manifest.export as Record<string, unknown> | undefined;
+  if (
+    assetExport?.tool !== "Blender" ||
+    typeof assetExport.tool_version !== "string" ||
+    assetExport.tool_version.length === 0
+  ) {
+    throw new Error("Fly visual asset export provenance is invalid.");
+  }
   const transform = manifest.canonical_transform as
     | Record<string, unknown>
     | undefined;
@@ -121,6 +133,19 @@ export function flyAssetStatusMessage(status: FlyAssetLoadStatus): string {
   if (status === "loading") return "Loading 3D asset…";
   if (status === "error") return "Fly asset unavailable · procedural fallback";
   return `${FLY_VISUAL_ASSET_ID} · presentation only`;
+}
+
+export function flyVisualAssetProvenance(
+  manifest: FlyVisualAssetManifest = FLY_VISUAL_ASSET,
+) {
+  return {
+    assetId: manifest.asset_id,
+    assetVersion: manifest.asset_version,
+    sha256Prefix: manifest.runtime.sha256.slice(0, 12),
+    exportTool: manifest.export.tool,
+    exportToolVersion: manifest.export.tool_version,
+    presentationOnly: manifest.scientific_status.presentation_only,
+  } as const;
 }
 
 export const FLY_VISUAL_ASSET = parseFlyVisualAssetManifest(manifestJson);

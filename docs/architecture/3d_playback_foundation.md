@@ -102,11 +102,15 @@ brightness is not firing probability or physiological efficacy.
 
 The first scene contains a fixed camera, minimal lights, a reference grid, a
 stationary project-created Blender/glTF presentation asset, one looming proxy,
-and four abstract pathway indicators. The Phase 5B procedural fly remains the
-loading/error fallback. LC4, LPLC2, DNp01 10001, and DNp01 10010 remain visually
-and textually distinct. The 2D overlay exposes current simulation time,
-selected boundary/interval times, playback status, exact current values, and
-`NOT_EVALUATED` empirical status.
+and four abstract pathway indicators. Phase 5D centralizes those presentation
+coordinates in `neurofly_scene_layout_v1` and adds abstract aggregate pathway
+lines, current theta/expansion readouts, visual-asset provenance, and a visible
+data-versus-presentation legend. None of those coordinates are anatomical; see
+[`scientific_scene_composition.md`](scientific_scene_composition.md). The Phase
+5B procedural fly remains the loading/error fallback. LC4, LPLC2, DNp01 10001,
+and DNp01 10010 remain visually and textually distinct. The 2D overlay exposes
+current simulation time, selected boundary/interval times, playback status,
+exact current values, and `NOT_EVALUATED` empirical status.
 
 The 3D view contains no unique scientific information: the existing readable
 summary and timeline inspector remain authoritative. Controls are ordinary

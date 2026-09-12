@@ -114,6 +114,12 @@ fly remains visible. A local asset error boundary also restores that fallback
 and reports a restrained presentation status without removing the Canvas,
 controls, scientific summary, or timeline inspector.
 
+Phase 5D places the asset in the centralized `neurofly_scene_layout_v1`
+composition while retaining the manifest's single canonical asset transform.
+That surrounding layout remains presentation-only and is documented in
+[`scientific_scene_composition.md`](scientific_scene_composition.md); it does
+not alter the GLB, export pipeline, or asset identity.
+
 ## Scientific and behavioral boundary
 
 The imported fly remains stationary. Its materials do not encode neural

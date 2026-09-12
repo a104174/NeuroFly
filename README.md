@@ -3,8 +3,8 @@
 NeuroFly is a planned experimental platform for studying connectome-based
 digital agents inspired by the MaleCNS *Drosophila melanogaster* connectome.
 
-The repository is currently in **Phase 5C: controlled Blender/glTF fly asset
-pipeline**. Phase 3C provides deterministic experiment comparison, Phase 3B
+The repository is currently in **Phase 5D: scientific spatial overlay and 3D
+scene composition**. Phase 3C provides deterministic experiment comparison, Phase 3B
 provides portable experiment artifacts, Phase 3A provides the reproducible
 experiment-run foundation, and Phase 2H-A
 provides the empirical constraint infrastructure. Phase 2B provides the narrow
@@ -20,7 +20,9 @@ over the Phase 4A boundary; Phase 5A adds a read-only Next.js/React/TypeScript
 browser over that API. Phase 5B adds presentation-only React Three Fiber
 playback of persisted timelines. Phase 5C replaces the normal procedural fly
 path with a versioned project-created GLB while retaining the procedural
-fallback. None of these layers runs simulations or adds write routes.
+fallback. Phase 5D adds a centralized presentation-space layout, abstract
+pathway overlays, current scientific readouts, and explicit visual provenance.
+None of these layers runs simulations or adds write routes.
 
 Scientific integrity is a project constraint: future code must distinguish
 biological/connectomic data from NeuroFly modelling assumptions. The detailed
@@ -345,6 +347,17 @@ R3F loader uses the GLB only as stationary presentation geometry; the Phase 5B
 procedural mesh remains the loading/error fallback. Asset identity does not
 participate in experiment, result, artifact, or comparison identity. See
 [`docs/architecture/blender_asset_pipeline.md`](docs/architecture/blender_asset_pipeline.md).
+
+## Scientific 3D scene composition (Phase 5D)
+
+The playback scene now uses the centralized, presentation-only
+`neurofly_scene_layout_v1` contract. Abstract LC4 and LPLC2 pathway lines lead
+to separately identified DNp01 bodies 10001 and 10010, while raw current values,
+visual-asset provenance, and a data-versus-presentation legend remain readable
+outside WebGL. These coordinates are explicitly not anatomical; the stationary
+fly, playback clock, deterministic timeline lookup, and no-interpolation policy
+are unchanged. See
+[`docs/architecture/scientific_scene_composition.md`](docs/architecture/scientific_scene_composition.md).
 
 ### Scientific semantics and limitation
 

@@ -15,10 +15,17 @@ import type {
   ValidationStatus,
 } from "@/lib/neuroflyClient";
 import {
+  flyVisualAssetProvenance,
   flyAssetStatusMessage,
   type FlyAssetLoadStatus,
 } from "@/lib/flyVisualAsset";
 import { PLAYBACK_RATES, type PlaybackRate } from "@/lib/playback";
+import {
+  SCENE_PRESENTATION_COORDINATE_SPACE,
+  SCENE_PRESENTATION_LAYOUT_ID,
+} from "@/lib/sceneLayout";
+
+const FLY_ASSET_PROVENANCE = flyVisualAssetProvenance();
 
 const PlaybackCanvas = dynamic(
   () => import("./PlaybackCanvas").then((module) => module.PlaybackCanvas),
@@ -118,6 +125,16 @@ export function PlaybackWorkspace({
             <strong>{scene.intervalStartMs.toFixed(3)} ms</strong>
           </div>
           <div>
+            <span>Angular size</span>
+            <strong>{scene.thetaRad.toFixed(6)} rad</strong>
+          </div>
+          <div>
+            <span>Angular expansion</span>
+            <strong>
+              {scene.angularExpansionVelocityRadS.toFixed(6)} rad/s
+            </strong>
+          </div>
+          <div>
             <span>Playback</span>
             <strong>{playback.isPlaying ? "PLAYING" : "PAUSED"}</strong>
           </div>
@@ -128,6 +145,68 @@ export function PlaybackWorkspace({
         </div>
       </div>
 
+      <div className="scene-contract-strip">
+        <div className="visual-asset-provenance">
+          <p className="eyebrow">VISUAL ASSET PROVENANCE</p>
+          <dl>
+            <div>
+              <dt>Asset</dt>
+              <dd>
+                {FLY_ASSET_PROVENANCE.assetId} · v
+                {FLY_ASSET_PROVENANCE.assetVersion}
+              </dd>
+            </div>
+            <div>
+              <dt>GLB SHA-256</dt>
+              <dd>{FLY_ASSET_PROVENANCE.sha256Prefix}…</dd>
+            </div>
+            <div>
+              <dt>Export</dt>
+              <dd>
+                {FLY_ASSET_PROVENANCE.exportTool} {" "}
+                {FLY_ASSET_PROVENANCE.exportToolVersion}
+              </dd>
+            </div>
+            <div>
+              <dt>Status</dt>
+              <dd>
+                {FLY_ASSET_PROVENANCE.presentationOnly
+                  ? "PRESENTATION ONLY"
+                  : "UNSPECIFIED"}
+              </dd>
+            </div>
+          </dl>
+          <p>
+            Visual asset provenance is separate from experiment provenance and
+            scientific identity.
+          </p>
+        </div>
+
+        <div className="data-presentation-legend">
+          <p className="eyebrow">DATA / PRESENTATION BOUNDARY</p>
+          <div>
+            <section aria-labelledby="persisted-data-heading">
+              <h3 id="persisted-data-heading">Persisted data</h3>
+              <p>
+                Simulation time, theta, angular expansion, LC4/LPLC2 model
+                values, and DNp01 state/spikes.
+              </p>
+            </section>
+            <section aria-labelledby="presentation-mapping-heading">
+              <h3 id="presentation-mapping-heading">Presentation mapping</h3>
+              <p>
+                Mesh and pathway placement, colors, bounded intensity, camera,
+                corridor, and normalized scene scale.
+              </p>
+            </section>
+          </div>
+          <p className="scene-layout-identity">
+            {SCENE_PRESENTATION_LAYOUT_ID} · {SCENE_PRESENTATION_COORDINATE_SPACE}
+            {" · NOT ANATOMICAL COORDINATES"}
+          </p>
+        </div>
+      </div>
+
       <div
         className="playback-legend"
         aria-label="Current persisted activity values"
@@ -135,10 +214,12 @@ export function PlaybackWorkspace({
         <div className="legend-lc4">
           <span>LC4 normalized feature</span>
           <strong>{scene.lc4NormalizedFeature.toFixed(4)}</strong>
+          <small>drive {scene.lc4DriveMveq.toFixed(4)} mV_eq</small>
         </div>
         <div className="legend-lplc2">
           <span>LPLC2 normalized feature</span>
           <strong>{scene.lplc2NormalizedFeature.toFixed(4)}</strong>
+          <small>drive {scene.lplc2DriveMveq.toFixed(4)} mV_eq</small>
         </div>
         <div className="legend-dnp01-a">
           <span>DNp01 · 10001 membrane</span>
@@ -207,10 +288,11 @@ export function PlaybackWorkspace({
       </div>
 
       <p className="subtle-note playback-note">
-        Mesh scale, position, and brightness are presentation mappings. The
-        fly is a static procedural placeholder; DNp01 activity does not drive
-        movement or behavior. Scientific values are selected directly from
-        persisted boundaries and intervals without interpolation.
+        The fly asset, abstract pathway lines, looming corridor, mesh scale,
+        position, colors, and brightness are presentation mappings rather than
+        anatomical coordinates. The fly remains stationary; DNp01 activity
+        does not drive movement or behavior. Scientific values are selected
+        directly from persisted boundaries and intervals without interpolation.
       </p>
     </section>
   );

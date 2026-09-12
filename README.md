@@ -3,8 +3,8 @@
 NeuroFly is a planned experimental platform for studying connectome-based
 digital agents inspired by the MaleCNS *Drosophila melanogaster* connectome.
 
-The repository is currently in **Phase 4B: minimal GET-only experiment HTTP
-adapter**. Phase 3C provides deterministic experiment comparison, Phase 3B
+The repository is currently in **Phase 5A: first read-only TypeScript/React
+vertical slice**. Phase 3C provides deterministic experiment comparison, Phase 3B
 provides portable experiment artifacts, Phase 3A provides the reproducible
 experiment-run foundation, and Phase 2H-A
 provides the empirical constraint infrastructure. Phase 2B provides the narrow
@@ -14,9 +14,10 @@ Phase 2F characterizes their complete production path. Phase 2G pre-registers
 source provenance, measurement/model comparability, and fit-versus-held-out
 roles; Phase 2H-A validates that metadata boundary offline without parameter
 fitting. Phase 4A provides a read-only, transport-neutral artifact/application
-boundary. Level C, visual-angle mapping, motor modelling, behaviour, and
-frontend remain unimplemented. Phase 4B adds a thin FastAPI GET-only adapter
-over the Phase 4A boundary; it does not run simulations or add write routes.
+boundary. Level C, visual-angle mapping, motor modelling, behaviour, and 3D
+playback remain unimplemented. Phase 4B adds a thin FastAPI GET-only adapter
+over the Phase 4A boundary; Phase 5A adds a read-only Next.js/React/TypeScript
+browser over that API. Neither layer runs simulations or adds write routes.
 
 Scientific integrity is a project constraint: future code must distinguish
 biological/connectomic data from NeuroFly modelling assumptions. The detailed
@@ -305,6 +306,17 @@ NEUROFLY_EXPERIMENT_ARTIFACT_ROOT=/path/to/data/derived/experiments \
 ```
 
 See [`docs/architecture/http_experiment_api.md`](docs/architecture/http_experiment_api.md).
+
+## Read-only browser foundation (Phase 5A)
+
+The `web/` application is a small Next.js App Router slice. It consumes the
+real Phase 4B API with a typed, runtime-checked client, lists completed
+artifacts, and provides `/experiments/[artifactId]` detail pages with
+provenance, separate LC4/LPLC2 and DNp01 summaries, and the persisted
+simulation timeline. It has no mock production fallback, live simulation,
+Three.js, charting, or parameter controls. Configure the server-side API URL
+with `web/.env.example`, then run `npm install && npm run dev` from `web/`.
+See [`docs/architecture/frontend_foundation.md`](docs/architecture/frontend_foundation.md).
 
 ### Scientific semantics and limitation
 

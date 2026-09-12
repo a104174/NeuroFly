@@ -16,3 +16,15 @@ htmlcov/
 # Reproducible local derived snapshots (never source data)
 data/derived/malecns/
 data/derived/experiments/
+
+# Frontend generated output and local configuration
+web/node_modules/
+web/.next/
+web/out/
+web/coverage/
+web/.eslintcache
+web/tsconfig.tsbuildinfo
+web/.env.local
+web/.env.development.local
+web/.env.test.local
+web/.env.production.local

@@ -3,16 +3,18 @@
 NeuroFly is a planned experimental platform for studying connectome-based
 digital agents inspired by the MaleCNS *Drosophila melanogaster* connectome.
 
-The repository is currently in **Phase 3C: deterministic experiment
-comparison**. Phase 3B provides portable experiment artifacts, Phase 3A
-provides the reproducible experiment-run foundation, and Phase 2H-A
+The repository is currently in **Phase 4A: read-only experiment application
+boundary**. Phase 3C provides deterministic experiment comparison, Phase 3B
+provides portable experiment artifacts, Phase 3A provides the reproducible
+experiment-run foundation, and Phase 2H-A
 provides the empirical constraint infrastructure. Phase 2B provides the narrow
 offline 313-node/311-edge
 deterministic LIF execution slice, Phase 2E implements the E1 encoder, and
 Phase 2F characterizes their complete production path. Phase 2G pre-registers
 source provenance, measurement/model comparability, and fit-versus-held-out
 roles; Phase 2H-A validates that metadata boundary offline without parameter
-fitting. Level C, visual-angle mapping, motor modelling, behaviour, API, and
+fitting. Phase 4A provides a read-only, transport-neutral artifact/application
+boundary; HTTP, Level C, visual-angle mapping, motor modelling, behaviour, and
 frontend remain unimplemented.
 
 Scientific integrity is a project constraint: future code must distinguish
@@ -279,6 +281,14 @@ python -m neurofly.experiment_comparison <artifact-a> <artifact-b>
 ```
 
 See [`docs/science/experiment_comparison.md`](docs/science/experiment_comparison.md).
+
+## Read-only experiment application boundary (Phase 4A)
+
+`neurofly.experiment_api` exposes JSON-safe summaries, exact neural-time
+timelines, selected body telemetry, spike/delivered events, and Phase 3C
+comparison summaries through an explicit local artifact root. It performs no
+simulation or writes, and adds no HTTP dependency. See
+[`docs/architecture/read_only_experiment_api.md`](docs/architecture/read_only_experiment_api.md).
 
 ### Scientific semantics and limitation
 

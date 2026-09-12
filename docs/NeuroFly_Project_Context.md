@@ -3,8 +3,9 @@
 > **Working title:** NeuroFly  
 > The name is provisional and may change later.  
 > **Document purpose:** provide persistent context to ChatGPT Project chats, Codex-oriented implementation chats, architecture discussions, scientific reasoning and future documentation.  
-> **Current status:** Phase 3C implements deterministic, directional comparison
-> of portable model-run artifacts. Phase 3B implements the portable,
+> **Current status:** Phase 4A provides a read-only, transport-neutral
+> application boundary over portable model-run artifacts. Phase 3C implements
+> deterministic, directional comparison. Phase 3B implements the portable,
 > integrity-checked artifact contract for completed deterministic runs. Phase
 > 3A implements the deterministic, replay-verified offline experiment-run
 > foundation. Phase 2H-A implements the metadata-only empirical constraint
@@ -83,6 +84,13 @@ DNp01 summaries, and no-interpolation policy are documented in
 [`docs/science/experiment_comparison.md`](science/experiment_comparison.md).
 Comparisons remain model-versus-model and `NOT_EVALUATED`; they do not rank
 experiments or perform calibration.
+
+Phase 4A's read-only `ExperimentArtifactStore` and JSON-safe application DTOs
+are documented in
+[`docs/architecture/read_only_experiment_api.md`](architecture/read_only_experiment_api.md).
+The repository has no HTTP/frontend stack yet, so this phase adds no web
+dependency; future application layers must consume this boundary without
+making the scientific core depend on them.
 
 ---
 

@@ -3,8 +3,9 @@
 > **Working title:** NeuroFly  
 > The name is provisional and may change later.  
 > **Document purpose:** provide persistent context to ChatGPT Project chats, Codex-oriented implementation chats, architecture discussions, scientific reasoning and future documentation.  
-> **Current status:** Phase 4A provides a read-only, transport-neutral
-> application boundary over portable model-run artifacts. Phase 3C implements
+> **Current status:** Phase 4B provides a minimal GET-only HTTP adapter over
+> Phase 4A's read-only, transport-neutral application boundary for portable
+> model-run artifacts. Phase 3C implements
 > deterministic, directional comparison. Phase 3B implements the portable,
 > integrity-checked artifact contract for completed deterministic runs. Phase
 > 3A implements the deterministic, replay-verified offline experiment-run
@@ -88,9 +89,11 @@ experiments or perform calibration.
 Phase 4A's read-only `ExperimentArtifactStore` and JSON-safe application DTOs
 are documented in
 [`docs/architecture/read_only_experiment_api.md`](architecture/read_only_experiment_api.md).
-The repository has no HTTP/frontend stack yet, so this phase adds no web
-dependency; future application layers must consume this boundary without
-making the scientific core depend on them.
+Phase 4B's FastAPI GET-only adapter, explicit artifact-root configuration,
+stable error contract, and local launch procedure are documented in
+[`docs/architecture/http_experiment_api.md`](architecture/http_experiment_api.md).
+The adapter consumes completed artifacts only; it does not execute the
+simulator, add write routes, or make the scientific core depend on HTTP.
 
 ---
 

@@ -1,0 +1,317 @@
+"""Minimal GET-only HTTP adapter for the Phase 4A application boundary.
+
+This module is deliberately the only NeuroFly module that imports FastAPI.
+It translates requests into calls to :class:`ExperimentArtifactStore` and
+returns the already validated, JSON-safe Phase 4A DTOs.  It never executes an
+experiment and contains no stimulus, encoder, neural, or comparison logic.
+"""
+
+from __future__ import annotations
+
+import os
+from pathlib import Path
+from typing import Any
+
+from fastapi import FastAPI, Query, Request
+from fastapi.exceptions import RequestValidationError
+from fastapi.responses import JSONResponse
+from starlette.exceptions import HTTPException as StarletteHTTPException
+
+from neurofly.experiment_api import (
+    APPLICATION_API_SCHEMA_VERSION,
+    ArtifactNotFoundError,
+    ArtifactPathError,
+    ArtifactStoreError,
+    BodyTelemetryUnavailableError,
+    ComparisonUnavailableError,
+    CorruptedArtifactError,
+    ExperimentApiError,
+    ExperimentArtifactStore,
+    InvalidArtifactIdError,
+    InvalidRangeError,
+    UnsupportedArtifactError,
+)
+
+HTTP_API_SCHEMA_VERSION = "experiment_http_v1"
+HTTP_API_VERSION = "v1"
+HTTP_ERROR_SCHEMA_VERSION = "experiment_http_error_v1"
+ARTIFACT_ROOT_ENV = "NEUROFLY_EXPERIMENT_ARTIFACT_ROOT"
+
+
+def _error_payload(code: str, message: str) -> dict[str, str]:
+    return {
+        "schema": HTTP_ERROR_SCHEMA_VERSION,
+        "code": code,
+        "message": message,
+    }
+
+
+def _error_response(status_code: int, code: str, message: str) -> JSONResponse:
+    return JSONResponse(
+        status_code=status_code,
+        content=_error_payload(code, message),
+    )
+
+
+def _store(request: Request) -> ExperimentArtifactStore:
+    try:
+        return request.app.state.experiment_artifact_store
+    except AttributeError as exc:  # pragma: no cover - app factory invariant
+        raise RuntimeError("experiment artifact store is not configured") from exc
+
+
+async def _invalid_request_handler(
+    _request: Request, _exc: RequestValidationError
+) -> JSONResponse:
+    return _error_response(400, "invalid_request", "request parameters are invalid")
+
+
+async def _http_error_handler(
+    _request: Request, exc: StarletteHTTPException
+) -> JSONResponse:
+    if exc.status_code == 405:
+        return _error_response(405, "method_not_allowed", "only GET is supported")
+    if exc.status_code == 404:
+        return _error_response(404, "route_not_found", "requested route was not found")
+    return _error_response(
+        400, "http_request_error", "HTTP request could not be handled"
+    )
+
+
+async def _invalid_id_handler(
+    _request: Request, _exc: InvalidArtifactIdError
+) -> JSONResponse:
+    return _error_response(400, "invalid_artifact_id", "artifact_id is malformed")
+
+
+async def _range_handler(_request: Request, _exc: InvalidRangeError) -> JSONResponse:
+    return _error_response(
+        400,
+        "invalid_time_range",
+        "timeline range is invalid or not aligned to simulation samples",
+    )
+
+
+async def _not_found_handler(
+    _request: Request, _exc: ArtifactNotFoundError
+) -> JSONResponse:
+    return _error_response(404, "artifact_not_found", "artifact was not found")
+
+
+async def _body_unavailable_handler(
+    _request: Request, _exc: BodyTelemetryUnavailableError
+) -> JSONResponse:
+    return _error_response(
+        404,
+        "body_telemetry_unavailable",
+        "body telemetry is unavailable in this artifact",
+    )
+
+
+async def _path_error_handler(
+    _request: Request, _exc: ArtifactPathError
+) -> JSONResponse:
+    return _error_response(409, "unsafe_artifact_path", "artifact path is unsafe")
+
+
+async def _corrupt_handler(
+    _request: Request, _exc: CorruptedArtifactError
+) -> JSONResponse:
+    return _error_response(
+        409,
+        "artifact_integrity_failure",
+        "artifact failed integrity validation",
+    )
+
+
+async def _unsupported_handler(
+    _request: Request, _exc: UnsupportedArtifactError
+) -> JSONResponse:
+    return _error_response(
+        409,
+        "unsupported_artifact_schema",
+        "artifact schema is unsupported",
+    )
+
+
+async def _store_error_handler(
+    _request: Request, _exc: ArtifactStoreError
+) -> JSONResponse:
+    return _error_response(
+        500,
+        "artifact_store_error",
+        "artifact store could not be read",
+    )
+
+
+async def _comparison_error_handler(
+    _request: Request, _exc: ComparisonUnavailableError
+) -> JSONResponse:
+    return _error_response(
+        500,
+        "comparison_unavailable",
+        "comparison could not be constructed",
+    )
+
+
+async def _application_error_handler(
+    _request: Request, _exc: ExperimentApiError
+) -> JSONResponse:
+    return _error_response(
+        500,
+        "application_error",
+        "application request could not be completed",
+    )
+
+
+async def _unexpected_error_handler(_request: Request, _exc: Exception) -> JSONResponse:
+    # Never serialize exception text: it may contain local paths or other
+    # process details.  The server log remains the appropriate diagnostic
+    # channel for deployment operators.
+    return _error_response(
+        500,
+        "internal_error",
+        "internal server error",
+    )
+
+
+def _register_error_handlers(app: FastAPI) -> None:
+    app.add_exception_handler(RequestValidationError, _invalid_request_handler)
+    app.add_exception_handler(StarletteHTTPException, _http_error_handler)
+    app.add_exception_handler(InvalidArtifactIdError, _invalid_id_handler)
+    app.add_exception_handler(InvalidRangeError, _range_handler)
+    app.add_exception_handler(ArtifactNotFoundError, _not_found_handler)
+    app.add_exception_handler(BodyTelemetryUnavailableError, _body_unavailable_handler)
+    app.add_exception_handler(ArtifactPathError, _path_error_handler)
+    app.add_exception_handler(CorruptedArtifactError, _corrupt_handler)
+    app.add_exception_handler(UnsupportedArtifactError, _unsupported_handler)
+    app.add_exception_handler(ComparisonUnavailableError, _comparison_error_handler)
+    app.add_exception_handler(ArtifactStoreError, _store_error_handler)
+    app.add_exception_handler(ExperimentApiError, _application_error_handler)
+    app.add_exception_handler(Exception, _unexpected_error_handler)
+
+
+def create_app(artifact_root: str | Path) -> FastAPI:
+    """Create an isolated read-only API over one configured artifact root."""
+
+    store = ExperimentArtifactStore(artifact_root)
+    app = FastAPI(
+        title="NeuroFly read-only experiment API",
+        version=HTTP_API_VERSION,
+        description=(
+            "GET-only transport adapter for completed NeuroFly experiment "
+            "artifacts. Requests never run the simulator."
+        ),
+    )
+    app.state.experiment_artifact_store = store
+    _register_error_handlers(app)
+
+    @app.get("/health", tags=["system"])
+    def health() -> dict[str, Any]:
+        return {
+            "schema": HTTP_API_SCHEMA_VERSION,
+            "status": "ok",
+            "read_only": True,
+        }
+
+    @app.get("/api/v1", tags=["system"])
+    def api_info() -> dict[str, Any]:
+        return {
+            "schema": HTTP_API_SCHEMA_VERSION,
+            "api": "neurofly",
+            "http_api_version": HTTP_API_VERSION,
+            "application_contract": APPLICATION_API_SCHEMA_VERSION,
+            "read_only": True,
+        }
+
+    @app.get("/api/v1/experiments", tags=["experiments"])
+    def list_experiments(request: Request) -> dict[str, Any]:
+        summaries = _store(request).list_experiment_summaries()
+        return {
+            "schema": HTTP_API_SCHEMA_VERSION,
+            "kind": "experiment_list",
+            "experiments": [summary.to_dict() for summary in summaries],
+            "count": len(summaries),
+        }
+
+    @app.get("/api/v1/experiments/{artifact_id}", tags=["experiments"])
+    def get_experiment(request: Request, artifact_id: str) -> dict[str, Any]:
+        return _store(request).get_experiment(artifact_id).to_dict()
+
+    @app.get("/api/v1/experiments/{artifact_id}/timeline", tags=["telemetry"])
+    def get_timeline(
+        request: Request,
+        artifact_id: str,
+        start_ms: float | None = Query(default=None),
+        end_ms: float | None = Query(default=None),
+    ) -> dict[str, Any]:
+        return (
+            _store(request)
+            .get_timeline(
+                artifact_id,
+                start_ms=start_ms,
+                end_ms=end_ms,
+            )
+            .to_dict()
+        )
+
+    @app.get("/api/v1/experiments/{artifact_id}/bodies/{body_id}", tags=["telemetry"])
+    def get_body(
+        request: Request,
+        artifact_id: str,
+        body_id: int,
+    ) -> dict[str, Any]:
+        return _store(request).get_body_telemetry(artifact_id, body_id).to_dict()
+
+    @app.get("/api/v1/experiments/{artifact_id}/spikes", tags=["events"])
+    def get_spikes(request: Request, artifact_id: str) -> dict[str, Any]:
+        events = _store(request).get_spike_events(artifact_id)
+        return {
+            "schema": HTTP_API_SCHEMA_VERSION,
+            "kind": "spike_events",
+            "artifact_id": artifact_id,
+            "spike_events": [event.to_dict() for event in events],
+            "spike_event_count": len(events),
+        }
+
+    @app.get("/api/v1/experiments/{artifact_id}/events", tags=["events"])
+    def get_events(request: Request, artifact_id: str) -> dict[str, Any]:
+        events = _store(request).get_delivered_events(artifact_id)
+        return {
+            "schema": HTTP_API_SCHEMA_VERSION,
+            "kind": "delivered_events",
+            "artifact_id": artifact_id,
+            "delivered_events": [event.to_dict() for event in events],
+            "delivered_event_count": len(events),
+        }
+
+    @app.get("/api/v1/comparisons", tags=["comparisons"])
+    def get_comparison(
+        request: Request,
+        artifact_a: str = Query(...),
+        artifact_b: str = Query(...),
+    ) -> dict[str, Any]:
+        return _store(request).get_comparison(artifact_a, artifact_b).to_dict()
+
+    return app
+
+
+def create_app_from_env() -> FastAPI:
+    """Uvicorn-compatible zero-argument factory using one explicit env var."""
+
+    configured = os.environ.get(ARTIFACT_ROOT_ENV)
+    if not configured:
+        raise RuntimeError(
+            f"{ARTIFACT_ROOT_ENV} must identify an existing artifact directory"
+        )
+    return create_app(configured)
+
+
+__all__ = [
+    "ARTIFACT_ROOT_ENV",
+    "HTTP_API_SCHEMA_VERSION",
+    "HTTP_API_VERSION",
+    "HTTP_ERROR_SCHEMA_VERSION",
+    "create_app",
+    "create_app_from_env",
+]

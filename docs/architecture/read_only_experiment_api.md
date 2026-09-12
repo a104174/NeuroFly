@@ -1,11 +1,11 @@
 # Read-only experiment application boundary (Phase 4A)
 
 Phase 4A defines a transport-neutral Python boundary for completed
-`experiment_artifact_v1` runs.  The repository has no HTTP or frontend
-application, so this phase intentionally adds no web framework.  Future
-TypeScript/React/Three.js or HTTP layers can consume the same JSON-safe DTOs
-without importing scientific dataclasses or learning the artifact directory
-layout.
+`experiment_artifact_v1` runs.  Phase 4A itself intentionally adds no web
+framework; Phase 4B now provides the separate FastAPI adapter documented in
+[`http_experiment_api.md`](http_experiment_api.md).  Future
+TypeScript/React/Three.js layers can consume the same JSON-safe DTOs without
+importing scientific dataclasses or learning the artifact directory layout.
 
 ## Dependency direction
 
@@ -99,14 +99,15 @@ both DNp01 bodies, event summaries, and `NOT_EVALUATED` status.  A valid
 `SUMMARY_ONLY_COMPARISON` is returned as a result; the service does not turn
 it into a dense comparison for presentation convenience.
 
-## Errors and future HTTP mapping
+## Errors and HTTP mapping
 
 The service distinguishes invalid IDs, not-found artifacts, path escapes,
 corrupted/unsupported artifacts, unavailable body telemetry, invalid aligned
-ranges, and comparison failures.  A future HTTP adapter may map these to
-GET-only routes such as `/api/v1/experiments`, `/timeline`, `/bodies/{id}`,
-`/events`, and `/comparisons`; that adapter is deliberately out of scope.
+ranges, and comparison failures.  Phase 4B maps these to stable
+`experiment_http_error_v1` responses and GET-only routes such as
+`/api/v1/experiments`, `/timeline`, `/bodies/{id}`, `/events`, and
+`/comparisons`.
 
-There are no POST/PUT/PATCH/DELETE routes, authentication, networking,
-frontend code, simulator control, calibration, or empirical scoring in Phase
-4A.
+Phase 4A itself has no write routes, authentication, simulator control,
+calibration, or empirical scoring.  The separate Phase 4B HTTP adapter adds
+GET-only transport routes; it does not change this scientific boundary.

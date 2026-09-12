@@ -3,8 +3,8 @@
 NeuroFly is a planned experimental platform for studying connectome-based
 digital agents inspired by the MaleCNS *Drosophila melanogaster* connectome.
 
-The repository is currently in **Phase 4A: read-only experiment application
-boundary**. Phase 3C provides deterministic experiment comparison, Phase 3B
+The repository is currently in **Phase 4B: minimal GET-only experiment HTTP
+adapter**. Phase 3C provides deterministic experiment comparison, Phase 3B
 provides portable experiment artifacts, Phase 3A provides the reproducible
 experiment-run foundation, and Phase 2H-A
 provides the empirical constraint infrastructure. Phase 2B provides the narrow
@@ -14,8 +14,9 @@ Phase 2F characterizes their complete production path. Phase 2G pre-registers
 source provenance, measurement/model comparability, and fit-versus-held-out
 roles; Phase 2H-A validates that metadata boundary offline without parameter
 fitting. Phase 4A provides a read-only, transport-neutral artifact/application
-boundary; HTTP, Level C, visual-angle mapping, motor modelling, behaviour, and
-frontend remain unimplemented.
+boundary. Level C, visual-angle mapping, motor modelling, behaviour, and
+frontend remain unimplemented. Phase 4B adds a thin FastAPI GET-only adapter
+over the Phase 4A boundary; it does not run simulations or add write routes.
 
 Scientific integrity is a project constraint: future code must distinguish
 biological/connectomic data from NeuroFly modelling assumptions. The detailed
@@ -289,6 +290,21 @@ timelines, selected body telemetry, spike/delivered events, and Phase 3C
 comparison summaries through an explicit local artifact root. It performs no
 simulation or writes, and adds no HTTP dependency. See
 [`docs/architecture/read_only_experiment_api.md`](docs/architecture/read_only_experiment_api.md).
+
+## GET-only experiment HTTP adapter (Phase 4B)
+
+`neurofly.http_api` exposes the Phase 4A contract under `/api/v1` for
+completed artifacts: summaries, exact simulation-time timelines, persisted
+body telemetry, spike/delivered events, and directional Phase 3C comparisons.
+The app factory receives an explicit artifact root and never invokes the
+simulator.  Launch a local read-only server with:
+
+```bash
+NEUROFLY_EXPERIMENT_ARTIFACT_ROOT=/path/to/data/derived/experiments \
+  uvicorn neurofly.http_api:create_app_from_env --factory
+```
+
+See [`docs/architecture/http_experiment_api.md`](docs/architecture/http_experiment_api.md).
 
 ### Scientific semantics and limitation
 

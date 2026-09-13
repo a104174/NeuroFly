@@ -3,7 +3,10 @@
 > **Working title:** NeuroFly  
 > The name is provisional and may change later.  
 > **Document purpose:** provide persistent context to ChatGPT Project chats, Codex-oriented implementation chats, architecture discussions, scientific reasoning and future documentation.  
-> **Current status:** Phase 5D provides a controlled, versioned Blender/glTF
+> **Current status:** Phase 5E establishes a source-preserving MaleCNS
+> morphology coordinate contract and an S1 readiness decision for a small,
+> separate raw-skeleton inspection slice. Phase 5D provides a controlled,
+> versioned Blender/glTF
 > presentation-asset pipeline for Phase 5B's React Three Fiber playback
 > surface over Phase 5A's read-only Next.js/React/TypeScript browser,
 > Phase 4B's minimal GET-only HTTP adapter, and
@@ -20,13 +23,17 @@
 > biological latency is fitted.
 > Phase 5D adds a centralized presentation-space scene layout and abstract
 > spatial overlays without introducing anatomical coordinates or behavior.
+> Phase 5E does not alter that scene: it preserves native MaleCNS 8 nm voxel
+> coordinates, disconnected raw components, exact body-ID provenance, and
+> explicit raw/artificial link provenance. Native axis names and origin remain
+> unresolved and must not be given anatomical labels.
 > Phase 1D/1E's D3 conclusion remains in
 > force: no provenance-verified body-level
 > LC4/LPLC2 column-to-angular-visual-space
 > transform is available for `male-cns:v1.0`. Level P is the documented
 > population-feature boundary; Level C remains disabled, and no biological
 > calibration or behavioural/motor dynamics are implemented.
-> **Date of this context:** 2026-09-11.
+> **Date of this context:** 2026-09-13.
 
 The Phase 1D-B evidence ledger is maintained in
 [`docs/science/receptive_field_feasibility.md`](science/receptive_field_feasibility.md).
@@ -131,6 +138,15 @@ provenance, and explicit persisted-data versus presentation-mapping legend are
 documented in
 [`docs/architecture/scientific_scene_composition.md`](architecture/scientific_scene_composition.md).
 The fly remains stationary and playback/timeline semantics are unchanged.
+
+Phase 5E's immutable `malecns_neuron_spatial_v1` contract, authoritative
+coordinate evidence, fixed bilateral six-body raw-skeleton audit,
+fragmentation policy, raw-versus-healed boundary, and source-to-view transform
+separation are documented in
+[`docs/science/malecns_spatialization_contract.md`](science/malecns_spatialization_contract.md).
+The decision is S1 for a bounded separate inspection view, not for mixing
+anatomical geometry into `neurofly_scene_layout_v1` or rendering all 313
+candidate bodies.
 
 ---
 

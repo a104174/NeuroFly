@@ -3,8 +3,8 @@
 NeuroFly is a planned experimental platform for studying connectome-based
 digital agents inspired by the MaleCNS *Drosophila melanogaster* connectome.
 
-The repository is currently in **Phase 5D: scientific spatial overlay and 3D
-scene composition**. Phase 3C provides deterministic experiment comparison, Phase 3B
+The repository is currently in **Phase 5E: MaleCNS spatialization feasibility
+and coordinate contract**. Phase 3C provides deterministic experiment comparison, Phase 3B
 provides portable experiment artifacts, Phase 3A provides the reproducible
 experiment-run foundation, and Phase 2H-A
 provides the empirical constraint infrastructure. Phase 2B provides the narrow
@@ -22,7 +22,9 @@ playback of persisted timelines. Phase 5C replaces the normal procedural fly
 path with a versioned project-created GLB while retaining the procedural
 fallback. Phase 5D adds a centralized presentation-space layout, abstract
 pathway overlays, current scientific readouts, and explicit visual provenance.
-None of these layers runs simulations or adds write routes.
+Phase 5E preserves that scene while defining an immutable raw-skeleton contract
+and auditing a fixed six-body MaleCNS sample. None of these layers runs
+simulations or adds write routes.
 
 Scientific integrity is a project constraint: future code must distinguish
 biological/connectomic data from NeuroFly modelling assumptions. The detailed
@@ -358,6 +360,19 @@ outside WebGL. These coordinates are explicitly not anatomical; the stationary
 fly, playback clock, deterministic timeline lookup, and no-interpolation policy
 are unchanged. See
 [`docs/architecture/scientific_scene_composition.md`](docs/architecture/scientific_scene_composition.md).
+
+## MaleCNS spatialization contract (Phase 5E)
+
+`neurofly.malecns.spatial` defines an immutable, body-keyed raw morphology
+contract with an explicit native coordinate frame/unit, disconnected
+components, tree-link provenance, and deterministic identity. A bounded
+credentialed audit retrieved two LC4, two LPLC2, and both DNp01 raw skeletons
+by exact body ID; one sampled LPLC2 was fragmented and remains unhealed. Native
+MaleCNS x/y/z are preserved separately from any browser transform, and no
+anatomical rendering or scene-layout change is introduced. The readiness
+decision is **S1** for a small, separate raw morphology inspection slice only.
+See
+[`docs/science/malecns_spatialization_contract.md`](docs/science/malecns_spatialization_contract.md).
 
 ### Scientific semantics and limitation
 

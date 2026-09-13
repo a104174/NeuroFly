@@ -204,6 +204,35 @@ dd { margin: 7px 0 0; color: var(--ink); font-size: 12px; line-height: 1.5; over
 .back-link { display: inline-flex; align-items: center; gap: 8px; margin-bottom: 26px; color: var(--muted); font-family: "SFMono-Regular", Consolas, monospace; font-size: 10px; letter-spacing: 0.06em; }
 .back-link:hover, .back-link:focus-visible { color: var(--cyan); outline: none; }
 
+.header-nav { display: flex; align-items: center; gap: 22px; color: var(--muted); font-family: "SFMono-Regular", Consolas, monospace; font-size: 10px; letter-spacing: 0.05em; text-transform: uppercase; }
+.header-nav > a:hover, .header-nav > a:focus-visible { color: var(--cyan); outline: none; }
+.morphology-catalogue { max-width: 920px; margin: 0 auto; }
+.morphology-catalogue > h1, .morphology-heading-row h1 { margin: 8px 0 12px; font-size: clamp(28px, 4vw, 48px); }
+.morphology-catalogue > p, .morphology-heading-row p { max-width: 760px; color: var(--muted); line-height: 1.65; }
+.morphology-catalogue ul { display: grid; gap: 10px; margin: 32px 0 0; padding: 0; list-style: none; }
+.morphology-catalogue li a { display: grid; grid-template-columns: 1.1fr 0.8fr 1.3fr 1fr; gap: 18px; padding: 18px; border: 1px solid var(--line); background: var(--surface); }
+.morphology-catalogue li a:hover, .morphology-catalogue li a:focus-visible { border-color: var(--cyan); outline: none; }
+.morphology-catalogue li span { color: var(--muted); font-family: "SFMono-Regular", Consolas, monospace; font-size: 10px; overflow-wrap: anywhere; }
+.morphology-heading-row { display: flex; justify-content: space-between; gap: 30px; margin-bottom: 24px; }
+.morphology-mode { align-self: flex-start; padding: 8px 11px; border: 1px solid rgba(122, 214, 210, 0.35); color: var(--cyan); font-family: "SFMono-Regular", Consolas, monospace; font-size: 10px; white-space: nowrap; }
+.morphology-canvas-shell { position: relative; min-height: 610px; overflow: hidden; border: 1px solid var(--line-strong); background: #071013; }
+.morphology-canvas-shell canvas { min-height: 610px; }
+.morphology-webgl-fallback { display: grid; min-height: 610px; place-items: center; color: var(--muted); }
+.morphology-canvas-key { position: absolute; right: 18px; bottom: 18px; display: grid; gap: 8px; padding: 12px 14px; border: 1px solid var(--line); background: rgba(7, 16, 19, 0.88); font-family: "SFMono-Regular", Consolas, monospace; font-size: 10px; }
+.morphology-canvas-key span { display: flex; align-items: center; gap: 8px; }
+.morphology-canvas-key i { width: 12px; height: 2px; background: var(--cyan); }
+.morphology-canvas-key .body-key-10010 { background: var(--amber); }
+.morphology-controls { display: flex; flex-wrap: wrap; align-items: center; gap: 18px; padding: 14px 18px; border: 1px solid var(--line); border-top: 0; background: var(--surface-raised); font-family: "SFMono-Regular", Consolas, monospace; font-size: 10px; }
+.morphology-controls label { display: flex; align-items: center; gap: 7px; }
+.morphology-controls input { accent-color: var(--cyan); }
+.morphology-controls button { margin-left: auto; padding: 8px 12px; border: 1px solid var(--line-strong); color: var(--cyan); background: var(--surface); cursor: pointer; }
+.morphology-warning { margin: 12px 0 0; padding: 13px 15px; border-left: 2px solid var(--amber); color: var(--muted); background: var(--surface); font-size: 11px; line-height: 1.6; }
+.morphology-readouts { margin-top: 12px; padding: 18px; border: 1px solid var(--line); background: var(--surface); }
+.morphology-readouts dl { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin: 0; }
+.morphology-readouts dt { color: var(--muted); font-size: 9px; letter-spacing: 0.05em; text-transform: uppercase; }
+.morphology-readouts dd { margin: 5px 0 0; font-family: "SFMono-Regular", Consolas, monospace; font-size: 10px; overflow-wrap: anywhere; }
+.morphology-readouts section > p:not(.eyebrow) { color: var(--muted); font-size: 11px; line-height: 1.65; }
+
 @media (max-width: 1050px) {
   .workspace { grid-template-columns: minmax(210px, 250px) minmax(0, 1fr); }
   .provenance-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -228,6 +257,11 @@ dd { margin: 7px 0 0; color: var(--ink); font-size: 12px; line-height: 1.5; over
   .scene-contract-strip { grid-template-columns: 1fr; }
   .playback-controls { grid-template-columns: 1fr; align-items: stretch; }
   .playback-statuses { justify-items: start; }
+  .morphology-heading-row { display: block; }
+  .morphology-mode { display: inline-block; margin-top: 12px; }
+  .morphology-catalogue li a { grid-template-columns: 1fr; }
+  .morphology-canvas-shell, .morphology-canvas-shell canvas, .morphology-webgl-fallback { min-height: 440px; }
+  .morphology-readouts dl { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 480px) {

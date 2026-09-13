@@ -3,9 +3,10 @@
 > **Working title:** NeuroFly  
 > The name is provisional and may change later.  
 > **Document purpose:** provide persistent context to ChatGPT Project chats, Codex-oriented implementation chats, architecture discussions, scientific reasoning and future documentation.  
-> **Current status:** Phase 5E establishes a source-preserving MaleCNS
-> morphology coordinate contract and an S1 readiness decision for a small,
-> separate raw-skeleton inspection slice. Phase 5D provides a controlled,
+> **Current status:** Phase 5F implements the S1-bounded, separate raw DNp01
+> morphology inspection slice for bodies 10001 and 10010. Source coordinates
+> remain preserved behind `malecns_morphology_artifact_v1`; one shared browser
+> view transform does not alter scientific identity. Phase 5D provides a controlled,
 > versioned Blender/glTF
 > presentation-asset pipeline for Phase 5B's React Three Fiber playback
 > surface over Phase 5A's read-only Next.js/React/TypeScript browser,
@@ -27,6 +28,12 @@
 > coordinates, disconnected raw components, exact body-ID provenance, and
 > explicit raw/artificial link provenance. Native axis names and origin remain
 > unresolved and must not be given anatomical labels.
+> Phase 5F likewise does not alter the playback scene. It adds raw-only
+> acquisition, offline integrity, GET-only transport, and a separate static
+> morphology inspector without fly alignment or activity semantics. The real
+> DNp01 artifact uses the official MaleCNS bulk SWC source with explicit URL
+> and SHA-256 provenance because neuPrint is unreachable in the current
+> environment; no healing, smoothing, repair, or inferred structure is added.
 > Phase 1D/1E's D3 conclusion remains in
 > force: no provenance-verified body-level
 > LC4/LPLC2 column-to-angular-visual-space
@@ -147,6 +154,14 @@ separation are documented in
 The decision is S1 for a bounded separate inspection view, not for mixing
 anatomical geometry into `neurofly_scene_layout_v1` or rendering all 313
 candidate bodies.
+
+Phase 5F realizes only that bounded view. It preserves both DNp01 bodies and
+raw components under one uniform `dnp01_morphology_view_v1` transform. Native
+axes remain unnamed, source radius is not rendered as calibre, and root/link
+ordering carries no signal semantics. The acquisition mode is
+`OFFICIAL_MALECNS_BULK_SWC`; neuPrint access is not required for this artifact.
+See
+[`docs/architecture/malecns_morphology_inspector.md`](architecture/malecns_morphology_inspector.md).
 
 ---
 

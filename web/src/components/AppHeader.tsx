@@ -12,10 +12,14 @@ export function AppHeader() {
           <span className="brand-subtitle">connectome experiment browser</span>
         </span>
       </Link>
-      <div className="header-status" aria-label="Application status">
-        <span className="status-dot" aria-hidden="true" />
-        <span>READ ONLY</span>
-      </div>
+      <nav className="header-nav" aria-label="Primary navigation">
+        <Link href="/">Experiments</Link>
+        <Link href="/morphology">Morphology</Link>
+        <span className="header-status" aria-label="Application status">
+          <span className="status-dot" aria-hidden="true" />
+          <span>READ ONLY</span>
+        </span>
+      </nav>
     </header>
   );
 }

@@ -2,6 +2,104 @@ const HTTP_SCHEMA = "experiment_http_v1" as const;
 const APPLICATION_SCHEMA = "experiment_api_v1" as const;
 const ERROR_SCHEMA = "experiment_http_error_v1" as const;
 const VALIDATION_STATUS = "NOT_EVALUATED" as const;
+const MORPHOLOGY_SCHEMA = "morphology_api_v1" as const;
+const MORPHOLOGY_SOURCE_NEUPRINT = "JANELIA_NEUPRINT_MALECNS_SKELETON" as const;
+const MORPHOLOGY_SOURCE_BULK = "OFFICIAL_MALECNS_BULK_SWC" as const;
+const MORPHOLOGY_RETRIEVAL_NEUPRINT = "fetch_skeleton(heal=False, format=swc)" as const;
+const MORPHOLOGY_RETRIEVAL_BULK =
+  "official_malecns_bulk_swc(raw, heal=False, smoothing=False, repair=False)" as const;
+const OFFICIAL_BULK_SWC_URLS = {
+  "10001":
+    "https://storage.googleapis.com/flyem-male-cns/v1.0/segmentation/skeletons-malecns/skeletons-swc/10001.swc",
+  "10010":
+    "https://storage.googleapis.com/flyem-male-cns/v1.0/segmentation/skeletons-malecns/skeletons-swc/10010.swc",
+} as const;
+
+export type MorphologySource =
+  | typeof MORPHOLOGY_SOURCE_NEUPRINT
+  | typeof MORPHOLOGY_SOURCE_BULK;
+export type MorphologySourceUrls = Record<string, string>;
+
+export type DNp01MorphologyBodyId = 10001 | 10010;
+
+export interface MorphologyBounds {
+  minimum: [number, number, number];
+  maximum: [number, number, number];
+}
+
+export interface MorphologyBodySummary {
+  body_id: DNp01MorphologyBodyId;
+  node_index: 0 | 1;
+  neuron_type: "DNp01";
+  source_side: "R" | "L";
+  source_status: string | null;
+  morphology_mode: "RAW";
+  node_count: number;
+  link_count: number;
+  component_count: number;
+  source_bounds: MorphologyBounds;
+  source_swc_sha256: string;
+  spatial_record_id: string;
+}
+
+export interface MorphologyArtifactSummary {
+  schema: typeof MORPHOLOGY_SCHEMA;
+  kind: "morphology_artifact_summary";
+  artifact_id: string;
+  artifact_schema_version: "malecns_morphology_artifact_v1";
+  dataset: "male-cns:v1.0";
+  candidate: { identifier: string; version: number };
+  coordinate_frame_id: "male_cns_v1_em_native_voxels";
+  coordinate_unit: "8_nm_voxel";
+  morphology_mode: "RAW";
+  body_ids: [10001, 10010];
+  bodies: [MorphologyBodySummary, MorphologyBodySummary];
+  generation: {
+    generated_at_utc: string;
+    neuprint_python_version: string;
+    source_endpoint: string;
+    source_mode: MorphologySource;
+    source_urls: MorphologySourceUrls;
+    retrieval:
+      | typeof MORPHOLOGY_RETRIEVAL_NEUPRINT
+      | typeof MORPHOLOGY_RETRIEVAL_BULK;
+  };
+}
+
+export interface MorphologyNode {
+  node_id: number;
+  x: number;
+  y: number;
+  z: number;
+  radius: number | null;
+}
+
+export interface MorphologyLink {
+  child_node_id: number;
+  parent_node_id: number;
+  provenance: "MALECNS_RAW_SKELETON_LINK";
+}
+
+export interface MorphologyComponent {
+  component_id: number;
+  nodes: MorphologyNode[];
+  links: MorphologyLink[];
+}
+
+export interface MorphologyBody extends MorphologyBodySummary {
+  schema: typeof MORPHOLOGY_SCHEMA;
+  kind: "morphology_body";
+  artifact_id: string;
+  artifact_schema_version: "malecns_morphology_artifact_v1";
+  dataset: "male-cns:v1.0";
+  candidate: { identifier: string; version: number };
+  source_category: "MALECNS_DIRECT_DATA";
+  morphology_source: MorphologySource;
+  coordinate_frame_id: "male_cns_v1_em_native_voxels";
+  coordinate_unit: "8_nm_voxel";
+  soma_location: { x: number; y: number; z: number } | null;
+  components: MorphologyComponent[];
+}
 
 export type ValidationStatus = typeof VALIDATION_STATUS;
 
@@ -814,4 +912,303 @@ function recordArray(value: unknown, label: string): Record<string, unknown>[] {
     return fail(`${label} is not an array`);
   }
   return value.map((entry, index) => record(entry, `${label}[${index}]`));
+}
+
+function sha256(value: unknown, label: string): string {
+  const result = stringValue(value, label);
+  if (!/^[0-9a-f]{64}$/.test(result) && !/^sha256:[0-9a-f]{64}$/.test(result)) {
+    return fail(`${label} is not a lowercase SHA-256 identity`);
+  }
+  return result;
+}
+
+function morphologyBodyId(value: unknown, label: string): DNp01MorphologyBodyId {
+  const result = integer(value, label);
+  return result === 10001 || result === 10010
+    ? result
+    : fail(`${label} is outside the fixed DNp01 morphology set`);
+}
+
+function tuple3(value: unknown, label: string): [number, number, number] {
+  if (!Array.isArray(value) || value.length !== 3) {
+    return fail(`${label} is not a three-coordinate tuple`);
+  }
+  return [
+    finiteNumber(value[0], `${label}[0]`),
+    finiteNumber(value[1], `${label}[1]`),
+    finiteNumber(value[2], `${label}[2]`),
+  ];
+}
+
+function morphologyBounds(value: unknown, label: string): MorphologyBounds {
+  const item = record(value, label);
+  return {
+    minimum: tuple3(item.minimum, `${label}.minimum`),
+    maximum: tuple3(item.maximum, `${label}.maximum`),
+  };
+}
+
+function morphologySource(value: unknown, label: string): MorphologySource {
+  if (value === MORPHOLOGY_SOURCE_NEUPRINT || value === MORPHOLOGY_SOURCE_BULK) {
+    return value;
+  }
+  return fail(`${label} is an unsupported morphology source`);
+}
+
+function morphologySourceUrls(value: unknown, label: string): MorphologySourceUrls {
+  const item = record(value, label);
+  const result: MorphologySourceUrls = {};
+  for (const [bodyId, url] of Object.entries(item)) {
+    result[bodyId] = stringValue(url, `${label}.${bodyId}`);
+  }
+  return result;
+}
+
+function morphologySummaryBody(value: unknown, label: string): MorphologyBodySummary {
+  const item = record(value, label);
+  const bodyId = morphologyBodyId(item.body_id, `${label}.body_id`);
+  const expected = bodyId === 10001 ? { index: 0, side: "R" } : { index: 1, side: "L" };
+  const nodeIndex = integer(item.node_index, `${label}.node_index`);
+  if (nodeIndex !== expected.index || item.source_side !== expected.side) {
+    return fail(`${label} does not match the fixed body/index/side provenance`);
+  }
+  if (item.neuron_type !== "DNp01" || item.morphology_mode !== "RAW") {
+    return fail(`${label} is not a raw DNp01 morphology record`);
+  }
+  return {
+    body_id: bodyId,
+    node_index: nodeIndex as 0 | 1,
+    neuron_type: "DNp01",
+    source_side: expected.side as "R" | "L",
+    source_status:
+      item.source_status === null
+        ? null
+        : stringValue(item.source_status, `${label}.source_status`),
+    morphology_mode: "RAW",
+    node_count: integer(item.node_count, `${label}.node_count`),
+    link_count: integer(item.link_count, `${label}.link_count`),
+    component_count: integer(item.component_count, `${label}.component_count`),
+    source_bounds: morphologyBounds(item.source_bounds, `${label}.source_bounds`),
+    source_swc_sha256: sha256(item.source_swc_sha256, `${label}.source_swc_sha256`),
+    spatial_record_id: sha256(item.spatial_record_id, `${label}.spatial_record_id`),
+  };
+}
+
+export function parseMorphologyArtifactSummary(
+  value: unknown,
+): MorphologyArtifactSummary {
+  const item = record(value, "morphology artifact summary");
+  schema(item, MORPHOLOGY_SCHEMA);
+  if (
+    item.kind !== "morphology_artifact_summary" ||
+    item.artifact_schema_version !== "malecns_morphology_artifact_v1" ||
+    item.dataset !== "male-cns:v1.0" ||
+    item.coordinate_frame_id !== "male_cns_v1_em_native_voxels" ||
+    item.coordinate_unit !== "8_nm_voxel" ||
+    item.morphology_mode !== "RAW"
+  ) {
+    return fail("morphology artifact contract is unsupported");
+  }
+  if (!Array.isArray(item.body_ids) || item.body_ids.join(",") !== "10001,10010") {
+    return fail("morphology artifact does not contain the fixed body set");
+  }
+  if (!Array.isArray(item.bodies) || item.bodies.length !== 2) {
+    return fail("morphology artifact must contain two body summaries");
+  }
+  const bodies = item.bodies.map((body, index) =>
+    morphologySummaryBody(body, `bodies[${index}]`),
+  );
+  if (bodies[0].body_id !== 10001 || bodies[1].body_id !== 10010) {
+    return fail("morphology body summaries are not canonically ordered");
+  }
+  const candidate = record(item.candidate, "candidate");
+  const generation = record(item.generation, "generation");
+  const sourceMode = morphologySource(generation.source_mode, "generation.source_mode");
+  const sourceUrls = morphologySourceUrls(generation.source_urls, "generation.source_urls");
+  const retrieval = stringValue(generation.retrieval, "generation.retrieval");
+  if (
+    (sourceMode === MORPHOLOGY_SOURCE_BULK &&
+      (retrieval !== MORPHOLOGY_RETRIEVAL_BULK ||
+        sourceUrls["10001"] !== OFFICIAL_BULK_SWC_URLS["10001"] ||
+        sourceUrls["10010"] !== OFFICIAL_BULK_SWC_URLS["10010"])) ||
+    (sourceMode === MORPHOLOGY_SOURCE_NEUPRINT &&
+      (retrieval !== MORPHOLOGY_RETRIEVAL_NEUPRINT || Object.keys(sourceUrls).length !== 0))
+  ) {
+    return fail("morphology retrieval provenance is unsupported or not raw/unhealed");
+  }
+  return {
+    schema: MORPHOLOGY_SCHEMA,
+    kind: "morphology_artifact_summary",
+    artifact_id: sha256(item.artifact_id, "artifact_id"),
+    artifact_schema_version: "malecns_morphology_artifact_v1",
+    dataset: "male-cns:v1.0",
+    candidate: {
+      identifier: stringValue(candidate.identifier, "candidate.identifier"),
+      version: integer(candidate.version, "candidate.version"),
+    },
+    coordinate_frame_id: "male_cns_v1_em_native_voxels",
+    coordinate_unit: "8_nm_voxel",
+    morphology_mode: "RAW",
+    body_ids: [10001, 10010],
+    bodies: [bodies[0], bodies[1]],
+    generation: {
+      generated_at_utc: stringValue(generation.generated_at_utc, "generated_at_utc"),
+      neuprint_python_version: stringValue(
+        generation.neuprint_python_version,
+        "neuprint_python_version",
+      ),
+      source_endpoint: stringValue(generation.source_endpoint, "source_endpoint"),
+      source_mode: sourceMode,
+      source_urls: sourceUrls,
+      retrieval: retrieval as
+        | typeof MORPHOLOGY_RETRIEVAL_NEUPRINT
+        | typeof MORPHOLOGY_RETRIEVAL_BULK,
+    },
+  };
+}
+
+function morphologyComponent(value: unknown, label: string): MorphologyComponent {
+  const item = record(value, label);
+  if (!Array.isArray(item.nodes) || !Array.isArray(item.links)) {
+    return fail(`${label} nodes and links must be arrays`);
+  }
+  const nodes = item.nodes.map((value, index) => {
+    const node = record(value, `${label}.nodes[${index}]`);
+    return {
+      node_id: integer(node.node_id, `${label}.nodes[${index}].node_id`),
+      x: finiteNumber(node.x, `${label}.nodes[${index}].x`),
+      y: finiteNumber(node.y, `${label}.nodes[${index}].y`),
+      z: finiteNumber(node.z, `${label}.nodes[${index}].z`),
+      radius:
+        node.radius === null
+          ? null
+          : finiteNumber(node.radius, `${label}.nodes[${index}].radius`),
+    };
+  });
+  const nodeIds = new Set(nodes.map((node) => node.node_id));
+  const links = item.links.map((value, index) => {
+    const link = record(value, `${label}.links[${index}]`);
+    const child = integer(link.child_node_id, `${label}.links[${index}].child_node_id`);
+    const parent = integer(
+      link.parent_node_id,
+      `${label}.links[${index}].parent_node_id`,
+    );
+    if (!nodeIds.has(child) || !nodeIds.has(parent)) {
+      return fail(`${label} contains a cross-component or missing-node link`);
+    }
+    if (link.provenance !== "MALECNS_RAW_SKELETON_LINK") {
+      return fail(`${label} contains a non-raw link`);
+    }
+    return {
+      child_node_id: child,
+      parent_node_id: parent,
+      provenance: "MALECNS_RAW_SKELETON_LINK" as const,
+    };
+  });
+  return {
+    component_id: integer(item.component_id, `${label}.component_id`),
+    nodes,
+    links,
+  };
+}
+
+export function parseMorphologyBody(value: unknown): MorphologyBody {
+  const item = record(value, "morphology body");
+  schema(item, MORPHOLOGY_SCHEMA);
+  const source = morphologySource(item.morphology_source, "morphology_source");
+  if (
+    item.kind !== "morphology_body" ||
+    item.artifact_schema_version !== "malecns_morphology_artifact_v1" ||
+    item.dataset !== "male-cns:v1.0" ||
+    item.source_category !== "MALECNS_DIRECT_DATA" ||
+    item.coordinate_frame_id !== "male_cns_v1_em_native_voxels" ||
+    item.coordinate_unit !== "8_nm_voxel"
+  ) {
+    return fail("morphology body source contract is unsupported");
+  }
+  const summary = morphologySummaryBody(item, "morphology body");
+  if (!Array.isArray(item.components)) {
+    return fail("morphology components are not an array");
+  }
+  const components = item.components.map((component, index) =>
+    morphologyComponent(component, `components[${index}]`),
+  );
+  if (
+    components.length !== summary.component_count ||
+    components.reduce((count, component) => count + component.nodes.length, 0) !==
+      summary.node_count ||
+    components.reduce((count, component) => count + component.links.length, 0) !==
+      summary.link_count
+  ) {
+    return fail("morphology component counts do not match metadata");
+  }
+  const candidate = record(item.candidate, "candidate");
+  const soma = item.soma_location === null ? null : record(item.soma_location, "soma_location");
+  return {
+    ...summary,
+    schema: MORPHOLOGY_SCHEMA,
+    kind: "morphology_body",
+    artifact_id: sha256(item.artifact_id, "artifact_id"),
+    artifact_schema_version: "malecns_morphology_artifact_v1",
+    dataset: "male-cns:v1.0",
+    candidate: {
+      identifier: stringValue(candidate.identifier, "candidate.identifier"),
+      version: integer(candidate.version, "candidate.version"),
+    },
+    source_category: "MALECNS_DIRECT_DATA",
+    morphology_source: source,
+    coordinate_frame_id: "male_cns_v1_em_native_voxels",
+    coordinate_unit: "8_nm_voxel",
+    soma_location:
+      soma === null
+        ? null
+        : {
+            x: finiteNumber(soma.x, "soma_location.x"),
+            y: finiteNumber(soma.y, "soma_location.y"),
+            z: finiteNumber(soma.z, "soma_location.z"),
+          },
+    components,
+  };
+}
+
+export async function listMorphologyArtifacts(): Promise<MorphologyArtifactSummary[]> {
+  return requestJson("/api/v1/morphology", (value) => {
+    const item = record(value, "morphology artifact list");
+    schema(item, MORPHOLOGY_SCHEMA);
+    if (item.kind !== "morphology_artifact_list" || !Array.isArray(item.artifacts)) {
+      return fail("response is not a morphology artifact list");
+    }
+    return item.artifacts.map(parseMorphologyArtifactSummary);
+  });
+}
+
+export async function getMorphologyArtifact(
+  artifactId: string,
+): Promise<MorphologyArtifactSummary> {
+  return requestJson(
+    `/api/v1/morphology/${encodeURIComponent(artifactId)}`,
+    (value) => {
+      const summary = parseMorphologyArtifactSummary(value);
+      if (summary.artifact_id !== artifactId) {
+        return fail("morphology artifact identity does not match the request");
+      }
+      return summary;
+    },
+  );
+}
+
+export async function getMorphologyBody(
+  artifactId: string,
+  bodyId: DNp01MorphologyBodyId,
+): Promise<MorphologyBody> {
+  return requestJson(
+    `/api/v1/morphology/${encodeURIComponent(artifactId)}/bodies/${bodyId}`,
+    (value) => {
+      const body = parseMorphologyBody(value);
+      if (body.artifact_id !== artifactId || body.body_id !== bodyId) {
+        return fail("morphology response identity does not match the request");
+      }
+      return body;
+    },
+  );
 }

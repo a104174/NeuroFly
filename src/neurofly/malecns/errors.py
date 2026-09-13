@@ -25,5 +25,21 @@ class SnapshotIntegrityError(MaleCNSError):
     """An offline snapshot does not match its manifest or file schema."""
 
 
+class MorphologyArtifactError(MaleCNSError):
+    """Base failure for a derived MaleCNS morphology artifact."""
+
+
+class MorphologyArtifactExportError(MorphologyArtifactError):
+    """A morphology artifact could not be exported atomically."""
+
+
+class MorphologyArtifactIntegrityError(MorphologyArtifactError):
+    """A morphology artifact failed hashes or scientific invariants."""
+
+
+class MorphologyArtifactSchemaError(MorphologyArtifactError):
+    """A morphology artifact uses malformed or unsupported schema data."""
+
+
 class StimulusSpecificationError(ValueError):
     """A model-neutral stimulus contains invalid physical parameters."""

@@ -21,7 +21,8 @@ contract and the `experiment_artifact_v1` persisted artifact schema.
 
 ## Application and artifact root
 
-`create_app(root)` receives one explicit artifact-root directory.  It accepts
+`create_app(root, morphology_artifact_root=None)` receives one explicit
+experiment-artifact root and an optional, separate morphology-artifact root. It accepts
 only stable artifact identities below that root; callers cannot provide a
 filesystem path.  Direct-child artifacts and internal symlinks are rejected,
 and every artifact is loaded through the Phase 3B integrity validator.
@@ -30,6 +31,7 @@ For local development, the zero-argument Uvicorn factory reads only:
 
 ```text
 NEUROFLY_EXPERIMENT_ARTIFACT_ROOT=/path/to/data/derived/experiments \
+NEUROFLY_MORPHOLOGY_ARTIFACT_ROOT=/path/to/data/derived/morphology_artifacts_v1 \
   uvicorn neurofly.http_api:create_app_from_env --factory
 ```
 
@@ -52,6 +54,9 @@ All scientific routes are `GET` only:
 | GET | `/api/v1/experiments/{artifact_id}/spikes` | Persisted spike events |
 | GET | `/api/v1/experiments/{artifact_id}/events` | Persisted delivered neural events |
 | GET | `/api/v1/comparisons?artifact_a=A&artifact_b=B` | Phase 3C comparison, with directional delta `B - A` |
+| GET | `/api/v1/morphology` | Validated raw morphology summaries |
+| GET | `/api/v1/morphology/{artifact_id}` | One raw morphology summary |
+| GET | `/api/v1/morphology/{artifact_id}/bodies/{body_id}` | One source-coordinate raw skeleton |
 
 The OpenAPI document is provided by FastAPI at `/openapi.json`.  It describes
 transport routes; the Phase 4A DTOs remain the scientific content source of

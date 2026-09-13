@@ -1,6 +1,7 @@
 """Minimal online acquisition and offline inspection commands."""
 
 import argparse
+import json
 from pathlib import Path
 
 from neurofly.malecns.acquire import acquire_candidate
@@ -13,11 +14,16 @@ from neurofly.malecns.columns import acquire_body_columns
 from neurofly.malecns.contract import CircuitContract, load_circuit_contract
 from neurofly.malecns.errors import MaleCNSError
 from neurofly.malecns.models import CANDIDATE, MALECNS_DATASET, NEUPRINT_ENDPOINT
+from neurofly.malecns.morphology_artifacts import (
+    generate_dnp01_morphology_artifact_from_official_bulk_swc,
+    load_morphology_artifact,
+)
 from neurofly.malecns.snapshot import export_snapshot
 from neurofly.malecns.validation import validate_snapshot
 
 DEFAULT_OUTPUT = Path("data/derived/malecns/looming_giant_fiber_v1")
 DEFAULT_COLUMN_OUTPUT = DEFAULT_OUTPUT / "body_columns_v1"
+DEFAULT_MORPHOLOGY_ROOT = DEFAULT_OUTPUT / "morphology_artifacts_v1"
 
 
 def _parser() -> argparse.ArgumentParser:
@@ -46,6 +52,18 @@ def _parser() -> argparse.ArgumentParser:
         "path", type=Path, nargs="?", default=DEFAULT_COLUMN_OUTPUT
     )
     inspect_columns.add_argument("--contract", type=Path, default=DEFAULT_OUTPUT)
+    morphology = subparsers.add_parser(
+        "morphology-artifact",
+        help="acquire the fixed raw DNp01 artifact from official bulk SWC",
+    )
+    morphology.add_argument("--contract", type=Path, default=DEFAULT_OUTPUT)
+    morphology.add_argument("--output-root", type=Path, default=DEFAULT_MORPHOLOGY_ROOT)
+    inspect_morphology = subparsers.add_parser(
+        "inspect-morphology-artifact",
+        help="validate and describe one raw DNp01 morphology artifact offline",
+    )
+    inspect_morphology.add_argument("path", type=Path)
+    inspect_morphology.add_argument("--contract", type=Path, default=DEFAULT_OUTPUT)
     return parser
 
 
@@ -109,12 +127,28 @@ def main() -> int:
             print("integrity=SHA-256 verified; body/count accounting verified")
             return 0
 
-        client = create_client()
+        if args.command == "inspect-morphology-artifact":
+            circuit = load_circuit_contract(args.contract)
+            artifact = load_morphology_artifact(args.path, circuit=circuit)
+            print(json.dumps(artifact.inspection_dict(), sort_keys=True, indent=2))
+            return 0
+
         if args.command == "check-access":
+            client = create_client()
             print(
                 f"Authenticated access confirmed: {NEUPRINT_ENDPOINT} {MALECNS_DATASET}"
             )
             return 0
+
+        if args.command == "morphology-artifact":
+            circuit = load_circuit_contract(args.contract)
+            output = generate_dnp01_morphology_artifact_from_official_bulk_swc(
+                circuit, args.output_root
+            )
+            print(f"morphology_artifact={output.name} path={output}")
+            return 0
+
+        client = create_client()
 
         if args.command == "column-snapshot":
             circuit = load_circuit_contract(args.contract)

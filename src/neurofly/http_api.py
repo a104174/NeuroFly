@@ -31,11 +31,25 @@ from neurofly.experiment_api import (
     InvalidRangeError,
     UnsupportedArtifactError,
 )
+from neurofly.morphology_api import (
+    MORPHOLOGY_API_SCHEMA_VERSION,
+    CorruptedMorphologyArtifactError,
+    InvalidMorphologyArtifactIdError,
+    MorphologyApiError,
+    MorphologyArtifactNotFoundError,
+    MorphologyArtifactStore,
+    MorphologyBodyNotFoundError,
+    MorphologyPathError,
+    MorphologyStoreError,
+    MorphologyStoreUnavailableError,
+    UnsupportedMorphologyArtifactError,
+)
 
 HTTP_API_SCHEMA_VERSION = "experiment_http_v1"
 HTTP_API_VERSION = "v1"
 HTTP_ERROR_SCHEMA_VERSION = "experiment_http_error_v1"
 ARTIFACT_ROOT_ENV = "NEUROFLY_EXPERIMENT_ARTIFACT_ROOT"
+MORPHOLOGY_ARTIFACT_ROOT_ENV = "NEUROFLY_MORPHOLOGY_ARTIFACT_ROOT"
 
 
 def _error_payload(code: str, message: str) -> dict[str, str]:
@@ -58,6 +72,15 @@ def _store(request: Request) -> ExperimentArtifactStore:
         return request.app.state.experiment_artifact_store
     except AttributeError as exc:  # pragma: no cover - app factory invariant
         raise RuntimeError("experiment artifact store is not configured") from exc
+
+
+def _morphology_store(request: Request) -> MorphologyArtifactStore:
+    store = getattr(request.app.state, "morphology_artifact_store", None)
+    if store is None:
+        raise MorphologyStoreUnavailableError(
+            "morphology artifact root is not configured"
+        )
+    return store
 
 
 async def _invalid_request_handler(
@@ -175,6 +198,84 @@ async def _unexpected_error_handler(_request: Request, _exc: Exception) -> JSONR
     )
 
 
+async def _invalid_morphology_id_handler(
+    _request: Request, _exc: InvalidMorphologyArtifactIdError
+) -> JSONResponse:
+    return _error_response(
+        400, "invalid_morphology_artifact_id", "morphology artifact ID is malformed"
+    )
+
+
+async def _morphology_not_found_handler(
+    _request: Request, _exc: MorphologyArtifactNotFoundError
+) -> JSONResponse:
+    return _error_response(
+        404, "morphology_artifact_not_found", "morphology artifact was not found"
+    )
+
+
+async def _morphology_body_not_found_handler(
+    _request: Request, _exc: MorphologyBodyNotFoundError
+) -> JSONResponse:
+    return _error_response(
+        404, "morphology_body_not_found", "morphology body was not found"
+    )
+
+
+async def _morphology_path_handler(
+    _request: Request, _exc: MorphologyPathError
+) -> JSONResponse:
+    return _error_response(
+        409, "unsafe_morphology_path", "morphology artifact path is unsafe"
+    )
+
+
+async def _corrupt_morphology_handler(
+    _request: Request, _exc: CorruptedMorphologyArtifactError
+) -> JSONResponse:
+    return _error_response(
+        409,
+        "morphology_integrity_failure",
+        "morphology artifact failed integrity validation",
+    )
+
+
+async def _unsupported_morphology_handler(
+    _request: Request, _exc: UnsupportedMorphologyArtifactError
+) -> JSONResponse:
+    return _error_response(
+        409,
+        "unsupported_morphology_schema",
+        "morphology artifact schema is unsupported",
+    )
+
+
+async def _morphology_unavailable_handler(
+    _request: Request, _exc: MorphologyStoreUnavailableError
+) -> JSONResponse:
+    return _error_response(
+        503,
+        "morphology_store_unavailable",
+        "morphology artifact root is not configured",
+    )
+
+
+async def _morphology_store_handler(
+    _request: Request, _exc: MorphologyStoreError
+) -> JSONResponse:
+    return _error_response(
+        500, "morphology_store_error", "morphology artifact store could not be read"
+    )
+
+
+async def _morphology_api_handler(
+    _request: Request, _exc: MorphologyApiError
+) -> JSONResponse:
+    return _error_response(
+        500, "morphology_application_error", "morphology request could not be completed"
+    )
+
+
 def _register_error_handlers(app: FastAPI) -> None:
     app.add_exception_handler(RequestValidationError, _invalid_request_handler)
     app.add_exception_handler(StarletteHTTPException, _http_error_handler)
@@ -188,10 +289,34 @@ def _register_error_handlers(app: FastAPI) -> None:
     app.add_exception_handler(ComparisonUnavailableError, _comparison_error_handler)
     app.add_exception_handler(ArtifactStoreError, _store_error_handler)
     app.add_exception_handler(ExperimentApiError, _application_error_handler)
+    app.add_exception_handler(
+        InvalidMorphologyArtifactIdError, _invalid_morphology_id_handler
+    )
+    app.add_exception_handler(
+        MorphologyArtifactNotFoundError, _morphology_not_found_handler
+    )
+    app.add_exception_handler(
+        MorphologyBodyNotFoundError, _morphology_body_not_found_handler
+    )
+    app.add_exception_handler(MorphologyPathError, _morphology_path_handler)
+    app.add_exception_handler(
+        CorruptedMorphologyArtifactError, _corrupt_morphology_handler
+    )
+    app.add_exception_handler(
+        UnsupportedMorphologyArtifactError, _unsupported_morphology_handler
+    )
+    app.add_exception_handler(
+        MorphologyStoreUnavailableError, _morphology_unavailable_handler
+    )
+    app.add_exception_handler(MorphologyStoreError, _morphology_store_handler)
+    app.add_exception_handler(MorphologyApiError, _morphology_api_handler)
     app.add_exception_handler(Exception, _unexpected_error_handler)
 
 
-def create_app(artifact_root: str | Path) -> FastAPI:
+def create_app(
+    artifact_root: str | Path,
+    morphology_artifact_root: str | Path | None = None,
+) -> FastAPI:
     """Create an isolated read-only API over one configured artifact root."""
 
     store = ExperimentArtifactStore(artifact_root)
@@ -204,6 +329,11 @@ def create_app(artifact_root: str | Path) -> FastAPI:
         ),
     )
     app.state.experiment_artifact_store = store
+    app.state.morphology_artifact_store = (
+        None
+        if morphology_artifact_root is None
+        else MorphologyArtifactStore(morphology_artifact_root)
+    )
     _register_error_handlers(app)
 
     @app.get("/health", tags=["system"])
@@ -293,6 +423,29 @@ def create_app(artifact_root: str | Path) -> FastAPI:
     ) -> dict[str, Any]:
         return _store(request).get_comparison(artifact_a, artifact_b).to_dict()
 
+    @app.get("/api/v1/morphology", tags=["morphology"])
+    def list_morphology(request: Request) -> dict[str, Any]:
+        artifacts = _morphology_store(request).list_artifacts()
+        return {
+            "schema": MORPHOLOGY_API_SCHEMA_VERSION,
+            "kind": "morphology_artifact_list",
+            "artifacts": [artifact.to_dict() for artifact in artifacts],
+            "count": len(artifacts),
+        }
+
+    @app.get("/api/v1/morphology/{artifact_id}", tags=["morphology"])
+    def get_morphology(request: Request, artifact_id: str) -> dict[str, Any]:
+        return _morphology_store(request).get_artifact(artifact_id).to_dict()
+
+    @app.get(
+        "/api/v1/morphology/{artifact_id}/bodies/{body_id}",
+        tags=["morphology"],
+    )
+    def get_morphology_body(
+        request: Request, artifact_id: str, body_id: int
+    ) -> dict[str, Any]:
+        return _morphology_store(request).get_body(artifact_id, body_id).to_dict()
+
     return app
 
 
@@ -304,7 +457,8 @@ def create_app_from_env() -> FastAPI:
         raise RuntimeError(
             f"{ARTIFACT_ROOT_ENV} must identify an existing artifact directory"
         )
-    return create_app(configured)
+    morphology_root = os.environ.get(MORPHOLOGY_ARTIFACT_ROOT_ENV)
+    return create_app(configured, morphology_root)
 
 
 __all__ = [
@@ -312,6 +466,7 @@ __all__ = [
     "HTTP_API_SCHEMA_VERSION",
     "HTTP_API_VERSION",
     "HTTP_ERROR_SCHEMA_VERSION",
+    "MORPHOLOGY_ARTIFACT_ROOT_ENV",
     "create_app",
     "create_app_from_env",
 ]

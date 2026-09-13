@@ -3,8 +3,8 @@
 NeuroFly is a planned experimental platform for studying connectome-based
 digital agents inspired by the MaleCNS *Drosophila melanogaster* connectome.
 
-The repository is currently in **Phase 5E: MaleCNS spatialization feasibility
-and coordinate contract**. Phase 3C provides deterministic experiment comparison, Phase 3B
+The repository is currently in **Phase 5F: raw DNp01 MaleCNS morphology
+inspection slice**. Phase 3C provides deterministic experiment comparison, Phase 3B
 provides portable experiment artifacts, Phase 3A provides the reproducible
 experiment-run foundation, and Phase 2H-A
 provides the empirical constraint infrastructure. Phase 2B provides the narrow
@@ -23,8 +23,12 @@ path with a versioned project-created GLB while retaining the procedural
 fallback. Phase 5D adds a centralized presentation-space layout, abstract
 pathway overlays, current scientific readouts, and explicit visual provenance.
 Phase 5E preserves that scene while defining an immutable raw-skeleton contract
-and auditing a fixed six-body MaleCNS sample. None of these layers runs
-simulations or adds write routes.
+and auditing a fixed six-body MaleCNS sample. Phase 5F adds a separate raw
+DNp01 morphology artifact, GET-only API, and R3F inspection view. The real
+two-body artifact uses the official MaleCNS bulk SWC URLs because neuPrint is
+unreachable in the current environment; source mode, URLs, and SHA-256 values
+remain explicit in the manifest. None of these layers runs simulations or adds
+write routes.
 
 Scientific integrity is a project constraint: future code must distinguish
 biological/connectomic data from NeuroFly modelling assumptions. The detailed
@@ -67,6 +71,10 @@ export NEUPRINT_APPLICATION_CREDENTIALS='your credential from neuPrint'
 
 Never commit, print, or serialize this value. The code does not load `.env`
 files, and `.env` remains ignored.
+
+The Phase 5F `morphology-artifact` command is deliberately independent of
+neuPrint credentials: it downloads only the two pinned official MaleCNS bulk
+SWC files and records their URLs and hashes in the morphology artifact.
 
 Check authentication and the pinned dataset without downloading the circuit:
 
@@ -314,6 +322,9 @@ NEUROFLY_EXPERIMENT_ARTIFACT_ROOT=/path/to/data/derived/experiments \
 
 See [`docs/architecture/http_experiment_api.md`](docs/architecture/http_experiment_api.md).
 
+The adapter optionally exposes raw morphology through a separately configured
+`NEUROFLY_MORPHOLOGY_ARTIFACT_ROOT`; morphology GETs never fetch neuPrint data.
+
 ## Read-only browser foundation (Phase 5A)
 
 The `web/` application is a small Next.js App Router slice. It consumes the
@@ -373,6 +384,20 @@ anatomical rendering or scene-layout change is introduced. The readiness
 decision is **S1** for a small, separate raw morphology inspection slice only.
 See
 [`docs/science/malecns_spatialization_contract.md`](docs/science/malecns_spatialization_contract.md).
+
+## Raw DNp01 morphology inspector (Phase 5F)
+
+`malecns_morphology_artifact_v1` preserves raw `heal=False` MaleCNS skeletons
+for DNp01 bodies 10001 and 10010 under ignored derived storage. The separate
+`/morphology` browser mode renders their independent raw components after one
+explicit shared uniform view transform. Source coordinates, native frame/unit,
+body mappings, hashes, and provenance remain visible and unchanged. The
+artifact uses `OFFICIAL_MALECNS_BULK_SWC` raw SWC acquisition because neuPrint
+was unavailable in this environment; no healing, smoothing, repair, or
+inferred structure is introduced. The view
+has no fly alignment, activity, anatomical axis labels, or behavioral
+semantics. See
+[`docs/architecture/malecns_morphology_inspector.md`](docs/architecture/malecns_morphology_inspector.md).
 
 ### Scientific semantics and limitation
 

@@ -22,6 +22,7 @@ SPATIAL_SCHEMA_VERSION = "malecns_neuron_spatial_v1"
 MALECNS_EM_COORDINATE_FRAME = "male_cns_v1_em_native_voxels"
 MALECNS_EM_COORDINATE_UNIT = "8_nm_voxel"
 MALECNS_NEUPRINT_SKELETON_SOURCE = "JANELIA_NEUPRINT_MALECNS_SKELETON"
+MALECNS_OFFICIAL_BULK_SWC_SOURCE = "OFFICIAL_MALECNS_BULK_SWC"
 
 
 class SpatialEvidenceCategory(StrEnum):
@@ -437,6 +438,7 @@ def current_raw_spatial_record(
     components: tuple[SkeletonComponent, ...],
     source_swc_sha256: str,
     soma_location: SpatialPoint | None = None,
+    morphology_source: str = MALECNS_NEUPRINT_SKELETON_SOURCE,
 ) -> NeuronSpatialRecord:
     """Construct the pinned raw MaleCNS v1.0 contract without transforming it."""
 
@@ -449,7 +451,7 @@ def current_raw_spatial_record(
         neuron_type=neuron_type,
         side=side,
         source_category=SpatialEvidenceCategory.MALECNS_DIRECT_DATA,
-        morphology_source=MALECNS_NEUPRINT_SKELETON_SOURCE,
+        morphology_source=morphology_source,
         morphology_mode=MorphologyMode.RAW,
         coordinate_unit=MALECNS_EM_COORDINATE_UNIT,
         coordinate_frame_id=MALECNS_EM_COORDINATE_FRAME,

@@ -15,7 +15,9 @@ from neurofly.malecns.contract import CircuitContract, load_circuit_contract
 from neurofly.malecns.errors import MaleCNSError
 from neurofly.malecns.models import CANDIDATE, MALECNS_DATASET, NEUPRINT_ENDPOINT
 from neurofly.malecns.morphology_artifacts import (
+    PHASE5G_MORPHOLOGY_SAMPLE,
     generate_dnp01_morphology_artifact_from_official_bulk_swc,
+    generate_phase5g_morphology_artifact_from_official_bulk_swc,
     load_morphology_artifact,
 )
 from neurofly.malecns.snapshot import export_snapshot
@@ -54,13 +56,19 @@ def _parser() -> argparse.ArgumentParser:
     inspect_columns.add_argument("--contract", type=Path, default=DEFAULT_OUTPUT)
     morphology = subparsers.add_parser(
         "morphology-artifact",
-        help="acquire the fixed raw DNp01 artifact from official bulk SWC",
+        help="acquire a fixed raw morphology sample from official bulk SWC",
     )
     morphology.add_argument("--contract", type=Path, default=DEFAULT_OUTPUT)
     morphology.add_argument("--output-root", type=Path, default=DEFAULT_MORPHOLOGY_ROOT)
+    morphology.add_argument(
+        "--sample",
+        choices=("phase5f-dnp01", PHASE5G_MORPHOLOGY_SAMPLE),
+        default="phase5f-dnp01",
+        help="fixed audited sample to acquire",
+    )
     inspect_morphology = subparsers.add_parser(
         "inspect-morphology-artifact",
-        help="validate and describe one raw DNp01 morphology artifact offline",
+        help="validate and describe one fixed raw morphology artifact offline",
     )
     inspect_morphology.add_argument("path", type=Path)
     inspect_morphology.add_argument("--contract", type=Path, default=DEFAULT_OUTPUT)
@@ -142,9 +150,12 @@ def main() -> int:
 
         if args.command == "morphology-artifact":
             circuit = load_circuit_contract(args.contract)
-            output = generate_dnp01_morphology_artifact_from_official_bulk_swc(
-                circuit, args.output_root
+            generator = (
+                generate_phase5g_morphology_artifact_from_official_bulk_swc
+                if args.sample == PHASE5G_MORPHOLOGY_SAMPLE
+                else generate_dnp01_morphology_artifact_from_official_bulk_swc
             )
+            output = generator(circuit, args.output_root)
             print(f"morphology_artifact={output.name} path={output}")
             return 0
 

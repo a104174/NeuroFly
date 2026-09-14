@@ -42,7 +42,7 @@ export default async function MorphologyPage() {
         ) : (
           <section className="morphology-catalogue">
             <p className="eyebrow">MALECNS / READ-ONLY INSPECTION</p>
-            <h1>Raw DNp01 morphology</h1>
+            <h1>Raw bounded morphology samples</h1>
             <p>
               Source-coordinate skeleton artifacts are separate from experiment
               playback and the presentation-only fly scene.
@@ -51,7 +51,11 @@ export default async function MorphologyPage() {
               {artifacts.map((artifact) => (
                 <li key={artifact.artifact_id}>
                   <Link href={`/morphology/${artifact.artifact_id}`}>
-                    <strong>DNp01 10001 + 10010</strong>
+                    <strong>
+                      {artifact.bodies.map((body) => body.neuron_type).filter(
+                        (value, index, values) => values.indexOf(value) === index,
+                      ).join(" + ")} · {artifact.body_ids.length} bodies
+                    </strong>
                     <span>{artifact.dataset}</span>
                     <span>{artifact.coordinate_frame_id}</span>
                     <span>{artifact.artifact_id.slice(0, 16)}…</span>

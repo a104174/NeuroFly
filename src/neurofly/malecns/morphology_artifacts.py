@@ -52,6 +52,50 @@ EXPECTED_DNP01_MAPPING = (
     (10001, 0, "DNp01", "R"),
     (10010, 1, "DNp01", "L"),
 )
+PHASE5G_MORPHOLOGY_SAMPLE = "phase5g-six-body"
+PHASE5G_MORPHOLOGY_BODY_IDS = (10001, 10010, 11498, 12032, 14465, 16128)
+EXPECTED_PHASE5G_MAPPING = (
+    (10001, 0, "DNp01", "R"),
+    (10010, 1, "DNp01", "L"),
+    (11498, 2, "LPLC2", "L"),
+    (12032, 3, "LC4", "L"),
+    (14465, 12, "LPLC2", "R"),
+    (16128, 16, "LC4", "R"),
+)
+EXPECTED_PHASE5G_SOURCE = MappingProxyType(
+    {
+        10001: (
+            2975,
+            (2975,),
+            "838c60b0e4724d8ca163be994012ebdc23e7ccbdcb9cde92f25e541bc4696511",
+        ),
+        10010: (
+            3312,
+            (3312,),
+            "97e1c587397bd6ec1d6489c1ff129c13b3794745f1ada4376313fdf50363d336",
+        ),
+        11498: (
+            2121,
+            (9, 2112),
+            "172ed22b0ec942974d211a91d064d77a52ac49ffc3757d4fffee92d0ffa71d74",
+        ),
+        12032: (
+            1251,
+            (1251,),
+            "cd6893e4adf7eb5b8070d40e2ec5644fbfde09f98e8b231ccd56bf6e63711c3d",
+        ),
+        14465: (
+            2467,
+            (2467,),
+            "f7171d38867895e4bdd62ad13996573e30121a2bd2e852047417d4fb17e3467d",
+        ),
+        16128: (
+            1773,
+            (1773,),
+            "ffe661f5c0669fe54b253a2101940bd2b36d098a1c0af8caf3edee7c857354a0",
+        ),
+    }
+)
 OFFICIAL_MALECNS_BULK_SWC_BASE_URL = (
     "https://storage.googleapis.com/flyem-male-cns/v1.0/segmentation/"
     "skeletons-malecns/skeletons-swc/"
@@ -60,6 +104,12 @@ OFFICIAL_MALECNS_BULK_SWC_URLS = MappingProxyType(
     {
         body_id: f"{OFFICIAL_MALECNS_BULK_SWC_BASE_URL}{body_id}.swc"
         for body_id in DNP01_MORPHOLOGY_BODY_IDS
+    }
+)
+OFFICIAL_MALECNS_PHASE5G_BULK_SWC_URLS = MappingProxyType(
+    {
+        body_id: f"{OFFICIAL_MALECNS_BULK_SWC_BASE_URL}{body_id}.swc"
+        for body_id in PHASE5G_MORPHOLOGY_BODY_IDS
     }
 )
 MORPHOLOGY_RETRIEVAL_NEUPRINT = "fetch_skeleton(heal=False, format=swc)"
@@ -185,10 +235,13 @@ def _source_provenance(
             raise MorphologyArtifactSchemaError("morphology source URLs are invalid")
         normalized[body_key] = url
     if source_mode == MALECNS_OFFICIAL_BULK_SWC_SOURCE:
-        expected = dict(OFFICIAL_MALECNS_BULK_SWC_URLS)
-        if normalized != expected:
+        expected_sets = (
+            dict(OFFICIAL_MALECNS_BULK_SWC_URLS),
+            dict(OFFICIAL_MALECNS_PHASE5G_BULK_SWC_URLS),
+        )
+        if normalized not in expected_sets:
             raise MorphologyArtifactSchemaError(
-                "official bulk SWC provenance must name the two canonical source URLs"
+                "official bulk SWC provenance must name one canonical fixed sample"
             )
     elif normalized:
         raise MorphologyArtifactSchemaError(
@@ -218,7 +271,7 @@ class MorphologyBodyRecord:
 
 @dataclass(frozen=True, slots=True)
 class LoadedMorphologyArtifact:
-    """Integrity-validated two-body raw morphology artifact."""
+    """Integrity-validated fixed-sample raw morphology artifact."""
 
     path: Path
     artifact_id: str
@@ -292,6 +345,24 @@ def validate_fixed_dnp01_mapping(circuit: CircuitContract) -> None:
         if actual != (node_index, neuron_type, side):
             raise MaleCNSValidationError(
                 f"DNp01 body {body_id} mapping mismatch: {actual!r}"
+            )
+
+
+def validate_fixed_phase5g_mapping(circuit: CircuitContract) -> None:
+    """Verify the exact Phase 5G body/index/type/side boundary."""
+
+    for body_id, node_index, neuron_type, side in EXPECTED_PHASE5G_MAPPING:
+        neuron = circuit.neurons_by_body_id.get(body_id)
+        if neuron is None:
+            raise MaleCNSValidationError(f"Phase 5G body {body_id} is absent")
+        actual = (
+            circuit.node_index_by_body_id[body_id],
+            neuron.type,
+            neuron.soma_side,
+        )
+        if actual != (node_index, neuron_type, side):
+            raise MaleCNSValidationError(
+                f"Phase 5G body {body_id} mapping mismatch: {actual!r}"
             )
 
 
@@ -508,6 +579,79 @@ def acquire_dnp01_morphology_from_official_bulk_swc(
     return tuple(records), source_urls
 
 
+def acquire_phase5g_morphology_from_official_bulk_swc(
+    circuit: CircuitContract,
+    *,
+    fetcher: Callable[[int, str], bytes] | None = None,
+) -> tuple[tuple[MorphologyBodyRecord, ...], tuple[tuple[int, str], ...]]:
+    """Fetch exactly the six audited Phase 5G raw official SWC skeletons."""
+
+    validate_fixed_phase5g_mapping(circuit)
+    if circuit.provenance.dataset != "male-cns:v1.0":
+        raise MaleCNSValidationError("CircuitContract dataset is not male-cns:v1.0")
+    source_urls = tuple(sorted(OFFICIAL_MALECNS_PHASE5G_BULK_SWC_URLS.items()))
+    records = []
+    try:
+        for body_id, url in source_urls:
+            payload = (
+                _download_official_bulk_swc(body_id, url)
+                if fetcher is None
+                else fetcher(body_id, url)
+            )
+            if not isinstance(payload, bytes) or not payload:
+                raise MaleCNSValidationError(
+                    f"Official MaleCNS bulk SWC is empty for body {body_id}."
+                )
+            try:
+                swc = payload.decode("utf-8")
+            except UnicodeDecodeError:
+                raise MaleCNSValidationError(
+                    f"Official MaleCNS bulk SWC is not UTF-8 for body {body_id}."
+                ) from None
+            if not swc.strip():
+                raise MaleCNSValidationError(
+                    f"Official MaleCNS bulk SWC is empty for body {body_id}."
+                )
+            neuron = circuit.neurons_by_body_id[body_id]
+            spatial = current_raw_spatial_record(
+                body_id=body_id,
+                node_index=circuit.node_index_by_body_id[body_id],
+                neuron_type=neuron.type,
+                side=neuron.soma_side,
+                components=_components_from_swc_text(swc),
+                source_swc_sha256=_sha256_bytes(payload),
+                soma_location=None,
+                morphology_source=MALECNS_OFFICIAL_BULK_SWC_SOURCE,
+            )
+            validate_spatial_record_against_circuit(spatial, circuit)
+            records.append(MorphologyBodyRecord(spatial, neuron.status))
+    except (MaleCNSAccessError, MaleCNSValidationError):
+        raise
+    except Exception:
+        raise MaleCNSValidationError(
+            "Official MaleCNS bulk SWC parsing failed; source data are invalid."
+        ) from None
+    if fetcher is None:
+        for item in records:
+            record = item.spatial_record
+            expected_nodes, expected_component_sizes, expected_hash = (
+                EXPECTED_PHASE5G_SOURCE[record.body_id]
+            )
+            component_sizes = tuple(
+                len(component.nodes) for component in record.components
+            )
+            if (
+                sum(component_sizes) != expected_nodes
+                or component_sizes != expected_component_sizes
+                or record.source_swc_sha256 != expected_hash
+            ):
+                raise MaleCNSValidationError(
+                    "Official Phase 5G source differs from the audited record "
+                    f"for body {record.body_id}."
+                )
+    return tuple(records), source_urls
+
+
 def _artifact_identity(
     bodies: tuple[MorphologyBodyRecord, ...],
     *,
@@ -540,15 +684,19 @@ def _artifact_identity(
 
 
 def _validate_body_set(bodies: tuple[MorphologyBodyRecord, ...]) -> None:
-    if (
-        not isinstance(bodies, tuple)
-        or tuple(item.spatial_record.body_id for item in bodies)
-        != DNP01_MORPHOLOGY_BODY_IDS
-    ):
+    if not isinstance(bodies, tuple):
+        raise MorphologyArtifactIntegrityError("morphology bodies must be a tuple")
+    body_ids = tuple(item.spatial_record.body_id for item in bodies)
+    expected_by_set = {
+        DNP01_MORPHOLOGY_BODY_IDS: EXPECTED_DNP01_MAPPING,
+        PHASE5G_MORPHOLOGY_BODY_IDS: EXPECTED_PHASE5G_MAPPING,
+    }
+    expected_mapping = expected_by_set.get(body_ids)
+    if expected_mapping is None:
         raise MorphologyArtifactIntegrityError(
-            "morphology artifact requires exactly bodies 10001 and 10010"
+            "morphology artifact requires one supported fixed body sample"
         )
-    for item, expected in zip(bodies, EXPECTED_DNP01_MAPPING, strict=True):
+    for item, expected in zip(bodies, expected_mapping, strict=True):
         record = item.spatial_record
         if (
             record.body_id,
@@ -587,6 +735,13 @@ def export_morphology_artifact(
     normalized_source_mode, normalized_source_urls = _source_provenance(
         source_mode, source_urls
     )
+    if any(
+        item.spatial_record.morphology_source != normalized_source_mode
+        for item in bodies
+    ):
+        raise MorphologyArtifactIntegrityError(
+            "body morphology source does not match artifact source mode"
+        )
     expected_retrieval = (
         MORPHOLOGY_RETRIEVAL_OFFICIAL_BULK_SWC
         if normalized_source_mode == MALECNS_OFFICIAL_BULK_SWC_SOURCE
@@ -835,12 +990,18 @@ def load_morphology_artifact(
     files = manifest["files"]
     if not isinstance(files, Mapping):
         raise MorphologyArtifactSchemaError("manifest.files must be an object")
+    manifest_body_ids = manifest.get("body_ids")
+    if not isinstance(manifest_body_ids, list):
+        raise MorphologyArtifactSchemaError("manifest.body_ids must be an array")
     expected_files = {
         f"{MORPHOLOGY_BODY_DIRECTORY}/{body_id}.json"
-        for body_id in DNP01_MORPHOLOGY_BODY_IDS
+        for body_id in manifest_body_ids
+        if isinstance(body_id, int) and not isinstance(body_id, bool)
     }
+    if len(expected_files) != len(manifest_body_ids):
+        raise MorphologyArtifactSchemaError("manifest.body_ids are invalid")
     if set(files) != expected_files:
-        raise MorphologyArtifactSchemaError("manifest must contain exactly two bodies")
+        raise MorphologyArtifactSchemaError("manifest body files do not match body_ids")
     bodies = []
     file_hashes = []
     for relative in sorted(expected_files):
@@ -899,6 +1060,12 @@ def load_morphology_artifact(
     )
     if generation["retrieval"] != expected_retrieval:
         raise MorphologyArtifactIntegrityError("artifact retrieval provenance mismatch")
+    if any(
+        item.spatial_record.morphology_source != source_mode for item in bodies_tuple
+    ):
+        raise MorphologyArtifactIntegrityError(
+            "body morphology source does not match artifact source mode"
+        )
     identity = _artifact_identity(
         bodies_tuple,
         source_mode=source_mode,
@@ -911,7 +1078,12 @@ def load_morphology_artifact(
         if manifest[key] != value:
             raise MorphologyArtifactIntegrityError(f"manifest {key} mismatch")
     if circuit is not None:
-        validate_fixed_dnp01_mapping(circuit)
+        if tuple(item.spatial_record.body_id for item in bodies_tuple) == (
+            DNP01_MORPHOLOGY_BODY_IDS
+        ):
+            validate_fixed_dnp01_mapping(circuit)
+        else:
+            validate_fixed_phase5g_mapping(circuit)
         for body in bodies_tuple:
             validate_spatial_record_against_circuit(body.spatial_record, circuit)
     return LoadedMorphologyArtifact(
@@ -978,6 +1150,28 @@ def generate_dnp01_morphology_artifact_from_official_bulk_swc(
     )
 
 
+def generate_phase5g_morphology_artifact_from_official_bulk_swc(
+    circuit: CircuitContract,
+    output_root: str | Path,
+    *,
+    fetcher: Callable[[int, str], bytes] | None = None,
+) -> Path:
+    """Generate the fixed six-body Phase 5G artifact from official raw SWCs."""
+
+    bodies, source_urls = acquire_phase5g_morphology_from_official_bulk_swc(
+        circuit, fetcher=fetcher
+    )
+    return export_morphology_artifact(
+        bodies,
+        output_root,
+        neuprint_python_version="not_used_for_official_bulk_swc",
+        source_endpoint=OFFICIAL_MALECNS_BULK_SWC_BASE_URL,
+        source_mode=MALECNS_OFFICIAL_BULK_SWC_SOURCE,
+        source_urls=dict(source_urls),
+        retrieval=MORPHOLOGY_RETRIEVAL_OFFICIAL_BULK_SWC,
+    )
+
+
 __all__ = [
     "DNP01_MORPHOLOGY_BODY_IDS",
     "EXPECTED_DNP01_MAPPING",
@@ -987,13 +1181,21 @@ __all__ = [
     "MORPHOLOGY_RETRIEVAL_OFFICIAL_BULK_SWC",
     "OFFICIAL_MALECNS_BULK_SWC_BASE_URL",
     "OFFICIAL_MALECNS_BULK_SWC_URLS",
+    "OFFICIAL_MALECNS_PHASE5G_BULK_SWC_URLS",
+    "EXPECTED_PHASE5G_MAPPING",
+    "EXPECTED_PHASE5G_SOURCE",
+    "PHASE5G_MORPHOLOGY_BODY_IDS",
+    "PHASE5G_MORPHOLOGY_SAMPLE",
     "LoadedMorphologyArtifact",
     "MorphologyBodyRecord",
     "acquire_dnp01_morphology",
     "acquire_dnp01_morphology_from_official_bulk_swc",
+    "acquire_phase5g_morphology_from_official_bulk_swc",
     "export_morphology_artifact",
     "generate_dnp01_morphology_artifact",
     "generate_dnp01_morphology_artifact_from_official_bulk_swc",
+    "generate_phase5g_morphology_artifact_from_official_bulk_swc",
     "load_morphology_artifact",
     "validate_fixed_dnp01_mapping",
+    "validate_fixed_phase5g_mapping",
 ]

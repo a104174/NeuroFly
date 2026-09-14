@@ -3,8 +3,8 @@
 > **Working title:** NeuroFly  
 > The name is provisional and may change later.  
 > **Document purpose:** provide persistent context to ChatGPT Project chats, Codex-oriented implementation chats, architecture discussions, scientific reasoning and future documentation.  
-> **Current status:** Phase 5F implements the S1-bounded, separate raw DNp01
-> morphology inspection slice for bodies 10001 and 10010. Source coordinates
+> **Current status:** Phase 5G expands the S1-bounded, separate raw morphology
+> inspector to the audited six-body LC4/LPLC2/DNp01 sample. Source coordinates
 > remain preserved behind `malecns_morphology_artifact_v1`; one shared browser
 > view transform does not alter scientific identity. Phase 5D provides a controlled,
 > versioned Blender/glTF
@@ -34,13 +34,16 @@
 > DNp01 artifact uses the official MaleCNS bulk SWC source with explicit URL
 > and SHA-256 provenance because neuPrint is unreachable in the current
 > environment; no healing, smoothing, repair, or inferred structure is added.
+> Phase 5G preserves the two disconnected raw components of LPLC2 body 11498,
+> uses one shared six-body presentation transform, and adds only visibility and
+> provenance controls. It does not align morphology to the Blender fly.
 > Phase 1D/1E's D3 conclusion remains in
 > force: no provenance-verified body-level
 > LC4/LPLC2 column-to-angular-visual-space
 > transform is available for `male-cns:v1.0`. Level P is the documented
 > population-feature boundary; Level C remains disabled, and no biological
 > calibration or behavioural/motor dynamics are implemented.
-> **Date of this context:** 2026-09-13.
+> **Date of this context:** 2026-09-14.
 
 The Phase 1D-B evidence ledger is maintained in
 [`docs/science/receptive_field_feasibility.md`](science/receptive_field_feasibility.md).
@@ -162,6 +165,12 @@ ordering carries no signal semantics. The acquisition mode is
 `OFFICIAL_MALECNS_BULK_SWC`; neuPrint access is not required for this artifact.
 See
 [`docs/architecture/malecns_morphology_inspector.md`](architecture/malecns_morphology_inspector.md).
+
+Phase 5G reuses `malecns_morphology_artifact_v1` for the fixed six-body audit
+sample: LC4 12032/16128, LPLC2 11498/14465, and DNp01 10001/10010. A new
+presentation-only `malecns_six_body_morphology_view_v1` transform is computed
+once across every source node. LPLC2 11498 remains two independent components
+(9 and 2,112 nodes in canonical root order); no bridge or healed edge is added.
 
 ---
 

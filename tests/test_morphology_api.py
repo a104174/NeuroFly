@@ -14,7 +14,10 @@ from neurofly.morphology_api import (
     MorphologyBodyNotFoundError,
     MorphologyPathError,
 )
-from tests.test_morphology_artifacts import synthetic_morphology_bodies
+from tests.test_morphology_artifacts import (
+    synthetic_morphology_bodies,
+    synthetic_phase5g_morphology_bodies,
+)
 
 
 def test_store_lists_and_loads_json_safe_source_data(tmp_path: Path) -> None:
@@ -56,3 +59,19 @@ def test_store_preserves_integrity_failure(tmp_path: Path) -> None:
     (path / "bodies/10010.json").write_text("{}", encoding="utf-8")
     with pytest.raises(CorruptedMorphologyArtifactError):
         MorphologyArtifactStore(tmp_path).list_artifacts()
+
+
+def test_store_serves_all_six_bodies_and_fragmented_metadata(tmp_path: Path) -> None:
+    path = export_morphology_artifact(synthetic_phase5g_morphology_bodies(), tmp_path)
+    store = MorphologyArtifactStore(tmp_path)
+    summary = store.get_artifact(path.name).to_dict()
+    assert summary["body_ids"] == [10001, 10010, 11498, 12032, 14465, 16128]
+    assert [body["neuron_type"] for body in summary["bodies"]] == [
+        "DNp01",
+        "DNp01",
+        "LPLC2",
+        "LC4",
+        "LPLC2",
+        "LC4",
+    ]
+    assert store.get_body(path.name, 11498).to_dict()["component_count"] == 2

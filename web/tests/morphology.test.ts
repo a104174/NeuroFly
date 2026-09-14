@@ -6,17 +6,52 @@ import {
   parseMorphologyArtifactSummary,
   parseMorphologyBody,
   type MorphologyBody,
+  type MorphologyBodyId,
 } from "../src/lib/neuroflyClient";
 import {
   buildMorphologyLineComponents,
   deriveSharedMorphologyViewTransform,
   DNP01_MORPHOLOGY_VIEW_ID,
+  MALECNS_SIX_BODY_MORPHOLOGY_VIEW_ID,
 } from "../src/lib/morphologyView";
 
 const hash = (letter: string) => letter.repeat(64);
 
-function body(bodyId: 10001 | 10010): Record<string, unknown> {
-  const offset = bodyId === 10001 ? 0 : 100;
+const BODY_PROVENANCE = {
+  10001: [0, "DNp01", "R"],
+  10010: [1, "DNp01", "L"],
+  11498: [2, "LPLC2", "L"],
+  12032: [3, "LC4", "L"],
+  14465: [12, "LPLC2", "R"],
+  16128: [16, "LC4", "R"],
+} as const;
+
+function body(bodyId: MorphologyBodyId): Record<string, unknown> {
+  const [nodeIndex, neuronType, side] = BODY_PROVENANCE[bodyId];
+  const offset = nodeIndex * 100;
+  const components: Array<Record<string, unknown>> = [
+    {
+      component_id: 0,
+      nodes: [
+        { node_id: 1, x: offset, y: 0, z: 0, radius: 1 },
+        { node_id: 2, x: offset + 10, y: 20, z: 30, radius: 99 },
+      ],
+      links: [
+        {
+          child_node_id: 2,
+          parent_node_id: 1,
+          provenance: "MALECNS_RAW_SKELETON_LINK",
+        },
+      ],
+    },
+  ];
+  if (bodyId === 11498) {
+    components.push({
+      component_id: 1,
+      nodes: [{ node_id: 3, x: offset + 30, y: 40, z: 50, radius: 4 }],
+      links: [],
+    });
+  }
   return {
     schema: "morphology_api_v1",
     kind: "morphology_body",
@@ -25,41 +60,26 @@ function body(bodyId: 10001 | 10010): Record<string, unknown> {
     dataset: "male-cns:v1.0",
     candidate: { identifier: "looming_giant_fiber_v1", version: 1 },
     body_id: bodyId,
-    node_index: bodyId === 10001 ? 0 : 1,
-    neuron_type: "DNp01",
-    source_side: bodyId === 10001 ? "R" : "L",
+    node_index: nodeIndex,
+    neuron_type: neuronType,
+    source_side: side,
     source_status: "Traced",
     morphology_mode: "RAW",
-    node_count: 2,
+    node_count: bodyId === 11498 ? 3 : 2,
     link_count: 1,
-    component_count: 1,
+    component_count: bodyId === 11498 ? 2 : 1,
     source_bounds: {
       minimum: [offset, 0, 0],
       maximum: [offset + 10, 20, 30],
     },
-    source_swc_sha256: hash(bodyId === 10001 ? "b" : "c"),
-    spatial_record_id: `sha256:${hash(bodyId === 10001 ? "d" : "e")}`,
+    source_swc_sha256: bodyId.toString(16).padStart(64, "0"),
+    spatial_record_id: `sha256:${(bodyId + 1).toString(16).padStart(64, "0")}`,
     source_category: "MALECNS_DIRECT_DATA",
     morphology_source: "JANELIA_NEUPRINT_MALECNS_SKELETON",
     coordinate_frame_id: "male_cns_v1_em_native_voxels",
     coordinate_unit: "8_nm_voxel",
     soma_location: { x: offset, y: 1, z: 2 },
-    components: [
-      {
-        component_id: 0,
-        nodes: [
-          { node_id: 1, x: offset, y: 0, z: 0, radius: 1 },
-          { node_id: 2, x: offset + 10, y: 20, z: 30, radius: 99 },
-        ],
-        links: [
-          {
-            child_node_id: 2,
-            parent_node_id: 1,
-            provenance: "MALECNS_RAW_SKELETON_LINK",
-          },
-        ],
-      },
-    ],
+    components,
   };
 }
 
@@ -150,6 +170,48 @@ test("one shared deterministic uniform transform preserves relative positions", 
   assert.deepEqual(bodies, sourceBefore);
 });
 
+test("six-body parsing preserves types, fragmentation, and one shared transform", () => {
+  const bodyIds = [10001, 10010, 11498, 12032, 14465, 16128] as const;
+  const payload = summary() as unknown as {
+    body_ids: number[];
+    bodies: Record<string, unknown>[];
+    generation: Record<string, unknown>;
+  };
+  payload.body_ids = [...bodyIds];
+  payload.bodies = bodyIds.map((bodyId) => {
+    const item = body(bodyId);
+    return Object.fromEntries(
+      Object.entries(item).filter(([key]) =>
+        [
+          "body_id", "node_index", "neuron_type", "source_side", "source_status",
+          "morphology_mode", "node_count", "link_count", "component_count",
+          "source_bounds", "source_swc_sha256", "spatial_record_id",
+        ].includes(key),
+      ),
+    );
+  });
+  payload.generation.source_mode = "OFFICIAL_MALECNS_BULK_SWC";
+  payload.generation.retrieval =
+    "official_malecns_bulk_swc(raw, heal=False, smoothing=False, repair=False)";
+  payload.generation.source_urls = Object.fromEntries(
+    bodyIds.map((bodyId) => [
+      String(bodyId),
+      `https://storage.googleapis.com/flyem-male-cns/v1.0/segmentation/skeletons-malecns/skeletons-swc/${bodyId}.swc`,
+    ]),
+  );
+  const artifact = parseMorphologyArtifactSummary(payload);
+  const bodies = bodyIds.map((bodyId) => parseMorphologyBody(body(bodyId)));
+  const sourceBefore = structuredClone(bodies);
+  const transform = deriveSharedMorphologyViewTransform(bodies);
+  assert.deepEqual(artifact.body_ids, [...bodyIds]);
+  assert.deepEqual(new Set(bodies.map((item) => item.neuron_type)), new Set(["LC4", "LPLC2", "DNp01"]));
+  assert.equal(bodies.find((item) => item.body_id === 11498)?.components.length, 2);
+  assert.equal(buildMorphologyLineComponents(bodies[2], transform).length, 2);
+  assert.equal(transform.view_id, MALECNS_SIX_BODY_MORPHOLOGY_VIEW_ID);
+  assert.equal(transform.uniform_scale, 8 / 1610);
+  assert.deepEqual(bodies, sourceBefore);
+});
+
 test("render contract uses native axes without anatomical mapping", () => {
   const source = readFileSync(new URL("../src/components/MorphologyInspector.tsx", import.meta.url), "utf8");
   assert.match(source, /lineBasicMaterial/);
@@ -162,12 +224,14 @@ test("render contract uses native axes without anatomical mapping", () => {
   assert.equal(source.includes("anatomical_position"), false);
   assert.equal(source.includes("anatomical_coordinates"), false);
   assert.equal(source.includes("signal direction"), true);
+  assert.match(source, /Show \{neuronType\}/);
+  assert.match(source, /component_count > 1/);
 });
 
 test("healed and repair-link source contracts are rejected", () => {
   const healed = body(10001);
   healed.morphology_mode = "HEALED";
-  assert.throws(() => parseMorphologyBody(healed), /raw DNp01/);
+  assert.throws(() => parseMorphologyBody(healed), /supported raw/);
   const repaired = body(10001);
   const components = repaired.components as Array<Record<string, unknown>>;
   const links = components[0].links as Array<Record<string, unknown>>;

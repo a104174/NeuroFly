@@ -20,18 +20,16 @@ export default async function MorphologyArtifactPage({
   let data:
     | {
         artifact: Awaited<ReturnType<typeof getMorphologyArtifact>>;
-        body10001: Awaited<ReturnType<typeof getMorphologyBody>>;
-        body10010: Awaited<ReturnType<typeof getMorphologyBody>>;
+        bodies: Awaited<ReturnType<typeof getMorphologyBody>>[];
       }
     | null = null;
   let requestError: unknown = null;
   try {
-    const [artifact, body10001, body10010] = await Promise.all([
-      getMorphologyArtifact(artifactId),
-      getMorphologyBody(artifactId, 10001),
-      getMorphologyBody(artifactId, 10010),
-    ]);
-    data = { artifact, body10001, body10010 };
+    const artifact = await getMorphologyArtifact(artifactId);
+    const bodies = await Promise.all(
+      artifact.body_ids.map((bodyId) => getMorphologyBody(artifactId, bodyId)),
+    );
+    data = { artifact, bodies };
   } catch (error) {
     requestError = error;
   }
@@ -52,7 +50,7 @@ export default async function MorphologyArtifactPage({
           </Link>
           <MorphologyInspector
             artifact={data.artifact}
-            bodies={[data.body10001, data.body10010]}
+            bodies={data.bodies}
           />
         </main>
       </div>

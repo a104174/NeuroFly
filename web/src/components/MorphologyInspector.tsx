@@ -7,6 +7,8 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import type {
   MorphologyArtifactSummary,
   MorphologyBody,
+  MorphologyBodyId,
+  MorphologyNeuronType,
 } from "@/lib/neuroflyClient";
 import {
   buildMorphologyLineComponents,
@@ -14,7 +16,14 @@ import {
   type MorphologyViewTransform,
 } from "@/lib/morphologyView";
 
-const BODY_COLORS = { 10001: "#79d7d1", 10010: "#e6a35b" } as const;
+const BODY_COLORS: Readonly<Record<MorphologyBodyId, string>> = {
+  10001: "#79d7d1",
+  10010: "#e6a35b",
+  11498: "#f4bf72",
+  12032: "#8fd5ff",
+  14465: "#dc8e5a",
+  16128: "#769bea",
+};
 
 function detectWebGL(): boolean {
   try {
@@ -79,9 +88,9 @@ function MorphologyScene({
   showReference,
   resetToken,
 }: {
-  bodies: readonly [MorphologyBody, MorphologyBody];
+  bodies: readonly MorphologyBody[];
   transform: MorphologyViewTransform;
-  visibility: Readonly<Record<10001 | 10010, boolean>>;
+  visibility: Readonly<Record<MorphologyBodyId, boolean>>;
   showReference: boolean;
   resetToken: number;
 }) {
@@ -113,13 +122,20 @@ export function MorphologyInspector({
   bodies,
 }: {
   artifact: MorphologyArtifactSummary;
-  bodies: readonly [MorphologyBody, MorphologyBody];
+  bodies: readonly MorphologyBody[];
 }) {
   const transform = useMemo(
     () => deriveSharedMorphologyViewTransform(bodies),
     [bodies],
   );
-  const [visibility, setVisibility] = useState({ 10001: true, 10010: true });
+  const [visibility, setVisibility] = useState<Record<MorphologyBodyId, boolean>>({
+    10001: true,
+    10010: true,
+    11498: true,
+    12032: true,
+    14465: true,
+    16128: true,
+  });
   const [showReference, setShowReference] = useState(true);
   const [resetToken, setResetToken] = useState(0);
   const [webglAvailable] = useState(detectWebGL);
@@ -128,11 +144,12 @@ export function MorphologyInspector({
     <section className="morphology-inspector" aria-labelledby="morphology-heading">
       <div className="morphology-heading-row">
         <div>
-          <p className="eyebrow">MALECNS RAW MORPHOLOGY / PHASE 5F</p>
-          <h1 id="morphology-heading">DNp01 morphology inspection</h1>
+          <p className="eyebrow">MALECNS RAW MORPHOLOGY / BOUNDED SAMPLE</p>
+          <h1 id="morphology-heading">MaleCNS morphology inspection</h1>
           <p>
-            Two source skeletons in one shared native-frame view. This is separate
-            from experiment playback and is not aligned to the fly visual asset.
+            {bodies.length} source skeletons in one shared native-frame view. This
+            is separate from experiment playback and is not aligned to the fly
+            visual asset.
           </p>
         </div>
         <span className="morphology-mode">RAW · heal=False</span>
@@ -148,7 +165,7 @@ export function MorphologyInspector({
           <Canvas
             camera={{ position: [8.5, 6.5, 10.5], fov: 42, near: 0.01, far: 100 }}
             frameloop="demand"
-            aria-label="Raw DNp01 skeleton morphology view"
+            aria-label="Raw MaleCNS skeleton morphology view"
           >
             <MorphologyScene
               bodies={bodies}
@@ -160,25 +177,53 @@ export function MorphologyInspector({
           </Canvas>
         )}
         <div className="morphology-canvas-key" aria-label="Body color key">
-          <span><i className="body-key-10001" />DNp01 10001 · source side R</span>
-          <span><i className="body-key-10010" />DNp01 10010 · source side L</span>
+          {bodies.map((body) => (
+            <span key={body.body_id}>
+              <i style={{ backgroundColor: BODY_COLORS[body.body_id] }} />
+              {body.neuron_type} {body.body_id} · source side {body.source_side}
+              {body.component_count > 1 ? ` · ${body.component_count} components` : ""}
+            </span>
+          ))}
         </div>
       </div>
 
       <div className="morphology-controls" aria-label="Morphology view controls">
-        {([10001, 10010] as const).map((bodyId) => (
-          <label key={bodyId}>
+        {(["LC4", "LPLC2", "DNp01"] as const)
+          .filter((neuronType) => bodies.some((body) => body.neuron_type === neuronType))
+          .map((neuronType: MorphologyNeuronType) => (
+          <label key={neuronType}>
             <input
               type="checkbox"
-              checked={visibility[bodyId]}
+              checked={bodies
+                .filter((body) => body.neuron_type === neuronType)
+                .every((body) => visibility[body.body_id])}
               onChange={(event) =>
                 setVisibility((current) => ({
                   ...current,
-                  [bodyId]: event.target.checked,
+                  ...Object.fromEntries(
+                    bodies
+                      .filter((body) => body.neuron_type === neuronType)
+                      .map((body) => [body.body_id, event.target.checked]),
+                  ),
                 }))
               }
             />
-            Show DNp01 {bodyId}
+            Show {neuronType}
+          </label>
+        ))}
+        {bodies.map((body) => (
+          <label key={body.body_id}>
+            <input
+              type="checkbox"
+              checked={visibility[body.body_id]}
+              onChange={(event) =>
+                setVisibility((current) => ({
+                  ...current,
+                  [body.body_id]: event.target.checked,
+                }))
+              }
+            />
+            Show {body.neuron_type} {body.body_id}
           </label>
         ))}
         <label>
@@ -215,7 +260,7 @@ export function MorphologyInspector({
                 Official source SWC URLs are retained in the artifact provenance:
               </p>
               <ul className="morphology-source-links">
-                {[10001, 10010].map((bodyId) => (
+                {artifact.body_ids.map((bodyId) => (
                   <li key={bodyId}>
                     <a
                       href={artifact.generation.source_urls[String(bodyId)]}
@@ -231,7 +276,7 @@ export function MorphologyInspector({
           ) : null}
           {bodies.map((body) => (
             <article key={body.body_id} className="morphology-body-readout">
-              <h2>DNp01 body {body.body_id}</h2>
+              <h2>{body.neuron_type} body {body.body_id}</h2>
               <p>
                 node_index {body.node_index} · source side {body.source_side} · {body.node_count.toLocaleString()} nodes · {body.component_count} component(s)
               </p>

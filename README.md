@@ -3,8 +3,8 @@
 NeuroFly is a planned experimental platform for studying connectome-based
 digital agents inspired by the MaleCNS *Drosophila melanogaster* connectome.
 
-The repository is currently in **Phase 5F: raw DNp01 MaleCNS morphology
-inspection slice**. Phase 3C provides deterministic experiment comparison, Phase 3B
+The repository is currently in **Phase 5G: bounded multi-type MaleCNS
+morphology expansion**. Phase 3C provides deterministic experiment comparison, Phase 3B
 provides portable experiment artifacts, Phase 3A provides the reproducible
 experiment-run foundation, and Phase 2H-A
 provides the empirical constraint infrastructure. Phase 2B provides the narrow
@@ -28,7 +28,9 @@ DNp01 morphology artifact, GET-only API, and R3F inspection view. The real
 two-body artifact uses the official MaleCNS bulk SWC URLs because neuPrint is
 unreachable in the current environment; source mode, URLs, and SHA-256 values
 remain explicit in the manifest. None of these layers runs simulations or adds
-write routes.
+write routes. Phase 5G reuses that artifact/API/inspector architecture for the
+audited six-body LC4/LPLC2/DNp01 sample and preserves LPLC2 body 11498's two
+raw disconnected components without repair.
 
 Scientific integrity is a project constraint: future code must distinguish
 biological/connectomic data from NeuroFly modelling assumptions. The detailed
@@ -398,6 +400,13 @@ inferred structure is introduced. The view
 has no fly alignment, activity, anatomical axis labels, or behavioral
 semantics. See
 [`docs/architecture/malecns_morphology_inspector.md`](docs/architecture/malecns_morphology_inspector.md).
+
+Phase 5G adds the explicit `--sample phase5g-six-body` acquisition selector for
+LC4 12032/16128, LPLC2 11498/14465, and DNp01 10001/10010. It keeps the same
+v1 artifact schema and generic GET endpoints. The browser applies one shared
+`malecns_six_body_morphology_view_v1` transform across all six bodies and offers
+type and body visibility controls. This remains a separate static inspection
+mode with no fly alignment or neural activity.
 
 ### Scientific semantics and limitation
 

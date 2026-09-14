@@ -19,13 +19,17 @@ from neurofly.malecns.models import CANDIDATE, CandidateSnapshot
 from neurofly.malecns.morphology_artifacts import (
     DNP01_MORPHOLOGY_BODY_IDS,
     MORPHOLOGY_ARTIFACT_SCHEMA_VERSION,
+    PHASE5G_MORPHOLOGY_BODY_IDS,
+    PHASE5G_MORPHOLOGY_SAMPLE,
     LoadedMorphologyArtifact,
     MorphologyBodyRecord,
     acquire_dnp01_morphology,
     acquire_dnp01_morphology_from_official_bulk_swc,
+    acquire_phase5g_morphology_from_official_bulk_swc,
     export_morphology_artifact,
     generate_dnp01_morphology_artifact,
     generate_dnp01_morphology_artifact_from_official_bulk_swc,
+    generate_phase5g_morphology_artifact_from_official_bulk_swc,
     load_morphology_artifact,
 )
 from neurofly.malecns.sensory import LoomingSample, LoomingStimulus, VisualPoint
@@ -59,6 +63,8 @@ __all__ = [
     "CircuitContract",
     "CandidateSnapshot",
     "DNP01_MORPHOLOGY_BODY_IDS",
+    "PHASE5G_MORPHOLOGY_BODY_IDS",
+    "PHASE5G_MORPHOLOGY_SAMPLE",
     "LoadedMorphologyArtifact",
     "LoomingSample",
     "LoomingStimulus",
@@ -82,6 +88,7 @@ __all__ = [
     "acquire_body_columns",
     "acquire_dnp01_morphology",
     "acquire_dnp01_morphology_from_official_bulk_swc",
+    "acquire_phase5g_morphology_from_official_bulk_swc",
     "create_client",
     "current_raw_spatial_record",
     "export_column_contract",
@@ -95,4 +102,5 @@ __all__ = [
     "validate_snapshot",
     "generate_dnp01_morphology_artifact",
     "generate_dnp01_morphology_artifact_from_official_bulk_swc",
+    "generate_phase5g_morphology_artifact_from_official_bulk_swc",
 ]

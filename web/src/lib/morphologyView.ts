@@ -5,10 +5,14 @@ import type {
 } from "./neuroflyClient";
 
 export const DNP01_MORPHOLOGY_VIEW_ID = "dnp01_morphology_view_v1" as const;
+export const MALECNS_SIX_BODY_MORPHOLOGY_VIEW_ID =
+  "malecns_six_body_morphology_view_v1" as const;
 export const MORPHOLOGY_VIEW_TARGET_EXTENT = 8;
 
 export interface MorphologyViewTransform {
-  readonly view_id: typeof DNP01_MORPHOLOGY_VIEW_ID;
+  readonly view_id:
+    | typeof DNP01_MORPHOLOGY_VIEW_ID
+    | typeof MALECNS_SIX_BODY_MORPHOLOGY_VIEW_ID;
   readonly source_frame: "male_cns_v1_em_native_voxels";
   readonly source_unit: "8_nm_voxel";
   readonly source_bounds: {
@@ -25,7 +29,7 @@ export interface MorphologyViewTransform {
 }
 
 export interface MorphologyLineComponent {
-  readonly bodyId: 10001 | 10010;
+  readonly bodyId: MorphologyBody["body_id"];
   readonly componentId: number;
   readonly positions: Float32Array;
 }
@@ -39,8 +43,15 @@ function allNodes(bodies: readonly MorphologyBody[]): MorphologyNode[] {
 export function deriveSharedMorphologyViewTransform(
   bodies: readonly MorphologyBody[],
 ): MorphologyViewTransform {
-  if (bodies.length !== 2 || new Set(bodies.map((body) => body.body_id)).size !== 2) {
-    throw new Error("The shared DNp01 view requires both distinct bodies.");
+  const bodyIds = bodies.map((body) => body.body_id).join(",");
+  const viewId =
+    bodyIds === "10001,10010"
+      ? DNP01_MORPHOLOGY_VIEW_ID
+      : bodyIds === "10001,10010,11498,12032,14465,16128"
+        ? MALECNS_SIX_BODY_MORPHOLOGY_VIEW_ID
+        : null;
+  if (viewId === null || new Set(bodies.map((body) => body.body_id)).size !== bodies.length) {
+    throw new Error("The shared morphology view requires one complete fixed sample.");
   }
   const nodes = allNodes(bodies);
   if (nodes.length === 0) throw new Error("Morphology view requires source nodes.");
@@ -67,7 +78,7 @@ export function deriveSharedMorphologyViewTransform(
     throw new Error("Morphology source bounds must have finite non-zero extent.");
   }
   return Object.freeze({
-    view_id: DNP01_MORPHOLOGY_VIEW_ID,
+    view_id: viewId,
     source_frame: "male_cns_v1_em_native_voxels",
     source_unit: "8_nm_voxel",
     source_bounds: Object.freeze({

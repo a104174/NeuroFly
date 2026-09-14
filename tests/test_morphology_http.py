@@ -9,7 +9,10 @@ from fastapi.testclient import TestClient
 
 from neurofly.http_api import HTTP_ERROR_SCHEMA_VERSION, create_app
 from neurofly.malecns.morphology_artifacts import export_morphology_artifact
-from tests.test_morphology_artifacts import synthetic_morphology_bodies
+from tests.test_morphology_artifacts import (
+    synthetic_morphology_bodies,
+    synthetic_phase5g_morphology_bodies,
+)
 
 
 def _client(tmp_path: Path) -> tuple[TestClient, Path]:
@@ -100,3 +103,27 @@ def test_gets_never_acquire_live_morphology(tmp_path: Path, monkeypatch) -> None
         forbidden,
     )
     assert client.get(f"/api/v1/morphology/{artifact.name}").status_code == 200
+
+
+def test_six_body_artifact_and_fragment_are_generic_gets(tmp_path: Path) -> None:
+    experiment_root = tmp_path / "experiments"
+    morphology_root = tmp_path / "morphology"
+    experiment_root.mkdir()
+    morphology_root.mkdir()
+    artifact = export_morphology_artifact(
+        synthetic_phase5g_morphology_bodies(), morphology_root
+    )
+    client = TestClient(create_app(experiment_root, morphology_root))
+    summary = client.get(f"/api/v1/morphology/{artifact.name}")
+    assert summary.status_code == 200
+    assert summary.json()["body_ids"] == [10001, 10010, 11498, 12032, 14465, 16128]
+    for body_id in summary.json()["body_ids"]:
+        assert (
+            client.get(
+                f"/api/v1/morphology/{artifact.name}/bodies/{body_id}"
+            ).status_code
+            == 200
+        )
+    fragmented = client.get(f"/api/v1/morphology/{artifact.name}/bodies/11498")
+    assert fragmented.json()["component_count"] == 2
+    assert len(fragmented.json()["components"]) == 2

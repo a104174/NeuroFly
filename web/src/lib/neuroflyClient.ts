@@ -13,14 +13,34 @@ const OFFICIAL_BULK_SWC_URLS = {
     "https://storage.googleapis.com/flyem-male-cns/v1.0/segmentation/skeletons-malecns/skeletons-swc/10001.swc",
   "10010":
     "https://storage.googleapis.com/flyem-male-cns/v1.0/segmentation/skeletons-malecns/skeletons-swc/10010.swc",
+  "11498":
+    "https://storage.googleapis.com/flyem-male-cns/v1.0/segmentation/skeletons-malecns/skeletons-swc/11498.swc",
+  "12032":
+    "https://storage.googleapis.com/flyem-male-cns/v1.0/segmentation/skeletons-malecns/skeletons-swc/12032.swc",
+  "14465":
+    "https://storage.googleapis.com/flyem-male-cns/v1.0/segmentation/skeletons-malecns/skeletons-swc/14465.swc",
+  "16128":
+    "https://storage.googleapis.com/flyem-male-cns/v1.0/segmentation/skeletons-malecns/skeletons-swc/16128.swc",
 } as const;
+
+const MORPHOLOGY_BODY_PROVENANCE = {
+  10001: { nodeIndex: 0, neuronType: "DNp01", side: "R" },
+  10010: { nodeIndex: 1, neuronType: "DNp01", side: "L" },
+  11498: { nodeIndex: 2, neuronType: "LPLC2", side: "L" },
+  12032: { nodeIndex: 3, neuronType: "LC4", side: "L" },
+  14465: { nodeIndex: 12, neuronType: "LPLC2", side: "R" },
+  16128: { nodeIndex: 16, neuronType: "LC4", side: "R" },
+} as const;
+const PHASE5F_BODY_IDS = [10001, 10010] as const;
+const PHASE5G_BODY_IDS = [10001, 10010, 11498, 12032, 14465, 16128] as const;
 
 export type MorphologySource =
   | typeof MORPHOLOGY_SOURCE_NEUPRINT
   | typeof MORPHOLOGY_SOURCE_BULK;
 export type MorphologySourceUrls = Record<string, string>;
 
-export type DNp01MorphologyBodyId = 10001 | 10010;
+export type MorphologyBodyId = keyof typeof MORPHOLOGY_BODY_PROVENANCE;
+export type MorphologyNeuronType = "LC4" | "LPLC2" | "DNp01";
 
 export interface MorphologyBounds {
   minimum: [number, number, number];
@@ -28,9 +48,9 @@ export interface MorphologyBounds {
 }
 
 export interface MorphologyBodySummary {
-  body_id: DNp01MorphologyBodyId;
-  node_index: 0 | 1;
-  neuron_type: "DNp01";
+  body_id: MorphologyBodyId;
+  node_index: number;
+  neuron_type: MorphologyNeuronType;
   source_side: "R" | "L";
   source_status: string | null;
   morphology_mode: "RAW";
@@ -52,8 +72,8 @@ export interface MorphologyArtifactSummary {
   coordinate_frame_id: "male_cns_v1_em_native_voxels";
   coordinate_unit: "8_nm_voxel";
   morphology_mode: "RAW";
-  body_ids: [10001, 10010];
-  bodies: [MorphologyBodySummary, MorphologyBodySummary];
+  body_ids: MorphologyBodyId[];
+  bodies: MorphologyBodySummary[];
   generation: {
     generated_at_utc: string;
     neuprint_python_version: string;
@@ -922,11 +942,11 @@ function sha256(value: unknown, label: string): string {
   return result;
 }
 
-function morphologyBodyId(value: unknown, label: string): DNp01MorphologyBodyId {
+function morphologyBodyId(value: unknown, label: string): MorphologyBodyId {
   const result = integer(value, label);
-  return result === 10001 || result === 10010
-    ? result
-    : fail(`${label} is outside the fixed DNp01 morphology set`);
+  return Object.hasOwn(MORPHOLOGY_BODY_PROVENANCE, result)
+    ? (result as MorphologyBodyId)
+    : fail(`${label} is outside the audited morphology samples`);
 }
 
 function tuple3(value: unknown, label: string): [number, number, number] {
@@ -967,18 +987,18 @@ function morphologySourceUrls(value: unknown, label: string): MorphologySourceUr
 function morphologySummaryBody(value: unknown, label: string): MorphologyBodySummary {
   const item = record(value, label);
   const bodyId = morphologyBodyId(item.body_id, `${label}.body_id`);
-  const expected = bodyId === 10001 ? { index: 0, side: "R" } : { index: 1, side: "L" };
+  const expected = MORPHOLOGY_BODY_PROVENANCE[bodyId];
   const nodeIndex = integer(item.node_index, `${label}.node_index`);
-  if (nodeIndex !== expected.index || item.source_side !== expected.side) {
+  if (nodeIndex !== expected.nodeIndex || item.source_side !== expected.side) {
     return fail(`${label} does not match the fixed body/index/side provenance`);
   }
-  if (item.neuron_type !== "DNp01" || item.morphology_mode !== "RAW") {
-    return fail(`${label} is not a raw DNp01 morphology record`);
+  if (item.neuron_type !== expected.neuronType || item.morphology_mode !== "RAW") {
+    return fail(`${label} is not a supported raw morphology record`);
   }
   return {
     body_id: bodyId,
-    node_index: nodeIndex as 0 | 1,
-    neuron_type: "DNp01",
+    node_index: nodeIndex,
+    neuron_type: expected.neuronType,
     source_side: expected.side as "R" | "L",
     source_status:
       item.source_status === null
@@ -1009,16 +1029,24 @@ export function parseMorphologyArtifactSummary(
   ) {
     return fail("morphology artifact contract is unsupported");
   }
-  if (!Array.isArray(item.body_ids) || item.body_ids.join(",") !== "10001,10010") {
+  if (!Array.isArray(item.body_ids)) {
     return fail("morphology artifact does not contain the fixed body set");
   }
-  if (!Array.isArray(item.bodies) || item.bodies.length !== 2) {
-    return fail("morphology artifact must contain two body summaries");
+  const bodyIds = item.body_ids.map((bodyId, index) =>
+    morphologyBodyId(bodyId, `body_ids[${index}]`),
+  );
+  const isPhase5f = bodyIds.join(",") === PHASE5F_BODY_IDS.join(",");
+  const isPhase5g = bodyIds.join(",") === PHASE5G_BODY_IDS.join(",");
+  if (!isPhase5f && !isPhase5g) {
+    return fail("morphology artifact does not contain a supported fixed body set");
+  }
+  if (!Array.isArray(item.bodies) || item.bodies.length !== bodyIds.length) {
+    return fail("morphology body summary count does not match body_ids");
   }
   const bodies = item.bodies.map((body, index) =>
     morphologySummaryBody(body, `bodies[${index}]`),
   );
-  if (bodies[0].body_id !== 10001 || bodies[1].body_id !== 10010) {
+  if (bodies.some((body, index) => body.body_id !== bodyIds[index])) {
     return fail("morphology body summaries are not canonically ordered");
   }
   const candidate = record(item.candidate, "candidate");
@@ -1029,8 +1057,11 @@ export function parseMorphologyArtifactSummary(
   if (
     (sourceMode === MORPHOLOGY_SOURCE_BULK &&
       (retrieval !== MORPHOLOGY_RETRIEVAL_BULK ||
-        sourceUrls["10001"] !== OFFICIAL_BULK_SWC_URLS["10001"] ||
-        sourceUrls["10010"] !== OFFICIAL_BULK_SWC_URLS["10010"])) ||
+        bodyIds.some(
+          (bodyId) =>
+            sourceUrls[String(bodyId)] !== OFFICIAL_BULK_SWC_URLS[String(bodyId) as keyof typeof OFFICIAL_BULK_SWC_URLS],
+        ) ||
+        Object.keys(sourceUrls).length !== bodyIds.length)) ||
     (sourceMode === MORPHOLOGY_SOURCE_NEUPRINT &&
       (retrieval !== MORPHOLOGY_RETRIEVAL_NEUPRINT || Object.keys(sourceUrls).length !== 0))
   ) {
@@ -1049,8 +1080,8 @@ export function parseMorphologyArtifactSummary(
     coordinate_frame_id: "male_cns_v1_em_native_voxels",
     coordinate_unit: "8_nm_voxel",
     morphology_mode: "RAW",
-    body_ids: [10001, 10010],
-    bodies: [bodies[0], bodies[1]],
+    body_ids: bodyIds,
+    bodies,
     generation: {
       generated_at_utc: stringValue(generation.generated_at_utc, "generated_at_utc"),
       neuprint_python_version: stringValue(
@@ -1199,7 +1230,7 @@ export async function getMorphologyArtifact(
 
 export async function getMorphologyBody(
   artifactId: string,
-  bodyId: DNp01MorphologyBodyId,
+  bodyId: MorphologyBodyId,
 ): Promise<MorphologyBody> {
   return requestJson(
     `/api/v1/morphology/${encodeURIComponent(artifactId)}/bodies/${bodyId}`,

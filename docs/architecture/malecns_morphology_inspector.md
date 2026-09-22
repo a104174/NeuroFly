@@ -1,4 +1,4 @@
-# Raw MaleCNS morphology inspector (Phases 5F–5G)
+# Raw MaleCNS morphology inspector (Phases 5F–5H)
 
 Phase 5F implements the first bounded MaleCNS morphology rendering slice. It
 contains exactly DNp01 bodies `10001` and `10010` from `male-cns:v1.0`. The
@@ -8,6 +8,10 @@ nor Phase 5D's abstract pathway layout and has no experiment-playback state.
 Phase 5G extends the same contract to one fixed audited sample: LC4 12032 (L)
 and 16128 (R), LPLC2 11498 (L) and 14465 (R), and DNp01 10010 (L) and 10001
 (R). It does not enable arbitrary body selection or broader acquisition.
+
+Phase 5H adds local selection of one loaded body and one of its raw components,
+source-coordinate bounds and counts, component highlighting, and camera focus.
+It uses the unchanged Phase 5G artifact and API payload.
 
 | bodyId | type | source side | node_index | nodes | components | official SWC SHA-256 |
 |---:|---|---|---:|---:|---:|---|
@@ -149,6 +153,43 @@ Source data are body identity, raw x/y/z, raw component topology and links,
 source soma/status metadata, frame/unit, and hashes. View state is the shared
 center/scale, identity axis mapping, camera, constant line width, colors,
 background, grid, and visibility.
+
+## Component inspection and camera focus (Phase 5H)
+
+The body selector lists only the six loaded bodies. Selecting a body reveals
+its raw components by the artifact's `(body_id, component_id)` keys. Component
+IDs are serialization identities assigned in sorted raw SWC root order, not
+biological compartment names. The inspector displays body/type, component ID,
+node count, link count, and finite source-coordinate minimum/maximum in
+`8_nm_voxel` units. Bounds are derived directly from raw nodes without changing
+the source record. No node-row browser or new source data is created.
+
+LPLC2 body 11498 has component `0` (9 nodes, 8 links, root node ID 1) and
+component `1` (2,112 nodes, 2,111 links, root node ID 10). The root IDs here
+describe SWC representation only. Select body 11498, then component 0 and
+focus it; reset the camera, select component 1 and focus it. The two components
+remain separate `LineSegments` geometries, with no bridge or repair link.
+
+Body focus frames the selected body's source bounds; component focus frames
+only the selected component's bounds. Both use the existing shared
+`malecns_six_body_morphology_view_v1` center and uniform scale to calculate a
+presentation-space target. Only the OrbitControls target and camera position
+change. Reset restores the canonical global position and origin target and
+keeps selection. Orbit, pan, and zoom remain available. No component receives
+its own normalization, recentering, or source-coordinate transform.
+
+Selection is textual and uses pressed button state; selected geometry keeps
+its body/type color while other visible geometry becomes less opaque. This
+highlight is presentation only and conveys no activity or physiological
+quantity. Existing type/body visibility controls are independent. A hidden
+selection stays selected and is identified as hidden; focus is disabled until
+the body is shown again.
+
+Source data are body/component identity, raw nodes and links, source-coordinate
+bounds derived from those nodes, source hashes, frame, and unit. Local view
+state is selected body/component, visibility, highlight opacity, camera target
+and position, and focus mode. None enters the morphology artifact, experiment,
+playback, scene layout, or Blender fly.
 
 Phase 5G completes the bounded multi-type check at 13,899 nodes without new
 rendering infrastructure. Expansion beyond these six bodies requires a fresh

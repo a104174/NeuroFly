@@ -2,6 +2,8 @@ import type {
   MorphologyBody,
   MorphologyComponent,
   MorphologyNode,
+  MorphologyBounds,
+  MorphologyBodyId,
 } from "./neuroflyClient";
 
 export const DNP01_MORPHOLOGY_VIEW_ID = "dnp01_morphology_view_v1" as const;
@@ -32,6 +34,89 @@ export interface MorphologyLineComponent {
   readonly bodyId: MorphologyBody["body_id"];
   readonly componentId: number;
   readonly positions: Float32Array;
+}
+
+export interface MorphologySelection {
+  readonly bodyId: MorphologyBodyId | null;
+  readonly componentId: number | null;
+}
+
+export interface MorphologyCameraFocus {
+  readonly kind: "global" | "body" | "component";
+  readonly target: readonly [number, number, number];
+  readonly position: readonly [number, number, number];
+}
+
+const GLOBAL_CAMERA_POSITION = [8.5, 6.5, 10.5] as const;
+const CAMERA_FOV_DEGREES = 42;
+
+export function selectMorphologyBody(bodyId: MorphologyBodyId): MorphologySelection {
+  return { bodyId, componentId: null };
+}
+
+export function selectMorphologyComponent(
+  bodyId: MorphologyBodyId,
+  componentId: number,
+): MorphologySelection {
+  return { bodyId, componentId };
+}
+
+export function isMorphologySelectionVisible(
+  selection: MorphologySelection,
+  visibility: Readonly<Record<MorphologyBodyId, boolean>>,
+): boolean {
+  return selection.bodyId === null || visibility[selection.bodyId];
+}
+
+export function sourceBoundsFromNodes(nodes: readonly MorphologyNode[]): MorphologyBounds {
+  if (nodes.length === 0) throw new Error("Morphology bounds require source nodes.");
+  const minimum: [number, number, number] = [Infinity, Infinity, Infinity];
+  const maximum: [number, number, number] = [-Infinity, -Infinity, -Infinity];
+  for (const node of nodes) {
+    const values = [node.x, node.y, node.z] as const;
+    for (let axis = 0; axis < 3; axis += 1) {
+      if (!Number.isFinite(values[axis])) throw new Error("Source coordinates must be finite.");
+      minimum[axis] = Math.min(minimum[axis], values[axis]);
+      maximum[axis] = Math.max(maximum[axis], values[axis]);
+    }
+  }
+  return { minimum, maximum };
+}
+
+export function componentSourceBounds(component: MorphologyComponent): MorphologyBounds {
+  return sourceBoundsFromNodes(component.nodes);
+}
+
+export function bodySourceBounds(body: MorphologyBody): MorphologyBounds {
+  return sourceBoundsFromNodes(body.components.flatMap((component) => component.nodes));
+}
+
+export function focusForSourceBounds(
+  bounds: MorphologyBounds,
+  transform: MorphologyViewTransform,
+  aspect: number,
+  kind: "body" | "component",
+): MorphologyCameraFocus {
+  if (!(aspect > 0) || !Number.isFinite(aspect)) throw new Error("Camera aspect must be finite and positive.");
+  const center = bounds.minimum.map((value, axis) => (value + bounds.maximum[axis]) / 2);
+  const target = transformMorphologyPoint({ x: center[0], y: center[1], z: center[2] }, transform);
+  const viewExtent = bounds.maximum.map(
+    (value, axis) => (value - bounds.minimum[axis]) * transform.uniform_scale,
+  );
+  const radius = Math.hypot(...viewExtent) / 2;
+  const verticalHalfFov = (CAMERA_FOV_DEGREES * Math.PI) / 360;
+  const horizontalHalfFov = Math.atan(Math.tan(verticalHalfFov) * aspect);
+  const distance = Math.max(0.75, (radius * 1.25) / Math.sin(Math.min(verticalHalfFov, horizontalHalfFov)));
+  const directionLength = Math.hypot(...GLOBAL_CAMERA_POSITION);
+  return {
+    kind,
+    target,
+    position: target.map((value, axis) => value + (GLOBAL_CAMERA_POSITION[axis] / directionLength) * distance) as [number, number, number],
+  };
+}
+
+export function globalMorphologyFocus(): MorphologyCameraFocus {
+  return { kind: "global", target: [0, 0, 0], position: [...GLOBAL_CAMERA_POSITION] };
 }
 
 function allNodes(bodies: readonly MorphologyBody[]): MorphologyNode[] {

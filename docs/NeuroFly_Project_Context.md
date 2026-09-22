@@ -3,8 +3,9 @@
 > **Working title:** NeuroFly  
 > The name is provisional and may change later.  
 > **Document purpose:** provide persistent context to ChatGPT Project chats, Codex-oriented implementation chats, architecture discussions, scientific reasoning and future documentation.  
-> **Current status:** Phase 5G expands the S1-bounded, separate raw morphology
-> inspector to the audited six-body LC4/LPLC2/DNp01 sample. Source coordinates
+> **Current status:** Phase 5H makes the S1-bounded, separate raw morphology
+> inspector selectable and camera-focusable at body/component level for the
+> audited six-body LC4/LPLC2/DNp01 sample. Source coordinates
 > remain preserved behind `malecns_morphology_artifact_v1`; one shared browser
 > view transform does not alter scientific identity. Phase 5D provides a controlled,
 > versioned Blender/glTF
@@ -37,6 +38,9 @@
 > Phase 5G preserves the two disconnected raw components of LPLC2 body 11498,
 > uses one shared six-body presentation transform, and adds only visibility and
 > provenance controls. It does not align morphology to the Blender fly.
+> Phase 5H adds local body/component selection, source-coordinate bounds,
+> presentation-only highlighting, and camera-only focus. Selection does not
+> enter source artifacts, experiment identity, or playback.
 > Phase 1D/1E's D3 conclusion remains in
 > force: no provenance-verified body-level
 > LC4/LPLC2 column-to-angular-visual-space

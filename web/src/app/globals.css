@@ -226,6 +226,16 @@ dd { margin: 7px 0 0; color: var(--ink); font-size: 12px; line-height: 1.5; over
 .morphology-controls label { display: flex; align-items: center; gap: 7px; }
 .morphology-controls input { accent-color: var(--cyan); }
 .morphology-controls button { margin-left: auto; padding: 8px 12px; border: 1px solid var(--line-strong); color: var(--cyan); background: var(--surface); cursor: pointer; }
+.morphology-selection { margin-top: 12px; padding: 18px; border: 1px solid var(--line); background: var(--surface); }
+.morphology-selection h2 { margin: 5px 0 16px; font-size: 18px; }
+.morphology-selection p, .morphology-component-row span { color: var(--muted); font-size: 11px; line-height: 1.6; }
+.morphology-body-selector { display: flex; flex-wrap: wrap; gap: 8px; }
+.morphology-selection button { padding: 8px 12px; border: 1px solid var(--line-strong); color: var(--cyan); background: var(--surface-raised); cursor: pointer; }
+.morphology-selection button[aria-pressed="true"] { border-color: var(--cyan); background: rgba(122, 214, 210, 0.16); outline: 1px solid var(--cyan); }
+.morphology-selection button:focus-visible { outline: 2px solid var(--amber); outline-offset: 2px; }
+.morphology-selection button:disabled { opacity: 0.45; cursor: not-allowed; }
+.morphology-component-list { display: grid; gap: 8px; margin: 14px 0; }
+.morphology-component-row { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
 .morphology-warning { margin: 12px 0 0; padding: 13px 15px; border-left: 2px solid var(--amber); color: var(--muted); background: var(--surface); font-size: 11px; line-height: 1.6; }
 .morphology-readouts { margin-top: 12px; padding: 18px; border: 1px solid var(--line); background: var(--surface); }
 .morphology-readouts dl { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin: 0; }

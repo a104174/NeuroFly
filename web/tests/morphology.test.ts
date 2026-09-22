@@ -10,9 +10,17 @@ import {
 } from "../src/lib/neuroflyClient";
 import {
   buildMorphologyLineComponents,
+  bodySourceBounds,
+  componentSourceBounds,
   deriveSharedMorphologyViewTransform,
   DNP01_MORPHOLOGY_VIEW_ID,
+  focusForSourceBounds,
+  globalMorphologyFocus,
+  isMorphologySelectionVisible,
   MALECNS_SIX_BODY_MORPHOLOGY_VIEW_ID,
+  selectMorphologyBody,
+  selectMorphologyComponent,
+  sourceBoundsFromNodes,
 } from "../src/lib/morphologyView";
 
 const hash = (letter: string) => letter.repeat(64);
@@ -226,6 +234,89 @@ test("render contract uses native axes without anatomical mapping", () => {
   assert.equal(source.includes("signal direction"), true);
   assert.match(source, /Show \{neuronType\}/);
   assert.match(source, /component_count > 1/);
+  assert.match(source, /lineBasicMaterial/);
+  assert.match(source, /Selection and highlighting are presentation only/);
+  assert.equal(source.includes("spike animation"), false);
+  assert.equal(source.includes("component bridge"), false);
+});
+
+test("source bounds and camera focus are deterministic and leave the shared transform untouched", () => {
+  const bodies = [parseMorphologyBody(body(10001)), parseMorphologyBody(body(10010))];
+  const before = structuredClone(bodies);
+  const transform = deriveSharedMorphologyViewTransform(bodies);
+  const transformBefore = structuredClone(transform);
+  const componentBounds = componentSourceBounds(bodies[0].components[0]);
+  assert.deepEqual(componentBounds, { minimum: [0, 0, 0], maximum: [10, 20, 30] });
+  assert.deepEqual(bodySourceBounds(bodies[1]), { minimum: [100, 0, 0], maximum: [110, 20, 30] });
+  assert.deepEqual(sourceBoundsFromNodes(bodies[0].components[0].nodes), componentBounds);
+  assert.throws(() => sourceBoundsFromNodes([{ node_id: 1, x: Infinity, y: 0, z: 0, radius: null }]), /finite/);
+  const bodyFocus = focusForSourceBounds(bodySourceBounds(bodies[1]), transform, 1.5, "body");
+  const componentFocus = focusForSourceBounds(componentBounds, transform, 1.5, "component");
+  assert.deepEqual(bodyFocus, focusForSourceBounds(bodySourceBounds(bodies[1]), transform, 1.5, "body"));
+  assert.notDeepEqual(bodyFocus.target, componentFocus.target);
+  assert.deepEqual(globalMorphologyFocus(), { kind: "global", target: [0, 0, 0], position: [8.5, 6.5, 10.5] });
+  assert.ok([...bodyFocus.target, ...bodyFocus.position].every(Number.isFinite));
+  assert.deepEqual(transform, transformBefore);
+  assert.deepEqual(bodies, before);
+});
+
+test("fragmented 11498 retains separate component selection, focus, and links", () => {
+  const input = body(11498);
+  const components = input.components as Array<Record<string, unknown>>;
+  components.splice(0, components.length, ...[9, 2112].map((count, componentId) => {
+    const firstId = componentId === 0 ? 1 : 10;
+    const offset = componentId === 0 ? 200 : 300;
+    return {
+      component_id: componentId,
+      nodes: Array.from({ length: count }, (_, index) => ({
+        node_id: firstId + index, x: offset + index, y: componentId * 50, z: 0, radius: null,
+      })),
+      links: Array.from({ length: count - 1 }, (_, index) => ({
+        child_node_id: firstId + index + 1,
+        parent_node_id: firstId + index,
+        provenance: "MALECNS_RAW_SKELETON_LINK",
+      })),
+    };
+  }));
+  input.node_count = 2121;
+  input.link_count = 2119;
+  input.source_bounds = { minimum: [200, 0, 0], maximum: [2411, 50, 0] };
+  const fragmented = parseMorphologyBody(input);
+  const bodies = [10001, 10010, 11498, 12032, 14465, 16128].map(
+    (bodyId) => bodyId === 11498 ? fragmented : parseMorphologyBody(body(bodyId as MorphologyBodyId)),
+  );
+  const before = structuredClone(fragmented);
+  const transform = deriveSharedMorphologyViewTransform(bodies);
+  const first = fragmented.components[0];
+  const second = fragmented.components[1];
+  assert.deepEqual(fragmented.components.map((component) => [component.component_id, component.nodes.length, component.links.length]), [[0, 9, 8], [1, 2112, 2111]]);
+  assert.deepEqual(selectMorphologyComponent(11498, 0), { bodyId: 11498, componentId: 0 });
+  assert.deepEqual(selectMorphologyComponent(11498, 1), { bodyId: 11498, componentId: 1 });
+  assert.notDeepEqual(
+    focusForSourceBounds(componentSourceBounds(first), transform, 1.5, "component").target,
+    focusForSourceBounds(componentSourceBounds(second), transform, 1.5, "component").target,
+  );
+  const lines = buildMorphologyLineComponents(fragmented, transform);
+  assert.deepEqual(lines.map((line) => [line.componentId, line.positions.length]), [[0, 48], [1, 12666]]);
+  assert.ok(first.links.every((link) => link.child_node_id <= 9 && link.parent_node_id <= 9));
+  assert.ok(second.links.every((link) => link.child_node_id >= 10 && link.parent_node_id >= 10));
+  assert.deepEqual(fragmented, before);
+  assert.equal(transform.view_id, MALECNS_SIX_BODY_MORPHOLOGY_VIEW_ID);
+});
+
+test("selection and visibility remain local presentation state", () => {
+  const parsed = parseMorphologyBody(body(11498));
+  const before = structuredClone(parsed);
+  const selection = selectMorphologyComponent(11498, 1);
+  const visible = { 10001: true, 10010: true, 11498: false, 12032: true, 14465: true, 16128: true };
+  assert.equal(isMorphologySelectionVisible(selection, visible), false);
+  assert.deepEqual(selectMorphologyBody(11498), { bodyId: 11498, componentId: null });
+  assert.equal(isMorphologySelectionVisible(selection, { ...visible, 11498: true }), true);
+  assert.equal("selectedBody" in parsed, false);
+  assert.equal("selectedComponent" in parsed, false);
+  assert.equal("focus" in parsed, false);
+  assert.deepEqual(parsed, before);
+  assert.deepEqual(new Set(Object.values(BODY_PROVENANCE).map((item) => item[1])), new Set(["LC4", "LPLC2", "DNp01"]));
 });
 
 test("healed and repair-link source contracts are rejected", () => {

@@ -1,7 +1,7 @@
 "use client";
 
 import { Canvas, useThree } from "@react-three/fiber";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 
 import type {
@@ -12,9 +12,18 @@ import type {
 } from "@/lib/neuroflyClient";
 import {
   buildMorphologyLineComponents,
+  bodySourceBounds,
+  componentSourceBounds,
   deriveSharedMorphologyViewTransform,
+  focusForSourceBounds,
+  globalMorphologyFocus,
+  isMorphologySelectionVisible,
+  selectMorphologyBody,
+  selectMorphologyComponent,
+  type MorphologySelection,
   type MorphologyViewTransform,
 } from "@/lib/morphologyView";
+import type { MorphologyBounds } from "@/lib/neuroflyClient";
 
 const BODY_COLORS: Readonly<Record<MorphologyBodyId, string>> = {
   10001: "#79d7d1",
@@ -34,35 +43,56 @@ function detectWebGL(): boolean {
   }
 }
 
-function CameraControls({ resetToken }: { resetToken: number }) {
-  const { camera, gl, invalidate } = useThree();
+interface FocusRequest {
+  readonly token: number;
+  readonly kind: "global" | "body" | "component";
+  readonly bounds: MorphologyBounds | null;
+}
+
+function CameraControls({ focusRequest, transform, onFocused }: {
+  focusRequest: FocusRequest;
+  transform: MorphologyViewTransform;
+  onFocused: (kind: FocusRequest["kind"]) => void;
+}) {
+  const { camera, gl, invalidate, size } = useThree();
+  const controlsRef = useRef<OrbitControls | null>(null);
   useEffect(() => {
     const controls = new OrbitControls(camera, gl.domElement);
+    controlsRef.current = controls;
     controls.enableDamping = false;
     const handleChange = () => invalidate();
     controls.addEventListener("change", handleChange);
     controls.target.set(0, 0, 0);
     controls.update();
     return () => {
+      controlsRef.current = null;
       controls.removeEventListener("change", handleChange);
       controls.dispose();
     };
   }, [camera, gl, invalidate]);
   useEffect(() => {
-    camera.position.set(8.5, 6.5, 10.5);
-    camera.lookAt(0, 0, 0);
+    const focus = focusRequest.bounds
+      ? focusForSourceBounds(focusRequest.bounds, transform, size.width / size.height, focusRequest.kind as "body" | "component")
+      : globalMorphologyFocus();
+    camera.position.set(...focus.position);
+    controlsRef.current?.target.set(...focus.target);
+    controlsRef.current?.update();
+    camera.lookAt(...focus.target);
     camera.updateProjectionMatrix();
     invalidate();
-  }, [camera, invalidate, resetToken]);
+    onFocused(focus.kind);
+  }, [camera, focusRequest, invalidate, onFocused, size.height, size.width, transform]);
   return null;
 }
 
 function SkeletonLines({
   body,
   transform,
+  selection,
 }: {
   body: MorphologyBody;
   transform: MorphologyViewTransform;
+  selection: MorphologySelection;
 }) {
   const components = useMemo(
     () => buildMorphologyLineComponents(body, transform),
@@ -76,7 +106,16 @@ function SkeletonLines({
           args={[component.positions, 3]}
         />
       </bufferGeometry>
-      <lineBasicMaterial color={BODY_COLORS[body.body_id]} linewidth={1} />
+      <lineBasicMaterial
+        color={BODY_COLORS[body.body_id]}
+        linewidth={1}
+        transparent
+        opacity={selection.bodyId === null ||
+          (selection.bodyId === body.body_id &&
+            (selection.componentId === null || selection.componentId === component.componentId))
+          ? 1 : selection.bodyId === body.body_id ? 0.28 : 0.16}
+        depthWrite={false}
+      />
     </lineSegments>
   ));
 }
@@ -86,13 +125,17 @@ function MorphologyScene({
   transform,
   visibility,
   showReference,
-  resetToken,
+  selection,
+  focusRequest,
+  onFocused,
 }: {
   bodies: readonly MorphologyBody[];
   transform: MorphologyViewTransform;
   visibility: Readonly<Record<MorphologyBodyId, boolean>>;
   showReference: boolean;
-  resetToken: number;
+  selection: MorphologySelection;
+  focusRequest: FocusRequest;
+  onFocused: (kind: FocusRequest["kind"]) => void;
 }) {
   return (
     <>
@@ -105,10 +148,10 @@ function MorphologyScene({
       ) : null}
       {bodies.map((body) =>
         visibility[body.body_id] ? (
-          <SkeletonLines key={body.body_id} body={body} transform={transform} />
+          <SkeletonLines key={body.body_id} body={body} transform={transform} selection={selection} />
         ) : null,
       )}
-      <CameraControls resetToken={resetToken} />
+      <CameraControls focusRequest={focusRequest} transform={transform} onFocused={onFocused} />
     </>
   );
 }
@@ -137,8 +180,19 @@ export function MorphologyInspector({
     16128: true,
   });
   const [showReference, setShowReference] = useState(true);
-  const [resetToken, setResetToken] = useState(0);
+  const [selection, setSelection] = useState<MorphologySelection>({ bodyId: null, componentId: null });
+  const [focusRequest, setFocusRequest] = useState<FocusRequest>({ token: 0, kind: "global", bounds: null });
+  const [focusKind, setFocusKind] = useState<FocusRequest["kind"]>("global");
   const [webglAvailable] = useState(detectWebGL);
+  const selectedBody = bodies.find((body) => body.body_id === selection.bodyId) ?? null;
+  const selectedComponent = selectedBody?.components.find(
+    (component) => component.component_id === selection.componentId,
+  ) ?? null;
+  const selectedVisible = isMorphologySelectionVisible(selection, visibility);
+
+  function requestFocus(kind: FocusRequest["kind"], bounds: MorphologyBounds | null) {
+    setFocusRequest((current) => ({ token: current.token + 1, kind, bounds }));
+  }
 
   return (
     <section className="morphology-inspector" aria-labelledby="morphology-heading">
@@ -172,7 +226,9 @@ export function MorphologyInspector({
               transform={transform}
               visibility={visibility}
               showReference={showReference}
-              resetToken={resetToken}
+              selection={selection}
+              focusRequest={focusRequest}
+              onFocused={setFocusKind}
             />
           </Canvas>
         )}
@@ -234,10 +290,69 @@ export function MorphologyInspector({
           />
           Show native-axis/grid reference
         </label>
-        <button type="button" onClick={() => setResetToken((value) => value + 1)}>
+        <button type="button" onClick={() => requestFocus("global", null)}>
           Reset camera
         </button>
       </div>
+
+      <section className="morphology-selection" aria-labelledby="morphology-selection-heading">
+        <p className="eyebrow">PRESENTATION SELECTION</p>
+        <h2 id="morphology-selection-heading">Inspect body and raw component</h2>
+        <div className="morphology-body-selector" aria-label="Select morphology body">
+          {bodies.map((body) => (
+            <button
+              key={body.body_id}
+              type="button"
+              aria-pressed={selection.bodyId === body.body_id}
+              onClick={() => setSelection(selectMorphologyBody(body.body_id))}
+            >
+              {body.neuron_type} {body.body_id} · {body.source_side}
+            </button>
+          ))}
+        </div>
+        {selectedBody ? (
+          <>
+            <p aria-live="polite">
+              Selected: {selectedBody.neuron_type} body {selectedBody.body_id}
+              {selectedComponent ? `, raw component ${selectedComponent.component_id}` : ", all raw components"}.
+              {selectedVisible ? " Visible." : " Hidden by visibility controls; enable the body to focus it."}
+              {selectedBody.component_count > 1 ? ` ${selectedBody.component_count} disconnected raw components; no bridge is rendered.` : ""}
+            </p>
+            <p>
+              Body: {selectedBody.node_count.toLocaleString()} nodes · {selectedBody.link_count.toLocaleString()} links · {selectedBody.component_count} component(s) · source bounds {vector(bodySourceBounds(selectedBody).minimum)} to {vector(bodySourceBounds(selectedBody).maximum)} {selectedBody.coordinate_unit}.
+            </p>
+            <button type="button" disabled={!selectedVisible || !webglAvailable} onClick={() => requestFocus("body", bodySourceBounds(selectedBody))}>
+              Focus selected body
+            </button>
+            <div className="morphology-component-list" aria-label={`Raw components of body ${selectedBody.body_id}`}>
+              {selectedBody.components.map((component) => {
+                const bounds = componentSourceBounds(component);
+                return (
+                  <div key={component.component_id} className="morphology-component-row">
+                    <button
+                      type="button"
+                      aria-pressed={selection.componentId === component.component_id}
+                      onClick={() => setSelection(selectMorphologyComponent(selectedBody.body_id, component.component_id))}
+                    >
+                      Select component {component.component_id}
+                    </button>
+                    <span>
+                      {selectedBody.neuron_type} body {selectedBody.body_id} · {component.nodes.length.toLocaleString()} nodes · {component.links.length.toLocaleString()} links · source bounds {vector(bounds.minimum)} to {vector(bounds.maximum)} {selectedBody.coordinate_unit}
+                    </span>
+                  </div>
+                );
+              })}
+            </div>
+            <button type="button" disabled={!selectedComponent || !selectedVisible || !webglAvailable} onClick={() => {
+              if (selectedComponent) requestFocus("component", componentSourceBounds(selectedComponent));
+            }}>
+              Focus selected component
+            </button>
+          </>
+        ) : <p>Select a body to inspect its raw components and source bounds.</p>}
+        <p aria-live="polite">Camera framing: {focusKind}. Reset camera restores the global six-body view and keeps the selection.</p>
+        <p>Selection and highlighting are presentation only; line color still identifies each body and type.</p>
+      </section>
 
       <p className="morphology-warning">
         Source x/y/z are MaleCNS native voxel axes. They are intentionally not

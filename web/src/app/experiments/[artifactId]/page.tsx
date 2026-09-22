@@ -65,6 +65,9 @@ export default async function ExperimentPage({
         <Link className="back-link" href="/">
           ← all experiments
         </Link>
+        <Link className="experiment-cockpit-entry" href={`/experiments/${artifactId}/cockpit`}>
+          Open Scientific Cockpit ↗
+        </Link>
         <ExperimentSummaryView summary={data.summary} />
         <PlaybackWorkspace
           key={data.timeline.artifact_id}

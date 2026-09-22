@@ -3,7 +3,11 @@
 > **Working title:** NeuroFly  
 > The name is provisional and may change later.  
 > **Document purpose:** provide persistent context to ChatGPT Project chats, Codex-oriented implementation chats, architecture discussions, scientific reasoning and future documentation.  
-> **Current status:** Phase 5I adds a bounded structural-connectivity projection
+> **Current status:** Phase 5J composes a persisted experiment, the six-body
+> raw morphology inspector, and the Phase 5I structural projection in one
+> read-only Scientific Cockpit. One canonical experiment clock coordinates the
+> world, stored telemetry, selected DNp01 dynamics, and deterministic event
+> positions; structure and presentation state remain separate. Phase 5I adds a bounded structural-connectivity projection
 > to the S1-bounded raw morphology inspector. The six-body sample displays only
 > actual LC4/LPLC2 → DNp01 CircuitContract edges; connectors remain schematic.
 > Phase 5H makes the separate raw morphology inspector selectable and camera-focusable at body/component level for the
@@ -188,6 +192,16 @@ committed CircuitContract. It validates all six body identities and integrity
 hashes, preserves directed edge weights, and exposes no simulation values. The
 projection is documented in
 [`docs/architecture/structural_connectivity_inspector.md`](architecture/structural_connectivity_inspector.md).
+
+Phase 5J adds `/experiments/[artifactId]/cockpit` as a read-only composition of
+the validated experiment artifact, pinned six-body morphology artifact, and
+Phase 5I projection. Compatibility checks use dataset, candidate, circuit
+integrity, time grid, source modes, and body identities rather than filenames.
+Only persisted DNp01 body data receive selected-neuron dynamic readouts;
+LC4/LPLC2 encoder drives remain labelled type-level. The event list derives
+only timeline boundaries and stored DNp01 spikes. No new biology, simulation,
+source geometry, or scientific artifact is created. See
+[`docs/architecture/scientific_cockpit.md`](architecture/scientific_cockpit.md).
 
 ---
 

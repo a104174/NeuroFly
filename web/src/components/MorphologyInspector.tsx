@@ -1,7 +1,7 @@
 "use client";
 
 import { Canvas, useThree } from "@react-three/fiber";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { memo, useEffect, useMemo, useRef, useState, type Dispatch, type SetStateAction } from "react";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 
 import type {
@@ -192,20 +192,34 @@ function vector(values: readonly number[]): string {
   return values.map((value) => value.toFixed(3)).join(", ");
 }
 
-export function MorphologyInspector({
+export const MorphologyInspector = memo(function MorphologyInspector({
   artifact,
   bodies,
   connectivity,
+  selection: controlledSelection,
+  onSelectionChange,
+  visibility: controlledVisibility,
+  onVisibilityChange,
+  showConnectivity: controlledShowConnectivity,
+  onShowConnectivityChange,
+  compact = false,
 }: {
   artifact: MorphologyArtifactSummary;
   bodies: readonly MorphologyBody[];
-  connectivity: StructuralConnectivityProjection;
+  connectivity: StructuralConnectivityProjection | null;
+  selection?: MorphologySelection;
+  onSelectionChange?: (selection: MorphologySelection) => void;
+  visibility?: Readonly<Record<MorphologyBodyId, boolean>>;
+  onVisibilityChange?: Dispatch<SetStateAction<Record<MorphologyBodyId, boolean>>>;
+  showConnectivity?: boolean;
+  onShowConnectivityChange?: Dispatch<SetStateAction<boolean>>;
+  compact?: boolean;
 }) {
   const transform = useMemo(
     () => deriveSharedMorphologyViewTransform(bodies),
     [bodies],
   );
-  const [visibility, setVisibility] = useState<Record<MorphologyBodyId, boolean>>({
+  const [localVisibility, setLocalVisibility] = useState<Record<MorphologyBodyId, boolean>>({
     10001: true,
     10010: true,
     11498: true,
@@ -214,8 +228,14 @@ export function MorphologyInspector({
     16128: true,
   });
   const [showReference, setShowReference] = useState(true);
-  const [showConnectivity, setShowConnectivity] = useState(false);
-  const [selection, setSelection] = useState<MorphologySelection>({ bodyId: null, componentId: null });
+  const [localShowConnectivity, setLocalShowConnectivity] = useState(false);
+  const [localSelection, setLocalSelection] = useState<MorphologySelection>({ bodyId: null, componentId: null });
+  const selection = controlledSelection ?? localSelection;
+  const setSelection = onSelectionChange ?? setLocalSelection;
+  const visibility = controlledVisibility ?? localVisibility;
+  const setVisibility = onVisibilityChange ?? setLocalVisibility;
+  const showConnectivity = controlledShowConnectivity ?? localShowConnectivity;
+  const setShowConnectivity = onShowConnectivityChange ?? setLocalShowConnectivity;
   const [focusRequest, setFocusRequest] = useState<FocusRequest>({ token: 0, kind: "global", bounds: null });
   const [focusKind, setFocusKind] = useState<FocusRequest["kind"]>("global");
   const [webglAvailable] = useState(detectWebGL);
@@ -225,30 +245,31 @@ export function MorphologyInspector({
   ) ?? null;
   const selectedVisible = isMorphologySelectionVisible(selection, visibility);
   const connectors = useMemo(
-    () => buildSchematicStructuralConnectors(connectivity, bodies, transform, selection, visibility),
+    () => connectivity ? buildSchematicStructuralConnectors(connectivity, bodies, transform, selection, visibility) : [],
     [bodies, connectivity, selection, transform, visibility],
   );
   const incidentEdges = selectedBody === null
-    ? connectivity.edges
-    : connectivity.edges.filter((edge) =>
+    ? connectivity?.edges ?? []
+    : connectivity?.edges.filter((edge) =>
       edge.pre_body_id === selectedBody.body_id || edge.post_body_id === selectedBody.body_id,
-    );
+    ) ?? [];
 
   function requestFocus(kind: FocusRequest["kind"], bounds: MorphologyBounds | null) {
     setFocusRequest((current) => ({ token: current.token + 1, kind, bounds }));
   }
 
   return (
-    <section className="morphology-inspector" aria-labelledby="morphology-heading">
+    <section className={`morphology-inspector${compact ? " morphology-inspector-compact" : ""}`} aria-labelledby="morphology-heading">
       <div className="morphology-heading-row">
         <div>
           <p className="eyebrow">MALECNS RAW MORPHOLOGY / BOUNDED SAMPLE</p>
-          <h1 id="morphology-heading">MaleCNS morphology inspection</h1>
-          <p>
+          {compact ? <h2 id="morphology-heading">Connectome / neural structure</h2> :
+            <h1 id="morphology-heading">MaleCNS morphology inspection</h1>}
+          {!compact ? <p>
             {bodies.length} source skeletons in one shared native-frame view. This
             is separate from experiment playback and is not aligned to the fly
             visual asset.
-          </p>
+          </p> : null}
         </div>
         <span className="morphology-mode">RAW · heal=False</span>
       </div>
@@ -340,6 +361,7 @@ export function MorphologyInspector({
           <input
             type="checkbox"
             checked={showConnectivity}
+            disabled={connectivity === null}
             onChange={(event) => setShowConnectivity(event.target.checked)}
           />
           Show structural connectivity
@@ -408,7 +430,7 @@ export function MorphologyInspector({
         <p>Selection and highlighting are presentation only; line color still identifies each body and type.</p>
       </section>
 
-      <section className="morphology-connectivity" aria-labelledby="connectivity-heading">
+      {connectivity ? <section className="morphology-connectivity" aria-labelledby="connectivity-heading">
         <p className="eyebrow">SOURCE CONNECTIVITY · {connectivity.fixed_sample.id}</p>
         <h2 id="connectivity-heading">Structural relationships in the fixed six-body sample</h2>
         <p>
@@ -435,22 +457,22 @@ export function MorphologyInspector({
         <p>
           Source: {connectivity.source_contract.source}, {connectivity.source_contract.dataset}; verified `neurons.jsonl` and `connections.jsonl` SHA-256 provenance. Projection direction: LC4/LPLC2 → DNp01. The six-body projection is not a population-wide connectivity summary.
         </p>
-        <details>
+        {!compact ? <details>
           <summary>Verified CircuitContract file hashes</summary>
           <ul>
             {connectivity.source_contract.integrity.sha256_by_file.map((entry) => (
               <li key={entry.file}>{entry.file} SHA-256: {entry.sha256}</li>
             ))}
           </ul>
-        </details>
-      </section>
+        </details> : null}
+      </section> : <p className="morphology-warning">Structural connectivity is unavailable. Raw morphology remains inspectable.</p>}
 
       <p className="morphology-warning">
         Source x/y/z are MaleCNS native voxel axes. They are intentionally not
         labelled anterior/posterior, dorsal/ventral, or left/right.
       </p>
 
-      <div className="morphology-readouts">
+      {!compact ? <div className="morphology-readouts">
         <section>
           <p className="eyebrow">SOURCE DATA</p>
           <dl>
@@ -512,7 +534,7 @@ export function MorphologyInspector({
             soma, signal origin, or biological signal direction.
           </p>
         </section>
-      </div>
+      </div> : null}
     </section>
   );
-}
+});

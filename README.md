@@ -3,8 +3,7 @@
 NeuroFly is a planned experimental platform for studying connectome-based
 digital agents inspired by the MaleCNS *Drosophila melanogaster* connectome.
 
-The repository is currently in **Phase 5I: bounded structural connectivity
-visualization**. Phase 3C provides deterministic experiment comparison, Phase 3B
+The repository is currently in **Phase 5J: Scientific Cockpit v1**. Phase 3C provides deterministic experiment comparison, Phase 3B
 provides portable experiment artifacts, Phase 3A provides the reproducible
 experiment-run foundation, and Phase 2H-A
 provides the empirical constraint infrastructure. Phase 2B provides the narrow
@@ -43,6 +42,10 @@ not represent physiology or activity. Configure the backend's
 The projection, four audited edges, data provenance, and schematic geometry
 rules are documented in
 [`docs/architecture/structural_connectivity_inspector.md`](docs/architecture/structural_connectivity_inspector.md).
+Phase 5J composes a persisted experiment, the same six raw morphology bodies,
+and the four-edge structural projection in one synchronized read-only cockpit.
+Its telemetry and event log use only stored experiment data. See
+[`docs/architecture/scientific_cockpit.md`](docs/architecture/scientific_cockpit.md).
 
 Scientific integrity is a project constraint: future code must distinguish
 biological/connectomic data from NeuroFly modelling assumptions. The detailed
@@ -338,6 +341,28 @@ See [`docs/architecture/http_experiment_api.md`](docs/architecture/http_experime
 
 The adapter optionally exposes raw morphology through a separately configured
 `NEUROFLY_MORPHOLOGY_ARTIFACT_ROOT`; morphology GETs never fetch neuPrint data.
+
+## Scientific Cockpit (Phase 5J)
+
+Start the read-only API with the existing local derived-data roots and the
+committed circuit snapshot, then run the frontend. For a repository-local
+checkout, from the repository root:
+
+```bash
+NEUROFLY_EXPERIMENT_ARTIFACT_ROOT=data/derived/experiments \
+NEUROFLY_MORPHOLOGY_ARTIFACT_ROOT=data/derived/malecns/looming_giant_fiber_v1/morphology_artifacts_v1 \
+NEUROFLY_CIRCUIT_CONTRACT_ROOT=data/derived/malecns/looming_giant_fiber_v1 \
+  uvicorn neurofly.http_api:create_app_from_env --factory
+```
+
+In another terminal, configure `NEUROFLY_API_BASE_URL` to that local API and
+run `npm run dev` from `web/`. Choose a real experiment in `/` and follow its
+“Scientific cockpit” link, or open
+`/experiments/<experiment-artifact-id>/cockpit`. The route validates the
+experiment's circuit hashes against the pinned six-body structure and never
+runs a new simulation. The morphology and connectivity panels report explicit
+unavailable states if their local roots are missing; existing playback still
+works. No generated scientific data should be committed for this view.
 
 ## Read-only browser foundation (Phase 5A)
 

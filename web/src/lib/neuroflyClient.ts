@@ -13,7 +13,7 @@ const CONNECTIVITY_SOURCE_METADATA = {
   structural_weight_source: "neuPrint ConnectsTo.weight",
   structural_weight_is_physiological_coupling: false,
 } as const;
-const CONNECTIVITY_SOURCE_HASHES = {
+export const CONNECTIVITY_SOURCE_HASHES = {
   "neurons.jsonl": "00fcba6a1cb3ccd650610bce61de6ce017f4b7ab472cfc9339c5d5247cad264e",
   "connections.jsonl": "f7e55419d8f18a885f5ebcffa99ec8bf117d055593c0285c61def47020ae340a",
 } as const;

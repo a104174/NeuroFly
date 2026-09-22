@@ -38,6 +38,9 @@ export function ExperimentList({ experiments }: { experiments: ExperimentSummary
                 {experiment.validation_status.replaceAll("_", " ")}
               </span>
             </Link>
+            <Link className="experiment-cockpit-link" href={`/experiments/${experiment.artifact_id}/cockpit`}>
+              Open Scientific Cockpit <span aria-hidden="true">↗</span>
+            </Link>
           </li>
         ))}
       </ul>

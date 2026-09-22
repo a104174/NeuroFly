@@ -3,6 +3,33 @@ const APPLICATION_SCHEMA = "experiment_api_v1" as const;
 const ERROR_SCHEMA = "experiment_http_error_v1" as const;
 const VALIDATION_STATUS = "NOT_EVALUATED" as const;
 const MORPHOLOGY_SCHEMA = "morphology_api_v1" as const;
+const CONNECTIVITY_SCHEMA = "malecns_structural_connectivity_v1" as const;
+const CONNECTIVITY_SOURCE_METADATA = {
+  source: "Janelia neuPrint / MaleCNS",
+  endpoint: "https://neuprint.janelia.org",
+  dataset: "male-cns:v1.0",
+  acquired_at_utc: "2026-09-10T20:39:56.889520+00:00",
+  neuprint_python_version: "0.6.3",
+  structural_weight_source: "neuPrint ConnectsTo.weight",
+  structural_weight_is_physiological_coupling: false,
+} as const;
+const CONNECTIVITY_SOURCE_HASHES = {
+  "neurons.jsonl": "00fcba6a1cb3ccd650610bce61de6ce017f4b7ab472cfc9339c5d5247cad264e",
+  "connections.jsonl": "f7e55419d8f18a885f5ebcffa99ec8bf117d055593c0285c61def47020ae340a",
+} as const;
+const EXPECTED_STRUCTURAL_EDGES = [
+  [11498, 10010, 2],
+  [12032, 10010, 62],
+  [14465, 10001, 21],
+  [16128, 10001, 65],
+] as const;
+export const STRUCTURAL_CONNECTIVITY_PROJECTION_ID =
+  "phase5i_six_body_visual_to_dnp01_v1" as const;
+export const STRUCTURAL_CONNECTIVITY_BODY_IDS = [
+  10001, 10010, 11498, 12032, 14465, 16128,
+] as const;
+export type StructuralConnectivityBodyId =
+  (typeof STRUCTURAL_CONNECTIVITY_BODY_IDS)[number];
 const MORPHOLOGY_SOURCE_NEUPRINT = "JANELIA_NEUPRINT_MALECNS_SKELETON" as const;
 const MORPHOLOGY_SOURCE_BULK = "OFFICIAL_MALECNS_BULK_SWC" as const;
 const MORPHOLOGY_RETRIEVAL_NEUPRINT = "fetch_skeleton(heal=False, format=swc)" as const;
@@ -119,6 +146,71 @@ export interface MorphologyBody extends MorphologyBodySummary {
   coordinate_unit: "8_nm_voxel";
   soma_location: { x: number; y: number; z: number } | null;
   components: MorphologyComponent[];
+}
+
+export interface StructuralConnectivityBody {
+  body_id: StructuralConnectivityBodyId;
+  node_index: number;
+  neuron_type: MorphologyNeuronType;
+  source_side: "L" | "R";
+  source_status: string;
+}
+
+export interface StructuralConnectivityEdge {
+  pre_body_id: StructuralConnectivityBodyId;
+  pre_node_index: number;
+  pre_neuron_type: "LC4" | "LPLC2";
+  pre_source_side: "L" | "R";
+  post_body_id: StructuralConnectivityBodyId;
+  post_node_index: number;
+  post_neuron_type: "DNp01";
+  post_source_side: "L" | "R";
+  structural_weight: number;
+}
+
+export interface StructuralConnectivityProjection {
+  schema: typeof CONNECTIVITY_SCHEMA;
+  kind: "bounded_structural_connectivity";
+  dataset: "male-cns:v1.0";
+  candidate: { identifier: "looming_giant_fiber_v1"; version: 1 };
+  source_contract: {
+    source: string;
+    endpoint: "https://neuprint.janelia.org";
+    dataset: "male-cns:v1.0";
+    acquired_at_utc: string;
+    neuprint_python_version: string;
+    integrity: {
+      sha256_verified: true;
+      record_counts_verified: true;
+      sha256_by_file: { file: "neurons.jsonl" | "connections.jsonl"; sha256: string }[];
+    };
+    structural_weight_source: "neuPrint ConnectsTo.weight";
+    structural_weight_is_physiological_coupling: false;
+  };
+  fixed_sample: {
+    id: typeof STRUCTURAL_CONNECTIVITY_PROJECTION_ID;
+    body_ids: StructuralConnectivityBodyId[];
+    bodies: StructuralConnectivityBody[];
+  };
+  projection: {
+    id: typeof STRUCTURAL_CONNECTIVITY_PROJECTION_ID;
+    pre_neuron_types: ["LC4", "LPLC2"];
+    post_neuron_type: "DNp01";
+    direction: "pre_body_id -> post_body_id";
+    canonical_order: "pre_node_index, then post_node_index";
+    edge_semantics: string;
+  };
+  edge_semantics: {
+    weight_field: "structural_weight";
+    weight_source: "neuPrint ConnectsTo.weight";
+    structural_weight_is_physiological_coupling: false;
+  };
+  edges: StructuralConnectivityEdge[];
+  aggregates: {
+    edge_count: number;
+    total_structural_weight: number;
+    structural_weight_by_source_type: { LC4: number; LPLC2: number };
+  };
 }
 
 export type ValidationStatus = typeof VALIDATION_STATUS;
@@ -337,6 +429,16 @@ function stringArray(value: unknown, label: string): string[] {
     return fail(`${label} is not an array`);
   }
   return value.map((item, index) => stringValue(item, `${label}[${index}]`));
+}
+
+function exactKeys(
+  item: Record<string, unknown>,
+  expected: readonly string[],
+  label: string,
+): void {
+  if (Object.keys(item).sort().join(",") !== [...expected].sort().join(",")) {
+    return fail(`${label} has unsupported fields`);
+  }
 }
 
 function schema(value: Record<string, unknown>, expected: string): void {
@@ -666,6 +768,11 @@ function parseHttpError(value: unknown, status: number): NeuroflyApiError {
       body_telemetry_unavailable: "That body has no persisted telemetry.",
       artifact_integrity_failure: "The experiment artifact failed integrity validation.",
       unsupported_artifact_schema: "The experiment artifact schema is unsupported.",
+      connectivity_source_unavailable: "The CircuitContract source is not configured.",
+      circuit_contract_not_found: "The local CircuitContract was not found.",
+      circuit_contract_invalid: "The local CircuitContract failed integrity validation.",
+      connectivity_provenance_mismatch: "The CircuitContract does not match the fixed connectivity projection.",
+      unsupported_connectivity_projection: "The requested connectivity projection is unsupported.",
       invalid_time_range: "The requested timeline range is invalid.",
     };
     return new NeuroflyApiError(
@@ -1202,6 +1309,209 @@ export function parseMorphologyBody(value: unknown): MorphologyBody {
   };
 }
 
+const CONNECTIVITY_BODY_IDENTITIES: Readonly<
+  Record<StructuralConnectivityBodyId, readonly [number, MorphologyNeuronType, "L" | "R"]>
+> = {
+  10001: [0, "DNp01", "R"],
+  10010: [1, "DNp01", "L"],
+  11498: [2, "LPLC2", "L"],
+  12032: [3, "LC4", "L"],
+  14465: [12, "LPLC2", "R"],
+  16128: [16, "LC4", "R"],
+};
+
+export function parseStructuralConnectivity(
+  value: unknown,
+): StructuralConnectivityProjection {
+  const item = record(value, "structural connectivity");
+  exactKeys(item, [
+    "schema", "kind", "dataset", "candidate", "source_contract", "fixed_sample",
+    "projection", "edge_semantics", "edges", "aggregates",
+  ], "structural connectivity");
+  schema(item, CONNECTIVITY_SCHEMA);
+  if (item.kind !== "bounded_structural_connectivity" || item.dataset !== "male-cns:v1.0") {
+    return fail("structural connectivity kind or dataset is unsupported");
+  }
+  const candidate = record(item.candidate, "connectivity.candidate");
+  exactKeys(candidate, ["identifier", "version"], "connectivity.candidate");
+  if (candidate.identifier !== "looming_giant_fiber_v1" || candidate.version !== 1) {
+    return fail("structural connectivity candidate is unsupported");
+  }
+
+  const provenance = record(item.source_contract, "connectivity.source_contract");
+  exactKeys(provenance, [
+    "source", "endpoint", "dataset", "acquired_at_utc", "neuprint_python_version",
+    "integrity", "structural_weight_source", "structural_weight_is_physiological_coupling",
+  ], "connectivity.source_contract");
+  if (Object.entries(CONNECTIVITY_SOURCE_METADATA).some(([key, expected]) => provenance[key] !== expected)) {
+    return fail("structural connectivity provenance is unsupported");
+  }
+  const integrity = record(provenance.integrity, "connectivity.source_contract.integrity");
+  exactKeys(integrity, ["sha256_verified", "record_counts_verified", "sha256_by_file"], "connectivity integrity");
+  if (integrity.sha256_verified !== true || integrity.record_counts_verified !== true || !Array.isArray(integrity.sha256_by_file)) {
+    return fail("CircuitContract integrity is not verified");
+  }
+  const hashes = integrity.sha256_by_file.map((entry, index) => {
+    const hashRecord = record(entry, `connectivity hash ${index}`);
+    exactKeys(hashRecord, ["file", "sha256"], `connectivity hash ${index}`);
+    if (hashRecord.file !== "neurons.jsonl" && hashRecord.file !== "connections.jsonl") {
+      return fail("CircuitContract hash names an unsupported file");
+    }
+    const digest = stringValue(hashRecord.sha256, `connectivity hash ${index}.sha256`);
+    if (!/^[0-9a-f]{64}$/.test(digest)) return fail("CircuitContract hash is malformed");
+    return {
+      file: hashRecord.file as "neurons.jsonl" | "connections.jsonl",
+      sha256: digest,
+    };
+  });
+  if (hashes.length !== 2 || new Set(hashes.map((entry) => entry.file)).size !== 2 ||
+      !hashes.some((entry) => entry.file === "neurons.jsonl") ||
+      !hashes.some((entry) => entry.file === "connections.jsonl")) {
+    return fail("CircuitContract provenance must identify both verified files");
+  }
+  if (hashes.some((entry) => CONNECTIVITY_SOURCE_HASHES[entry.file] !== entry.sha256)) {
+    return fail("CircuitContract source hashes do not match the fixed contract");
+  }
+  const sourceContract: StructuralConnectivityProjection["source_contract"] = {
+    source: CONNECTIVITY_SOURCE_METADATA.source,
+    endpoint: CONNECTIVITY_SOURCE_METADATA.endpoint,
+    dataset: CONNECTIVITY_SOURCE_METADATA.dataset,
+    acquired_at_utc: stringValue(provenance.acquired_at_utc, "connectivity.acquired_at_utc"),
+    neuprint_python_version: stringValue(provenance.neuprint_python_version, "connectivity.neuprint_python_version"),
+    integrity: {
+      sha256_verified: true,
+      record_counts_verified: true,
+      sha256_by_file: hashes as StructuralConnectivityProjection["source_contract"]["integrity"]["sha256_by_file"],
+    },
+    structural_weight_source: "neuPrint ConnectsTo.weight",
+    structural_weight_is_physiological_coupling: false,
+  };
+
+  const sample = record(item.fixed_sample, "connectivity.fixed_sample");
+  exactKeys(sample, ["id", "body_ids", "bodies"], "connectivity.fixed_sample");
+  if (sample.id !== STRUCTURAL_CONNECTIVITY_PROJECTION_ID || !Array.isArray(sample.body_ids) || !Array.isArray(sample.bodies)) {
+    return fail("connectivity fixed sample identity is unsupported");
+  }
+  const bodyIds = sample.body_ids.map((id, index) => integer(id, `fixed_sample.body_ids[${index}]`));
+  if (bodyIds.join(",") !== STRUCTURAL_CONNECTIVITY_BODY_IDS.join(",") || sample.bodies.length !== STRUCTURAL_CONNECTIVITY_BODY_IDS.length) {
+    return fail("connectivity fixed body set is unsupported");
+  }
+  const bodies = sample.bodies.map((entry, index): StructuralConnectivityBody => {
+    const body = record(entry, `connectivity.fixed_sample.bodies[${index}]`);
+    exactKeys(body, ["body_id", "node_index", "neuron_type", "source_side", "source_status"], `connectivity body ${index}`);
+    const bodyId = integer(body.body_id, `connectivity body ${index}.body_id`) as StructuralConnectivityBodyId;
+    const expected = CONNECTIVITY_BODY_IDENTITIES[bodyId];
+    if (!expected || bodyId !== STRUCTURAL_CONNECTIVITY_BODY_IDS[index] ||
+        body.node_index !== expected[0] || body.neuron_type !== expected[1] ||
+        body.source_side !== expected[2] || body.source_status !== "Traced") {
+      return fail(`connectivity body ${index} identity is unsupported`);
+    }
+    return { body_id: bodyId, node_index: expected[0], neuron_type: expected[1], source_side: expected[2], source_status: "Traced" };
+  });
+  const identityById = new Map(bodies.map((body) => [body.body_id, body]));
+
+  const projection = record(item.projection, "connectivity.projection");
+  exactKeys(projection, ["id", "pre_neuron_types", "post_neuron_type", "direction", "canonical_order", "edge_semantics"], "connectivity.projection");
+  if (projection.id !== STRUCTURAL_CONNECTIVITY_PROJECTION_ID ||
+      !Array.isArray(projection.pre_neuron_types) || projection.pre_neuron_types.join(",") !== "LC4,LPLC2" ||
+      projection.post_neuron_type !== "DNp01" || projection.direction !== "pre_body_id -> post_body_id" ||
+      projection.canonical_order !== "pre_node_index, then post_node_index" ||
+      projection.edge_semantics !== "directed structural ConnectsTo relationships from the CircuitContract") {
+    return fail("connectivity projection roles or direction are unsupported");
+  }
+  const semantics = record(item.edge_semantics, "connectivity.edge_semantics");
+  exactKeys(semantics, ["weight_field", "weight_source", "structural_weight_is_physiological_coupling"], "connectivity.edge_semantics");
+  if (semantics.weight_field !== "structural_weight" || semantics.weight_source !== "neuPrint ConnectsTo.weight" || semantics.structural_weight_is_physiological_coupling !== false) {
+    return fail("connectivity structural-weight semantics are unsupported");
+  }
+  const rawEdges = item.edges;
+  if (!Array.isArray(rawEdges)) return fail("connectivity edges are not an array");
+  const seen = new Set<string>();
+  const edges = rawEdges.map((entry, index): StructuralConnectivityEdge => {
+    const edge = record(entry, `connectivity.edges[${index}]`);
+    exactKeys(edge, ["pre_body_id", "pre_node_index", "pre_neuron_type", "pre_source_side", "post_body_id", "post_node_index", "post_neuron_type", "post_source_side", "structural_weight"], `connectivity edge ${index}`);
+    const preId = integer(edge.pre_body_id, `edges[${index}].pre_body_id`) as StructuralConnectivityBodyId;
+    const postId = integer(edge.post_body_id, `edges[${index}].post_body_id`) as StructuralConnectivityBodyId;
+    const pre = identityById.get(preId);
+    const post = identityById.get(postId);
+    const preIndex = integer(edge.pre_node_index, `edges[${index}].pre_node_index`);
+    const postIndex = integer(edge.post_node_index, `edges[${index}].post_node_index`);
+    const weight = integer(edge.structural_weight, `edges[${index}].structural_weight`);
+    if (!pre || !post || !(pre.neuron_type === "LC4" || pre.neuron_type === "LPLC2") || post.neuron_type !== "DNp01" ||
+        pre.node_index !== preIndex || post.node_index !== postIndex || edge.pre_neuron_type !== pre.neuron_type ||
+        edge.pre_source_side !== pre.source_side || edge.post_neuron_type !== "DNp01" ||
+        edge.post_source_side !== post.source_side || weight <= 0) {
+      return fail(`connectivity edge ${index} violates the fixed directed projection`);
+    }
+    const identity = `${preId}:${postId}`;
+    if (seen.has(identity)) return fail("connectivity contains duplicate directed edges");
+    seen.add(identity);
+    if (index > 0) {
+      const previous = rawEdges[index - 1] as Record<string, unknown>;
+      const previousPre = integer(previous.pre_node_index, "previous pre_node_index");
+      const previousPost = integer(previous.post_node_index, "previous post_node_index");
+      if (preIndex < previousPre || (preIndex === previousPre && postIndex <= previousPost)) {
+        return fail("connectivity edges are not in canonical order");
+      }
+    }
+    return {
+      pre_body_id: preId,
+      pre_node_index: preIndex,
+      pre_neuron_type: pre.neuron_type as "LC4" | "LPLC2",
+      pre_source_side: pre.source_side,
+      post_body_id: postId,
+      post_node_index: postIndex,
+      post_neuron_type: "DNp01",
+      post_source_side: post.source_side,
+      structural_weight: weight,
+    };
+  });
+  if (edges.length !== EXPECTED_STRUCTURAL_EDGES.length || edges.some((edge, index) => {
+    const expected = EXPECTED_STRUCTURAL_EDGES[index];
+    return edge.pre_body_id !== expected[0] || edge.post_body_id !== expected[1] ||
+      edge.structural_weight !== expected[2];
+  })) {
+    return fail("connectivity edges do not match the pinned source projection");
+  }
+  const aggregates = record(item.aggregates, "connectivity.aggregates");
+  exactKeys(aggregates, ["edge_count", "total_structural_weight", "structural_weight_by_source_type"], "connectivity.aggregates");
+  const byType = record(aggregates.structural_weight_by_source_type, "connectivity aggregate by type");
+  exactKeys(byType, ["LC4", "LPLC2"], "connectivity aggregate by type");
+  const weightByType = {
+    LC4: edges.filter((edge) => edge.pre_neuron_type === "LC4").reduce((sum, edge) => sum + edge.structural_weight, 0),
+    LPLC2: edges.filter((edge) => edge.pre_neuron_type === "LPLC2").reduce((sum, edge) => sum + edge.structural_weight, 0),
+  };
+  if (integer(aggregates.edge_count, "aggregates.edge_count") !== edges.length ||
+      integer(aggregates.total_structural_weight, "aggregates.total_structural_weight") !== edges.reduce((sum, edge) => sum + edge.structural_weight, 0) ||
+      integer(byType.LC4, "aggregates.structural_weight_by_source_type.LC4") !== weightByType.LC4 ||
+      integer(byType.LPLC2, "aggregates.structural_weight_by_source_type.LPLC2") !== weightByType.LPLC2) {
+    return fail("connectivity aggregates do not match the directed edge set");
+  }
+  return {
+    schema: CONNECTIVITY_SCHEMA,
+    kind: "bounded_structural_connectivity",
+    dataset: "male-cns:v1.0",
+    candidate: { identifier: "looming_giant_fiber_v1", version: 1 },
+    source_contract: sourceContract,
+    fixed_sample: { id: STRUCTURAL_CONNECTIVITY_PROJECTION_ID, body_ids: [...STRUCTURAL_CONNECTIVITY_BODY_IDS], bodies },
+    projection: {
+      id: STRUCTURAL_CONNECTIVITY_PROJECTION_ID,
+      pre_neuron_types: ["LC4", "LPLC2"],
+      post_neuron_type: "DNp01",
+      direction: "pre_body_id -> post_body_id",
+      canonical_order: "pre_node_index, then post_node_index",
+      edge_semantics: "directed structural ConnectsTo relationships from the CircuitContract",
+    },
+    edge_semantics: { weight_field: "structural_weight", weight_source: "neuPrint ConnectsTo.weight", structural_weight_is_physiological_coupling: false },
+    edges,
+    aggregates: {
+      edge_count: edges.length,
+      total_structural_weight: edges.reduce((sum, edge) => sum + edge.structural_weight, 0),
+      structural_weight_by_source_type: weightByType,
+    },
+  };
+}
+
 export async function listMorphologyArtifacts(): Promise<MorphologyArtifactSummary[]> {
   return requestJson("/api/v1/morphology", (value) => {
     const item = record(value, "morphology artifact list");
@@ -1241,5 +1551,14 @@ export async function getMorphologyBody(
       }
       return body;
     },
+  );
+}
+
+export async function getStructuralConnectivity(
+  projectionId: typeof STRUCTURAL_CONNECTIVITY_PROJECTION_ID = STRUCTURAL_CONNECTIVITY_PROJECTION_ID,
+): Promise<StructuralConnectivityProjection> {
+  return requestJson(
+    `/api/v1/connectivity/${encodeURIComponent(projectionId)}`,
+    parseStructuralConnectivity,
   );
 }

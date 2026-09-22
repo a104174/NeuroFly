@@ -6,6 +6,7 @@ import { MorphologyInspector } from "@/components/MorphologyInspector";
 import {
   getMorphologyArtifact,
   getMorphologyBody,
+  getStructuralConnectivity,
   NeuroflyApiError,
 } from "@/lib/neuroflyClient";
 
@@ -21,15 +22,17 @@ export default async function MorphologyArtifactPage({
     | {
         artifact: Awaited<ReturnType<typeof getMorphologyArtifact>>;
         bodies: Awaited<ReturnType<typeof getMorphologyBody>>[];
+        connectivity: Awaited<ReturnType<typeof getStructuralConnectivity>>;
       }
     | null = null;
   let requestError: unknown = null;
   try {
     const artifact = await getMorphologyArtifact(artifactId);
-    const bodies = await Promise.all(
-      artifact.body_ids.map((bodyId) => getMorphologyBody(artifactId, bodyId)),
-    );
-    data = { artifact, bodies };
+    const [bodies, connectivity] = await Promise.all([
+      Promise.all(artifact.body_ids.map((bodyId) => getMorphologyBody(artifactId, bodyId))),
+      getStructuralConnectivity(),
+    ]);
+    data = { artifact, bodies, connectivity };
   } catch (error) {
     requestError = error;
   }
@@ -51,6 +54,7 @@ export default async function MorphologyArtifactPage({
           <MorphologyInspector
             artifact={data.artifact}
             bodies={data.bodies}
+            connectivity={data.connectivity}
           />
         </main>
       </div>

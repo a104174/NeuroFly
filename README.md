@@ -3,8 +3,8 @@
 NeuroFly is a planned experimental platform for studying connectome-based
 digital agents inspired by the MaleCNS *Drosophila melanogaster* connectome.
 
-The repository is currently in **Phase 5H: component-aware MaleCNS morphology
-inspection and camera focus**. Phase 3C provides deterministic experiment comparison, Phase 3B
+The repository is currently in **Phase 5I: bounded structural connectivity
+visualization**. Phase 3C provides deterministic experiment comparison, Phase 3B
 provides portable experiment artifacts, Phase 3A provides the reproducible
 experiment-run foundation, and Phase 2H-A
 provides the empirical constraint infrastructure. Phase 2B provides the narrow
@@ -34,6 +34,15 @@ raw disconnected components without repair.
 Phase 5H adds local body/component selection, source-coordinate metadata,
 presentation-only highlighting, and camera focus while retaining the six-body
 artifact and shared view transform.
+Phase 5I exposes only the real six-body LC4/LPLC2 → DNp01 directed structural
+edges from a locally configured, integrity-validated CircuitContract. Its
+toggleable connectors are schematic; structural weights remain textual and do
+not represent physiology or activity. Configure the backend's
+`NEUROFLY_CIRCUIT_CONTRACT_ROOT` with the existing
+`looming_giant_fiber_v1` snapshot directory to enable the read-only endpoint.
+The projection, four audited edges, data provenance, and schematic geometry
+rules are documented in
+[`docs/architecture/structural_connectivity_inspector.md`](docs/architecture/structural_connectivity_inspector.md).
 
 Scientific integrity is a project constraint: future code must distinguish
 biological/connectomic data from NeuroFly modelling assumptions. The detailed

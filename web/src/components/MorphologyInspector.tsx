@@ -9,7 +9,9 @@ import type {
   MorphologyBody,
   MorphologyBodyId,
   MorphologyNeuronType,
+  StructuralConnectivityProjection,
 } from "@/lib/neuroflyClient";
+import { buildSchematicStructuralConnectors } from "@/lib/connectivityView";
 import {
   buildMorphologyLineComponents,
   bodySourceBounds,
@@ -120,6 +122,31 @@ function SkeletonLines({
   ));
 }
 
+function StructuralConnectivityLines({
+  connectors,
+}: {
+  connectors: ReturnType<typeof buildSchematicStructuralConnectors>;
+}) {
+  return connectors.filter((connector) => connector.visible).map((connector) => (
+    <lineSegments key={`${connector.preBodyId}-${connector.postBodyId}`} renderOrder={2}>
+      <bufferGeometry>
+        <bufferAttribute
+          attach="attributes-position"
+          args={[new Float32Array([...connector.start, ...connector.end]), 3]}
+        />
+      </bufferGeometry>
+      <lineBasicMaterial
+        color="#77c9c6"
+        linewidth={1}
+        transparent
+        opacity={connector.opacity}
+        depthTest={false}
+        depthWrite={false}
+      />
+    </lineSegments>
+  ));
+}
+
 function MorphologyScene({
   bodies,
   transform,
@@ -128,6 +155,8 @@ function MorphologyScene({
   selection,
   focusRequest,
   onFocused,
+  showConnectivity,
+  connectors,
 }: {
   bodies: readonly MorphologyBody[];
   transform: MorphologyViewTransform;
@@ -136,6 +165,8 @@ function MorphologyScene({
   selection: MorphologySelection;
   focusRequest: FocusRequest;
   onFocused: (kind: FocusRequest["kind"]) => void;
+  showConnectivity: boolean;
+  connectors: ReturnType<typeof buildSchematicStructuralConnectors>;
 }) {
   return (
     <>
@@ -151,6 +182,7 @@ function MorphologyScene({
           <SkeletonLines key={body.body_id} body={body} transform={transform} selection={selection} />
         ) : null,
       )}
+      {showConnectivity ? <StructuralConnectivityLines connectors={connectors} /> : null}
       <CameraControls focusRequest={focusRequest} transform={transform} onFocused={onFocused} />
     </>
   );
@@ -163,9 +195,11 @@ function vector(values: readonly number[]): string {
 export function MorphologyInspector({
   artifact,
   bodies,
+  connectivity,
 }: {
   artifact: MorphologyArtifactSummary;
   bodies: readonly MorphologyBody[];
+  connectivity: StructuralConnectivityProjection;
 }) {
   const transform = useMemo(
     () => deriveSharedMorphologyViewTransform(bodies),
@@ -180,6 +214,7 @@ export function MorphologyInspector({
     16128: true,
   });
   const [showReference, setShowReference] = useState(true);
+  const [showConnectivity, setShowConnectivity] = useState(false);
   const [selection, setSelection] = useState<MorphologySelection>({ bodyId: null, componentId: null });
   const [focusRequest, setFocusRequest] = useState<FocusRequest>({ token: 0, kind: "global", bounds: null });
   const [focusKind, setFocusKind] = useState<FocusRequest["kind"]>("global");
@@ -189,6 +224,15 @@ export function MorphologyInspector({
     (component) => component.component_id === selection.componentId,
   ) ?? null;
   const selectedVisible = isMorphologySelectionVisible(selection, visibility);
+  const connectors = useMemo(
+    () => buildSchematicStructuralConnectors(connectivity, bodies, transform, selection, visibility),
+    [bodies, connectivity, selection, transform, visibility],
+  );
+  const incidentEdges = selectedBody === null
+    ? connectivity.edges
+    : connectivity.edges.filter((edge) =>
+      edge.pre_body_id === selectedBody.body_id || edge.post_body_id === selectedBody.body_id,
+    );
 
   function requestFocus(kind: FocusRequest["kind"], bounds: MorphologyBounds | null) {
     setFocusRequest((current) => ({ token: current.token + 1, kind, bounds }));
@@ -229,6 +273,8 @@ export function MorphologyInspector({
               selection={selection}
               focusRequest={focusRequest}
               onFocused={setFocusKind}
+              showConnectivity={showConnectivity}
+              connectors={connectors}
             />
           </Canvas>
         )}
@@ -289,6 +335,14 @@ export function MorphologyInspector({
             onChange={(event) => setShowReference(event.target.checked)}
           />
           Show native-axis/grid reference
+        </label>
+        <label>
+          <input
+            type="checkbox"
+            checked={showConnectivity}
+            onChange={(event) => setShowConnectivity(event.target.checked)}
+          />
+          Show structural connectivity
         </label>
         <button type="button" onClick={() => requestFocus("global", null)}>
           Reset camera
@@ -352,6 +406,43 @@ export function MorphologyInspector({
         ) : <p>Select a body to inspect its raw components and source bounds.</p>}
         <p aria-live="polite">Camera framing: {focusKind}. Reset camera restores the global six-body view and keeps the selection.</p>
         <p>Selection and highlighting are presentation only; line color still identifies each body and type.</p>
+      </section>
+
+      <section className="morphology-connectivity" aria-labelledby="connectivity-heading">
+        <p className="eyebrow">SOURCE CONNECTIVITY · {connectivity.fixed_sample.id}</p>
+        <h2 id="connectivity-heading">Structural relationships in the fixed six-body sample</h2>
+        <p>
+          {incidentEdges.length} {selectedBody ? "incident structural edge(s)" : "projected structural edge(s)"}
+          {selectedBody ? ` for ${selectedBody.neuron_type} body ${selectedBody.body_id}` : ""} · structural weight total {incidentEdges.reduce((sum, edge) => sum + edge.structural_weight, 0)}.
+        </p>
+        <ul aria-label="Directed structural edge readout">
+          {incidentEdges.map((edge) => {
+            const preBody = bodies.find((body) => body.body_id === edge.pre_body_id);
+            const postBody = bodies.find((body) => body.body_id === edge.post_body_id);
+            const isIncident = selection.bodyId === null || edge.pre_body_id === selection.bodyId || edge.post_body_id === selection.bodyId;
+            return (
+              <li key={`${edge.pre_body_id}-${edge.post_body_id}`} className={isIncident ? "is-incident" : "is-unrelated"}>
+                <span>{edge.pre_neuron_type} body {edge.pre_body_id} (source side {edge.pre_source_side}) → {edge.post_neuron_type} body {edge.post_body_id} (source side {edge.post_source_side})</span>
+                <span>structural weight: {edge.structural_weight}</span>
+                <span>Source body indices: {preBody?.node_index} → {postBody?.node_index}</span>
+              </li>
+            );
+          })}
+        </ul>
+        <p>
+          Lines show directed structural relationships from the CircuitContract. Connector positions and straight paths are schematic anchors at transformed raw body-bounds centers; no synapse locations are present or claimed. Structural weight is not physiological efficacy. Morphology coordinates remain MaleCNS source data. This layer displays no neural activity.
+        </p>
+        <p>
+          Source: {connectivity.source_contract.source}, {connectivity.source_contract.dataset}; verified `neurons.jsonl` and `connections.jsonl` SHA-256 provenance. Projection direction: LC4/LPLC2 → DNp01. The six-body projection is not a population-wide connectivity summary.
+        </p>
+        <details>
+          <summary>Verified CircuitContract file hashes</summary>
+          <ul>
+            {connectivity.source_contract.integrity.sha256_by_file.map((entry) => (
+              <li key={entry.file}>{entry.file} SHA-256: {entry.sha256}</li>
+            ))}
+          </ul>
+        </details>
       </section>
 
       <p className="morphology-warning">

@@ -17,6 +17,15 @@ from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 from starlette.exceptions import HTTPException as StarletteHTTPException
 
+from neurofly.connectivity_api import (
+    CircuitContractNotFoundError,
+    ConnectivityApiError,
+    ConnectivityProvenanceError,
+    ConnectivitySourceUnavailableError,
+    InvalidCircuitContractError,
+    StructuralConnectivityStore,
+    UnsupportedConnectivityProjectionError,
+)
 from neurofly.experiment_api import (
     APPLICATION_API_SCHEMA_VERSION,
     ArtifactNotFoundError,
@@ -50,6 +59,7 @@ HTTP_API_VERSION = "v1"
 HTTP_ERROR_SCHEMA_VERSION = "experiment_http_error_v1"
 ARTIFACT_ROOT_ENV = "NEUROFLY_EXPERIMENT_ARTIFACT_ROOT"
 MORPHOLOGY_ARTIFACT_ROOT_ENV = "NEUROFLY_MORPHOLOGY_ARTIFACT_ROOT"
+CIRCUIT_CONTRACT_ROOT_ENV = "NEUROFLY_CIRCUIT_CONTRACT_ROOT"
 
 
 def _error_payload(code: str, message: str) -> dict[str, str]:
@@ -79,6 +89,15 @@ def _morphology_store(request: Request) -> MorphologyArtifactStore:
     if store is None:
         raise MorphologyStoreUnavailableError(
             "morphology artifact root is not configured"
+        )
+    return store
+
+
+def _connectivity_store(request: Request) -> StructuralConnectivityStore:
+    store = getattr(request.app.state, "structural_connectivity_store", None)
+    if store is None:
+        raise ConnectivitySourceUnavailableError(
+            "CircuitContract root is not configured"
         )
     return store
 
@@ -276,6 +295,60 @@ async def _morphology_api_handler(
     )
 
 
+async def _connectivity_unavailable_handler(
+    _request: Request, _exc: ConnectivitySourceUnavailableError
+) -> JSONResponse:
+    return _error_response(
+        503, "connectivity_source_unavailable", "CircuitContract root is not configured"
+    )
+
+
+async def _connectivity_contract_missing_handler(
+    _request: Request, _exc: CircuitContractNotFoundError
+) -> JSONResponse:
+    return _error_response(
+        404, "circuit_contract_not_found", "CircuitContract snapshot was not found"
+    )
+
+
+async def _connectivity_contract_invalid_handler(
+    _request: Request, _exc: InvalidCircuitContractError
+) -> JSONResponse:
+    return _error_response(
+        409, "circuit_contract_invalid", "CircuitContract failed validation"
+    )
+
+
+async def _connectivity_provenance_handler(
+    _request: Request, _exc: ConnectivityProvenanceError
+) -> JSONResponse:
+    return _error_response(
+        409,
+        "connectivity_provenance_mismatch",
+        "CircuitContract does not match the fixed projection",
+    )
+
+
+async def _connectivity_projection_handler(
+    _request: Request, _exc: UnsupportedConnectivityProjectionError
+) -> JSONResponse:
+    return _error_response(
+        404,
+        "unsupported_connectivity_projection",
+        "connectivity projection was not found",
+    )
+
+
+async def _connectivity_api_handler(
+    _request: Request, _exc: ConnectivityApiError
+) -> JSONResponse:
+    return _error_response(
+        500,
+        "connectivity_application_error",
+        "connectivity request could not be completed",
+    )
+
+
 def _register_error_handlers(app: FastAPI) -> None:
     app.add_exception_handler(RequestValidationError, _invalid_request_handler)
     app.add_exception_handler(StarletteHTTPException, _http_error_handler)
@@ -310,12 +383,29 @@ def _register_error_handlers(app: FastAPI) -> None:
     )
     app.add_exception_handler(MorphologyStoreError, _morphology_store_handler)
     app.add_exception_handler(MorphologyApiError, _morphology_api_handler)
+    app.add_exception_handler(
+        ConnectivitySourceUnavailableError, _connectivity_unavailable_handler
+    )
+    app.add_exception_handler(
+        CircuitContractNotFoundError, _connectivity_contract_missing_handler
+    )
+    app.add_exception_handler(
+        InvalidCircuitContractError, _connectivity_contract_invalid_handler
+    )
+    app.add_exception_handler(
+        ConnectivityProvenanceError, _connectivity_provenance_handler
+    )
+    app.add_exception_handler(
+        UnsupportedConnectivityProjectionError, _connectivity_projection_handler
+    )
+    app.add_exception_handler(ConnectivityApiError, _connectivity_api_handler)
     app.add_exception_handler(Exception, _unexpected_error_handler)
 
 
 def create_app(
     artifact_root: str | Path,
     morphology_artifact_root: str | Path | None = None,
+    circuit_contract_root: str | Path | None = None,
 ) -> FastAPI:
     """Create an isolated read-only API over one configured artifact root."""
 
@@ -333,6 +423,11 @@ def create_app(
         None
         if morphology_artifact_root is None
         else MorphologyArtifactStore(morphology_artifact_root)
+    )
+    app.state.structural_connectivity_store = (
+        None
+        if circuit_contract_root is None
+        else StructuralConnectivityStore(circuit_contract_root)
     )
     _register_error_handlers(app)
 
@@ -433,6 +528,12 @@ def create_app(
             "count": len(artifacts),
         }
 
+    @app.get("/api/v1/connectivity/{projection_id}", tags=["connectivity"])
+    def get_structural_connectivity(
+        request: Request, projection_id: str
+    ) -> dict[str, Any]:
+        return _connectivity_store(request).get_projection(projection_id)
+
     @app.get("/api/v1/morphology/{artifact_id}", tags=["morphology"])
     def get_morphology(request: Request, artifact_id: str) -> dict[str, Any]:
         return _morphology_store(request).get_artifact(artifact_id).to_dict()
@@ -458,7 +559,8 @@ def create_app_from_env() -> FastAPI:
             f"{ARTIFACT_ROOT_ENV} must identify an existing artifact directory"
         )
     morphology_root = os.environ.get(MORPHOLOGY_ARTIFACT_ROOT_ENV)
-    return create_app(configured, morphology_root)
+    circuit_contract_root = os.environ.get(CIRCUIT_CONTRACT_ROOT_ENV)
+    return create_app(configured, morphology_root, circuit_contract_root)
 
 
 __all__ = [
@@ -467,6 +569,7 @@ __all__ = [
     "HTTP_API_VERSION",
     "HTTP_ERROR_SCHEMA_VERSION",
     "MORPHOLOGY_ARTIFACT_ROOT_ENV",
+    "CIRCUIT_CONTRACT_ROOT_ENV",
     "create_app",
     "create_app_from_env",
 ]

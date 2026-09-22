@@ -3,8 +3,10 @@
 > **Working title:** NeuroFly  
 > The name is provisional and may change later.  
 > **Document purpose:** provide persistent context to ChatGPT Project chats, Codex-oriented implementation chats, architecture discussions, scientific reasoning and future documentation.  
-> **Current status:** Phase 5H makes the S1-bounded, separate raw morphology
-> inspector selectable and camera-focusable at body/component level for the
+> **Current status:** Phase 5I adds a bounded structural-connectivity projection
+> to the S1-bounded raw morphology inspector. The six-body sample displays only
+> actual LC4/LPLC2 → DNp01 CircuitContract edges; connectors remain schematic.
+> Phase 5H makes the separate raw morphology inspector selectable and camera-focusable at body/component level for the
 > audited six-body LC4/LPLC2/DNp01 sample. Source coordinates
 > remain preserved behind `malecns_morphology_artifact_v1`; one shared browser
 > view transform does not alter scientific identity. Phase 5D provides a controlled,
@@ -41,6 +43,11 @@
 > Phase 5H adds local body/component selection, source-coordinate bounds,
 > presentation-only highlighting, and camera-only focus. Selection does not
 > enter source artifacts, experiment identity, or playback.
+> Phase 5I derives a fixed six-body LC4/LPLC2 → DNp01 projection from the
+> integrity-validated local CircuitContract. Structural weights remain source
+> connectome counts. Straight 3D connectors use transformed body-bound centers
+> only as schematic presentation anchors; they do not claim synapse locations,
+> efficacy, or neural activity. Runtime needs no neuPrint or network access.
 > Phase 1D/1E's D3 conclusion remains in
 > force: no provenance-verified body-level
 > LC4/LPLC2 column-to-angular-visual-space
@@ -175,6 +182,12 @@ sample: LC4 12032/16128, LPLC2 11498/14465, and DNp01 10001/10010. A new
 presentation-only `malecns_six_body_morphology_view_v1` transform is computed
 once across every source node. LPLC2 11498 remains two independent components
 (9 and 2,112 nodes in canonical root order); no bridge or healed edge is added.
+
+Phase 5I adds a GET-only structural projection for this same sample from the
+committed CircuitContract. It validates all six body identities and integrity
+hashes, preserves directed edge weights, and exposes no simulation values. The
+projection is documented in
+[`docs/architecture/structural_connectivity_inspector.md`](architecture/structural_connectivity_inspector.md).
 
 ---
 

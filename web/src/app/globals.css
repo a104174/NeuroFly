@@ -236,6 +236,13 @@ dd { margin: 7px 0 0; color: var(--ink); font-size: 12px; line-height: 1.5; over
 .morphology-selection button:disabled { opacity: 0.45; cursor: not-allowed; }
 .morphology-component-list { display: grid; gap: 8px; margin: 14px 0; }
 .morphology-component-row { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+.morphology-connectivity { margin-top: 12px; padding: 18px; border: 1px solid var(--line); background: var(--surface); }
+.morphology-connectivity h2 { margin: 5px 0 14px; font-size: 18px; }
+.morphology-connectivity p, .morphology-connectivity li { color: var(--muted); font-size: 11px; line-height: 1.65; }
+.morphology-connectivity ul { display: grid; gap: 8px; margin: 12px 0; padding: 0; list-style: none; }
+.morphology-connectivity li { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; gap: 10px; padding: 9px 11px; border-left: 2px solid var(--line-strong); background: var(--surface-raised); }
+.morphology-connectivity li.is-incident { border-color: var(--cyan); color: var(--text); }
+.morphology-connectivity li.is-unrelated { opacity: 0.5; }
 .morphology-warning { margin: 12px 0 0; padding: 13px 15px; border-left: 2px solid var(--amber); color: var(--muted); background: var(--surface); font-size: 11px; line-height: 1.6; }
 .morphology-readouts { margin-top: 12px; padding: 18px; border: 1px solid var(--line); background: var(--surface); }
 .morphology-readouts dl { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin: 0; }

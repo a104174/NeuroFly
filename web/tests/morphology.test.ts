@@ -5,6 +5,7 @@ import { test } from "node:test";
 import {
   parseMorphologyArtifactSummary,
   parseMorphologyBody,
+  parseStructuralConnectivity,
   type MorphologyBody,
   type MorphologyBodyId,
 } from "../src/lib/neuroflyClient";
@@ -22,6 +23,10 @@ import {
   selectMorphologyComponent,
   sourceBoundsFromNodes,
 } from "../src/lib/morphologyView";
+import {
+  buildSchematicStructuralConnectors,
+  deriveStructuralBodyAnchors,
+} from "../src/lib/connectivityView";
 
 const hash = (letter: string) => letter.repeat(64);
 
@@ -125,6 +130,66 @@ function summary() {
       retrieval: "fetch_skeleton(heal=False, format=swc)",
       source_mode: "JANELIA_NEUPRINT_MALECNS_SKELETON",
       source_urls: {},
+    },
+  };
+}
+
+function connectivityPayload() {
+  const bodies = [10001, 10010, 11498, 12032, 14465, 16128].map((bodyId) => {
+    const [nodeIndex, neuronType, sourceSide] = BODY_PROVENANCE[bodyId as MorphologyBodyId];
+    return { body_id: bodyId, node_index: nodeIndex, neuron_type: neuronType, source_side: sourceSide, source_status: "Traced" };
+  });
+  const edges = [
+    { pre_body_id: 11498, pre_node_index: 2, pre_neuron_type: "LPLC2", pre_source_side: "L", post_body_id: 10010, post_node_index: 1, post_neuron_type: "DNp01", post_source_side: "L", structural_weight: 2 },
+    { pre_body_id: 12032, pre_node_index: 3, pre_neuron_type: "LC4", pre_source_side: "L", post_body_id: 10010, post_node_index: 1, post_neuron_type: "DNp01", post_source_side: "L", structural_weight: 62 },
+    { pre_body_id: 14465, pre_node_index: 12, pre_neuron_type: "LPLC2", pre_source_side: "R", post_body_id: 10001, post_node_index: 0, post_neuron_type: "DNp01", post_source_side: "R", structural_weight: 21 },
+    { pre_body_id: 16128, pre_node_index: 16, pre_neuron_type: "LC4", pre_source_side: "R", post_body_id: 10001, post_node_index: 0, post_neuron_type: "DNp01", post_source_side: "R", structural_weight: 65 },
+  ];
+  return {
+    schema: "malecns_structural_connectivity_v1",
+    kind: "bounded_structural_connectivity",
+    dataset: "male-cns:v1.0",
+    candidate: { identifier: "looming_giant_fiber_v1", version: 1 },
+    source_contract: {
+      source: "Janelia neuPrint / MaleCNS",
+      endpoint: "https://neuprint.janelia.org",
+      dataset: "male-cns:v1.0",
+      acquired_at_utc: "2026-09-10T20:39:56.889520+00:00",
+      neuprint_python_version: "0.6.3",
+      integrity: {
+        sha256_verified: true,
+        record_counts_verified: true,
+        sha256_by_file: [
+          { file: "neurons.jsonl", sha256: "00fcba6a1cb3ccd650610bce61de6ce017f4b7ab472cfc9339c5d5247cad264e" },
+          { file: "connections.jsonl", sha256: "f7e55419d8f18a885f5ebcffa99ec8bf117d055593c0285c61def47020ae340a" },
+        ],
+      },
+      structural_weight_source: "neuPrint ConnectsTo.weight",
+      structural_weight_is_physiological_coupling: false,
+    },
+    fixed_sample: {
+      id: "phase5i_six_body_visual_to_dnp01_v1",
+      body_ids: [10001, 10010, 11498, 12032, 14465, 16128],
+      bodies,
+    },
+    projection: {
+      id: "phase5i_six_body_visual_to_dnp01_v1",
+      pre_neuron_types: ["LC4", "LPLC2"],
+      post_neuron_type: "DNp01",
+      direction: "pre_body_id -> post_body_id",
+      canonical_order: "pre_node_index, then post_node_index",
+      edge_semantics: "directed structural ConnectsTo relationships from the CircuitContract",
+    },
+    edge_semantics: {
+      weight_field: "structural_weight",
+      weight_source: "neuPrint ConnectsTo.weight",
+      structural_weight_is_physiological_coupling: false,
+    },
+    edges,
+    aggregates: {
+      edge_count: 4,
+      total_structural_weight: 150,
+      structural_weight_by_source_type: { LC4: 127, LPLC2: 23 },
     },
   };
 }
@@ -317,6 +382,97 @@ test("selection and visibility remain local presentation state", () => {
   assert.equal("focus" in parsed, false);
   assert.deepEqual(parsed, before);
   assert.deepEqual(new Set(Object.values(BODY_PROVENANCE).map((item) => item[1])), new Set(["LC4", "LPLC2", "DNp01"]));
+});
+
+test("structural connectivity parser accepts the fixed source projection and rejects contract drift", () => {
+  const valid = connectivityPayload();
+  const parsed = parseStructuralConnectivity(valid);
+  assert.equal(parsed.edges.length, 4);
+  assert.deepEqual(parsed.edges.map((edge) => edge.structural_weight), [2, 62, 21, 65]);
+  const wrongBodySet = structuredClone(valid);
+  (wrongBodySet.fixed_sample.body_ids as number[])[0] = 999;
+  assert.throws(() => parseStructuralConnectivity(wrongBodySet), /fixed body set/);
+  const wrongRole = structuredClone(valid);
+  (wrongRole.edges as Array<Record<string, unknown>>)[0].pre_neuron_type = "DNp01";
+  assert.throws(() => parseStructuralConnectivity(wrongRole), /fixed directed projection/);
+  const reversed = structuredClone(valid);
+  (reversed.edges as Array<Record<string, unknown>>)[0] = {
+    ...(reversed.edges as Array<Record<string, unknown>>)[0],
+    pre_body_id: 10010, pre_node_index: 1, pre_neuron_type: "DNp01", pre_source_side: "L",
+    post_body_id: 11498, post_node_index: 2, post_neuron_type: "LPLC2", post_source_side: "L",
+  };
+  assert.throws(() => parseStructuralConnectivity(reversed), /fixed directed projection/);
+  const unsupportedRelation = structuredClone(valid);
+  (unsupportedRelation.edges as Array<Record<string, unknown>>)[0] = {
+    ...(unsupportedRelation.edges as Array<Record<string, unknown>>)[0],
+    post_body_id: 10001,
+    post_node_index: 0,
+    post_source_side: "R",
+  };
+  assert.throws(() => parseStructuralConnectivity(unsupportedRelation), /pinned source projection/);
+  const unsupportedWeight = structuredClone(valid);
+  (unsupportedWeight.edges as Array<Record<string, unknown>>)[0].structural_weight = 3;
+  assert.throws(() => parseStructuralConnectivity(unsupportedWeight), /pinned source projection/);
+  const invalidWeight = structuredClone(valid);
+  (invalidWeight.edges as Array<Record<string, unknown>>)[0].structural_weight = 0;
+  assert.throws(() => parseStructuralConnectivity(invalidWeight), /fixed directed projection/);
+  const fractionalWeight = structuredClone(valid);
+  (fractionalWeight.edges as Array<Record<string, unknown>>)[0].structural_weight = 1.5;
+  assert.throws(() => parseStructuralConnectivity(fractionalWeight), /integer/);
+  const unsupportedSchema = structuredClone(valid);
+  unsupportedSchema.schema = "malecns_structural_connectivity_v2";
+  assert.throws(() => parseStructuralConnectivity(unsupportedSchema), /schema is not supported/);
+  const badProvenance = structuredClone(valid);
+  (badProvenance.source_contract as Record<string, unknown>).endpoint = "https://example.invalid";
+  assert.throws(() => parseStructuralConnectivity(badProvenance), /provenance is unsupported/);
+  const badHash = structuredClone(valid);
+  const badHashes = (badHash.source_contract as { integrity: { sha256_by_file: { sha256: string }[] } }).integrity.sha256_by_file;
+  badHashes[0].sha256 = "a".repeat(64);
+  assert.throws(() => parseStructuralConnectivity(badHash), /source hashes do not match/);
+  const changedAggregate = structuredClone(valid);
+  (changedAggregate.aggregates as Record<string, unknown>).total_structural_weight = 151;
+  assert.throws(() => parseStructuralConnectivity(changedAggregate), /aggregates do not match/);
+  const duplicateEdge = structuredClone(valid);
+  (duplicateEdge.edges as Array<Record<string, unknown>>)[1] = structuredClone(
+    (duplicateEdge.edges as Array<Record<string, unknown>>)[0],
+  );
+  assert.throws(() => parseStructuralConnectivity(duplicateEdge), /duplicate directed edges/);
+  const outOfOrder = structuredClone(valid);
+  (outOfOrder.edges as Array<Record<string, unknown>>).reverse();
+  assert.throws(() => parseStructuralConnectivity(outOfOrder), /canonical order/);
+});
+
+test("schematic connectors use shared transformed body-bound centers and body selection only", () => {
+  const bodies = [10001, 10010, 11498, 12032, 14465, 16128].map((bodyId) =>
+    parseMorphologyBody(body(bodyId as MorphologyBodyId)),
+  );
+  const projection = parseStructuralConnectivity(connectivityPayload());
+  const before = structuredClone(bodies);
+  const transform = deriveSharedMorphologyViewTransform(bodies);
+  const visibility = { 10001: true, 10010: true, 11498: true, 12032: true, 14465: true, 16128: true };
+  const anchors = deriveStructuralBodyAnchors(bodies, transform);
+  const connectors = buildSchematicStructuralConnectors(projection, bodies, transform, selectMorphologyBody(11498), visibility);
+  assert.equal(connectors.length, 4);
+  assert.deepEqual(connectors.map(({ preBodyId, postBodyId }) => [preBodyId, postBodyId]), projection.edges.map(({ pre_body_id, post_body_id }) => [pre_body_id, post_body_id]));
+  assert.deepEqual(connectors[0].start, anchors.get(11498));
+  assert.deepEqual(connectors[0].end, anchors.get(10010));
+  assert.equal(connectors[0].highlighted, true);
+  assert.equal(connectors[1].highlighted, false);
+  const selectedComponent = buildSchematicStructuralConnectors(projection, bodies, transform, selectMorphologyComponent(11498, 1), visibility);
+  assert.deepEqual(selectedComponent, connectors);
+  const hidden = buildSchematicStructuralConnectors(projection, bodies, transform, selectMorphologyBody(11498), { ...visibility, 11498: false });
+  assert.equal(hidden[0].visible, false);
+  assert.equal(hidden[1].visible, true);
+  assert.ok(connectors.every((connector) => connector.opacity === 0.82 || connector.opacity === 0.14));
+  assert.deepEqual(bodies, before);
+  assert.equal(transform.view_id, MALECNS_SIX_BODY_MORPHOLOGY_VIEW_ID);
+  const inspector = readFileSync(new URL("../src/components/MorphologyInspector.tsx", import.meta.url), "utf8");
+  assert.equal(inspector.includes("connector.structuralWeight"), false);
+  assert.equal(inspector.includes("useFrame"), false);
+  assert.equal(inspector.includes("FlyVisualAsset"), false);
+  assert.match(inspector, /Show structural connectivity/);
+  assert.ok(inspector.includes(" → "));
+  assert.match(inspector, /schematic anchors/);
 });
 
 test("healed and repair-link source contracts are rejected", () => {

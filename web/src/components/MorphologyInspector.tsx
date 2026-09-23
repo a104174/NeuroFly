@@ -1,7 +1,16 @@
 "use client";
 
 import { Canvas, useThree } from "@react-three/fiber";
-import { memo, useEffect, useMemo, useRef, useState, type Dispatch, type SetStateAction } from "react";
+import {
+  memo,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  useSyncExternalStore,
+  type Dispatch,
+  type SetStateAction,
+} from "react";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 
 import type {
@@ -12,6 +21,12 @@ import type {
   StructuralConnectivityProjection,
 } from "@/lib/neuroflyClient";
 import { buildSchematicStructuralConnectors } from "@/lib/connectivityView";
+import {
+  getMorphologyWebGLCapability,
+  getServerMorphologyWebGLCapability,
+  selectMorphologyWebGLView,
+  subscribeToMorphologyWebGLCapability,
+} from "@/lib/morphologyWebGL";
 import {
   buildMorphologyLineComponents,
   bodySourceBounds,
@@ -35,15 +50,6 @@ const BODY_COLORS: Readonly<Record<MorphologyBodyId, string>> = {
   14465: "#dc8e5a",
   16128: "#769bea",
 };
-
-function detectWebGL(): boolean {
-  try {
-    const canvas = document.createElement("canvas");
-    return Boolean(canvas.getContext("webgl2") ?? canvas.getContext("webgl"));
-  } catch {
-    return false;
-  }
-}
 
 interface FocusRequest {
   readonly token: number;
@@ -238,7 +244,13 @@ export const MorphologyInspector = memo(function MorphologyInspector({
   const setShowConnectivity = onShowConnectivityChange ?? setLocalShowConnectivity;
   const [focusRequest, setFocusRequest] = useState<FocusRequest>({ token: 0, kind: "global", bounds: null });
   const [focusKind, setFocusKind] = useState<FocusRequest["kind"]>("global");
-  const [webglAvailable] = useState(detectWebGL);
+  const webglCapability = useSyncExternalStore(
+    subscribeToMorphologyWebGLCapability,
+    getMorphologyWebGLCapability,
+    getServerMorphologyWebGLCapability,
+  );
+  const webglView = selectMorphologyWebGLView(webglCapability);
+  const webglAvailable = webglCapability === "available";
   const selectedBody = bodies.find((body) => body.body_id === selection.bodyId) ?? null;
   const selectedComponent = selectedBody?.components.find(
     (component) => component.component_id === selection.componentId,
@@ -275,7 +287,11 @@ export const MorphologyInspector = memo(function MorphologyInspector({
       </div>
 
       <div className="morphology-canvas-shell">
-        {webglAvailable === false ? (
+        {webglView === "placeholder" ? (
+          <div className="morphology-webgl-pending" role="status">
+            Initializing 3D morphology view…
+          </div>
+        ) : webglView === "fallback" ? (
           <div className="morphology-webgl-fallback">
             3D morphology inspection is unavailable in this browser. Source
             provenance remains readable below.

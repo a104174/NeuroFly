@@ -217,7 +217,7 @@ dd { margin: 7px 0 0; color: var(--ink); font-size: 12px; line-height: 1.5; over
 .morphology-mode { align-self: flex-start; padding: 8px 11px; border: 1px solid rgba(122, 214, 210, 0.35); color: var(--cyan); font-family: "SFMono-Regular", Consolas, monospace; font-size: 10px; white-space: nowrap; }
 .morphology-canvas-shell { position: relative; min-height: 610px; overflow: hidden; border: 1px solid var(--line-strong); background: #071013; }
 .morphology-canvas-shell canvas { min-height: 610px; }
-.morphology-webgl-fallback { display: grid; min-height: 610px; place-items: center; color: var(--muted); }
+.morphology-webgl-fallback, .morphology-webgl-pending { display: grid; min-height: 610px; place-items: center; color: var(--muted); }
 .morphology-canvas-key { position: absolute; right: 18px; bottom: 18px; display: grid; gap: 8px; padding: 12px 14px; border: 1px solid var(--line); background: rgba(7, 16, 19, 0.88); font-family: "SFMono-Regular", Consolas, monospace; font-size: 10px; }
 .morphology-canvas-key span { display: flex; align-items: center; gap: 8px; }
 .morphology-canvas-key i { width: 12px; height: 2px; background: var(--cyan); }
@@ -277,7 +277,7 @@ dd { margin: 7px 0 0; color: var(--ink); font-size: 12px; line-height: 1.5; over
   .morphology-heading-row { display: block; }
   .morphology-mode { display: inline-block; margin-top: 12px; }
   .morphology-catalogue li a { grid-template-columns: 1fr; }
-  .morphology-canvas-shell, .morphology-canvas-shell canvas, .morphology-webgl-fallback { min-height: 440px; }
+  .morphology-canvas-shell, .morphology-canvas-shell canvas, .morphology-webgl-fallback, .morphology-webgl-pending { min-height: 440px; }
   .morphology-readouts dl { grid-template-columns: 1fr; }
 }
 

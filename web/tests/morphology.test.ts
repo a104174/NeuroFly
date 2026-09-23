@@ -27,6 +27,11 @@ import {
   buildSchematicStructuralConnectors,
   deriveStructuralBodyAnchors,
 } from "../src/lib/connectivityView";
+import {
+  getServerMorphologyWebGLCapability,
+  INITIAL_MORPHOLOGY_WEBGL_CAPABILITY,
+  selectMorphologyWebGLView,
+} from "../src/lib/morphologyWebGL";
 
 const hash = (letter: string) => letter.repeat(64);
 
@@ -303,6 +308,18 @@ test("render contract uses native axes without anatomical mapping", () => {
   assert.match(source, /Selection and highlighting are presentation only/);
   assert.equal(source.includes("spike animation"), false);
   assert.equal(source.includes("component bridge"), false);
+});
+
+test("morphology WebGL boundary starts deterministically and detects capability after mount", () => {
+  assert.equal(INITIAL_MORPHOLOGY_WEBGL_CAPABILITY, "pending");
+  assert.equal(getServerMorphologyWebGLCapability(), "pending");
+  assert.equal(selectMorphologyWebGLView("pending"), "placeholder");
+  assert.equal(selectMorphologyWebGLView("available"), "canvas");
+  assert.equal(selectMorphologyWebGLView("unavailable"), "fallback");
+
+  const source = readFileSync(new URL("../src/components/MorphologyInspector.tsx", import.meta.url), "utf8");
+  assert.match(source, /useSyncExternalStore\(\s*subscribeToMorphologyWebGLCapability,\s*getMorphologyWebGLCapability,\s*getServerMorphologyWebGLCapability/);
+  assert.doesNotMatch(source, /detectWebGL\(\)|useState\([^)]*WebGL/);
 });
 
 test("source bounds and camera focus are deterministic and leave the shared transform untouched", () => {

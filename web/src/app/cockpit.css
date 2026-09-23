@@ -36,7 +36,7 @@
 .morphology-inspector-compact .morphology-heading-row h2 { margin: 0; font-size: 16px; }
 .morphology-inspector-compact .morphology-heading-row .eyebrow { display: none; }
 .morphology-inspector-compact .morphology-mode { font-size: 8px; white-space: nowrap; }
-.morphology-inspector-compact .morphology-canvas-shell, .morphology-inspector-compact .morphology-canvas-shell canvas, .morphology-inspector-compact .morphology-webgl-fallback { min-height: 300px; }
+.morphology-inspector-compact .morphology-canvas-shell, .morphology-inspector-compact .morphology-canvas-shell canvas, .morphology-inspector-compact .morphology-webgl-fallback, .morphology-inspector-compact .morphology-webgl-pending { min-height: 300px; }
 .morphology-inspector-compact .morphology-canvas-key { position: static; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 5px 8px; border-top: 0; background: #0b1519; font-size: 8px; }
 .morphology-inspector-compact .morphology-controls { gap: 9px 13px; padding: 11px; font-size: 9px; }
 .morphology-inspector-compact .morphology-controls button { margin-left: 0; }

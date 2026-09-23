@@ -54,7 +54,7 @@ export default async function ScientificCockpitPage({
     notFound();
   }
   if (!core) {
-    return <div className="app-shell">
+    return <div className="app-shell cockpit-shell">
       <AppHeader />
       <main className="cockpit-route cockpit-route-error">
         <Link className="back-link" href="/">← all experiments</Link>
@@ -100,7 +100,7 @@ export default async function ScientificCockpitPage({
   }
 
   return (
-    <div className="app-shell">
+    <div className="app-shell cockpit-shell">
       <AppHeader />
       <main className="cockpit-route">
         <div className="cockpit-route-nav">

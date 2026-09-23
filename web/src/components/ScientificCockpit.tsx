@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useCallback, useMemo, useState } from "react";
+import { memo, useCallback, useMemo, useState } from "react";
 
 import {
   CockpitEventLog,
@@ -12,6 +12,7 @@ import {
 import { CockpitTelemetry } from "@/components/CockpitTelemetry";
 import { MorphologyInspector } from "@/components/MorphologyInspector";
 import { useExperimentPlayback } from "@/hooks/useExperimentPlayback";
+import { toggleCockpitFocus, type CockpitFocusPanel, type CockpitFocusState } from "@/lib/cockpitLayout";
 import { deriveCockpitEvents, deriveCockpitFrame } from "@/lib/cockpitModel";
 import type {
   ExperimentSummary,
@@ -23,6 +24,31 @@ import type {
 } from "@/lib/neuroflyClient";
 import { selectMorphologyBody, type MorphologySelection } from "@/lib/morphologyView";
 import { PLAYBACK_RATES, type PlaybackRate } from "@/lib/playback";
+
+const CockpitProvenance = memo(function CockpitProvenance({
+  summary,
+  morphology,
+  connectivity,
+}: {
+  summary: ExperimentSummary;
+  morphology: MorphologyArtifactSummary | null;
+  connectivity: StructuralConnectivityProjection | null;
+}) {
+  return <details className="cockpit-provenance">
+    <summary>Provenance and scope</summary>
+    <div className="cockpit-provenance-content">
+      <dl>
+        <div><dt>Experiment artifact</dt><dd>{summary.artifact_id}</dd></div>
+        <div><dt>Experiment configuration SHA-256</dt><dd>{summary.experiment_config_sha256}</dd></div>
+        <div><dt>MaleCNS circuit source</dt><dd>{summary.source.endpoint}</dd></div>
+        <div><dt>Morphology</dt><dd>{morphology ? `${morphology.artifact_id} · ${morphology.generation.source_mode}` : "unavailable"}</dd></div>
+        <div><dt>Structural projection</dt><dd>{connectivity?.projection.id ?? "unavailable"}</dd></div>
+        <div><dt>Source coordinate frame</dt><dd>{morphology ? `${morphology.coordinate_frame_id} · ${morphology.coordinate_unit}` : "unavailable"}</dd></div>
+      </dl>
+      <p>Structural weight is a connectome count. The morphology connectors and world scene use separate presentation geometry; they do not locate synapses or align the fly to MaleCNS coordinates.</p>
+    </div>
+  </details>;
+});
 
 export function ScientificCockpit({
   summary,
@@ -47,6 +73,7 @@ export function ScientificCockpit({
     10001: true, 10010: true, 11498: true, 12032: true, 14465: true, 16128: true,
   });
   const [showConnectivity, setShowConnectivity] = useState(false);
+  const [focusedPanel, setFocusedPanel] = useState<CockpitFocusState>(null);
   const frame = useMemo(
     () => deriveCockpitFrame(timeline, playback.sceneState, selection.bodyId),
     [timeline, playback.sceneState, selection.bodyId],
@@ -56,29 +83,43 @@ export function ScientificCockpit({
   const selectBody = useCallback((bodyId: MorphologyBodyId) => {
     if (bodies.some((body) => body.body_id === bodyId)) setSelection(selectMorphologyBody(bodyId));
   }, [bodies]);
+  const toggleFocus = useCallback((panel: CockpitFocusPanel) => {
+    setFocusedPanel((current) => toggleCockpitFocus(current, panel));
+  }, []);
 
   return (
     <div className="scientific-cockpit">
       <div className="cockpit-masthead">
-        <div>
-          <p className="eyebrow">NEUROFLY / SCIENTIFIC COCKPIT V1</p>
-          <h1>One experiment. Coordinated evidence.</h1>
-          <p>Persisted playback with MaleCNS source structure and explicit presentation state.</p>
+        <div className="cockpit-masthead-title">
+          <p className="eyebrow">NEUROFLY / SCIENTIFIC COCKPIT</p>
+          <h1>Persisted experiment <span>{summary.candidate.identifier}</span></h1>
         </div>
-        <div className="cockpit-masthead-meta">
-          <span>DATASET · {summary.dataset}</span>
-          <span>VALIDATION · {summary.validation_status.replaceAll("_", " ")}</span>
-          <span>ARTIFACT · {summary.artifact_id.slice(0, 16)}…</span>
+        <div className="cockpit-masthead-meta" aria-label="Current run status">
+          <span title={summary.artifact_id}>RUN {summary.artifact_id.slice(0, 12)}…</span>
+          <span>{summary.dataset}</span>
+          <span className="cockpit-validation">VALIDATION · {summary.validation_status.replaceAll("_", " ")}</span>
+          <span className="cockpit-playback-status">{playback.isPlaying ? "PLAYING" : "PAUSED"} · {frame.playbackTimeMs.toFixed(2)} ms</span>
+          {selectedBody ? <span>SELECTED · {selectedBody.neuron_type} {selectedBody.body_id}</span> : null}
         </div>
       </div>
 
-      <div className="cockpit-grid">
-        <CockpitWorldPanel scene={playback.sceneState} frame={frame} />
+      <div className="cockpit-grid" data-focus={focusedPanel ?? "none"}>
+        <CockpitWorldPanel
+          scene={playback.sceneState}
+          frame={frame}
+          focused={focusedPanel === "world"}
+          onToggleFocus={() => toggleFocus("world")}
+        />
 
         <section className="cockpit-panel cockpit-structure" aria-label="MaleCNS morphology and structural connectivity">
           <div className="cockpit-structure-link">
             <span className="eyebrow">02 / MALECNS SOURCE STRUCTURE</span>
-            {morphology ? <Link href={`/morphology/${morphology.artifact_id}`}>Full inspector ↗</Link> : null}
+            <div className="cockpit-panel-actions">
+              {morphology ? <Link href={`/morphology/${morphology.artifact_id}`}>Full inspector ↗</Link> : null}
+              {morphology ? <button type="button" className="cockpit-focus-button" aria-pressed={focusedPanel === "connectome"} onClick={() => toggleFocus("connectome")}>
+                {focusedPanel === "connectome" ? "Restore workspace" : "Expand connectome"}
+              </button> : null}
+            </div>
           </div>
           {morphology ? <>
             <MorphologyInspector
@@ -102,11 +143,17 @@ export function ScientificCockpit({
         </section>
 
         <div className="cockpit-rail">
-          <CockpitRunPanel summary={summary} frame={frame} isPlaying={playback.isPlaying} />
+          <CockpitRunPanel summary={summary} />
           <CockpitSelectedNeuronPanel body={selectedBody} connectivity={connectivity} frame={frame} />
         </div>
 
-        <CockpitTelemetry timeline={timeline} frame={frame} selectedBodyId={selection.bodyId} />
+        <CockpitTelemetry
+          timeline={timeline}
+          frame={frame}
+          selectedBodyId={selection.bodyId}
+          focused={focusedPanel === "telemetry"}
+          onToggleFocus={() => toggleFocus("telemetry")}
+        />
         <CockpitEventLog
           events={events}
           frame={frame}
@@ -147,18 +194,7 @@ export function ScientificCockpit({
         </label>
       </div>
 
-      <details className="cockpit-provenance">
-        <summary>Provenance and scope</summary>
-        <dl>
-          <div><dt>Experiment artifact</dt><dd>{summary.artifact_id}</dd></div>
-          <div><dt>Experiment configuration SHA-256</dt><dd>{summary.experiment_config_sha256}</dd></div>
-          <div><dt>MaleCNS circuit source</dt><dd>{summary.source.endpoint}</dd></div>
-          <div><dt>Morphology</dt><dd>{morphology ? `${morphology.artifact_id} · ${morphology.generation.source_mode}` : "unavailable"}</dd></div>
-          <div><dt>Structural projection</dt><dd>{connectivity?.projection.id ?? "unavailable"}</dd></div>
-          <div><dt>Source coordinate frame</dt><dd>{morphology ? `${morphology.coordinate_frame_id} · ${morphology.coordinate_unit}` : "unavailable"}</dd></div>
-        </dl>
-        <p>Structural weight is a connectome count. The morphology connectors and world scene use separate presentation geometry; they do not locate synapses or align the fly to MaleCNS coordinates.</p>
-      </details>
+      <CockpitProvenance summary={summary} morphology={morphology} connectivity={connectivity} />
     </div>
   );
 }

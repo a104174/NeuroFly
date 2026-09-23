@@ -3,7 +3,9 @@
 > **Working title:** NeuroFly  
 > The name is provisional and may change later.  
 > **Document purpose:** provide persistent context to ChatGPT Project chats, Codex-oriented implementation chats, architecture discussions, scientific reasoning and future documentation.  
-> **Current status:** Phase 5J composes a persisted experiment, the six-body
+> **Current status:** Phase 5K refines the Scientific Cockpit's viewport layout,
+> compact controls, readable telemetry, and presentation-only panel focus.
+> Phase 5J composes a persisted experiment, the six-body
 > raw morphology inspector, and the Phase 5I structural projection in one
 > read-only Scientific Cockpit. One canonical experiment clock coordinates the
 > world, stored telemetry, selected DNp01 dynamics, and deterministic event
@@ -58,7 +60,7 @@
 > transform is available for `male-cns:v1.0`. Level P is the documented
 > population-feature boundary; Level C remains disabled, and no biological
 > calibration or behavioural/motor dynamics are implemented.
-> **Date of this context:** 2026-09-14.
+> **Date of this context:** 2026-09-23.
 
 The Phase 1D-B evidence ledger is maintained in
 [`docs/science/receptive_field_feasibility.md`](science/receptive_field_feasibility.md).
@@ -202,6 +204,12 @@ LC4/LPLC2 encoder drives remain labelled type-level. The event list derives
 only timeline boundaries and stored DNp01 spikes. No new biology, simulation,
 source geometry, or scientific artifact is created. See
 [`docs/architecture/scientific_cockpit.md`](architecture/scientific_cockpit.md).
+
+Phase 5K keeps this source composition and one experiment clock while placing
+World, Connectome, Telemetry, selected-neuron data, and the event log in a
+viewport-sized desktop workspace. Panel expansion, disclosure controls, and
+responsive layout are presentation state only. The dedicated morphology and
+standalone playback routes remain available.
 
 ---
 

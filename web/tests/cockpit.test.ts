@@ -11,6 +11,7 @@ import {
   validateCockpitExperiment,
   validateCockpitMorphology,
 } from "../src/lib/cockpitModel";
+import { toggleCockpitFocus, type CockpitFocusState } from "../src/lib/cockpitLayout";
 import {
   CONNECTIVITY_SOURCE_HASHES,
   STRUCTURAL_CONNECTIVITY_BODY_IDS,
@@ -318,4 +319,49 @@ test("visual bodies have no invented individual trace and cockpit source text st
   assert.match(source, /Dynamic body trace not present/);
   assert.match(source, /structural weight/);
   assert.match(source, /PlaybackCanvas/);
+});
+
+test("panel focus is reversible presentation state and keeps scientific sources untouched", () => {
+  const experiment = summary();
+  const persisted = timeline();
+  const bodies = STRUCTURAL_CONNECTIVITY_BODY_IDS.map((bodyId) => morphologyBody(bodyId));
+  const structure = connectivity();
+  const before = structuredClone({ experiment, persisted, bodies, structure });
+  const frame = deriveCockpitFrame(persisted, deriveSceneState(persisted, 1.75), 10010);
+  let focus: CockpitFocusState = null;
+  focus = toggleCockpitFocus(focus, "world");
+  assert.equal(focus, "world");
+  focus = toggleCockpitFocus(focus, "connectome");
+  assert.equal(focus, "connectome");
+  focus = toggleCockpitFocus(focus, "telemetry");
+  assert.equal(focus, "telemetry");
+  focus = toggleCockpitFocus(focus, "telemetry");
+  assert.equal(focus, null);
+  assert.equal(frame.playbackTimeMs, 1.75);
+  assert.equal(frame.selectedDynamic?.bodyId, 10010);
+  assert.deepEqual({ experiment, persisted, bodies, structure }, before);
+});
+
+test("cockpit keeps one transport and scopes layout styling away from standalone pages", () => {
+  const cockpit = readFileSync(new URL("../src/components/ScientificCockpit.tsx", import.meta.url), "utf8");
+  const panels = readFileSync(new URL("../src/components/CockpitPanels.tsx", import.meta.url), "utf8");
+  const telemetry = readFileSync(new URL("../src/components/CockpitTelemetry.tsx", import.meta.url), "utf8");
+  const css = readFileSync(new URL("../src/app/cockpit.css", import.meta.url), "utf8");
+  assert.equal(cockpit.match(/useExperimentPlayback\(timeline\)/g)?.length, 1);
+  assert.equal(cockpit.match(/Canonical experiment playback controls/g)?.length, 1);
+  assert.match(cockpit, /data-focus=\{focusedPanel \?\? "none"\}/);
+  assert.match(cockpit, /playback\.play/);
+  assert.match(cockpit, /playback\.pause/);
+  assert.match(cockpit, /playback\.reset/);
+  assert.match(cockpit, /playback\.seek/);
+  assert.match(cockpit, /playback\.setPlaybackRate/);
+  assert.match(panels, /onSeek\(event\.timeMs\)/);
+  assert.match(telemetry, /timeline\.theta_rad/);
+  assert.match(telemetry, /timeline\.lc4_drive_mveq/);
+  assert.match(telemetry, /timeline\.lplc2_drive_mveq/);
+  assert.match(telemetry, /selectedTelemetry\.membrane_mv/);
+  assert.match(css, /\.cockpit-shell \.app-header/);
+  assert.match(css, /\.cockpit-grid\[data-focus="connectome"\]/);
+  assert.doesNotMatch(css, /^\s*\.app-header\s*\{/m);
+  assert.doesNotMatch(css, /^\s*\.morphology-inspector\s*\{/m);
 });

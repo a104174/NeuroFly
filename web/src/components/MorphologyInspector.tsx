@@ -270,6 +270,48 @@ export const MorphologyInspector = memo(function MorphologyInspector({
     setFocusRequest((current) => ({ token: current.token + 1, kind, bounds }));
   }
 
+  const bodyVisibilityControls = bodies.map((body) => (
+    <label key={body.body_id}>
+      <input
+        type="checkbox"
+        checked={visibility[body.body_id]}
+        onChange={(event) =>
+          setVisibility((current) => ({
+            ...current,
+            [body.body_id]: event.target.checked,
+          }))
+        }
+      />
+      Show {body.neuron_type} {body.body_id}
+    </label>
+  ));
+  const referenceControl = (
+    <label>
+      <input
+        type="checkbox"
+        checked={showReference}
+        onChange={(event) => setShowReference(event.target.checked)}
+      />
+      Show native-axis/grid reference
+    </label>
+  );
+  const structuralEdgeList = connectivity ? (
+    <ul aria-label="Directed structural edge readout">
+      {incidentEdges.map((edge) => {
+        const preBody = bodies.find((body) => body.body_id === edge.pre_body_id);
+        const postBody = bodies.find((body) => body.body_id === edge.post_body_id);
+        const isIncident = selection.bodyId === null || edge.pre_body_id === selection.bodyId || edge.post_body_id === selection.bodyId;
+        return (
+          <li key={`${edge.pre_body_id}-${edge.post_body_id}`} className={isIncident ? "is-incident" : "is-unrelated"}>
+            <span>{edge.pre_neuron_type} body {edge.pre_body_id} (source side {edge.pre_source_side}) → {edge.post_neuron_type} body {edge.post_body_id} (source side {edge.post_source_side})</span>
+            <span>structural weight: {edge.structural_weight}</span>
+            <span>Source body indices: {preBody?.node_index} → {postBody?.node_index}</span>
+          </li>
+        );
+      })}
+    </ul>
+  ) : null;
+
   return (
     <section className={`morphology-inspector${compact ? " morphology-inspector-compact" : ""}`} aria-labelledby="morphology-heading">
       <div className="morphology-heading-row">
@@ -350,29 +392,8 @@ export const MorphologyInspector = memo(function MorphologyInspector({
             Show {neuronType}
           </label>
         ))}
-        {bodies.map((body) => (
-          <label key={body.body_id}>
-            <input
-              type="checkbox"
-              checked={visibility[body.body_id]}
-              onChange={(event) =>
-                setVisibility((current) => ({
-                  ...current,
-                  [body.body_id]: event.target.checked,
-                }))
-              }
-            />
-            Show {body.neuron_type} {body.body_id}
-          </label>
-        ))}
-        <label>
-          <input
-            type="checkbox"
-            checked={showReference}
-            onChange={(event) => setShowReference(event.target.checked)}
-          />
-          Show native-axis/grid reference
-        </label>
+        {compact ? null : bodyVisibilityControls}
+        {compact ? null : referenceControl}
         <label>
           <input
             type="checkbox"
@@ -385,6 +406,10 @@ export const MorphologyInspector = memo(function MorphologyInspector({
         <button type="button" onClick={() => requestFocus("global", null)}>
           Reset camera
         </button>
+        {compact ? <details className="morphology-secondary-controls">
+          <summary>Individual bodies and grid</summary>
+          <div>{bodyVisibilityControls}{referenceControl}</div>
+        </details> : null}
       </div>
 
       <section className="morphology-selection" aria-labelledby="morphology-selection-heading">
@@ -411,7 +436,8 @@ export const MorphologyInspector = memo(function MorphologyInspector({
               {selectedBody.component_count > 1 ? ` ${selectedBody.component_count} disconnected raw components; no bridge is rendered.` : ""}
             </p>
             <p>
-              Body: {selectedBody.node_count.toLocaleString()} nodes · {selectedBody.link_count.toLocaleString()} links · {selectedBody.component_count} component(s) · source bounds {vector(bodySourceBounds(selectedBody).minimum)} to {vector(bodySourceBounds(selectedBody).maximum)} {selectedBody.coordinate_unit}.
+              Body: {selectedBody.node_count.toLocaleString()} nodes · {selectedBody.link_count.toLocaleString()} links · {selectedBody.component_count} component(s)
+              {compact ? "." : ` · source bounds ${vector(bodySourceBounds(selectedBody).minimum)} to ${vector(bodySourceBounds(selectedBody).maximum)} ${selectedBody.coordinate_unit}.`}
             </p>
             <button type="button" disabled={!selectedVisible || !webglAvailable} onClick={() => requestFocus("body", bodySourceBounds(selectedBody))}>
               Focus selected body
@@ -429,7 +455,8 @@ export const MorphologyInspector = memo(function MorphologyInspector({
                       Select component {component.component_id}
                     </button>
                     <span>
-                      {selectedBody.neuron_type} body {selectedBody.body_id} · {component.nodes.length.toLocaleString()} nodes · {component.links.length.toLocaleString()} links · source bounds {vector(bounds.minimum)} to {vector(bounds.maximum)} {selectedBody.coordinate_unit}
+                      {selectedBody.neuron_type} body {selectedBody.body_id} · {component.nodes.length.toLocaleString()} nodes · {component.links.length.toLocaleString()} links
+                      {compact ? "" : ` · source bounds ${vector(bounds.minimum)} to ${vector(bounds.maximum)} ${selectedBody.coordinate_unit}`}
                     </span>
                   </div>
                 );
@@ -443,36 +470,29 @@ export const MorphologyInspector = memo(function MorphologyInspector({
           </>
         ) : <p>Select a body to inspect its raw components and source bounds.</p>}
         <p aria-live="polite">Camera framing: {focusKind}. Reset camera restores the global six-body view and keeps the selection.</p>
-        <p>Selection and highlighting are presentation only; line color still identifies each body and type.</p>
+        {compact ? <details className="morphology-source-note"><summary>Selection meaning</summary><p>Selection and highlighting are presentation only; line color still identifies each body and type.</p></details>
+          : <p>Selection and highlighting are presentation only; line color still identifies each body and type.</p>}
       </section>
 
       {connectivity ? <section className="morphology-connectivity" aria-labelledby="connectivity-heading">
         <p className="eyebrow">SOURCE CONNECTIVITY · {connectivity.fixed_sample.id}</p>
-        <h2 id="connectivity-heading">Structural relationships in the fixed six-body sample</h2>
+        <h2 id="connectivity-heading">{compact ? "Structural edges" : "Structural relationships in the fixed six-body sample"}</h2>
         <p>
           {incidentEdges.length} {selectedBody ? "incident structural edge(s)" : "projected structural edge(s)"}
           {selectedBody ? ` for ${selectedBody.neuron_type} body ${selectedBody.body_id}` : ""} · structural weight total {incidentEdges.reduce((sum, edge) => sum + edge.structural_weight, 0)}.
         </p>
-        <ul aria-label="Directed structural edge readout">
-          {incidentEdges.map((edge) => {
-            const preBody = bodies.find((body) => body.body_id === edge.pre_body_id);
-            const postBody = bodies.find((body) => body.body_id === edge.post_body_id);
-            const isIncident = selection.bodyId === null || edge.pre_body_id === selection.bodyId || edge.post_body_id === selection.bodyId;
-            return (
-              <li key={`${edge.pre_body_id}-${edge.post_body_id}`} className={isIncident ? "is-incident" : "is-unrelated"}>
-                <span>{edge.pre_neuron_type} body {edge.pre_body_id} (source side {edge.pre_source_side}) → {edge.post_neuron_type} body {edge.post_body_id} (source side {edge.post_source_side})</span>
-                <span>structural weight: {edge.structural_weight}</span>
-                <span>Source body indices: {preBody?.node_index} → {postBody?.node_index}</span>
-              </li>
-            );
-          })}
-        </ul>
-        <p>
+        {compact ? <details className="morphology-compact-details"><summary>Directed edge details</summary>{structuralEdgeList}</details> : structuralEdgeList}
+        {compact ? <details className="morphology-compact-details"><summary>Connector meaning and source</summary><p>
           Lines show directed structural relationships from the CircuitContract. Connector positions and straight paths are schematic anchors at transformed raw body-bounds centers; no synapse locations are present or claimed. Structural weight is not physiological efficacy. Morphology coordinates remain MaleCNS source data. This layer displays no neural activity.
         </p>
         <p>
           Source: {connectivity.source_contract.source}, {connectivity.source_contract.dataset}; verified `neurons.jsonl` and `connections.jsonl` SHA-256 provenance. Projection direction: LC4/LPLC2 → DNp01. The six-body projection is not a population-wide connectivity summary.
+        </p></details> : <><p>
+          Lines show directed structural relationships from the CircuitContract. Connector positions and straight paths are schematic anchors at transformed raw body-bounds centers; no synapse locations are present or claimed. Structural weight is not physiological efficacy. Morphology coordinates remain MaleCNS source data. This layer displays no neural activity.
         </p>
+        <p>
+          Source: {connectivity.source_contract.source}, {connectivity.source_contract.dataset}; verified `neurons.jsonl` and `connections.jsonl` SHA-256 provenance. Projection direction: LC4/LPLC2 → DNp01. The six-body projection is not a population-wide connectivity summary.
+        </p></>}
         {!compact ? <details>
           <summary>Verified CircuitContract file hashes</summary>
           <ul>
@@ -483,10 +503,13 @@ export const MorphologyInspector = memo(function MorphologyInspector({
         </details> : null}
       </section> : <p className="morphology-warning">Structural connectivity is unavailable. Raw morphology remains inspectable.</p>}
 
-      <p className="morphology-warning">
+      {compact ? <details className="morphology-source-note"><summary>Native source axes</summary><p>
         Source x/y/z are MaleCNS native voxel axes. They are intentionally not
         labelled anterior/posterior, dorsal/ventral, or left/right.
-      </p>
+      </p></details> : <p className="morphology-warning">
+        Source x/y/z are MaleCNS native voxel axes. They are intentionally not
+        labelled anterior/posterior, dorsal/ventral, or left/right.
+      </p>}
 
       {!compact ? <div className="morphology-readouts">
         <section>

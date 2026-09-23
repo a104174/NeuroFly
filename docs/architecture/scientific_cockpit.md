@@ -1,4 +1,4 @@
-# Scientific Cockpit v1 (Phase 5J)
+# Scientific Cockpit v1 (Phases 5J–5K)
 
 The read-only route `/experiments/[artifactId]/cockpit` composes one persisted
 experiment with the validated six-body MaleCNS morphology sample and Phase 5I
@@ -63,3 +63,36 @@ The cockpit deliberately has no whole-brain activity, body-specific LC4/LPLC2
 trace, activity-colored skeleton, synapse coordinates, live streaming, reward,
 learning, policy, motor control, or fly-to-connectome alignment. Future cockpit
 polish can improve navigation and layout without changing these contracts.
+
+## Phase 5K workspace presentation
+
+The cockpit uses a compact run identity bar, then a viewport-sized grid. World
+and six-body connectome occupy the two primary upper panes; a narrow rail holds
+run identity and the selected neuron. Aligned telemetry plots occupy the lower
+left area, with a short event list at the right. One global playback strip sits
+directly below the grid. Full artifact IDs, source mode, coordinate frame/unit,
+and provenance remain available in a collapsible overlay outside the primary
+visual panes. At large and ordinary laptop widths the page itself stays fixed;
+secondary readouts and the event list scroll within their panels when needed.
+Below the desktop breakpoint, panes stack and the page may scroll.
+
+World, connectome, and telemetry each have an Expand control. The focused pane
+fills the grid; activating its Restore workspace control returns to the normal
+layout. Focus is local presentation state. Other panes stay mounted, so focus
+does not refetch source data, reset the camera or body selection, or create a
+second playback clock. The dedicated morphology inspector retains its full
+controls. In cockpit compact mode, type visibility, structural overlay, and
+camera reset remain visible; individual body/grid toggles, component details,
+and longer source explanations are contextual or disclosed on demand. The
+existing hydration-safe pending/available/unavailable WebGL boundary is kept.
+
+The selected-neuron rail prioritizes body identity, source side, node index,
+stored DNp01 boundary values where available, and incident structural edges.
+LC4/LPLC2 bodies still have no invented individual dynamic readout. Telemetry
+keeps theta in rad, type-level LC4/LPLC2 drives in mV_eq, and the optional
+selected DNp01 membrane in mV as separate unit-consistent plots sharing the
+canonical time cursor. Event rows remain the same persisted-boundary and spike
+derivation; clicking one seeks the one global clock. Their explanatory note is
+available without occupying permanent panel space. The known THREE.Clock
+deprecation notice comes from the installed React Three Fiber dependency; it
+does not change NeuroFly experiment time.

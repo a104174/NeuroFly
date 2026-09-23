@@ -105,10 +105,14 @@ export function CockpitTelemetry({
   timeline,
   frame,
   selectedBodyId,
+  focused,
+  onToggleFocus,
 }: {
   timeline: ExperimentTimeline;
   frame: CockpitFrame;
   selectedBodyId: MorphologyBodyId | null;
+  focused: boolean;
+  onToggleFocus: () => void;
 }) {
   const theta = useMemo<PlotSeries[]>(() => [
     { label: "Angular size θ", values: timeline.theta_rad, color: "#e5bd79" },
@@ -135,16 +139,24 @@ export function CockpitTelemetry({
           <p className="eyebrow">03 / EXPERIMENT TELEMETRY</p>
           <h2 id="cockpit-telemetry-heading">Persisted signals</h2>
         </div>
-        <span className="cockpit-panel-tag">SIMULATED · SOURCE TIMELINE</span>
+        <div className="cockpit-panel-actions">
+          <span className="cockpit-panel-tag">SIMULATED · SOURCE TIMELINE</span>
+          <button type="button" className="cockpit-focus-button" aria-pressed={focused} onClick={onToggleFocus}>
+            {focused ? "Restore workspace" : "Expand telemetry"}
+          </button>
+        </div>
       </div>
-      <div className="cockpit-plot-grid">
+      <div className="cockpit-plot-grid" data-traces={selectedTelemetry ? 3 : 2}>
         <TelemetryPlot title="Looming angular size" source="theta_rad · persisted interval values" unit="rad" times={timeline.step_times_ms} series={theta} currentValues={[frame.thetaRad]} startMs={timeline.start_ms} endMs={timeline.end_ms} frame={frame} />
         <TelemetryPlot title="Sensory model drive" source="LC4/LPLC2 type-level interval values" unit="mV_eq" times={timeline.step_times_ms} series={drives} currentValues={[frame.lc4DriveMveq, frame.lplc2DriveMveq]} startMs={timeline.start_ms} endMs={timeline.end_ms} frame={frame} />
         {selectedTelemetry && frame.selectedDynamic && membrane.length > 0 ? (
           <TelemetryPlot title={`DNp01 ${selectedTelemetry.body_id} membrane`} source="Body-specific persisted boundary state" unit="mV" times={timeline.times_ms} series={membrane} currentValues={[frame.selectedDynamic.membraneMv]} startMs={timeline.start_ms} endMs={timeline.end_ms} frame={frame} />
         ) : null}
       </div>
-      <p className="cockpit-panel-note">The vertical cursor follows experiment time. Numeric interval values use the existing floor selection; DNp01 membrane uses the selected stored boundary. Traces join stored samples for display only.</p>
+      <details className="cockpit-panel-details">
+        <summary>Sampling and cursor</summary>
+        <p>The vertical cursor follows experiment time. Numeric interval values use the existing floor selection; DNp01 membrane uses the selected stored boundary. Traces join stored samples for display only.</p>
+      </details>
     </section>
   );
 }

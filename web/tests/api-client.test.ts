@@ -25,8 +25,16 @@ function summaryFixture() {
       circuit_integrity: [["connections.jsonl", "e".repeat(64)]],
     },
     graph_scope_id: "phase2b_direct_visual_dnp01_v1",
-    encoder: { id: "level_p_instantaneous_bounded_v1", version: "phase2e_v1" },
-    neural_model: { id: "deterministic_lif_filtered_synapse_v1", version: "phase2b_v1" },
+    encoder: {
+      id: "level_p_instantaneous_bounded_v1",
+      version: "phase2e_v1",
+      population_policy: "bilateral_type_broadcast_v1",
+    },
+    neural_model: {
+      id: "deterministic_lif_filtered_synapse_v1",
+      version: "phase2b_v1",
+      membrane_state_references: { rest_mv: -52, threshold_mv: -45 },
+    },
     pathway_condition: "COMBINED",
     duration_ms: 0.2,
     dt_ms: 0.1,
@@ -123,6 +131,9 @@ test("parses the real application contract without collapsing scientific identit
   assert.equal(summary.free_parameters.k_syn_mv_per_contact, 0.01);
   assert.equal(summary.free_parameters.omega_half_rad_per_s, 1);
   assert.equal(summary.free_parameters.theta_half_rad, 0.4);
+  assert.equal(summary.encoder.population_policy, "bilateral_type_broadcast_v1");
+  assert.equal(summary.neural_model.membrane_state_references.rest_mv, -52);
+  assert.equal(summary.neural_model.membrane_state_references.threshold_mv, -45);
   assert.equal(summary.populations.LC4.neuron_type, "LC4");
   assert.equal(summary.populations.LPLC2.neuron_type, "LPLC2");
   assert.deepEqual(summary.dnp01.map((item) => item.body_id), [10001, 10010]);
@@ -146,6 +157,14 @@ test("rejects incompatible status, schema, and timeline shapes", () => {
   );
   assert.throws(
     () => parseExperimentTimeline({ ...timelineFixture(), theta_rad: [0.1] }),
+    (error: unknown) =>
+      error instanceof NeuroflyApiError && error.code === "INVALID_RESPONSE",
+  );
+  assert.throws(
+    () => parseExperimentSummary({
+      ...summaryFixture(),
+      neural_model: { id: "lif", version: "v1" },
+    }),
     (error: unknown) =>
       error instanceof NeuroflyApiError && error.code === "INVALID_RESPONSE",
   );

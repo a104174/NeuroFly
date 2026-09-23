@@ -4,6 +4,7 @@ import type {
   MorphologyArtifactSummary,
   MorphologyBody,
   MorphologyBodyId,
+  StructuralConnectivityBody,
   StructuralConnectivityProjection,
 } from "./neuroflyClient";
 import {
@@ -151,28 +152,41 @@ export interface CockpitEvent {
   readonly timeMs: number;
   readonly kind: "start" | "dnp01_spike" | "end";
   readonly bodyId: 10001 | 10010 | null;
+  readonly nodeIndex: 0 | 1 | null;
   readonly label: string;
 }
 
-export function deriveCockpitEvents(timeline: ExperimentTimeline): CockpitEvent[] {
+const DNP01_NODE_INDEX: Readonly<Record<10001 | 10010, 0 | 1>> = {
+  10001: 0,
+  10010: 1,
+};
+
+export function deriveCockpitEvents(
+  timeline: ExperimentTimeline,
+  contractBodies: readonly StructuralConnectivityBody[],
+): CockpitEvent[] {
+  const identityById = new Map(contractBodies.map((body) => [body.body_id, body]));
   const events: CockpitEvent[] = [
-    { id: "start", timeMs: timeline.start_ms, kind: "start", bodyId: null, label: "Experiment boundary: start" },
+    { id: "start", timeMs: timeline.start_ms, kind: "start", bodyId: null, nodeIndex: null, label: "Experiment boundary: start" },
   ];
   for (const body of timeline.selected_body_telemetry) {
-    if ((body.body_id !== 10001 && body.body_id !== 10010) ||
-        body.neuron_type !== "DNp01" ||
-        body.soma_side !== BODY_IDENTITIES[body.body_id][2]) continue;
+    if (body.body_id !== 10001 && body.body_id !== 10010) continue;
+    const identity = identityById.get(body.body_id);
+    if (!identity || identity.neuron_type !== "DNp01" ||
+        identity.node_index !== DNP01_NODE_INDEX[body.body_id] ||
+        identity.source_side !== body.soma_side || body.neuron_type !== "DNp01") continue;
     body.spike_times_ms.forEach((timeMs, index) => {
       events.push({
         id: `spike-${body.body_id}-${index}`,
         timeMs,
         kind: "dnp01_spike",
         bodyId: body.body_id as 10001 | 10010,
+        nodeIndex: identity.node_index as 0 | 1,
         label: `Persisted DNp01 body ${body.body_id} spike`,
       });
     });
   }
-  events.push({ id: "end", timeMs: timeline.end_ms, kind: "end", bodyId: null, label: "Experiment boundary: end" });
+  events.push({ id: "end", timeMs: timeline.end_ms, kind: "end", bodyId: null, nodeIndex: null, label: "Experiment boundary: end" });
   const rank = { start: 0, dnp01_spike: 1, end: 2 } as const;
   return events.sort((left, right) => left.timeMs - right.timeMs ||
     rank[left.kind] - rank[right.kind] || (left.bodyId ?? 0) - (right.bodyId ?? 0));
@@ -186,27 +200,12 @@ export interface CockpitFrame {
   readonly thetaRad: number;
   readonly lc4DriveMveq: number;
   readonly lplc2DriveMveq: number;
-  readonly selectedDynamic: {
-    readonly bodyId: 10001 | 10010;
-    readonly membraneMv: number;
-    readonly synapticStateMveq: number;
-    readonly spikedAtBoundary: boolean;
-  } | null;
 }
 
 export function deriveCockpitFrame(
   timeline: ExperimentTimeline,
   scene: ExperimentSceneState,
-  selectedBodyId: MorphologyBodyId | null,
 ): CockpitFrame {
-  const selectedTelemetry = timeline.selected_body_telemetry.find((body) =>
-    body.body_id === selectedBodyId && body.neuron_type === "DNp01" &&
-    (body.body_id === 10001 || body.body_id === 10010) &&
-    body.soma_side === BODY_IDENTITIES[body.body_id][2],
-  );
-  const bodyId = selectedTelemetry?.body_id as 10001 | 10010 | undefined;
-  const membraneMv = selectedTelemetry?.membrane_mv[scene.boundaryIndex];
-  const synapticStateMveq = selectedTelemetry?.synaptic_state_mveq[scene.boundaryIndex];
   const duration = timeline.end_ms - timeline.start_ms;
   return {
     playbackTimeMs: scene.playbackTimeMs,
@@ -216,14 +215,6 @@ export function deriveCockpitFrame(
     thetaRad: scene.thetaRad,
     lc4DriveMveq: scene.lc4DriveMveq,
     lplc2DriveMveq: scene.lplc2DriveMveq,
-    selectedDynamic: bodyId !== undefined && membraneMv !== undefined && synapticStateMveq !== undefined
-      ? {
-          bodyId,
-          membraneMv,
-          synapticStateMveq,
-          spikedAtBoundary: selectedTelemetry?.spike_times_ms.includes(scene.boundaryTimeMs) ?? false,
-        }
-      : null,
   };
 }
 

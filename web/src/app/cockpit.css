@@ -77,6 +77,22 @@
 .morphology-inspector-compact .morphology-canvas-key { position: static; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 4px 8px; padding: 6px 8px; border-top: 0; background: #0b1519; font-size: 9px; }
 .morphology-inspector-compact .morphology-canvas-key span { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .morphology-inspector-compact .morphology-canvas-key i { flex: 0 0 10px; }
+.morphology-activity { display: grid; gap: 6px; margin: 6px 0 0; padding: 7px 8px; border: 1px solid var(--line); background: #0b1519; }
+.morphology-activity-legend { display: flex; flex-wrap: wrap; align-items: center; gap: 5px 10px; color: var(--muted); font: 8px "SFMono-Regular", Consolas, monospace; }
+.morphology-activity-legend span { display: inline-flex; align-items: center; gap: 4px; }
+.morphology-activity-legend i { display: inline-block; width: 7px; height: 7px; background: var(--cyan); }
+.morphology-activity-legend .morphology-activity-structural { background: #77c9c6; }
+.morphology-activity-legend .morphology-activity-simulated { background: #f4f2dd; }
+.morphology-activity-legend label { display: inline-flex; align-items: center; gap: 4px; color: var(--ink); cursor: pointer; }
+.morphology-activity-legend input { margin: 0; }
+.morphology-activity-note { margin: 0; color: var(--muted); font-size: 9px; line-height: 1.35; }
+.morphology-type-drive-readouts, .morphology-body-state-readouts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 5px; }
+.morphology-type-drive-readouts > div, .morphology-body-state-readouts > div { display: grid; min-width: 0; gap: 3px; padding: 5px 6px; border-left: 2px solid var(--amber); background: rgba(255, 255, 255, .018); }
+.morphology-body-state-readouts > div { border-left-color: #f4f2dd; }
+.morphology-type-drive-readouts span, .morphology-body-state-readouts span { color: var(--muted); font: 8px "SFMono-Regular", Consolas, monospace; }
+.morphology-type-drive-readouts strong, .morphology-body-state-readouts strong { color: var(--ink); font: 10px "SFMono-Regular", Consolas, monospace; }
+.morphology-type-drive-readouts strong small, .morphology-body-state-readouts small { color: var(--muted); font: 8px "SFMono-Regular", Consolas, monospace; }
+.morphology-type-drive-readouts > p { grid-column: 1 / -1; margin: 0; color: var(--muted); font-size: 9px; }
 .morphology-inspector-compact .morphology-controls { gap: 7px 12px; padding: 8px; font-size: 10px; }
 .morphology-inspector-compact .morphology-controls button { margin-left: 0; padding: 6px 8px; }
 .morphology-inspector-compact .morphology-secondary-controls { flex-basis: 100%; }

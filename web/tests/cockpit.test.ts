@@ -13,6 +13,11 @@ import {
 } from "../src/lib/cockpitModel";
 import { toggleCockpitFocus, type CockpitFocusState } from "../src/lib/cockpitLayout";
 import {
+  activityContextForBody,
+  bodySpecificActivityByMorphologyIdentity,
+  deriveActivityStructureProjection,
+} from "../src/lib/activityStructure";
+import {
   CONNECTIVITY_SOURCE_HASHES,
   STRUCTURAL_CONNECTIVITY_BODY_IDS,
   STRUCTURAL_CONNECTIVITY_PROJECTION_ID,
@@ -117,8 +122,16 @@ function summary(): ExperimentSummary {
       circuit_integrity: Object.entries(CONNECTIVITY_SOURCE_HASHES).map(([file, digest]) => [file, digest]),
     },
     graph_scope_id: "direct_visual_to_dnp01_v1",
-    encoder: { id: "level_p_instantaneous_bounded_v1", version: "phase2e_v1" },
-    neural_model: { id: "lif_filtered_synapse", version: "phase2b_v1" },
+    encoder: {
+      id: "level_p_instantaneous_bounded_v1",
+      version: "phase2e_v1",
+      population_policy: "bilateral_type_broadcast_v1",
+    },
+    neural_model: {
+      id: "lif_filtered_synapse",
+      version: "phase2b_v1",
+      membrane_state_references: { rest_mv: -52, threshold_mv: -45 },
+    },
     pathway_condition: "both",
     duration_ms: 3,
     dt_ms: 1,
@@ -279,46 +292,189 @@ test("cockpit refuses unrelated experiment, morphology, body mapping, and circui
 test("one playback time coordinates world, telemetry, selected DNp01, and event position", () => {
   const persisted = timeline();
   const before = structuredClone(persisted);
-  const events = deriveCockpitEvents(persisted);
-  assert.deepEqual(events.map((event) => [event.kind, event.bodyId, event.timeMs]), [
-    ["start", null, 0], ["dnp01_spike", 10010, 1], ["dnp01_spike", 10001, 2],
-    ["dnp01_spike", 10010, 3], ["end", null, 3],
+  const structure = connectivity();
+  const events = deriveCockpitEvents(persisted, structure.fixed_sample.bodies);
+  assert.deepEqual(events.map((event) => [event.kind, event.bodyId, event.nodeIndex, event.timeMs]), [
+    ["start", null, null, 0], ["dnp01_spike", 10010, 1, 1], ["dnp01_spike", 10001, 0, 2],
+    ["dnp01_spike", 10010, 1, 3], ["end", null, null, 3],
   ]);
   const worldAtOne = deriveSceneState(persisted, 1.75);
-  const frameAtOne = deriveCockpitFrame(persisted, worldAtOne, 10010);
+  const frameAtOne = deriveCockpitFrame(persisted, worldAtOne);
+  const activityAtOne = deriveActivityStructureProjection(summary(), persisted, structure, worldAtOne);
   assert.equal(frameAtOne.playbackTimeMs, worldAtOne.playbackTimeMs);
   assert.equal(frameAtOne.thetaRad, worldAtOne.thetaRad);
   assert.equal(frameAtOne.lc4DriveMveq, persisted.lc4_drive_mveq[1]);
   assert.equal(frameAtOne.lplc2DriveMveq, persisted.lplc2_drive_mveq[1]);
   assert.equal(frameAtOne.cursorFraction, 1.75 / 3);
-  assert.equal(frameAtOne.selectedDynamic?.membraneMv, persisted.selected_body_telemetry[1].membrane_mv[1]);
-  assert.equal(frameAtOne.selectedDynamic?.spikedAtBoundary, true);
+  assert.equal(activityAtOne.bodySpecificStates?.[10010].membraneMv, persisted.selected_body_telemetry[1].membrane_mv[1]);
+  assert.equal(activityAtOne.bodySpecificStates?.[10010].spikeAtBoundary, true);
+  assert.equal(activityAtOne.bodySpecificStates?.[10010].nodeIndex, 1);
   assert.equal(cockpitEventPosition(events[1], frameAtOne), "current");
   assert.equal(cockpitEventPosition(events[2], frameAtOne), "future");
 
   const seeked = seekPlayback(createPlaybackClock(0), 2.25, 0, 3);
   const worldAtTwo = deriveSceneState(persisted, seeked.currentTimeMs);
-  const frameAtTwo = deriveCockpitFrame(persisted, worldAtTwo, 10001);
+  const frameAtTwo = deriveCockpitFrame(persisted, worldAtTwo);
+  const activityAtTwo = deriveActivityStructureProjection(summary(), persisted, structure, worldAtTwo);
   assert.equal(frameAtTwo.playbackTimeMs, 2.25);
   assert.equal(frameAtTwo.thetaRad, persisted.theta_rad[2]);
-  assert.equal(frameAtTwo.selectedDynamic?.membraneMv, persisted.selected_body_telemetry[0].membrane_mv[2]);
+  assert.equal(activityAtTwo.bodySpecificStates?.[10001].membraneMv, persisted.selected_body_telemetry[0].membrane_mv[2]);
   assert.equal(cockpitEventPosition(events[2], frameAtTwo), "current");
   assert.equal(cockpitEventPosition(events[1], frameAtTwo), "past");
   assert.deepEqual(persisted, before);
 });
 
+test("activity projection preserves type-level sensory granularity and exact DNp01 identities", () => {
+  const experiment = summary();
+  const persisted = timeline();
+  const structure = connectivity();
+  const bodies = STRUCTURAL_CONNECTIVITY_BODY_IDS.map((bodyId) => morphologyBody(bodyId));
+  const scene = deriveSceneState(persisted, 1.5);
+  const projection = deriveActivityStructureProjection(experiment, persisted, structure, scene);
+
+  assert.deepEqual(projection.typeLevelDrives?.map(({ neuronType, sourceField, valueMveq }) => [neuronType, sourceField, valueMveq]), [
+    ["LC4", "lc4_drive_mveq", 2],
+    ["LPLC2", "lplc2_drive_mveq", 5],
+  ]);
+  const lc4Context = activityContextForBody(projection, morphologyBody(12032));
+  const lplc2Context = activityContextForBody(projection, morphologyBody(11498));
+  assert.equal(lc4Context.granularity, "TYPE_LEVEL");
+  assert.equal(lplc2Context.granularity, "TYPE_LEVEL");
+  if (lc4Context.granularity === "TYPE_LEVEL") assert.equal("bodyId" in lc4Context.signal, false);
+  if (lplc2Context.granularity === "TYPE_LEVEL") assert.equal("bodyId" in lplc2Context.signal, false);
+
+  assert.deepEqual(Object.keys(projection.bodySpecificStates ?? {}).sort(), ["10001", "10010"]);
+  assert.deepEqual(
+    [projection.bodySpecificStates?.[10001].nodeIndex, projection.bodySpecificStates?.[10001].sourceSide],
+    [0, "R"],
+  );
+  assert.deepEqual(
+    [projection.bodySpecificStates?.[10010].nodeIndex, projection.bodySpecificStates?.[10010].sourceSide],
+    [1, "L"],
+  );
+  const reorderedContract = structuredClone(structure);
+  reorderedContract.fixed_sample.bodies.reverse();
+  const reorderedProjection = deriveActivityStructureProjection(experiment, persisted, reorderedContract, scene);
+  assert.deepEqual(reorderedProjection.bodySpecificStates, projection.bodySpecificStates);
+  const mapped = bodySpecificActivityByMorphologyIdentity(projection, bodies);
+  assert.deepEqual(Object.keys(mapped).sort(), ["10001", "10010"]);
+  assert.equal(mapped[12032], undefined);
+  assert.equal(mapped[16128], undefined);
+  assert.equal(mapped[11498], undefined);
+  assert.equal(mapped[14465], undefined);
+  const sameIdentityDifferentCoordinates = morphologyBody(10010);
+  sameIdentityDifferentCoordinates.components[0].nodes[0].x = 999_999;
+  assert.deepEqual(
+    activityContextForBody(projection, sameIdentityDifferentCoordinates),
+    activityContextForBody(projection, morphologyBody(10010)),
+  );
+});
+
+test("activity mapping fails closed for unknown encoder granularity or mismatched CircuitContract identity", () => {
+  const persisted = timeline();
+  const structure = connectivity();
+  const scene = deriveSceneState(persisted, 1);
+  const unknownEncoder = structuredClone(summary());
+  unknownEncoder.encoder.population_policy = "unverified_population_policy";
+  const unknownProjection = deriveActivityStructureProjection(unknownEncoder, persisted, structure, scene);
+  assert.equal(unknownProjection.typeLevelDrives, null);
+  assert.equal(activityContextForBody(unknownProjection, morphologyBody(12032)).granularity, "UNAVAILABLE");
+  assert.notEqual(unknownProjection.bodySpecificStates, null);
+
+  const mismatchedContract = structuredClone(structure);
+  const rightDnp = mismatchedContract.fixed_sample.bodies.find((body) => body.body_id === 10001);
+  assert.ok(rightDnp);
+  (rightDnp as { node_index: number }).node_index = 1;
+  const mismatchedProjection = deriveActivityStructureProjection(summary(), persisted, mismatchedContract, scene);
+  assert.equal(mismatchedProjection.bodySpecificStates, null);
+  assert.notEqual(mismatchedProjection.typeLevelDrives, null);
+  assert.equal(activityContextForBody(mismatchedProjection, morphologyBody(10001)).granularity, "UNAVAILABLE");
+});
+
+test("membrane presentation uses only persisted LIF references and clamps without mutating source values", () => {
+  const persisted = timeline();
+  const before = structuredClone(persisted);
+  const right = persisted.selected_body_telemetry.find((body) => body.body_id === 10001);
+  const left = persisted.selected_body_telemetry.find((body) => body.body_id === 10010);
+  assert.ok(right && left);
+  (right.membrane_mv as number[]).splice(0, 4, -52, -48.5, -45, -55);
+  (left.membrane_mv as number[]).splice(0, 4, -53, -45, -42, -50);
+  const editedSourceBeforeProjection = structuredClone(persisted);
+  const structure = connectivity();
+  const model = summary();
+  const atRest = deriveActivityStructureProjection(model, persisted, structure, deriveSceneState(persisted, 0));
+  const intermediate = deriveActivityStructureProjection(model, persisted, structure, deriveSceneState(persisted, 1));
+  const atThreshold = deriveActivityStructureProjection(model, persisted, structure, deriveSceneState(persisted, 2));
+  const belowRest = deriveActivityStructureProjection(model, persisted, structure, deriveSceneState(persisted, 3));
+  assert.equal(atRest.bodySpecificStates?.[10001].normalizedModelMembranePosition, 0);
+  assert.equal(intermediate.bodySpecificStates?.[10001].normalizedModelMembranePosition, 0.5);
+  assert.equal(intermediate.bodySpecificStates?.[10010].normalizedModelMembranePosition, 1);
+  assert.equal(atThreshold.bodySpecificStates?.[10001].normalizedModelMembranePosition, 1);
+  assert.equal(atThreshold.bodySpecificStates?.[10010].normalizedModelMembranePosition, 1);
+  assert.equal(belowRest.bodySpecificStates?.[10001].normalizedModelMembranePosition, 0);
+  assert.equal(intermediate.bodySpecificStates?.[10001].membraneMv, -48.5);
+  assert.deepEqual(persisted, editedSourceBeforeProjection);
+  assert.deepEqual(before.selected_body_telemetry[0].membrane_mv, [-65, -61, -55, -51]);
+
+  const unknownModel = structuredClone(model);
+  unknownModel.neural_model.version = "unknown_lif_version";
+  const unnormalized = deriveActivityStructureProjection(unknownModel, persisted, structure, deriveSceneState(persisted, 1));
+  assert.equal(unnormalized.bodySpecificStates?.[10001].membraneMv, -48.5);
+  assert.equal(unnormalized.bodySpecificStates?.[10001].normalizedModelMembranePosition, null);
+  assert.equal(unnormalized.bodySpecificStates?.[10010].spikeAtBoundary, true);
+});
+
+test("persisted spike event, body-specific state, and selected-body identity agree at stored boundaries", () => {
+  const persisted = timeline();
+  const structure = connectivity();
+  const events = deriveCockpitEvents(persisted, structure.fixed_sample.bodies);
+  const scene = deriveSceneState(persisted, 1.75);
+  const projection = deriveActivityStructureProjection(summary(), persisted, structure, scene);
+  const spikeEvent = events.find((event) => event.kind === "dnp01_spike" && event.timeMs === 1);
+  assert.deepEqual([spikeEvent?.bodyId, spikeEvent?.nodeIndex], [10010, 1]);
+  assert.equal(projection.boundaryTimeMs, spikeEvent?.timeMs);
+  assert.deepEqual(
+    [projection.bodySpecificStates?.[10010].spikeAtBoundary, projection.bodySpecificStates?.[10010].spikeTimestampMs],
+    [true, 1],
+  );
+  assert.equal(projection.bodySpecificStates?.[10001].spikeAtBoundary, false);
+  assert.equal(cockpitEventPosition(spikeEvent!, deriveCockpitFrame(persisted, scene)), "current");
+
+  const atEnd = deriveActivityStructureProjection(summary(), persisted, structure, deriveSceneState(persisted, 3));
+  assert.equal(atEnd.boundaryTimeMs, 3);
+  assert.equal(atEnd.bodySpecificStates?.[10001].spikeAtBoundary, false);
+  assert.equal(atEnd.bodySpecificStates?.[10010].spikeAtBoundary, true);
+});
+
 test("visual bodies have no invented individual trace and cockpit source text stays bounded", () => {
   const persisted = timeline();
   const scene = deriveSceneState(persisted, 1);
-  assert.equal(deriveCockpitFrame(persisted, scene, 12032).selectedDynamic, null);
-  assert.equal(deriveCockpitFrame(persisted, scene, 11498).selectedDynamic, null);
+  const activity = deriveActivityStructureProjection(summary(), persisted, connectivity(), scene);
+  assert.equal(activityContextForBody(activity, morphologyBody(12032)).granularity, "TYPE_LEVEL");
+  assert.equal(activityContextForBody(activity, morphologyBody(11498)).granularity, "TYPE_LEVEL");
   const source = ["ScientificCockpit.tsx", "CockpitPanels.tsx", "CockpitTelemetry.tsx"]
     .map((file) => readFileSync(new URL(`../src/components/${file}`, import.meta.url), "utf8"))
     .join("\n");
   assert.doesNotMatch(source, /\buseFrame\s*\(|\bExperimentRunner\b|<FlyVisualAsset\b|\breward\b|\bpolicy\b|\breinforcement learning\b|\bconsciousness\b|\bsentience\b/i);
-  assert.match(source, /Dynamic body trace not present/);
+  assert.match(source, /No body-specific dynamic trace in this artifact/);
   assert.match(source, /structural weight/);
   assert.match(source, /PlaybackCanvas/);
+  const morphologyInspector = readFileSync(new URL("../src/components/MorphologyInspector.tsx", import.meta.url), "utf8");
+  assert.match(morphologyInspector, /compact && activity/);
+  assert.match(morphologyInspector, /showSimulatedState && activityState && normalizedPosition !== null/);
+  assert.match(morphologyInspector, /normalizedModelMembranePosition/);
+  assert.match(morphologyInspector, /const SourceSkeletonLines = memo/);
+  assert.match(morphologyInspector, /const SimulatedBodyStateLines = memo/);
+  assert.match(morphologyInspector, /\[components\]/);
+  assert.doesNotMatch(morphologyInspector, /activation\s*%|firing probability|signal propagation|local membrane voltage/i);
+  assert.match(morphologyInspector, /linewidth=\{1\}/);
+  assert.doesNotMatch(morphologyInspector, /node\.radius.*linewidth|structural_weight.*opacity/i);
+  const structuralRenderer = morphologyInspector.slice(
+    morphologyInspector.indexOf("const StructuralConnectivityLines"),
+    morphologyInspector.indexOf("function MorphologyScene"),
+  );
+  assert.match(structuralRenderer, /linewidth=\{1\}/);
+  assert.doesNotMatch(structuralRenderer, /activity|structural_weight/i);
 });
 
 test("panel focus is reversible presentation state and keeps scientific sources untouched", () => {
@@ -327,7 +483,7 @@ test("panel focus is reversible presentation state and keeps scientific sources 
   const bodies = STRUCTURAL_CONNECTIVITY_BODY_IDS.map((bodyId) => morphologyBody(bodyId));
   const structure = connectivity();
   const before = structuredClone({ experiment, persisted, bodies, structure });
-  const frame = deriveCockpitFrame(persisted, deriveSceneState(persisted, 1.75), 10010);
+  const frame = deriveCockpitFrame(persisted, deriveSceneState(persisted, 1.75));
   let focus: CockpitFocusState = null;
   focus = toggleCockpitFocus(focus, "world");
   assert.equal(focus, "world");
@@ -338,7 +494,6 @@ test("panel focus is reversible presentation state and keeps scientific sources 
   focus = toggleCockpitFocus(focus, "telemetry");
   assert.equal(focus, null);
   assert.equal(frame.playbackTimeMs, 1.75);
-  assert.equal(frame.selectedDynamic?.bodyId, 10010);
   assert.deepEqual({ experiment, persisted, bodies, structure }, before);
 });
 

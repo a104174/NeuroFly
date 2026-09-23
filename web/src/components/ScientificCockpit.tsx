@@ -12,6 +12,7 @@ import {
 import { CockpitTelemetry } from "@/components/CockpitTelemetry";
 import { MorphologyInspector } from "@/components/MorphologyInspector";
 import { useExperimentPlayback } from "@/hooks/useExperimentPlayback";
+import { deriveActivityStructureProjection } from "@/lib/activityStructure";
 import { toggleCockpitFocus, type CockpitFocusPanel, type CockpitFocusState } from "@/lib/cockpitLayout";
 import { deriveCockpitEvents, deriveCockpitFrame } from "@/lib/cockpitModel";
 import type {
@@ -43,6 +44,8 @@ const CockpitProvenance = memo(function CockpitProvenance({
         <div><dt>MaleCNS circuit source</dt><dd>{summary.source.endpoint}</dd></div>
         <div><dt>Morphology</dt><dd>{morphology ? `${morphology.artifact_id} · ${morphology.generation.source_mode}` : "unavailable"}</dd></div>
         <div><dt>Structural projection</dt><dd>{connectivity?.projection.id ?? "unavailable"}</dd></div>
+        <div><dt>Encoder population mapping</dt><dd>{summary.encoder.population_policy}</dd></div>
+        <div><dt>LIF membrane references</dt><dd>{summary.neural_model.membrane_state_references.rest_mv} mV rest · {summary.neural_model.membrane_state_references.threshold_mv} mV threshold</dd></div>
         <div><dt>Source coordinate frame</dt><dd>{morphology ? `${morphology.coordinate_frame_id} · ${morphology.coordinate_unit}` : "unavailable"}</dd></div>
       </dl>
       <p>Structural weight is a connectome count. The morphology connectors and world scene use separate presentation geometry; they do not locate synapses or align the fly to MaleCNS coordinates.</p>
@@ -73,12 +76,20 @@ export function ScientificCockpit({
     10001: true, 10010: true, 11498: true, 12032: true, 14465: true, 16128: true,
   });
   const [showConnectivity, setShowConnectivity] = useState(false);
+  const [showSimulatedState, setShowSimulatedState] = useState(true);
   const [focusedPanel, setFocusedPanel] = useState<CockpitFocusState>(null);
   const frame = useMemo(
-    () => deriveCockpitFrame(timeline, playback.sceneState, selection.bodyId),
-    [timeline, playback.sceneState, selection.bodyId],
+    () => deriveCockpitFrame(timeline, playback.sceneState),
+    [timeline, playback.sceneState],
   );
-  const events = useMemo(() => deriveCockpitEvents(timeline), [timeline]);
+  const activity = useMemo(
+    () => deriveActivityStructureProjection(summary, timeline, connectivity, playback.sceneState),
+    [summary, timeline, connectivity, playback.sceneState],
+  );
+  const events = useMemo(
+    () => deriveCockpitEvents(timeline, connectivity?.fixed_sample.bodies ?? []),
+    [timeline, connectivity],
+  );
   const selectedBody = bodies.find((body) => body.body_id === selection.bodyId) ?? null;
   const selectBody = useCallback((bodyId: MorphologyBodyId) => {
     if (bodies.some((body) => body.body_id === bodyId)) setSelection(selectMorphologyBody(bodyId));
@@ -128,6 +139,9 @@ export function ScientificCockpit({
               connectivity={connectivity}
               selection={selection}
               onSelectionChange={setSelection}
+              activity={activity}
+              showSimulatedState={showSimulatedState}
+              onShowSimulatedStateChange={setShowSimulatedState}
               visibility={visibility}
               onVisibilityChange={setVisibility}
               showConnectivity={showConnectivity}
@@ -144,13 +158,14 @@ export function ScientificCockpit({
 
         <div className="cockpit-rail">
           <CockpitRunPanel summary={summary} />
-          <CockpitSelectedNeuronPanel body={selectedBody} connectivity={connectivity} frame={frame} />
+          <CockpitSelectedNeuronPanel body={selectedBody} connectivity={connectivity} activity={activity} />
         </div>
 
         <CockpitTelemetry
           timeline={timeline}
           frame={frame}
           selectedBodyId={selection.bodyId}
+          activity={activity}
           focused={focusedPanel === "telemetry"}
           onToggleFocus={() => toggleFocus("telemetry")}
         />

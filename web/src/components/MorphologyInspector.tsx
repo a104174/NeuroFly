@@ -20,6 +20,11 @@ import type {
   MorphologyNeuronType,
   StructuralConnectivityProjection,
 } from "@/lib/neuroflyClient";
+import {
+  bodySpecificActivityByMorphologyIdentity,
+  type ActivityStructureProjection,
+  type BodySpecificDnp01State,
+} from "@/lib/activityStructure";
 import { buildSchematicStructuralConnectors } from "@/lib/connectivityView";
 import {
   getMorphologyWebGLCapability,
@@ -97,38 +102,76 @@ function SkeletonLines({
   body,
   transform,
   selection,
+  activityState,
+  showSimulatedState,
 }: {
   body: MorphologyBody;
   transform: MorphologyViewTransform;
   selection: MorphologySelection;
+  activityState: BodySpecificDnp01State | null;
+  showSimulatedState: boolean;
 }) {
   const components = useMemo(
     () => buildMorphologyLineComponents(body, transform),
     [body, transform],
   );
-  return components.map((component) => (
-    <lineSegments key={`${component.bodyId}-${component.componentId}`}>
-      <bufferGeometry>
-        <bufferAttribute
-          attach="attributes-position"
-          args={[component.positions, 3]}
-        />
-      </bufferGeometry>
-      <lineBasicMaterial
+  const geometryArgs = useMemo(
+    () => components.map((component) => [component.positions, 3] as [Float32Array, number]),
+    [components],
+  );
+  return components.map((component, index) => {
+    const selectedOpacity = selection.bodyId === null ||
+      (selection.bodyId === body.body_id &&
+        (selection.componentId === null || selection.componentId === component.componentId))
+      ? 1 : selection.bodyId === body.body_id ? 0.28 : 0.16;
+    const normalizedPosition = activityState?.normalizedModelMembranePosition ?? null;
+    return <group key={`${component.bodyId}-${component.componentId}`}>
+      <SourceSkeletonLines
+        positions={geometryArgs[index]}
         color={BODY_COLORS[body.body_id]}
-        linewidth={1}
-        transparent
-        opacity={selection.bodyId === null ||
-          (selection.bodyId === body.body_id &&
-            (selection.componentId === null || selection.componentId === component.componentId))
-          ? 1 : selection.bodyId === body.body_id ? 0.28 : 0.16}
-        depthWrite={false}
+        opacity={selectedOpacity}
       />
-    </lineSegments>
-  ));
+      {showSimulatedState && activityState && normalizedPosition !== null ? <SimulatedBodyStateLines
+        positions={geometryArgs[index]}
+        opacity={normalizedPosition * 0.36 * selectedOpacity}
+      /> : null}
+    </group>;
+  });
 }
 
-function StructuralConnectivityLines({
+const SourceSkeletonLines = memo(function SourceSkeletonLines({
+  positions,
+  color,
+  opacity,
+}: {
+  positions: [Float32Array, number];
+  color: string;
+  opacity: number;
+}) {
+  return <lineSegments>
+    <bufferGeometry>
+      <bufferAttribute attach="attributes-position" args={positions} />
+    </bufferGeometry>
+    <lineBasicMaterial color={color} linewidth={1} transparent opacity={opacity} depthWrite={false} />
+  </lineSegments>;
+});
+
+const SimulatedBodyStateLines = memo(function SimulatedBodyStateLines({
+  positions,
+  opacity,
+}: {
+  positions: [Float32Array, number];
+  opacity: number;
+}) {
+  return <lineSegments renderOrder={1}>
+    <bufferGeometry>
+      <bufferAttribute attach="attributes-position" args={positions} />
+    </bufferGeometry>
+    <lineBasicMaterial color="#f4f2dd" linewidth={1} transparent opacity={opacity} depthWrite={false} />
+  </lineSegments>;
+});
+
+const StructuralConnectivityLines = memo(function StructuralConnectivityLines({
   connectors,
 }: {
   connectors: ReturnType<typeof buildSchematicStructuralConnectors>;
@@ -151,7 +194,7 @@ function StructuralConnectivityLines({
       />
     </lineSegments>
   ));
-}
+});
 
 function MorphologyScene({
   bodies,
@@ -163,6 +206,8 @@ function MorphologyScene({
   onFocused,
   showConnectivity,
   connectors,
+  activityByBodyId,
+  showSimulatedState,
 }: {
   bodies: readonly MorphologyBody[];
   transform: MorphologyViewTransform;
@@ -173,6 +218,8 @@ function MorphologyScene({
   onFocused: (kind: FocusRequest["kind"]) => void;
   showConnectivity: boolean;
   connectors: ReturnType<typeof buildSchematicStructuralConnectors>;
+  activityByBodyId: Readonly<Partial<Record<MorphologyBodyId, BodySpecificDnp01State>>>;
+  showSimulatedState: boolean;
 }) {
   return (
     <>
@@ -185,7 +232,14 @@ function MorphologyScene({
       ) : null}
       {bodies.map((body) =>
         visibility[body.body_id] ? (
-          <SkeletonLines key={body.body_id} body={body} transform={transform} selection={selection} />
+          <SkeletonLines
+            key={body.body_id}
+            body={body}
+            transform={transform}
+            selection={selection}
+            activityState={activityByBodyId[body.body_id] ?? null}
+            showSimulatedState={showSimulatedState}
+          />
         ) : null,
       )}
       {showConnectivity ? <StructuralConnectivityLines connectors={connectors} /> : null}
@@ -208,6 +262,9 @@ export const MorphologyInspector = memo(function MorphologyInspector({
   onVisibilityChange,
   showConnectivity: controlledShowConnectivity,
   onShowConnectivityChange,
+  activity,
+  showSimulatedState = false,
+  onShowSimulatedStateChange,
   compact = false,
 }: {
   artifact: MorphologyArtifactSummary;
@@ -219,6 +276,9 @@ export const MorphologyInspector = memo(function MorphologyInspector({
   onVisibilityChange?: Dispatch<SetStateAction<Record<MorphologyBodyId, boolean>>>;
   showConnectivity?: boolean;
   onShowConnectivityChange?: Dispatch<SetStateAction<boolean>>;
+  activity?: ActivityStructureProjection;
+  showSimulatedState?: boolean;
+  onShowSimulatedStateChange?: Dispatch<SetStateAction<boolean>>;
   compact?: boolean;
 }) {
   const transform = useMemo(
@@ -260,6 +320,9 @@ export const MorphologyInspector = memo(function MorphologyInspector({
     () => connectivity ? buildSchematicStructuralConnectors(connectivity, bodies, transform, selection, visibility) : [],
     [bodies, connectivity, selection, transform, visibility],
   );
+  const activityByBodyId = useMemo(() => {
+    return activity ? bodySpecificActivityByMorphologyIdentity(activity, bodies) : {};
+  }, [activity, bodies]);
   const incidentEdges = selectedBody === null
     ? connectivity?.edges ?? []
     : connectivity?.edges.filter((edge) =>
@@ -354,6 +417,8 @@ export const MorphologyInspector = memo(function MorphologyInspector({
               onFocused={setFocusKind}
               showConnectivity={showConnectivity}
               connectors={connectors}
+              activityByBodyId={compact ? activityByBodyId : {}}
+              showSimulatedState={compact && showSimulatedState}
             />
           </Canvas>
         )}
@@ -367,6 +432,39 @@ export const MorphologyInspector = memo(function MorphologyInspector({
           ))}
         </div>
       </div>
+
+      {compact && activity ? <section className="morphology-activity" aria-label="Experiment state mapped to source structure">
+        <div className="morphology-activity-legend">
+          <span><i className="morphology-activity-source" /> MALECNS MORPHOLOGY · raw source</span>
+          <span><i className="morphology-activity-structural" /> STRUCTURAL · CircuitContract</span>
+          <span><i className="morphology-activity-simulated" /> SIMULATED · model state</span>
+          <label>
+            <input type="checkbox" checked={showSimulatedState} onChange={(event) => onShowSimulatedStateChange?.(event.target.checked)} />
+            Show simulated body-state overlay
+          </label>
+        </div>
+        <p className="morphology-activity-note">DNp01 is a point-neuron model: body-level state is mapped uniformly across raw morphology for presentation, not spatially resolved along neurites.</p>
+        <div className="morphology-type-drive-readouts" aria-label="Type-level encoder drives">
+          {activity.typeLevelDrives ? activity.typeLevelDrives.map((signal) => <div key={signal.neuronType}>
+            <span>TYPE-LEVEL {signal.neuronType} DRIVE</span>
+            <strong>{signal.valueMveq.toFixed(4)} <small>mV_eq</small></strong>
+            <small>interval {signal.intervalStartMs.toFixed(3)}–{signal.intervalEndMs.toFixed(3)} ms</small>
+          </div>) : <p role="status">{activity.typeLevelUnavailableReason ?? "Validated type-level encoder data unavailable."}</p>}
+        </div>
+        <div className="morphology-body-state-readouts" aria-label="DNp01 body-level simulated state">
+          {([10001, 10010] as const).map((bodyId) => {
+            const body = bodies.find((candidate) => candidate.body_id === bodyId);
+            const state = activity.bodySpecificStates?.[bodyId];
+            return <div key={bodyId}>
+              <span>DNp01 BODY {bodyId} · node_index {body?.node_index ?? "unavailable"} · source side {body?.source_side ?? "unavailable"}</span>
+              {state ? <>
+                <strong>{state.membraneMv.toFixed(4)} mV · filtered state {state.synapticStateMveq.toFixed(4)} mV_eq</strong>
+                <small>normalized model membrane position: {state.normalizedModelMembranePosition === null ? "not available" : state.normalizedModelMembranePosition.toFixed(3)} · boundary {state.boundaryTimeMs.toFixed(3)} ms{state.spikeAtBoundary ? " · SIMULATED SPIKE at stored boundary" : ""}</small>
+              </> : <small>{activity.bodyStateUnavailableReason ?? "Body-specific state unavailable."}</small>}
+            </div>;
+          })}
+        </div>
+      </section> : null}
 
       <div className="morphology-controls" aria-label="Morphology view controls">
         {(["LC4", "LPLC2", "DNp01"] as const)

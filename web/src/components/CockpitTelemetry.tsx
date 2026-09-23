@@ -4,6 +4,7 @@ import { useMemo } from "react";
 
 import type { ExperimentTimeline, MorphologyBodyId } from "@/lib/neuroflyClient";
 import type { CockpitFrame } from "@/lib/cockpitModel";
+import type { ActivityStructureProjection } from "@/lib/activityStructure";
 
 interface PlotSeries {
   readonly label: string;
@@ -105,12 +106,14 @@ export function CockpitTelemetry({
   timeline,
   frame,
   selectedBodyId,
+  activity,
   focused,
   onToggleFocus,
 }: {
   timeline: ExperimentTimeline;
   frame: CockpitFrame;
   selectedBodyId: MorphologyBodyId | null;
+  activity: ActivityStructureProjection;
   focused: boolean;
   onToggleFocus: () => void;
 }) {
@@ -121,9 +124,12 @@ export function CockpitTelemetry({
     { label: "LC4 type drive", values: timeline.lc4_drive_mveq, color: "#8fd5ff" },
     { label: "LPLC2 type drive", values: timeline.lplc2_drive_mveq, color: "#dc8e5a" },
   ], [timeline.lc4_drive_mveq, timeline.lplc2_drive_mveq]);
-  const selectedTelemetry = timeline.selected_body_telemetry.find((body) =>
-    body.body_id === selectedBodyId && frame.selectedDynamic?.bodyId === body.body_id,
-  );
+  const selectedState = selectedBodyId === 10001 || selectedBodyId === 10010
+    ? activity.bodySpecificStates?.[selectedBodyId] ?? null
+    : null;
+  const selectedTelemetry = selectedState
+    ? timeline.selected_body_telemetry.find((body) => body.body_id === selectedState.bodyId)
+    : undefined;
   const membrane = useMemo<PlotSeries[]>(() => selectedTelemetry ? [
     {
       label: `DNp01 body ${selectedTelemetry.body_id} membrane`,
@@ -146,11 +152,11 @@ export function CockpitTelemetry({
           </button>
         </div>
       </div>
-      <div className="cockpit-plot-grid" data-traces={selectedTelemetry ? 3 : 2}>
+      <div className="cockpit-plot-grid" data-traces={selectedTelemetry ? 3 : activity.typeLevelDrives ? 2 : 1}>
         <TelemetryPlot title="Looming angular size" source="theta_rad · persisted interval values" unit="rad" times={timeline.step_times_ms} series={theta} currentValues={[frame.thetaRad]} startMs={timeline.start_ms} endMs={timeline.end_ms} frame={frame} />
-        <TelemetryPlot title="Sensory model drive" source="LC4/LPLC2 type-level interval values" unit="mV_eq" times={timeline.step_times_ms} series={drives} currentValues={[frame.lc4DriveMveq, frame.lplc2DriveMveq]} startMs={timeline.start_ms} endMs={timeline.end_ms} frame={frame} />
-        {selectedTelemetry && frame.selectedDynamic && membrane.length > 0 ? (
-          <TelemetryPlot title={`DNp01 ${selectedTelemetry.body_id} membrane`} source="Body-specific persisted boundary state" unit="mV" times={timeline.times_ms} series={membrane} currentValues={[frame.selectedDynamic.membraneMv]} startMs={timeline.start_ms} endMs={timeline.end_ms} frame={frame} />
+        {activity.typeLevelDrives ? <TelemetryPlot title="Sensory model drive · TYPE LEVEL" source="Bilateral type-broadcast interval values" unit="mV_eq" times={timeline.step_times_ms} series={drives} currentValues={activity.typeLevelDrives.map((signal) => signal.valueMveq)} startMs={timeline.start_ms} endMs={timeline.end_ms} frame={frame} /> : null}
+        {selectedTelemetry && selectedState && membrane.length > 0 ? (
+          <TelemetryPlot title={`DNp01 ${selectedTelemetry.body_id} membrane`} source="Body-specific persisted boundary state · simulated" unit="mV" times={timeline.times_ms} series={membrane} currentValues={[selectedState.membraneMv]} startMs={timeline.start_ms} endMs={timeline.end_ms} frame={frame} />
         ) : null}
       </div>
       <details className="cockpit-panel-details">

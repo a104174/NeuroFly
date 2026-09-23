@@ -260,8 +260,12 @@ export interface ExperimentSummary {
     circuit_integrity: [string, string][];
   };
   graph_scope_id: string;
-  encoder: { id: string; version: string };
-  neural_model: { id: string; version: string };
+  encoder: { id: string; version: string; population_policy: string };
+  neural_model: {
+    id: string;
+    version: string;
+    membrane_state_references: { rest_mv: number; threshold_mv: number };
+  };
   pathway_condition: string;
   duration_ms: number;
   dt_ms: number;
@@ -545,6 +549,10 @@ export function parseExperimentSummary(value: unknown): ExperimentSummary {
   const source = record(item.source, "source");
   const encoder = record(item.encoder, "encoder");
   const neuralModel = record(item.neural_model, "neural_model");
+  const membraneReferences = record(
+    neuralModel.membrane_state_references,
+    "neural_model.membrane_state_references",
+  );
   const populations = record(item.populations, "populations");
   const dnpValues = item.dnp01;
   if (!Array.isArray(dnpValues) || dnpValues.length !== 2) {
@@ -597,10 +605,24 @@ export function parseExperimentSummary(value: unknown): ExperimentSummary {
     encoder: {
       id: stringValue(encoder.id, "encoder.id"),
       version: stringValue(encoder.version, "encoder.version"),
+      population_policy: stringValue(
+        encoder.population_policy,
+        "encoder.population_policy",
+      ),
     },
     neural_model: {
       id: stringValue(neuralModel.id, "neural_model.id"),
       version: stringValue(neuralModel.version, "neural_model.version"),
+      membrane_state_references: {
+        rest_mv: finiteNumber(
+          membraneReferences.rest_mv,
+          "neural_model.membrane_state_references.rest_mv",
+        ),
+        threshold_mv: finiteNumber(
+          membraneReferences.threshold_mv,
+          "neural_model.membrane_state_references.threshold_mv",
+        ),
+      },
     },
     pathway_condition: stringValue(item.pathway_condition, "pathway_condition"),
     duration_ms: finiteNumber(item.duration_ms, "duration_ms"),

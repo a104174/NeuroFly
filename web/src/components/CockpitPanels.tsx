@@ -9,6 +9,7 @@ import {
   type CockpitEvent,
   type CockpitFrame,
 } from "@/lib/cockpitModel";
+import { activityContextForBody, type ActivityStructureProjection } from "@/lib/activityStructure";
 import type {
   ExperimentSummary,
   MorphologyBody,
@@ -123,15 +124,16 @@ export const CockpitRunPanel = memo(function CockpitRunPanel({
 export function CockpitSelectedNeuronPanel({
   body,
   connectivity,
-  frame,
+  activity,
 }: {
   body: MorphologyBody | null;
   connectivity: StructuralConnectivityProjection | null;
-  frame: CockpitFrame;
+  activity: ActivityStructureProjection;
 }) {
   const incident = body && connectivity ? connectivity.edges.filter((edge) =>
     edge.pre_body_id === body.body_id || edge.post_body_id === body.body_id,
   ) : [];
+  const activityContext = body ? activityContextForBody(activity, body) : null;
   return (
     <section className="cockpit-panel cockpit-selected" aria-labelledby="cockpit-selected-heading">
       <div className="cockpit-panel-heading">
@@ -149,12 +151,19 @@ export function CockpitSelectedNeuronPanel({
           <span>COMPONENTS <strong>{body.component_count}</strong></span>
         </div>
         <div className="cockpit-selected-dynamic">
-          <h3>Recorded state · {frame.boundaryTimeMs.toFixed(2)} ms</h3>
-          {frame.selectedDynamic?.bodyId === body.body_id ? <dl className="cockpit-dynamic-values">
-            <div><dt>Membrane</dt><dd>{frame.selectedDynamic.membraneMv.toFixed(4)} <small>mV</small></dd></div>
-            <div><dt>Synaptic state</dt><dd>{frame.selectedDynamic.synapticStateMveq.toFixed(4)} <small>mV_eq</small></dd></div>
-            <div><dt>Persisted spike</dt><dd>{frame.selectedDynamic.spikedAtBoundary ? "YES" : "NO"}</dd></div>
-          </dl> : <p>Dynamic body trace not present in this experiment artifact. LC4/LPLC2 drives are type-level model signals in telemetry.</p>}
+          <h3>SIMULATED STATE · {activity.boundaryTimeMs.toFixed(2)} ms</h3>
+          {activityContext?.granularity === "BODY_SPECIFIC" ? <>
+            <p className="cockpit-activity-granularity">BODY-LEVEL SIMULATED LIF STATE · uniform presentation over morphology</p>
+            <dl className="cockpit-dynamic-values">
+              <div><dt>Membrane state</dt><dd>{activityContext.state.membraneMv.toFixed(4)} <small>mV</small></dd></div>
+              <div><dt>Filtered synaptic state</dt><dd>{activityContext.state.synapticStateMveq.toFixed(4)} <small>mV_eq</small></dd></div>
+              <div><dt>Normalized model membrane position</dt><dd>{activityContext.state.normalizedModelMembranePosition === null ? "not available" : activityContext.state.normalizedModelMembranePosition.toFixed(3)}</dd></div>
+              <div><dt>Stored-boundary spike</dt><dd>{activityContext.state.spikeAtBoundary ? `SIMULATED SPIKE · ${activityContext.state.spikeTimestampMs?.toFixed(3)} ms` : "NO"}</dd></div>
+            </dl>
+          </> : activityContext?.granularity === "TYPE_LEVEL" ? <>
+            <p className="cockpit-activity-granularity">TYPE-LEVEL {activityContext.signal.neuronType} MODEL DRIVE · {activityContext.signal.valueMveq.toFixed(4)} mV_eq</p>
+            <p>No body-specific dynamic trace in this artifact.</p>
+          </> : <p>{activityContext?.reason ?? "No dynamic state is available at this identity."}</p>}
         </div>
         <div className="cockpit-selected-relations">
           <h3>Structural relations · {incident.length}</h3>
@@ -204,9 +213,9 @@ export function CockpitEventLog({
             <button type="button" onClick={() => {
               onSeek(event.timeMs);
               if (event.bodyId !== null) onSelectBody(event.bodyId);
-            }} aria-label={`Seek to ${event.label} at ${event.timeMs.toFixed(3)} milliseconds`}>
+            }} aria-label={`Seek to ${event.label}${event.nodeIndex === null ? "" : `, node index ${event.nodeIndex}`} at ${event.timeMs.toFixed(3)} milliseconds`}>
               <time>{event.timeMs.toFixed(3)} ms</time>
-              <span>{event.kind === "dnp01_spike" ? `DNp01 ${event.bodyId} spike` : event.label}</span>
+              <span>{event.kind === "dnp01_spike" ? `DNp01 ${event.bodyId} · node ${event.nodeIndex} · simulated spike` : event.label}</span>
               <small>{position}</small>
             </button>
           </li>;

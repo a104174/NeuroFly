@@ -3,7 +3,7 @@
 NeuroFly is a planned experimental platform for studying connectome-based
 digital agents inspired by the MaleCNS *Drosophila melanogaster* connectome.
 
-The repository is currently in **Phase 5K: Scientific Cockpit interaction and visual polish**. Phase 3C provides deterministic experiment comparison, Phase 3B
+The repository is currently in **Phase 6A: validated activity-to-structure mapping**. Phase 3C provides deterministic experiment comparison, Phase 3B
 provides portable experiment artifacts, Phase 3A provides the reproducible
 experiment-run foundation, and Phase 2H-A
 provides the empirical constraint infrastructure. Phase 2B provides the narrow
@@ -50,6 +50,11 @@ Phase 5K gives the cockpit a compact viewport layout, contextual morphology
 controls, a single playback strip, and presentation-only focus controls for
 World, Connectome, and Telemetry. Scientific sources and playback semantics are
 unchanged.
+Phase 6A adds a validated presentation mapping for persisted experiment state:
+LC4/LPLC2 drives stay type-level, while exact DNp01 point-neuron state can be
+shown uniformly over its corresponding raw morphology. It adds no local
+voltage, synapse-level activity, or activity on structural connectors. See
+[`docs/architecture/activity_structure_mapping.md`](docs/architecture/activity_structure_mapping.md).
 
 Scientific integrity is a project constraint: future code must distinguish
 biological/connectomic data from NeuroFly modelling assumptions. The detailed

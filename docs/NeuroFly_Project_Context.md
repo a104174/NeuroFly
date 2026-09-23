@@ -3,8 +3,12 @@
 > **Working title:** NeuroFly  
 > The name is provisional and may change later.  
 > **Document purpose:** provide persistent context to ChatGPT Project chats, Codex-oriented implementation chats, architecture discussions, scientific reasoning and future documentation.  
-> **Current status:** Phase 5K refines the Scientific Cockpit's viewport layout,
-> compact controls, readable telemetry, and presentation-only panel focus.
+> **Current status:** Phase 6A adds a validated, read-only mapping from the
+> persisted experiment state to the existing MaleCNS morphology view. Sensory
+> encoder drives remain type-level; only CircuitContract-validated DNp01
+> point-neuron state is associated with individual body morphologies.
+> Phase 5K refines the Scientific Cockpit's viewport layout, compact controls,
+> readable telemetry, and presentation-only panel focus.
 > Phase 5J composes a persisted experiment, the six-body
 > raw morphology inspector, and the Phase 5I structural projection in one
 > read-only Scientific Cockpit. One canonical experiment clock coordinates the
@@ -210,6 +214,19 @@ World, Connectome, Telemetry, selected-neuron data, and the event log in a
 viewport-sized desktop workspace. Panel expansion, disclosure controls, and
 responsive layout are presentation state only. The dedicated morphology and
 standalone playback routes remain available.
+
+Phase 6A adds a cockpit-only activity projection from the persisted experiment
+and validated CircuitContract identities. `lc4_drive_mveq` and
+`lplc2_drive_mveq` are explicitly type-level under the artifact's
+`bilateral_type_broadcast_v1` mapping; they are never assigned to individual
+sensory bodies. DNp01 10001/node 0/R and 10010/node 1/L membrane state,
+filtered state, and persisted spike events are body-specific point-neuron
+results. Where the persisted LIF model and its `-52 mV` rest/`-45 mV` threshold
+references match, a normalized model membrane position may modulate a separate
+uniform presentation overlay on the corresponding body morphology. It is not
+spatial voltage, empirical activity, synapse activity, or propagation. The
+dedicated morphology inspector remains static. Details and signal audit are in
+[`docs/architecture/activity_structure_mapping.md`](architecture/activity_structure_mapping.md).
 
 ---
 

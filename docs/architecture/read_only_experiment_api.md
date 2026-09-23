@@ -60,7 +60,12 @@ No database, cache, upload, or write operation exists.
 candidate provenance, CircuitContract integrity, graph scope, encoder/neural
 model identities, pathway, duration and `dt`, telemetry profile, all five
 free parameters, independent LC4/LPLC2 summaries, and independent DNp01
-10001/10010 summaries.  `validation_status` is preserved as
+10001/10010 summaries. The summary includes the persisted encoder population
+mapping and the LIF membrane rest/threshold references, used by the Phase 6A
+activity projection to validate signal granularity and optional model-state
+normalization. These values are copied from the validated run configuration;
+the application does not alter or re-identify the artifact.
+`validation_status` is preserved as
 `NOT_EVALUATED`; execution success is not empirical validation.
 
 ## Timeline and body telemetry

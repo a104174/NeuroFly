@@ -86,6 +86,37 @@ function timeline(): ExperimentTimeline {
   };
 }
 
+function tenthMillisecondTimeline(): ExperimentTimeline {
+  const base = timeline();
+  const stepTimes = Array.from({ length: 800 }, (_, step) => step * 0.1);
+  const times = Array.from({ length: 801 }, (_, step) => step * 0.1);
+  const intervalValues = (offset: number) => stepTimes.map((_, step) => step + offset);
+  return {
+    ...base,
+    dt_ms: 0.1,
+    duration_ms: 80,
+    end_ms: 80,
+    times_ms: times,
+    step_times_ms: stepTimes,
+    theta_rad: intervalValues(0),
+    angular_expansion_velocity_rad_s: intervalValues(1),
+    lc4_normalized_feature: intervalValues(2),
+    lplc2_normalized_feature: intervalValues(3),
+    lc4_drive_mveq: intervalValues(4),
+    lplc2_drive_mveq: intervalValues(5),
+    selected_body_telemetry: base.selected_body_telemetry.map((record) => ({
+      ...record,
+      times_ms: times,
+      step_times_ms: stepTimes,
+      membrane_mv: times.map((_, step) => step + (record.body_id === 10010 ? -60 : -70)),
+      synaptic_state_mveq: times.map((_, step) => step / 10),
+      external_drive_mveq: intervalValues(0),
+      incoming_coupling_mveq: intervalValues(0),
+      spike_times_ms: record.body_id === 10010 ? [times[453]] : [],
+    })),
+  };
+}
+
 function summary(): ExperimentSummary {
   const population = {
     neuron_type: "LC4" as const,
@@ -294,9 +325,9 @@ test("one playback time coordinates world, telemetry, selected DNp01, and event 
   const before = structuredClone(persisted);
   const structure = connectivity();
   const events = deriveCockpitEvents(persisted, structure.fixed_sample.bodies);
-  assert.deepEqual(events.map((event) => [event.kind, event.bodyId, event.nodeIndex, event.timeMs]), [
-    ["start", null, null, 0], ["dnp01_spike", 10010, 1, 1], ["dnp01_spike", 10001, 0, 2],
-    ["dnp01_spike", 10010, 1, 3], ["end", null, null, 3],
+  assert.deepEqual(events.map((event) => [event.kind, event.bodyId, event.nodeIndex, event.timeMs, event.stepIndex]), [
+    ["start", null, null, 0, 0], ["dnp01_spike", 10010, 1, 1, 1], ["dnp01_spike", 10001, 0, 2, 2],
+    ["dnp01_spike", 10010, 1, 3, 3], ["end", null, null, 3, 3],
   ]);
   const worldAtOne = deriveSceneState(persisted, 1.75);
   const frameAtOne = deriveCockpitFrame(persisted, worldAtOne);
@@ -322,6 +353,45 @@ test("one playback time coordinates world, telemetry, selected DNp01, and event 
   assert.equal(cockpitEventPosition(events[2], frameAtTwo), "current");
   assert.equal(cockpitEventPosition(events[1], frameAtTwo), "past");
   assert.deepEqual(persisted, before);
+});
+
+test("0.1 ms exact boundaries select DNp01 state and classify step-453 spike by step", () => {
+  const persisted = tenthMillisecondTimeline();
+  const structure = connectivity();
+  const model = {
+    ...summary(),
+    duration_ms: 80,
+    dt_ms: 0.1,
+  };
+  const events = deriveCockpitEvents(persisted, structure.fixed_sample.bodies);
+  const spikeEvent = events.find((event) => event.kind === "dnp01_spike");
+  assert.ok(spikeEvent);
+  assert.equal(spikeEvent.stepIndex, 453);
+  assert.equal(spikeEvent.timeMs, persisted.times_ms[453]);
+
+  for (const [timeMs, stepIndex, expectedPosition, spikeAtBoundary] of [
+    [45.2, 452, "future", false],
+    [45.3, 453, "current", true],
+    [45.4, 454, "past", false],
+    [45.5, 455, "past", false],
+  ] as const) {
+    const scene = deriveSceneState(persisted, timeMs);
+    const frame = deriveCockpitFrame(persisted, scene);
+    const activity = deriveActivityStructureProjection(model, persisted, structure, scene);
+    const selectedState = activity.bodySpecificStates?.[10010];
+
+    assert.equal(scene.boundaryIndex, stepIndex);
+    assert.equal(scene.boundaryTimeMs, persisted.times_ms[stepIndex]);
+    assert.equal(scene.intervalIndex, stepIndex);
+    assert.equal(frame.playbackTimeMs, timeMs);
+    assert.equal(scene.thetaRad, persisted.theta_rad[stepIndex]);
+    assert.equal(scene.lc4DriveMveq, persisted.lc4_drive_mveq[stepIndex]);
+    assert.equal(scene.lplc2DriveMveq, persisted.lplc2_drive_mveq[stepIndex]);
+    assert.equal(activity.boundaryTimeMs, persisted.times_ms[stepIndex]);
+    assert.equal(selectedState?.membraneMv, persisted.selected_body_telemetry[1].membrane_mv[stepIndex]);
+    assert.equal(selectedState?.spikeAtBoundary, spikeAtBoundary);
+    assert.equal(cockpitEventPosition(spikeEvent, frame), expectedPosition);
+  }
 });
 
 test("activity projection preserves type-level sensory granularity and exact DNp01 identities", () => {

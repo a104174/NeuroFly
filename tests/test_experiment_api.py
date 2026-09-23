@@ -118,6 +118,11 @@ def test_summary_is_json_safe_and_exposes_scientific_identity(
     assert payload["graph_scope_id"] == result.graph_scope_id
     assert payload["pathway_condition"] == "COMBINED"
     assert payload["validation_status"] == "NOT_EVALUATED"
+    assert payload["encoder"]["population_policy"] == "bilateral_type_broadcast_v1"
+    assert payload["neural_model"]["membrane_state_references"] == {
+        "rest_mv": result.config.lif_config.rest_mv,
+        "threshold_mv": result.config.lif_config.threshold_mv,
+    }
     assert set(payload["populations"]) == {"LC4", "LPLC2"}
     assert [item["body_id"] for item in payload["dnp01"]] == [10001, 10010]
     assert payload["free_parameters"] == {

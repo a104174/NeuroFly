@@ -231,8 +231,11 @@ class ExperimentSummary:
     graph_scope_id: str
     encoder_id: str
     encoder_version: str
+    encoder_population_policy: str
     neural_model_id: str
     neural_model_version: str
+    membrane_state_rest_mv: float
+    membrane_state_threshold_mv: float
     pathway_condition: str
     duration_ms: float
     dt_ms: float
@@ -265,10 +268,18 @@ class ExperimentSummary:
                     ],
                 },
                 "graph_scope_id": self.graph_scope_id,
-                "encoder": {"id": self.encoder_id, "version": self.encoder_version},
+                "encoder": {
+                    "id": self.encoder_id,
+                    "version": self.encoder_version,
+                    "population_policy": self.encoder_population_policy,
+                },
                 "neural_model": {
                     "id": self.neural_model_id,
                     "version": self.neural_model_version,
+                    "membrane_state_references": {
+                        "rest_mv": self.membrane_state_rest_mv,
+                        "threshold_mv": self.membrane_state_threshold_mv,
+                    },
                 },
                 "pathway_condition": self.pathway_condition,
                 "duration_ms": self.duration_ms,
@@ -360,8 +371,11 @@ def _summary_from_artifact(artifact: LoadedExperimentArtifact) -> ExperimentSumm
         graph_scope_id=artifact.result.graph_scope_id,
         encoder_id=encoder.encoder_id,
         encoder_version=encoder.encoder_version,
+        encoder_population_policy=encoder.population_policy,
         neural_model_id=lif.model_id,
         neural_model_version=lif.model_version,
+        membrane_state_rest_mv=lif.rest_mv,
+        membrane_state_threshold_mv=lif.threshold_mv,
         pathway_condition=config.pathway_condition.value,
         duration_ms=config.duration_ms,
         dt_ms=config.dt_ms,

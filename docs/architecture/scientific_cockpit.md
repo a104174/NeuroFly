@@ -59,10 +59,13 @@ time, then boundary/spike kind, then body ID. “Current” means the event matc
 the selected stored boundary. These rows do not assert threat detection,
 decisions, behavior, or other unrecorded events.
 
-The cockpit deliberately has no whole-brain activity, body-specific LC4/LPLC2
-trace, activity-colored skeleton, synapse coordinates, live streaming, reward,
-learning, policy, motor control, or fly-to-connectome alignment. Future cockpit
-polish can improve navigation and layout without changing these contracts.
+Before Phase 6A, the cockpit had no structure-linked simulated-state layer.
+Phase 6A adds only validated body-level DNp01 point-model presentation and
+non-spatial LC4/LPLC2 type-level readouts, as described below. The cockpit
+still has no whole-brain activity, body-specific LC4/LPLC2 trace, synapse
+coordinates, live streaming, reward, learning, reinforcement-learning policy,
+motor control, or fly-to-connectome alignment. The dedicated morphology route
+remains structure-only.
 
 ## Phase 5K workspace presentation
 
@@ -96,3 +99,29 @@ derivation; clicking one seeks the one global clock. Their explanatory note is
 available without occupying permanent panel space. The known THREE.Clock
 deprecation notice comes from the installed React Three Fiber dependency; it
 does not change NeuroFly experiment time.
+
+## Phase 6A simulated-state mapping
+
+The cockpit now derives a separate activity view model from the validated
+experiment summary/timeline, the canonical playback selection, and the
+hash-verified Phase 5I fixed projection. `lc4_drive_mveq` and
+`lplc2_drive_mveq` appear as **TYPE LEVEL** interval signals under the
+persisted `bilateral_type_broadcast_v1` encoder mapping; they are not
+distributed across individual LC4/LPLC2 skeletons. Only DNp01 bodies 10001
+(node index 0, side R) and 10010 (node index 1, side L) have exact body-keyed
+membrane, filtered-state, and stored-spike data in this artifact. Their
+identity is checked against the validated CircuitContract body records and
+matching source hashes.
+
+When the persisted `lif_filtered_synapse` `phase2b_v1` references are present,
+the cockpit derives the clamped normalized model membrane position using the
+run's `-52 mV` rest and `-45 mV` threshold. A secondary, toggleable,
+constant-color presentation layer applies that value uniformly over the
+corresponding DNp01 raw morphology. It is explicitly body-level point-neuron
+state—not local voltage or propagation—and the exact membrane/synaptic values
+remain textual. Stored spikes are indicated at exact boundaries without
+arbitrary decay. This layer is absent from the dedicated static morphology
+route. It never changes structural connectors/weights, source geometry, or the
+shared transform. Unknown granularity, identity mismatch, or unavailable
+model references fail closed as documented in
+[`activity_structure_mapping.md`](activity_structure_mapping.md).

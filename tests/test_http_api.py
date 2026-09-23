@@ -156,6 +156,11 @@ def test_list_and_summary_are_json_safe_and_complete(artifact_fixture):
     assert summary["graph_scope_id"] == result.graph_scope_id
     assert summary["pathway_condition"] == "COMBINED"
     assert summary["validation_status"] == "NOT_EVALUATED"
+    assert summary["encoder"]["population_policy"] == "bilateral_type_broadcast_v1"
+    assert summary["neural_model"]["membrane_state_references"] == {
+        "rest_mv": result.config.lif_config.rest_mv,
+        "threshold_mv": result.config.lif_config.threshold_mv,
+    }
     assert set(summary["populations"]) == {"LC4", "LPLC2"}
     assert [item["body_id"] for item in summary["dnp01"]] == [10001, 10010]
     assert summary["free_parameters"] == {

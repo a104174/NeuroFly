@@ -101,6 +101,53 @@ function floorIndex(values: readonly number[], value: number): number {
   return low;
 }
 
+function decimalPlaces(value: number): number {
+  const [coefficient, exponentText] = value.toString().toLowerCase().split("e");
+  const exponent = exponentText === undefined ? 0 : Number(exponentText);
+  const fractionalPart = coefficient.split(".")[1] ?? "";
+  return Math.max(0, fractionalPart.length - exponent);
+}
+
+function scaledDecimalInteger(value: number, decimalScale: number): number | null {
+  const [coefficient, exponentText] = value.toString().toLowerCase().split("e");
+  const exponent = exponentText === undefined ? 0 : Number(exponentText);
+  const negative = coefficient.startsWith("-");
+  const unsigned = negative ? coefficient.slice(1) : coefficient;
+  const [integerPart, fractionalPart = ""] = unsigned.split(".");
+  const digits = `${integerPart}${fractionalPart}` || "0";
+  const additionalZeros = decimalScale - (fractionalPart.length - exponent);
+  if (additionalZeros < 0) return null;
+  const scaled = Number(`${negative ? "-" : ""}${digits}${"0".repeat(additionalZeros)}`);
+  return Number.isSafeInteger(scaled) ? scaled : null;
+}
+
+function exactGridStepIndex(
+  timeMs: number,
+  startMs: number,
+  dtMs: number,
+): number | null {
+  // The range control emits decimal grid values (for example 45.3), while
+  // persisted times can serialize the same step as an adjacent float
+  // (45.300000000000004). Match exact decimal grid identity without epsilon;
+  // non-grid playback times continue through the persisted floor lookup.
+  const decimalScale = Math.max(
+    decimalPlaces(timeMs),
+    decimalPlaces(startMs),
+    decimalPlaces(dtMs),
+  );
+  const timeUnits = scaledDecimalInteger(timeMs, decimalScale);
+  const startUnits = scaledDecimalInteger(startMs, decimalScale);
+  const dtUnits = scaledDecimalInteger(dtMs, decimalScale);
+  if (timeUnits === null || startUnits === null || dtUnits === null || dtUnits <= 0) {
+    return null;
+  }
+  const offsetUnits = timeUnits - startUnits;
+  if (!Number.isSafeInteger(offsetUnits) || offsetUnits % dtUnits !== 0) {
+    return null;
+  }
+  return offsetUnits / dtUnits;
+}
+
 export function selectTimelineSample(
   timeline: ExperimentTimeline,
   requestedTimeMs: number,
@@ -115,16 +162,30 @@ export function selectTimelineSample(
       "Timeline must contain at least one persisted interval.",
     );
   }
+  if (!Number.isFinite(timeline.dt_ms) || timeline.dt_ms <= 0) {
+    throw new PlaybackDataError("Timeline dt_ms must be positive and finite.");
+  }
   const playbackTimeMs = clampPlaybackTime(
     requestedTimeMs,
     timeline.start_ms,
     timeline.end_ms,
   );
-  const boundaryIndex = floorIndex(timeline.times_ms, playbackTimeMs);
-  const intervalIndex = Math.min(
-    floorIndex(timeline.step_times_ms, playbackTimeMs),
-    timeline.step_times_ms.length - 1,
+  const gridStepIndex = exactGridStepIndex(
+    playbackTimeMs,
+    timeline.start_ms,
+    timeline.dt_ms,
   );
+  const isStoredGridStep = gridStepIndex !== null &&
+    gridStepIndex >= 0 && gridStepIndex < timeline.times_ms.length;
+  const boundaryIndex = isStoredGridStep
+    ? gridStepIndex
+    : floorIndex(timeline.times_ms, playbackTimeMs);
+  const intervalIndex = isStoredGridStep
+    ? Math.min(gridStepIndex, timeline.step_times_ms.length - 1)
+    : Math.min(
+      floorIndex(timeline.step_times_ms, playbackTimeMs),
+      timeline.step_times_ms.length - 1,
+    );
   return {
     playbackTimeMs,
     boundaryIndex,
@@ -268,7 +329,6 @@ function deriveBodyState(
   timeline: ExperimentTimeline,
   bodyId: 10001 | 10010,
   boundaryIndex: number,
-  boundaryTimeMs: number,
   context: ScenePresentationContext,
 ): SceneBodyState {
   const body = bodyById(timeline, bodyId);
@@ -282,8 +342,9 @@ function deriveBodyState(
       synapticStateMveq,
       context.dnp01SynapticRanges[bodyId],
     ),
-    spikedAtSelectedBoundary:
-      body?.spike_times_ms.some((timeMs) => timeMs === boundaryTimeMs) ?? false,
+    spikedAtSelectedBoundary: body?.spike_times_ms.some(
+      (timeMs) => timeline.times_ms.indexOf(timeMs) === boundaryIndex,
+    ) ?? false,
   };
 }
 
@@ -326,14 +387,12 @@ export function deriveSceneState(
         timeline,
         10001,
         selection.boundaryIndex,
-        selection.boundaryTimeMs,
         context,
       ),
       10010: deriveBodyState(
         timeline,
         10010,
         selection.boundaryIndex,
-        selection.boundaryTimeMs,
         context,
       ),
     },

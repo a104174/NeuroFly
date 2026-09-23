@@ -231,7 +231,10 @@ function deriveBodySpecificStates(
     const membraneMv = record.membrane_mv[scene.boundaryIndex];
     const synapticStateMveq = record.synaptic_state_mveq[scene.boundaryIndex];
     const boundaryTimeMs = timeline.times_ms[scene.boundaryIndex];
-    const spikeAtBoundary = record.spike_times_ms.includes(boundaryTimeMs);
+    const spikeTimestampMs = record.spike_times_ms.find(
+      (timeMs) => timeline.times_ms.indexOf(timeMs) === scene.boundaryIndex,
+    ) ?? null;
+    const spikeAtBoundary = spikeTimestampMs !== null;
     states[bodyId] = {
       granularity: "BODY_SPECIFIC",
       bodyId,
@@ -243,7 +246,7 @@ function deriveBodySpecificStates(
       normalizedModelMembranePosition: modelMembranePosition(membraneMv, summary),
       synapticStateMveq,
       spikeAtBoundary,
-      spikeTimestampMs: spikeAtBoundary ? boundaryTimeMs : null,
+      spikeTimestampMs,
     };
   }
   return { states, reason: null };

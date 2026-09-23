@@ -72,6 +72,37 @@ function timelineFixture(): ExperimentTimeline {
   };
 }
 
+function tenthMillisecondTimeline(): ExperimentTimeline {
+  const base = timelineFixture();
+  const stepTimes = Array.from({ length: 800 }, (_, step) => step * 0.1);
+  const times = Array.from({ length: 801 }, (_, step) => step * 0.1);
+  const intervalValues = (offset: number) => stepTimes.map((_, step) => step + offset);
+  return {
+    ...base,
+    dt_ms: 0.1,
+    duration_ms: 80,
+    end_ms: 80,
+    times_ms: times,
+    step_times_ms: stepTimes,
+    theta_rad: intervalValues(0),
+    angular_expansion_velocity_rad_s: intervalValues(1),
+    lc4_normalized_feature: intervalValues(2),
+    lplc2_normalized_feature: intervalValues(3),
+    lc4_drive_mveq: intervalValues(4),
+    lplc2_drive_mveq: intervalValues(5),
+    selected_body_telemetry: base.selected_body_telemetry.map((record) => ({
+      ...record,
+      times_ms: times,
+      step_times_ms: stepTimes,
+      membrane_mv: times.map((_, step) => step),
+      synaptic_state_mveq: times.map((_, step) => step / 10),
+      external_drive_mveq: intervalValues(0),
+      incoming_coupling_mveq: intervalValues(0),
+      spike_times_ms: record.body_id === 10010 ? [times[453]] : [],
+    })),
+  };
+}
+
 test("timeline selection uses floor semantics without interpolation", () => {
   const timeline = timelineFixture();
   assert.deepEqual(selectTimelineSample(timeline, 0), {
@@ -104,6 +135,44 @@ test("timeline selection uses floor semantics without interpolation", () => {
   });
   assert.equal(selectTimelineSample(timeline, -10).playbackTimeMs, 0);
   assert.equal(selectTimelineSample(timeline, 10).playbackTimeMs, 3);
+});
+
+test("0.1 ms grid identity selects exact decimal and persisted floating boundaries", () => {
+  const timeline = tenthMillisecondTimeline();
+  const cases = [
+    [45.2, 452],
+    [45.3, 453],
+    [45.4, 454],
+    [45.5, 455],
+  ] as const;
+
+  for (const [timeMs, stepIndex] of cases) {
+    const selection = selectTimelineSample(timeline, timeMs);
+    assert.equal(selection.boundaryIndex, stepIndex);
+    assert.equal(selection.boundaryTimeMs, timeline.times_ms[stepIndex]);
+    assert.equal(selection.intervalIndex, stepIndex);
+    assert.equal(selection.intervalStartMs, timeline.step_times_ms[stepIndex]);
+  }
+
+  assert.equal(selectTimelineSample(timeline, 45.299).boundaryIndex, 452);
+  assert.equal(selectTimelineSample(timeline, 45.299).intervalIndex, 452);
+  assert.equal(selectTimelineSample(timeline, timeline.times_ms[453]).boundaryIndex, 453);
+  assert.equal(selectTimelineSample(timeline, 453 * 0.1).boundaryIndex, 453);
+
+  let accumulatedTimeMs = 0;
+  for (let stepIndex = 0; stepIndex <= 455; stepIndex += 1) {
+    if ([452, 453, 454, 455].includes(stepIndex)) {
+      assert.equal(
+        selectTimelineSample(timeline, accumulatedTimeMs).boundaryIndex,
+        stepIndex,
+      );
+      assert.equal(
+        selectTimelineSample(timeline, accumulatedTimeMs).intervalIndex,
+        stepIndex,
+      );
+    }
+    accumulatedTimeMs += 0.1;
+  }
 });
 
 test("playback clock advances from wall time and stops exactly at the end", () => {

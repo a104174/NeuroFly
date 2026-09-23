@@ -150,6 +150,7 @@ export function validateCockpitConnectivity(
 export interface CockpitEvent {
   readonly id: string;
   readonly timeMs: number;
+  readonly stepIndex: number;
   readonly kind: "start" | "dnp01_spike" | "end";
   readonly bodyId: 10001 | 10010 | null;
   readonly nodeIndex: 0 | 1 | null;
@@ -167,7 +168,7 @@ export function deriveCockpitEvents(
 ): CockpitEvent[] {
   const identityById = new Map(contractBodies.map((body) => [body.body_id, body]));
   const events: CockpitEvent[] = [
-    { id: "start", timeMs: timeline.start_ms, kind: "start", bodyId: null, nodeIndex: null, label: "Experiment boundary: start" },
+    { id: "start", timeMs: timeline.start_ms, stepIndex: 0, kind: "start", bodyId: null, nodeIndex: null, label: "Experiment boundary: start" },
   ];
   for (const body of timeline.selected_body_telemetry) {
     if (body.body_id !== 10001 && body.body_id !== 10010) continue;
@@ -176,9 +177,14 @@ export function deriveCockpitEvents(
         identity.node_index !== DNP01_NODE_INDEX[body.body_id] ||
         identity.source_side !== body.soma_side || body.neuron_type !== "DNp01") continue;
     body.spike_times_ms.forEach((timeMs, index) => {
+      const stepIndex = timeline.times_ms.indexOf(timeMs);
+      if (stepIndex < 0) {
+        throw new CockpitCompatibilityError("A persisted spike does not map to a stored experiment boundary.");
+      }
       events.push({
         id: `spike-${body.body_id}-${index}`,
         timeMs,
+        stepIndex,
         kind: "dnp01_spike",
         bodyId: body.body_id as 10001 | 10010,
         nodeIndex: identity.node_index as 0 | 1,
@@ -186,7 +192,7 @@ export function deriveCockpitEvents(
       });
     });
   }
-  events.push({ id: "end", timeMs: timeline.end_ms, kind: "end", bodyId: null, nodeIndex: null, label: "Experiment boundary: end" });
+  events.push({ id: "end", timeMs: timeline.end_ms, stepIndex: timeline.times_ms.length - 1, kind: "end", bodyId: null, nodeIndex: null, label: "Experiment boundary: end" });
   const rank = { start: 0, dnp01_spike: 1, end: 2 } as const;
   return events.sort((left, right) => left.timeMs - right.timeMs ||
     rank[left.kind] - rank[right.kind] || (left.bodyId ?? 0) - (right.bodyId ?? 0));
@@ -194,6 +200,7 @@ export function deriveCockpitEvents(
 
 export interface CockpitFrame {
   readonly playbackTimeMs: number;
+  readonly boundaryIndex: number;
   readonly boundaryTimeMs: number;
   readonly intervalStartMs: number;
   readonly cursorFraction: number;
@@ -209,6 +216,7 @@ export function deriveCockpitFrame(
   const duration = timeline.end_ms - timeline.start_ms;
   return {
     playbackTimeMs: scene.playbackTimeMs,
+    boundaryIndex: scene.boundaryIndex,
     boundaryTimeMs: scene.boundaryTimeMs,
     intervalStartMs: scene.intervalStartMs,
     cursorFraction: duration === 0 ? 0 : (scene.playbackTimeMs - timeline.start_ms) / duration,
@@ -222,7 +230,7 @@ export function cockpitEventPosition(
   event: CockpitEvent,
   frame: CockpitFrame,
 ): "past" | "current" | "future" {
-  if (event.timeMs < frame.boundaryTimeMs) return "past";
-  if (event.timeMs === frame.boundaryTimeMs) return "current";
+  if (event.stepIndex < frame.boundaryIndex) return "past";
+  if (event.stepIndex === frame.boundaryIndex) return "current";
   return "future";
 }

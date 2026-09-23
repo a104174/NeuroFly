@@ -3,10 +3,14 @@
 > **Working title:** NeuroFly  
 > The name is provisional and may change later.  
 > **Document purpose:** provide persistent context to ChatGPT Project chats, Codex-oriented implementation chats, architecture discussions, scientific reasoning and future documentation.  
-> **Current status:** Phase 6A adds a validated, read-only mapping from the
-> persisted experiment state to the existing MaleCNS morphology view. Sensory
-> encoder drives remain type-level; only CircuitContract-validated DNp01
-> point-neuron state is associated with individual body morphologies.
+> **Current status:** Phase 6B is a research-only feasibility assessment. It
+> verified MaleCNS v1.0 chemical edges from DNp01 to TTMn and PSI, and from PSI
+> to DLMn, while confirming that the inspected connectome resources do not
+> encode the known GF electrical coupling. The recommended next slice is
+> DNp01→TTMn neural state only—not a complete takeoff or behavior model. Phase
+> 6A remains the existing validated, read-only activity-to-structure mapping:
+> sensory encoder drives are type-level, and only CircuitContract-validated
+> DNp01 point-neuron state is associated with individual body morphologies.
 > Phase 5K refines the Scientific Cockpit's viewport layout, compact controls,
 > readable telemetry, and presentation-only panel focus.
 > Phase 5J composes a persisted experiment, the six-body
@@ -227,6 +231,15 @@ uniform presentation overlay on the corresponding body morphology. It is not
 spatial voltage, empirical activity, synapse activity, or propagation. The
 dedicated morphology inspector remains static. Details and signal audit are in
 [`docs/architecture/activity_structure_mapping.md`](architecture/activity_structure_mapping.md).
+
+Phase 6B is documented in
+[`docs/science/motor_escape_feasibility.md`](science/motor_escape_feasibility.md).
+The bounded v1.0 audit verified MaleCNS identities and chemical
+DNp01→TTMn, DNp01→PSI, and PSI→DLMn edges. Literature-supported electrical
+coupling remains a separate, unquantified mechanism; structural contact counts
+are not motor efficacy. The recommended Phase 6C target is a reproducible
+TTMn model-state extension only, with no muscle mechanics, takeoff label, or
+escape behavior.
 
 ---
 

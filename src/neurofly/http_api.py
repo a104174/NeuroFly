@@ -53,6 +53,14 @@ from neurofly.morphology_api import (
     MorphologyStoreUnavailableError,
     UnsupportedMorphologyArtifactError,
 )
+from neurofly.motor_pathway_artifacts import (
+    InvalidMotorArtifactIdError,
+    MotorArtifactError,
+    MotorArtifactIntegrityError,
+    MotorArtifactNotFoundError,
+    MotorArtifactSchemaError,
+    MotorPathwayArtifactStore,
+)
 
 HTTP_API_SCHEMA_VERSION = "experiment_http_v1"
 HTTP_API_VERSION = "v1"
@@ -60,6 +68,11 @@ HTTP_ERROR_SCHEMA_VERSION = "experiment_http_error_v1"
 ARTIFACT_ROOT_ENV = "NEUROFLY_EXPERIMENT_ARTIFACT_ROOT"
 MORPHOLOGY_ARTIFACT_ROOT_ENV = "NEUROFLY_MORPHOLOGY_ARTIFACT_ROOT"
 CIRCUIT_CONTRACT_ROOT_ENV = "NEUROFLY_CIRCUIT_CONTRACT_ROOT"
+MOTOR_EXPERIMENT_ARTIFACT_ROOT_ENV = "NEUROFLY_MOTOR_EXPERIMENT_ARTIFACT_ROOT"
+
+
+class MotorPathwayStoreUnavailableError(RuntimeError):
+    """No local motor artifact root was configured for this read-only API."""
 
 
 def _error_payload(code: str, message: str) -> dict[str, str]:
@@ -98,6 +111,15 @@ def _connectivity_store(request: Request) -> StructuralConnectivityStore:
     if store is None:
         raise ConnectivitySourceUnavailableError(
             "CircuitContract root is not configured"
+        )
+    return store
+
+
+def _motor_pathway_store(request: Request) -> MotorPathwayArtifactStore:
+    store = getattr(request.app.state, "motor_pathway_artifact_store", None)
+    if store is None:
+        raise MotorPathwayStoreUnavailableError(
+            "motor pathway artifact root is not configured"
         )
     return store
 
@@ -349,6 +371,52 @@ async def _connectivity_api_handler(
     )
 
 
+async def _motor_store_unavailable_handler(
+    _request: Request, _exc: MotorPathwayStoreUnavailableError
+) -> JSONResponse:
+    return _error_response(
+        503,
+        "motor_artifact_store_unavailable",
+        "motor experiment artifact root is not configured",
+    )
+
+
+async def _invalid_motor_id_handler(
+    _request: Request, _exc: InvalidMotorArtifactIdError
+) -> JSONResponse:
+    return _error_response(
+        400, "invalid_motor_artifact_id", "motor artifact ID is malformed"
+    )
+
+
+async def _motor_not_found_handler(
+    _request: Request, _exc: MotorArtifactNotFoundError
+) -> JSONResponse:
+    return _error_response(
+        404, "motor_artifact_not_found", "motor artifact was not found"
+    )
+
+
+async def _motor_integrity_handler(
+    _request: Request, _exc: MotorArtifactIntegrityError | MotorArtifactSchemaError
+) -> JSONResponse:
+    return _error_response(
+        409,
+        "motor_artifact_integrity_failure",
+        "motor artifact failed integrity validation",
+    )
+
+
+async def _motor_api_handler(
+    _request: Request, _exc: MotorArtifactError
+) -> JSONResponse:
+    return _error_response(
+        500,
+        "motor_artifact_store_error",
+        "motor experiment artifact could not be read",
+    )
+
+
 def _register_error_handlers(app: FastAPI) -> None:
     app.add_exception_handler(RequestValidationError, _invalid_request_handler)
     app.add_exception_handler(StarletteHTTPException, _http_error_handler)
@@ -399,6 +467,14 @@ def _register_error_handlers(app: FastAPI) -> None:
         UnsupportedConnectivityProjectionError, _connectivity_projection_handler
     )
     app.add_exception_handler(ConnectivityApiError, _connectivity_api_handler)
+    app.add_exception_handler(
+        MotorPathwayStoreUnavailableError, _motor_store_unavailable_handler
+    )
+    app.add_exception_handler(InvalidMotorArtifactIdError, _invalid_motor_id_handler)
+    app.add_exception_handler(MotorArtifactNotFoundError, _motor_not_found_handler)
+    app.add_exception_handler(MotorArtifactIntegrityError, _motor_integrity_handler)
+    app.add_exception_handler(MotorArtifactSchemaError, _motor_integrity_handler)
+    app.add_exception_handler(MotorArtifactError, _motor_api_handler)
     app.add_exception_handler(Exception, _unexpected_error_handler)
 
 
@@ -406,6 +482,7 @@ def create_app(
     artifact_root: str | Path,
     morphology_artifact_root: str | Path | None = None,
     circuit_contract_root: str | Path | None = None,
+    motor_experiment_artifact_root: str | Path | None = None,
 ) -> FastAPI:
     """Create an isolated read-only API over one configured artifact root."""
 
@@ -428,6 +505,11 @@ def create_app(
         None
         if circuit_contract_root is None
         else StructuralConnectivityStore(circuit_contract_root)
+    )
+    app.state.motor_pathway_artifact_store = (
+        None
+        if motor_experiment_artifact_root is None
+        else MotorPathwayArtifactStore(motor_experiment_artifact_root)
     )
     _register_error_handlers(app)
 
@@ -462,6 +544,18 @@ def create_app(
     @app.get("/api/v1/experiments/{artifact_id}", tags=["experiments"])
     def get_experiment(request: Request, artifact_id: str) -> dict[str, Any]:
         return _store(request).get_experiment(artifact_id).to_dict()
+
+    @app.get("/api/v1/motor-experiments/{artifact_id}", tags=["experiments"])
+    def get_motor_experiment(request: Request, artifact_id: str) -> dict[str, Any]:
+        artifact = _motor_pathway_store(request).get(artifact_id)
+        return {
+            "schema": "motor_pathway_http_v1",
+            "kind": "motor_neural_state",
+            "artifact_id": artifact.artifact_id,
+            "artifact_schema_version": artifact.manifest["artifact_schema_version"],
+            "upstream_artifact_id": artifact.upstream_artifact.artifact_id,
+            **artifact.result.to_dict(),
+        }
 
     @app.get("/api/v1/experiments/{artifact_id}/timeline", tags=["telemetry"])
     def get_timeline(
@@ -560,7 +654,8 @@ def create_app_from_env() -> FastAPI:
         )
     morphology_root = os.environ.get(MORPHOLOGY_ARTIFACT_ROOT_ENV)
     circuit_contract_root = os.environ.get(CIRCUIT_CONTRACT_ROOT_ENV)
-    return create_app(configured, morphology_root, circuit_contract_root)
+    motor_root = os.environ.get(MOTOR_EXPERIMENT_ARTIFACT_ROOT_ENV)
+    return create_app(configured, morphology_root, circuit_contract_root, motor_root)
 
 
 __all__ = [
@@ -570,6 +665,7 @@ __all__ = [
     "HTTP_ERROR_SCHEMA_VERSION",
     "MORPHOLOGY_ARTIFACT_ROOT_ENV",
     "CIRCUIT_CONTRACT_ROOT_ENV",
+    "MOTOR_EXPERIMENT_ARTIFACT_ROOT_ENV",
     "create_app",
     "create_app_from_env",
 ]

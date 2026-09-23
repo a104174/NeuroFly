@@ -3,11 +3,12 @@
 > **Working title:** NeuroFly  
 > The name is provisional and may change later.  
 > **Document purpose:** provide persistent context to ChatGPT Project chats, Codex-oriented implementation chats, architecture discussions, scientific reasoning and future documentation.  
-> **Current status:** Phase 6B is a research-only feasibility assessment. It
-> verified MaleCNS v1.0 chemical edges from DNp01 to TTMn and PSI, and from PSI
-> to DLMn, while confirming that the inspected connectome resources do not
-> encode the known GF electrical coupling. The recommended next slice is
-> DNp01→TTMn neural state only—not a complete takeoff or behavior model. Phase
+> **Current status:** Phase 6C adds a reproducible exploratory DNp01→TTMn
+> dimensionless model-state slice from exact same-run DNp01 events. It does not
+> model TTMn physiology, muscle mechanics, takeoff, or behavior. MaleCNS v1.0
+> chemical edges and literature-supported electrical/mixed evidence remain
+> separate; structural weights 70/20 are never model gains. Phase 6B verified
+> those identities/edges and established the evidence boundary. Phase
 > 6A remains the existing validated, read-only activity-to-structure mapping:
 > sensory encoder drives are type-level, and only CircuitContract-validated
 > DNp01 point-neuron state is associated with individual body morphologies.
@@ -67,8 +68,9 @@
 > LC4/LPLC2 column-to-angular-visual-space
 > transform is available for `male-cns:v1.0`. Level P is the documented
 > population-feature boundary; Level C remains disabled, and no biological
-> calibration or behavioural/motor dynamics are implemented.
-> **Date of this context:** 2026-09-23.
+> calibration, behavior, or muscle/body mechanics are implemented. Phase 6C's
+> TTMn state is explicitly exploratory, not biological motor-neuron dynamics.
+> **Date of this context:** 2026-09-24.
 
 The Phase 1D-B evidence ledger is maintained in
 [`docs/science/receptive_field_feasibility.md`](science/receptive_field_feasibility.md).
@@ -240,6 +242,19 @@ coupling remains a separate, unquantified mechanism; structural contact counts
 are not motor efficacy. The recommended Phase 6C target is a reproducible
 TTMn model-state extension only, with no muscle mechanics, takeoff label, or
 escape behavior.
+
+Phase 6C implements that bounded extension in `neurofly.motor_pathway`: a
+separate pinned evidence contract references (without modifying) the existing
+313-body `looming_giant_fiber_v1` CircuitContract. Exact persisted DNp01 events
+map 10001/R→800146/R and 10010/L→804642/L into a deterministic dimensionless
+event integrator. Its `tau_motor_ms=10` and `event_gain=0.25` reference values
+are explicit `MODEL_ASSUMPTION`s, not biological or MaleCNS parameters. A
+portable nested artifact preserves the original experiment schema and is
+served only through an optional GET-only route. The five real reference and
+control outputs live under ignored `data/derived/motor_experiments/`. No TTMn
+morphology, muscle, fly motion, jump, takeoff, escape, or empirical validation
+is added. See
+[`docs/science/motor_pathway_model.md`](science/motor_pathway_model.md).
 
 ---
 

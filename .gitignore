@@ -16,6 +16,7 @@ htmlcov/
 # Reproducible local derived snapshots (never source data)
 data/derived/malecns/
 data/derived/experiments/
+data/derived/motor_experiments/
 
 # Frontend generated output and local configuration
 web/node_modules/

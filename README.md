@@ -3,8 +3,9 @@
 NeuroFly is a planned experimental platform for studying connectome-based
 digital agents inspired by the MaleCNS *Drosophila melanogaster* connectome.
 
-The repository is currently in **Phase 6A: validated activity-to-structure mapping**. Phase 3C provides deterministic experiment comparison, Phase 3B
-provides portable experiment artifacts, Phase 3A provides the reproducible
+The repository is currently in **Phase 6C: bounded exploratory DNp01→TTMn
+model-state slice**. Phase 3C provides deterministic experiment comparison,
+Phase 3B provides portable experiment artifacts, and Phase 3A provides the reproducible
 experiment-run foundation, and Phase 2H-A
 provides the empirical constraint infrastructure. Phase 2B provides the narrow
 offline 313-node/311-edge
@@ -13,8 +14,10 @@ Phase 2F characterizes their complete production path. Phase 2G pre-registers
 source provenance, measurement/model comparability, and fit-versus-held-out
 roles; Phase 2H-A validates that metadata boundary offline without parameter
 fitting. Phase 4A provides a read-only, transport-neutral artifact/application
-boundary. Level C, visual-angle mapping, motor modelling, and behaviour remain
-unimplemented. Phase 4B adds a thin FastAPI GET-only adapter
+boundary. Level C visual-angle mapping, empirical validation, muscle/body
+mechanics, and behaviour remain unimplemented. Phase 6C adds only an explicitly
+assumption-driven dimensionless TTMn state after exact DNp01 model events.
+Phase 4B adds a thin FastAPI GET-only adapter
 over the Phase 4A boundary; Phase 5A adds a read-only Next.js/React/TypeScript
 browser over that API. Phase 5B adds presentation-only React Three Fiber
 playback of persisted timelines. Phase 5C replaces the normal procedural fly
@@ -55,6 +58,17 @@ LC4/LPLC2 drives stay type-level, while exact DNp01 point-neuron state can be
 shown uniformly over its corresponding raw morphology. It adds no local
 voltage, synapse-level activity, or activity on structural connectors. See
 [`docs/architecture/activity_structure_mapping.md`](docs/architecture/activity_structure_mapping.md).
+Phase 6C adds a separate, versioned MaleCNS DNp01→TTMn evidence contract and a
+deterministic dimensionless downstream integrator. MaleCNS chemical contact
+counts 70/20 remain structural only; model parameters are labelled
+`MODEL_ASSUMPTION`. Five bounded reference/control artifacts can be generated
+from the pinned Phase 6A experiment with
+`python -m neurofly.motor_pathway_cli`; outputs are ignored under
+`data/derived/motor_experiments/`. The GET-only motor artifact route is enabled
+by `NEUROFLY_MOTOR_EXPERIMENT_ARTIFACT_ROOT`. This output stops at exploratory
+TTMn model state and does not represent TTMn physiology, muscle force, jump,
+takeoff, or escape. See
+[`docs/science/motor_pathway_model.md`](docs/science/motor_pathway_model.md).
 
 Scientific integrity is a project constraint: future code must distinguish
 biological/connectomic data from NeuroFly modelling assumptions. The detailed

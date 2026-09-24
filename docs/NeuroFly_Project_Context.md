@@ -256,6 +256,16 @@ morphology, muscle, fly motion, jump, takeoff, escape, or empirical validation
 is added. See
 [`docs/science/motor_pathway_model.md`](science/motor_pathway_model.md).
 
+Phase 6D assessed whether the dimensionless Phase 6C parameters can be
+physiologically parameterized. The review found no observation operator or
+TTMn-specific adult measurement that identifies `tau_motor_ms` or
+`event_gain`; Augustin et al.'s 135/34.5 µS gap values are estimated model-fit
+values for an end-to-end latency model, not MaleCNS pair conductances. The
+recommendation is to retain Phase 6C only as an exploratory causal state and
+require an identity-resolved equivalent TTMn observation before quantitative
+calibration. Empirical validation remains unchanged. See
+[`docs/science/ttmn_parameterization_assessment.md`](science/ttmn_parameterization_assessment.md).
+
 ---
 
 ## 1. Project vision

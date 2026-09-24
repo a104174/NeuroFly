@@ -72,6 +72,15 @@
 > TTMn state is explicitly exploratory, not biological motor-neuron dynamics.
 > **Date of this context:** 2026-09-24.
 
+Phase 6E selected sensory individualization as the next scientific focus.
+Phase 7A's [bilateral retinotopy feasibility audit](science/bilateral_retinotopy_feasibility.md)
+finds body-specific MaleCNS input-column topology for all 126 LC4 and 185
+LPLC2 neurons, but no audited, provenance-verified bilateral column-to-degree
+registration. Its decision is `RETINOTOPY_ONLY_NO_ABSOLUTE_VISUAL_ANGLE`:
+column indices and structural input counts are not functional RFs or
+physiological gain. Phase 7B should test a bounded bilateral eye-registration
+landmark/uncertainty contract before any individual sensory dynamics.
+
 The Phase 1D-B evidence ledger is maintained in
 [`docs/science/receptive_field_feasibility.md`](science/receptive_field_feasibility.md).
 It records the deterministic 16-body sample and its independent D3 decisions.

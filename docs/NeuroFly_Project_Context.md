@@ -266,6 +266,17 @@ require an identity-resolved equivalent TTMn observation before quantitative
 calibration. Empirical validation remains unchanged. See
 [`docs/science/ttmn_parameterization_assessment.md`](science/ttmn_parameterization_assessment.md).
 
+Phase 6E's bounded historical citation-chain audit found no suitable
+identity-resolved adult TTMn neuronal observation equivalent to the Phase 6C
+dimensionless state. The TTMn quantitative-calibration path is therefore
+closed for the reviewed source set, not disproven universally; Phase 6C
+remains exploratory with `tau_motor_ms` and `event_gain` as assumptions.
+The next scientific focus is evidence-only LC4/LPLC2 sensory-input
+individualization feasibility, beginning with a provenance-verified bilateral
+MaleCNS column-to-visual-angle mapping gate. No new encoder, motor model,
+body mechanics, or empirical validation is implied. See
+[`docs/science/ttmn_evidence_closure.md`](science/ttmn_evidence_closure.md).
+
 ---
 
 ## 1. Project vision

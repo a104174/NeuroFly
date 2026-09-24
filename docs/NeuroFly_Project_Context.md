@@ -84,9 +84,13 @@ found bilateral optical rays from a separate female µCT specimen and a
 right-FAFB registration method, but no released, independently testable
 MaleCNS v1.0 L/R column-key-to-ray correspondence. Its decision is
 `COLUMN_SPACE_ONLY`: no angular centres were assigned to MaleCNS bodies.
-Phase 7C should seek keyed bilateral source correspondences and held-out
-anchors before any individual sensory dynamics; a figure-level eye map or
-left/right mirroring is insufficient.
+Phase 7C's [relative column-space assessment](science/relative_column_sensory_feasibility.md)
+finds reproducible six-neighbour anatomical addressing for all 311 bodies and
+synthetic body-specific exposure, but no measured RF, gain, or individual
+neural state. Decision: `RELATIVE_COLUMN_INPUT_FEASIBLE` only as an explicitly
+synthetic, assumption-labelled bounded model. Phase 7D may test a small
+predeclared subset with a distinct relative-column stimulus/transfer contract;
+the existing angular looming encoder remains type-level and unchanged.
 
 The Phase 1D-B evidence ledger is maintained in
 [`docs/science/receptive_field_feasibility.md`](science/receptive_field_feasibility.md).

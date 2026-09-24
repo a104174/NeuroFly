@@ -78,8 +78,15 @@ finds body-specific MaleCNS input-column topology for all 126 LC4 and 185
 LPLC2 neurons, but no audited, provenance-verified bilateral column-to-degree
 registration. Its decision is `RETINOTOPY_ONLY_NO_ABSOLUTE_VISUAL_ANGLE`:
 column indices and structural input counts are not functional RFs or
-physiological gain. Phase 7B should test a bounded bilateral eye-registration
-landmark/uncertainty contract before any individual sensory dynamics.
+physiological gain. Phase 7B's [optical registration
+assessment](science/bilateral_optical_registration_assessment.md)
+found bilateral optical rays from a separate female µCT specimen and a
+right-FAFB registration method, but no released, independently testable
+MaleCNS v1.0 L/R column-key-to-ray correspondence. Its decision is
+`COLUMN_SPACE_ONLY`: no angular centres were assigned to MaleCNS bodies.
+Phase 7C should seek keyed bilateral source correspondences and held-out
+anchors before any individual sensory dynamics; a figure-level eye map or
+left/right mirroring is insufficient.
 
 The Phase 1D-B evidence ledger is maintained in
 [`docs/science/receptive_field_feasibility.md`](science/receptive_field_feasibility.md).

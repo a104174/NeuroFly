@@ -80,10 +80,11 @@ assumed RF shape, functional centre, and gain remain different concepts.
 Neither the FAFB IDs nor fitted transform can be silently copied to MaleCNS.
 
 [Zhao et al., *Eye structure shapes neuron function*](https://www.nature.com/articles/s41586-025-09276-5)
-registers a male optic-lobe medulla lattice to micro-CT ommatidial optical
-directions, with explicit interpolation for a T4 analysis. This is a valuable
-primary registration method, but the released analysis does not establish a
-validated **bilateral** `male-cns:v1.0` key-to-angle mapping with uncertainty
+registers a right-side female FAFB medulla lattice to optical directions from
+a separate female micro-CT specimen, with explicit interpolation for a T4
+analysis. This is a valuable primary registration method, but the released
+analysis does not establish a validated **bilateral** `male-cns:v1.0`
+key-to-angle mapping with uncertainty
 for NeuroFly's 311 bodies. [Recent LPLC2 work](https://www.nature.com/articles/s41586-025-09037-4)
 maps two stimulus-directed ommatidia to identified male optic-lobe columns,
 then uses T4 pathways to nominate LPLC2 cells. This is a bounded right-field

@@ -89,8 +89,14 @@ finds reproducible six-neighbour anatomical addressing for all 311 bodies and
 synthetic body-specific exposure, but no measured RF, gain, or individual
 neural state. Decision: `RELATIVE_COLUMN_INPUT_FEASIBLE` only as an explicitly
 synthetic, assumption-labelled bounded model. Phase 7D may test a small
-predeclared subset with a distinct relative-column stimulus/transfer contract;
-the existing angular looming encoder remains type-level and unchanged.
+predeclared subset with a distinct relative-column stimulus/assignment
+contract. Phase 7D now persists and replay-verifies ten samples for four
+predeclared LC4/LPLC2 bodies under synthetic unilateral relative-column disk
+stimuli. Its outputs are record-overlap and structural-input-site-overlap
+fractions only; those are anatomical exposure, not neural input or response.
+Absolute visual angle and functional RF semantics remain unavailable. The
+existing angular looming encoder remains type-level and unchanged. See the
+[Phase 7D assignment contract](science/relative_column_sensory_assignment.md).
 
 The Phase 1D-B evidence ledger is maintained in
 [`docs/science/receptive_field_feasibility.md`](science/receptive_field_feasibility.md).

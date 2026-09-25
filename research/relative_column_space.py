@@ -10,24 +10,24 @@ import argparse
 import hashlib
 import json
 import math
-import re
 from collections import defaultdict
 from pathlib import Path
 from statistics import median
-from xml.etree import ElementTree
-from zipfile import ZipFile
 
+from neurofly.malecns.column_lattice import (
+    OFFICIAL_COLUMN_WORKBOOK_SHA256,
+    hex_distance,
+    load_official_columns,
+)
 from neurofly.malecns.column_snapshot import load_column_contract
 from neurofly.malecns.columns import ColumnInputRecord
 from neurofly.malecns.contract import load_circuit_contract
 
 SCHEMA = "malecns_relative_retinotopy_analysis_v1"
-WORKBOOK_SHA256 = "d4af1cacb751036f7e84bfecc9bec79ca010066ac066559c29b566003ec080d3"
+WORKBOOK_SHA256 = OFFICIAL_COLUMN_WORKBOOK_SHA256
 DEFAULT_ROOT = Path("data/derived/malecns/looming_giant_fiber_v1")
 FIXED_BODIES = (12032, 16128, 11498, 14465)
 PROOF_BODIES = (*FIXED_BODIES, 12349, 16138, 12384, 17551)
-COLUMN_RE = re.compile(r"^ME_([LR])_col_(\d+)_(\d+)$")
-XML_NS = {"m": "http://schemas.openxmlformats.org/spreadsheetml/2006/main"}
 
 # Explicit synthetic addresses, never physical stimulus locations or degrees.
 STIMULI = (
@@ -40,13 +40,6 @@ STIMULI = (
 )
 
 
-def hex_distance(first: tuple[int, int], second: tuple[int, int]) -> int:
-    """Six-neighbour p/q distance: ±p, ±q, ±(p+q); hex1=q, hex2=p."""
-    dq = first[0] - second[0]
-    dp = first[1] - second[1]
-    return max(abs(dp), abs(dq), abs(dp - dq))
-
-
 def _hex_norm(first: tuple[float, float], second: tuple[float, float]) -> float:
     dq = first[0] - second[0]
     dp = first[1] - second[1]
@@ -55,45 +48,6 @@ def _hex_norm(first: tuple[float, float], second: tuple[float, float]) -> float:
 
 def _sha256(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
-
-
-def _cell_text(cell: ElementTree.Element, shared: list[str]) -> str:
-    value = cell.find("m:v", XML_NS)
-    if value is None or value.text is None:
-        return ""
-    return shared[int(value.text)] if cell.attrib.get("t") == "s" else value.text
-
-
-def load_official_columns(path: Path) -> dict[str, dict[tuple[int, int], str]]:
-    """Read only the pinned bilateral key/class columns of the official XLSX."""
-    if _sha256(path) != WORKBOOK_SHA256:
-        raise ValueError("Official column workbook SHA-256 mismatch")
-    result: dict[str, dict[tuple[int, int], str]] = {"L": {}, "R": {}}
-    with ZipFile(path) as workbook:
-        strings_root = ElementTree.fromstring(workbook.read("xl/sharedStrings.xml"))
-        shared = [
-            "".join(text.text or "" for text in item.findall(".//m:t", XML_NS))
-            for item in strings_root.findall("m:si", XML_NS)
-        ]
-        for side, sheet in (("R", "sheet1.xml"), ("L", "sheet2.xml")):
-            root = ElementTree.fromstring(workbook.read(f"xl/worksheets/{sheet}"))
-            for row in root.findall(".//m:row", XML_NS)[1:]:
-                cells = {
-                    re.match(r"[A-Z]+", cell.attrib["r"]).group(): _cell_text(
-                        cell, shared
-                    )
-                    for cell in row.findall("m:c", XML_NS)
-                }
-                match = COLUMN_RE.fullmatch(cells.get("A", ""))
-                if match is None or match.group(1) != side:
-                    raise ValueError("Invalid official column identity or side")
-                coord = (int(match.group(2)), int(match.group(3)))
-                if coord in result[side]:
-                    raise ValueError("Duplicate official column coordinate")
-                result[side][coord] = cells.get("G", "")
-    if (len(result["L"]), len(result["R"])) != (880, 892):
-        raise ValueError("Official bilateral column counts changed")
-    return result
 
 
 def _centroid(

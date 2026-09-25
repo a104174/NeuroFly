@@ -18,6 +18,9 @@ data/derived/malecns/
 data/derived/experiments/
 data/derived/motor_experiments/
 
+# Pinned external MaleCNS supplemental files (never committed source data)
+data/raw/malecns/
+
 # Frontend generated output and local configuration
 web/node_modules/
 web/.next/

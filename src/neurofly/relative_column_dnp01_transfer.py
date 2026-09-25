@@ -211,14 +211,68 @@ def route_drive(
         for route in routes
     ):
         raise SensoryToDNp01Error("route type/side/count metadata is invalid.")
-    output = {10001: 0.0, 10010: 0.0}
+    active_source_ids = {
+        route.source_body_id
+        for route in routes
+        if pathway_mask == "both" or pathway_mask == route.source_type
+    }
+    return route_population_drive(
+        source_states,
+        routes,
+        target_body_ids=(10001, 10010),
+        active_source_ids=active_source_ids,
+        k_transfer_mveq_per_state=k,
+    )
+
+
+def route_population_drive(
+    source_states: Mapping[int, float],
+    routes: Sequence[Route],
+    *,
+    target_body_ids: Sequence[int],
+    active_source_ids: set[int] | frozenset[int],
+    k_transfer_mveq_per_state: float,
+) -> tuple[dict[int, float], list[dict[str, Any]]]:
+    """Shared Phase 7F transfer primitive for an explicit bounded body sample.
+
+    Routing metadata is validated but never enters the numerical contribution.
+    Callers must validate source identities and the route contract before use.
+    """
+
+    k = _finite_nonnegative(k_transfer_mveq_per_state, "k_transfer_mveq_per_state")
+    targets = tuple(target_body_ids)
+    if not targets or len(targets) != len(set(targets)):
+        raise SensoryToDNp01Error(
+            "target body identities must be unique and non-empty."
+        )
+    route_sources = {route.source_body_id for route in routes}
+    if set(source_states) != route_sources:
+        raise SensoryToDNp01Error("source states must match the explicit route set.")
+    if not set(active_source_ids) <= route_sources:
+        raise SensoryToDNp01Error("active source mask contains an unrouted body.")
+    if any(route.target_body_id not in targets for route in routes):
+        raise SensoryToDNp01Error("route targets an unsupported readout body.")
+    if len({(route.source_body_id, route.target_body_id) for route in routes}) != len(
+        routes
+    ):
+        raise SensoryToDNp01Error("route set contains duplicate source-target pairs.")
+    if any(
+        isinstance(route.structural_weight, bool)
+        or not isinstance(route.structural_weight, int)
+        or route.structural_weight <= 0
+        for route in routes
+    ):
+        raise SensoryToDNp01Error("route structural count metadata is invalid.")
+
+    output = {target: 0.0 for target in targets}
     contributions = []
-    for route in sorted(routes, key=lambda item: item.source_body_id):
+    for route in sorted(
+        routes, key=lambda item: (item.source_body_id, item.target_body_id)
+    ):
         source = _finite_nonnegative(
             source_states[route.source_body_id], "sensory state"
         )
-        active = pathway_mask == "both" or pathway_mask == route.source_type
-        contribution = k * source if active else 0.0
+        contribution = k * source if route.source_body_id in active_source_ids else 0.0
         if not math.isfinite(contribution):
             raise SensoryToDNp01Error("transfer contribution became non-finite.")
         output[route.target_body_id] += contribution

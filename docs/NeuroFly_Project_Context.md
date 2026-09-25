@@ -1317,3 +1317,17 @@ operator to measured sensory output, so the shared `k_transfer` remains
 metadata only. The selected next scale is a deterministic, balanced 16-body
 architecture experiment—not biological calibration. The current Phase 7F
 artifact remains four-body-specific and must not be silently widened.
+
+Phase 7H adds a separately versioned, outcome-independent 16-body experiment:
+four LC4/LPLC2 bodies in each type×side stratum, retaining the Phase 7F
+sentinels. The persisted sample is
+`18717531d02506fc988c9e70dcf916d62c6bbae3981827e16a4453821efb04d7`; the
+replay-verified population experiment is
+`385480b3c915b25536e1119d17effa15567bc0c1afcfe73037e5dd5d69102958`.
+Phase 7D assignment semantics, Phase 7E's dimensionless `tau_sens_ms=1.0`,
+`gain=1.0` assumptions, Phase 7F's shared `k_transfer=1.0 mV_eq/state`, and
+the existing DNp01 LIF model are unchanged. The 16-body run demonstrates
+identity-resolved architecture and deterministic replay only; structural
+counts remain routing/selection metadata, and no biological calibration or
+313-neuron simulation is claimed. The current scale gate is `HOLD_AT_16`.
+See [the Phase 7H bounded population experiment](science/bounded_16_body_sensory_experiment.md).

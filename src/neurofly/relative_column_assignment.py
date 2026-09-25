@@ -627,7 +627,7 @@ def active_column_set(
     )
 
 
-def _exposure_for_body(
+def compute_body_exposure(
     records: tuple[ColumnInputRecord, ...],
     summary: BodyColumnSummary,
     stimulus: RelativeColumnStimulus,
@@ -715,7 +715,7 @@ def compute_assignment_result(
             active = active_column_set(stimulus, grid, radius)
             active_set = frozenset(active)
             body_assignments = [
-                _exposure_for_body(
+                compute_body_exposure(
                     source.body_records[body_id],
                     source.body_summaries[body_id],
                     stimulus,

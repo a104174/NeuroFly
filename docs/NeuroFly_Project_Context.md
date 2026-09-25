@@ -1303,3 +1303,17 @@ When a future ChatGPT/Codex conversation conflicts with this document:
 - update this context/document when a major decision changes.
 
 This document describes project intent and current agreed direction. It must not be used as proof that a planned feature has already been implemented.
+
+## 24. Phase 7G — sensory-to-DNp01 evidence and scale gate
+
+The committed Phase 7F four-body transfer remains an exploratory model. Primary
+pathway activation/perturbation and GF recording evidence supports a positive
+LC4→DNp01 and LPLC2→DNp01 population-level contribution, but no reviewed
+evidence identifies a unitary body-specific transfer. MaleCNS v1.0 predicts
+acetylcholine for all selected LC4/LPLC2 bodies; this is aggregate transmitter
+prediction, not pair-specific efficacy. Phase 7E state has no observation
+operator to measured sensory output, so the shared `k_transfer` remains
+`NOT_IDENTIFIABLE` and a `MODEL_ASSUMPTION`; structural counts remain routing
+metadata only. The selected next scale is a deterministic, balanced 16-body
+architecture experiment—not biological calibration. The current Phase 7F
+artifact remains four-body-specific and must not be silently widened.

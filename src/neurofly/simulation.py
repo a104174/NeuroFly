@@ -26,6 +26,7 @@ from neurofly.malecns.models import (
 MODEL_ID = "lif_filtered_synapse"
 MODEL_VERSION = "phase2b_v1"
 GRAPH_SCOPE_ID = "direct_visual_to_dnp01_v1"
+PHASE7F_READOUT_SCOPE_ID = "phase7f_two_dnp01_readouts_v1"
 SIGN_POLICY_ID = "direct_visual_dnp01_depolarizing_assumption_v1"
 EXTERNAL_DRIVE_SEMANTICS = "voltage_equivalent_mV_eq_v1"
 VISUAL_TYPES = ("LC4", "LPLC2")
@@ -161,7 +162,7 @@ class LIFConfig:
             raise SimulationConfigurationError(
                 f"Unsupported model_id {self.model_id!r}; expected {MODEL_ID!r}."
             )
-        if self.graph_scope_id != GRAPH_SCOPE_ID:
+        if self.graph_scope_id not in {GRAPH_SCOPE_ID, PHASE7F_READOUT_SCOPE_ID}:
             raise SimulationConfigurationError(
                 f"Unsupported graph_scope_id {self.graph_scope_id!r}."
             )
@@ -317,7 +318,7 @@ class SimulationGraph:
             raise SimulationGraphError(
                 "Simulation graph dataset must be male-cns:v1.0."
             )
-        if self.graph_scope_id != GRAPH_SCOPE_ID:
+        if self.graph_scope_id not in {GRAPH_SCOPE_ID, PHASE7F_READOUT_SCOPE_ID}:
             raise SimulationGraphError("Simulation graph scope is unsupported.")
         for node in nodes:
             if (
@@ -427,6 +428,20 @@ class SimulationGraph:
             raise SimulationGraphError(
                 f"Unexpected Phase 2B edge counts: {edge_counts!r}."
             )
+
+    def validate_phase7f_readout_scope(self) -> None:
+        """Two pinned DNp01 LIF nodes, with no dormant sensory graph edges."""
+
+        if (
+            self.candidate_identifier != CANDIDATE.identifier
+            or self.candidate_version != CANDIDATE.version
+            or self.graph_scope_id != PHASE7F_READOUT_SCOPE_ID
+            or self.node_count != 2
+            or self.edge_count != 0
+            or {(node.body_id, node.type, node.soma_side) for node in self.nodes}
+            != {(10001, READOUT_TYPE, "R"), (10010, READOUT_TYPE, "L")}
+        ):
+            raise SimulationGraphError("Phase 7F readout graph identity mismatch.")
 
     def to_dict(self) -> dict[str, Any]:
         return {
@@ -667,7 +682,9 @@ class ExternalDriveSchedule:
     ) -> ExternalDriveSchedule:
         return cls(steps=steps, provenance_id=provenance_id)
 
-    def to_matrix(self, graph: SimulationGraph) -> np.ndarray:
+    def to_matrix(
+        self, graph: SimulationGraph, *, allow_model_readout_drive: bool = False
+    ) -> np.ndarray:
         matrix = np.zeros((self.steps, graph.node_count), dtype=np.float64)
         targeted_indices: set[int] = set()
         for body_id, values in self.by_body_id:
@@ -690,7 +707,11 @@ class ExternalDriveSchedule:
             targeted_indices.add(node_index)
             matrix[:, node_index] = values
         for node_index, node in enumerate(graph.nodes):
-            if node.type == READOUT_TYPE and np.any(matrix[:, node_index] != 0.0):
+            if (
+                not allow_model_readout_drive
+                and node.type == READOUT_TYPE
+                and np.any(matrix[:, node_index] != 0.0)
+            ):
                 raise SimulationInputError(
                     "Direct external drive to DNp01 is not allowed in normal mode."
                 )
@@ -890,7 +911,10 @@ class LIFSimulator:
             raise SimulationGraphError("graph must be a SimulationGraph.")
         if not isinstance(config, LIFConfig):
             raise SimulationConfigurationError("config must be an LIFConfig.")
-        graph.validate_phase2b_scope()
+        if graph.graph_scope_id == PHASE7F_READOUT_SCOPE_ID:
+            graph.validate_phase7f_readout_scope()
+        else:
+            graph.validate_phase2b_scope()
         if config.graph_scope_id != graph.graph_scope_id:
             raise SimulationConfigurationError(
                 "Configuration graph_scope_id does not match simulation graph."
@@ -909,9 +933,31 @@ class LIFSimulator:
         record_body_ids: Iterable[int] | None = None,
         initial_v_mv: Mapping[int, Any] | None = None,
         initial_s_mveq: Mapping[int, Any] | None = None,
+        allow_model_readout_drive: bool = False,
     ) -> SimulationResult:
         schedule = _as_schedule(external_drive, steps=steps, graph=self.graph)
-        drive = schedule.to_matrix(self.graph)
+        if allow_model_readout_drive:
+            if self.graph.graph_scope_id != PHASE7F_READOUT_SCOPE_ID:
+                raise SimulationInputError(
+                    "Phase 7F DNp01 model drive requires the two-readout graph."
+                )
+            if (
+                schedule.provenance_id
+                != "phase7f_edge_routed_exploratory_model_drive_v1"
+            ):
+                raise SimulationInputError(
+                    "Direct DNp01 model drive requires Phase 7F provenance."
+                )
+            if (
+                any(body_id not in (10001, 10010) for body_id, _ in schedule.by_body_id)
+                or schedule.by_node_index
+            ):
+                raise SimulationInputError(
+                    "Phase 7F model drive may target only the two DNp01 body IDs."
+                )
+        drive = schedule.to_matrix(
+            self.graph, allow_model_readout_drive=allow_model_readout_drive
+        )
         record_indices = self._record_indices(record_body_ids)
         v = _initial_values(
             initial_v_mv,

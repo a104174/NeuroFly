@@ -105,6 +105,16 @@ deterministic replay and sensitivity coverage. It adds no spikes, physiological
 interpretation, DNp01 input, or frontend visualization; the 311/313-neuron
 dynamics milestone remains incomplete. See the
 [Phase 7E sensory-state assessment](science/relative_column_sensory_dynamics.md).
+Phase 7F now routes only these four replay-verified exploratory states to the
+correct two DNp01 LIF bodies through
+`exploratory_edge_routed_model_drive_v1`. The shared positive reference
+`k_transfer_mveq_per_state = 1.0` is a model assumption; the four MaleCNS
+chemical structural counts determine routing only. The separate immutable
+artifact is
+`4a000add359e60c0c0c654881a4659652d749c548af0e167469d210035c20213`.
+The reference produces small subthreshold DNp01 model responses; no
+physiological calibration, TTMn propagation, behavior, 311-body dynamics, or
+frontend change follows. See the [Phase 7F transfer boundary](science/relative_column_sensory_to_dnp01.md).
 
 The Phase 1D-B evidence ledger is maintained in
 [`docs/science/receptive_field_feasibility.md`](science/receptive_field_feasibility.md).

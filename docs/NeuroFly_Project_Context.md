@@ -1331,3 +1331,18 @@ identity-resolved architecture and deterministic replay only; structural
 counts remain routing/selection metadata, and no biological calibration or
 313-neuron simulation is claimed. The current scale gate is `HOLD_AT_16`.
 See [the Phase 7H bounded population experiment](science/bounded_16_body_sensory_experiment.md).
+
+Phase 7I retains that exact sample and its six stimuli, then adds four
+anatomy-only radius-one relative-column disks centered on source columns to
+cover the six bodies that had zero Phase 7H exposure. The separately versioned
+coverage plan `2b73f7c7707942be2644c5dfc0fcbed41be682c4877457ac86b6411619e8cd34`
+was persisted before new sensory or DNp01 outcomes were computed. The replayed
+coverage experiment
+`5d2953a0e20e471cdf26de0dae16ffff75b8cab159e3fbfcbb959a5349117e87` exercises
+all 16 bodies through positive anatomical exposure, exploratory state, and
+the source-derived transfer path (`16/16` for each software coverage metric).
+Phase 7E/7F assumptions and the DNp01 readout are unchanged; no body spikes or
+behavior are claimed. This closes Phase 7I software-path coverage only, not
+functional receptive-field coverage or biological validation. The next gate
+is a separate Phase 7J independent 16-body sample robustness test. See
+[the Phase 7I coverage validation](science/bounded_16_body_coverage_validation.md).

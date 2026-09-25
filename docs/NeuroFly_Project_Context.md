@@ -97,6 +97,14 @@ fractions only; those are anatomical exposure, not neural input or response.
 Absolute visual angle and functional RF semantics remain unavailable. The
 existing angular looming encoder remains type-level and unchanged. See the
 [Phase 7D assignment contract](science/relative_column_sensory_assignment.md).
+Phase 7E now derives four body-specific, dimensionless exploratory sensory
+model states from that replay-verified assignment using the separate
+`relative_column_exploratory_sensory_state_v1` model. Its shared
+`tau_sens_ms = 1.0` and `gain = 1.0` are explicit model assumptions, with
+deterministic replay and sensitivity coverage. It adds no spikes, physiological
+interpretation, DNp01 input, or frontend visualization; the 311/313-neuron
+dynamics milestone remains incomplete. See the
+[Phase 7E sensory-state assessment](science/relative_column_sensory_dynamics.md).
 
 The Phase 1D-B evidence ledger is maintained in
 [`docs/science/receptive_field_feasibility.md`](science/receptive_field_feasibility.md).

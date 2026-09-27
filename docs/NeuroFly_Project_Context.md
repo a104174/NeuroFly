@@ -1343,6 +1343,28 @@ all 16 bodies through positive anatomical exposure, exploratory state, and
 the source-derived transfer path (`16/16` for each software coverage metric).
 Phase 7E/7F assumptions and the DNp01 readout are unchanged; no body spikes or
 behavior are claimed. This closes Phase 7I software-path coverage only, not
-functional receptive-field coverage or biological validation. The next gate
-is a separate Phase 7J independent 16-body sample robustness test. See
+functional receptive-field coverage or biological validation. The independent
+Phase 7J sample robustness result is recorded below. See
 [the Phase 7I coverage validation](science/bounded_16_body_coverage_validation.md).
+
+## 25. Phase 7J — disjoint 16-body robustness
+
+Phase 7J selected an independent, outcome-blind Sample B of 16 sensory bodies
+(four per LC4/LPLC2 × side stratum), disjoint from immutable Phase 7H Sample A.
+The persisted sample is
+`873d6e9e32ce08916fb69462548af11f2cbadf394d91966641e6bc17839bcf33`; its
+anatomy-only coverage plan is
+`b718607e0cf671cc06454a6422ea7c3b48107516c59291b2fe01f9a244a9079f`, and its
+replay-verified experiment is
+`f5fd68c1ea8b248f206af9be58fd9adeef604cd2e770289d8f32711ccbba6026`. Four
+source-column radius-one disks extended the retained Phase 7I battery and
+exercised 16/16 bodies through positive anatomical exposure, exploratory
+sensory state, and structural-route transfer. The Phase 7E state assumptions,
+Phase 7F shared transfer coefficient, and DNp01 LIF configuration were
+unchanged; structural counts remain descriptive metadata and do not scale
+transfer. This demonstrates deterministic architecture/replay robustness for
+one disjoint sample only—not biological population validation, 32-/311-body
+simulation, or a completed 313-neuron circuit. The result supports a bounded
+Phase 7K 32-body architecture experiment as the next scale gate; that run has
+not been implemented. See
+[the Phase 7J robustness assessment](science/disjoint_16_body_robustness.md).

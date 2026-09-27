@@ -1406,3 +1406,18 @@ in the current environment. Decision: `SCALE_TO_128`, as a next bounded
 architecture/performance observation only; this is not biological validation,
 311-body dynamics, or a completed 313-neuron circuit. See
 [the Phase 7L composition and scaling assessment](science/four_sample_64_body_composition.md).
+
+## 28. Phase 7M — simultaneous 128-body composition
+
+Phase 7M preserves A–D and selects/persists outcome-blind, disjoint samples
+E–H before planning anatomy-only coverage or computing model outputs. The
+exact A–H union has 128 bodies (32 per LC4/LPLC2 × side stratum), four added
+radius-1 source-column stimuli, and 128/128 software-path stimulus/state/
+transfer coverage. Source-derived routing, per-step accounting, A–D-only
+regression to Phase 7L, and deterministic full replay pass. Phase 7E/7F
+parameters and DNp01 dynamics remain unchanged; structural counts remain
+metadata only. The 31.45 MB artifact replays in about 27.3 s in this
+environment. Decision: `PREPARE_311_EXECUTION_ARCHITECTURE`—prepare arbitrary-N
+and dry-run evidence only; do not execute 311 bodies yet. This is not biological
+validation or a completed 313-neuron circuit. See
+[the Phase 7M scaling assessment](science/eight_sample_128_body_scaling.md).

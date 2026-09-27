@@ -748,6 +748,7 @@ def _simulate_condition(
         "all16",
         "all32",
         "all64",
+        "all128",
         "none",
         "LC4",
         "LPLC2",
@@ -760,6 +761,8 @@ def _simulate_condition(
         "sample_d",
         "sample_ab",
         "sample_cd",
+        "sample_abcd",
+        "sample_efgh",
     }:
         raise BoundedPopulationError("unsupported bounded sensory source mask.")
     if not math.isfinite(k) or k < 0:

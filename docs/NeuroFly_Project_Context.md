@@ -1421,3 +1421,16 @@ environment. Decision: `PREPARE_311_EXECUTION_ARCHITECTURE`—prepare arbitrary-
 and dry-run evidence only; do not execute 311 bodies yet. This is not biological
 validation or a completed 313-neuron circuit. See
 [the Phase 7M scaling assessment](science/eight_sample_128_body_scaling.md).
+
+## 29. Phase 7N — all-311 architecture readiness (dry run)
+
+Phase 7N derives the complete 126 LC4 + 185 LPLC2 identity set directly from
+the pinned MaleCNS contracts, validates all 311 column topologies and direct
+DNp01 routes, and extends the inherited synthetic relative-column battery to
+311/311 anatomy-only coverage. A deterministic dry-run manifest records the
+unchanged Phase 7E/7F/DNp01 configurations and expected future dimensions;
+no 311 sensory states, transfer ledger, or DNp01 dynamics were executed.
+Historical fixed-size artifacts remain unchanged and replayable. Decision:
+`READY_FOR_311_BOUNDED_EXECUTION`. This is an architecture/readiness result,
+not biological validation or a completed 313-neuron circuit. See
+[the Phase 7N readiness assessment](science/all_311_sensory_population_readiness.md).

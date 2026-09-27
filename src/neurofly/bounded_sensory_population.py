@@ -476,8 +476,14 @@ def _route_set(
                 side=row["side"],
             )
         )
-    if {item.source_body_id for item in routes} != selected_ids or len(routes) != 16:
-        raise BoundedPopulationError("all 16 selected bodies need one route.")
+    if (
+        not selected_ids
+        or {item.source_body_id for item in routes} != selected_ids
+        or len(routes) != len(selected_ids)
+    ):
+        raise BoundedPopulationError(
+            "every selected body must resolve to exactly one source route."
+        )
     if any(
         route.side != ("R" if route.target_body_id == 10001 else "L")
         for route in routes
@@ -749,6 +755,7 @@ def _simulate_condition(
         "all32",
         "all64",
         "all128",
+        "all_population",
         "none",
         "LC4",
         "LPLC2",
@@ -894,7 +901,7 @@ def _mask_ids(sample_result: Mapping[str, Any], mask: str) -> set[int]:
     bodies = sample_result["selected_bodies"]
     if mask == "none":
         return set()
-    if mask == "all16":
+    if mask in {"all16", "all_population"}:
         return {item["body_id"] for item in bodies}
     if mask == "sentinels":
         return set(SENTINELS.values())

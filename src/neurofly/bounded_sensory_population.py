@@ -8,6 +8,7 @@ replacement for the four-body versioned artifacts.
 from __future__ import annotations
 
 import math
+import time
 from collections import defaultdict
 from collections.abc import Mapping, Sequence
 from typing import Any
@@ -749,6 +750,7 @@ def _simulate_condition(
     steps: int,
     routes: Sequence[Route],
     circuit: CircuitContract,
+    phase_timings: dict[str, float] | None = None,
 ) -> dict[str, Any]:
     if pathway_mask not in {
         "all16",
@@ -782,6 +784,7 @@ def _simulate_condition(
     drives = {10001: [], 10010: []}
     contribution_rows = []
     type_drive = {target: {"LC4": [], "LPLC2": []} for target in drives}
+    transfer_started = time.perf_counter() if phase_timings is not None else None
     for step in range(steps):
         values = {body_id: float(trace[step]) for body_id, trace in states.items()}
         summed, contributions = route_population_drive(
@@ -815,8 +818,16 @@ def _simulate_condition(
                 for row in contributions
                 if row["target_body_id"] == target
             )
-            if not math.isclose(recorded, summed[target], rel_tol=0.0, abs_tol=1e-15):
-                raise BoundedPopulationError("source contributions do not sum exactly.")
+            # Python's sum() and the source-order accumulation in the routing
+            # primitive can round a few ULPs apart at larger source counts.
+            rounding_bound = max(1e-15, len(routes) * math.ulp(summed[target]) * 2)
+            if not math.isclose(
+                recorded, summed[target], rel_tol=0.0, abs_tol=rounding_bound
+            ):
+                raise BoundedPopulationError(
+                    "source contributions do not sum exactly: "
+                    f"{condition_id}/{step}/{target}: {recorded} != {summed[target]}"
+                )
 
     graph = SimulationGraph(
         candidate_identifier=circuit.candidate.identifier,
@@ -832,11 +843,23 @@ def _simulate_condition(
     schedule = ExternalDriveSchedule.from_body_ids(
         drives, steps=steps, provenance_id=DRIVE_PROVENANCE_ID
     )
+    simulation_started = time.perf_counter() if phase_timings is not None else None
     simulation = simulator.run(
         schedule,
         record_body_ids=(10001, 10010),
         allow_model_readout_drive=True,
     )
+    if (
+        phase_timings is not None
+        and transfer_started is not None
+        and simulation_started is not None
+    ):
+        phase_timings["transfer_ledger_seconds"] = phase_timings.get(
+            "transfer_ledger_seconds", 0.0
+        ) + (simulation_started - transfer_started)
+        phase_timings["dnp01_seconds"] = phase_timings.get("dnp01_seconds", 0.0) + (
+            time.perf_counter() - simulation_started
+        )
     targets = []
     for index, body_id in enumerate(simulation.body_ids):
         drive_series = drives[body_id]

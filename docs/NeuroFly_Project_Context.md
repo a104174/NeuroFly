@@ -1434,3 +1434,17 @@ Historical fixed-size artifacts remain unchanged and replayable. Decision:
 `READY_FOR_311_BOUNDED_EXECUTION`. This is an architecture/readiness result,
 not biological validation or a completed 313-neuron circuit. See
 [the Phase 7N readiness assessment](science/all_311_sensory_population_readiness.md).
+
+## 30. Phase 7O — complete exploratory 313 model-state milestone
+
+Phase 7O executed the committed 311-body population and 27-stimulus battery:
+311/311 sensory states and identity-resolved transfer paths fed the two existing
+DNp01 LIF model neurons. The 130,931-row contribution ledger, Phase 7E
+sentinels, Phase 7M 128-body subset, source accounting and deterministic replay
+passed. The immutable result artifact ID is
+`99eeea47542abd5f9af2c1918e6e0514fa2c4b8f04d9a3f14a75ac1f8dbbcaa5`.
+The shared transfer coefficient and sensory/DNp01 parameters were unchanged;
+MaleCNS structural counts remain metadata. This completes **313 explicit
+exploratory model states**, not calibrated visual physiology or biological
+looming validation. Phase 8A should bound the next neural→motor interface
+question. See [the Phase 7O execution assessment](science/all_311_sensory_population_execution.md).

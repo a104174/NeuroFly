@@ -1368,3 +1368,21 @@ simulation, or a completed 313-neuron circuit. The result supports a bounded
 Phase 7K 32-body architecture experiment as the next scale gate; that run has
 not been implemented. See
 [the Phase 7J robustness assessment](science/disjoint_16_body_robustness.md).
+
+## 26. Phase 7K — simultaneous 32-body composition
+
+Phase 7K composes the persisted, disjoint Phase 7H Sample A and Phase 7J
+Sample B into exactly 32 bodies (eight per LC4/LPLC2 × side stratum), without
+new selection. The immutable composition artifact is
+`82ebef1acef2415fd57b9922e815e87e2d60fd76070a93e67103e2f3924198bf`; its
+experiment artifact is
+`b6be84a66d3cecde3e7bf05992515dc31521a8ebc5e8feebadf9b5f0560d9405`. The
+existing Sample B 14-stimulus relative-column battery covered 32/32 bodies
+through anatomical exposure, exploratory state, and transfer. Nested A/B
+regressions, same-side CircuitContract routing, per-step source accounting,
+and target-drive additivity passed. Phase 7E state assumptions, Phase 7F
+shared `k_transfer`, and DNp01 LIF semantics remain unchanged; structural
+counts remain routing metadata only. Decision: `SCALE_TO_64` for another
+bounded architecture experiment, not biological validation or readiness for
+311/313-neuron execution. See
+[the Phase 7K composition assessment](science/simultaneous_32_body_composition.md).

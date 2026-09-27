@@ -746,12 +746,15 @@ def _simulate_condition(
 ) -> dict[str, Any]:
     if pathway_mask not in {
         "all16",
+        "all32",
         "none",
         "LC4",
         "LPLC2",
         "left",
         "right",
         "sentinels",
+        "sample_a",
+        "sample_b",
     }:
         raise BoundedPopulationError("unsupported Phase 7H source mask.")
     if not math.isfinite(k) or k < 0:

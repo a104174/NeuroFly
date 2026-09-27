@@ -1386,3 +1386,23 @@ counts remain routing metadata only. Decision: `SCALE_TO_64` for another
 bounded architecture experiment, not biological validation or readiness for
 311/313-neuron execution. See
 [the Phase 7K composition assessment](science/simultaneous_32_body_composition.md).
+
+## 27. Phase 7L — simultaneous 64-body composition
+
+Phase 7L keeps the persisted 7H/7J samples A/B immutable, then selects and
+persists outcome-blind, disjoint samples C/D before model execution. The exact
+union contains 64 bodies (16 in each LC4/LPLC2 × side stratum), with all six
+pairwise overlaps empty. Its composition, anatomy-only 19-stimulus coverage
+plan, and experiment artifacts are respectively
+`db5df9b639f5ed834a4e2f408e39bec264552427260eadd8eb8789bcdf431436`,
+`d92627cb1787b2b566e37d333064d259e5347aae6781b8381558dda233561536`, and
+`5095eddbf35c363cf4ae47ef875420ecad725eb0c837767ec8789e65bd68ab02`. All
+64 bodies pass software-path stimulus/state/transfer coverage, source-derived
+routing, per-step source accounting, A+B+C+D additivity, nested Phase 7K
+regression, and full deterministic replay. The Phase 7E state assumptions,
+shared Phase 7F `k_transfer`, and DNp01 LIF remain unchanged; structural
+counts remain metadata only. The 14.85 MB experiment replayed in about 24.6 s
+in the current environment. Decision: `SCALE_TO_128`, as a next bounded
+architecture/performance observation only; this is not biological validation,
+311-body dynamics, or a completed 313-neuron circuit. See
+[the Phase 7L composition and scaling assessment](science/four_sample_64_body_composition.md).

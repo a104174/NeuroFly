@@ -747,6 +747,7 @@ def _simulate_condition(
     if pathway_mask not in {
         "all16",
         "all32",
+        "all64",
         "none",
         "LC4",
         "LPLC2",
@@ -755,8 +756,12 @@ def _simulate_condition(
         "sentinels",
         "sample_a",
         "sample_b",
+        "sample_c",
+        "sample_d",
+        "sample_ab",
+        "sample_cd",
     }:
-        raise BoundedPopulationError("unsupported Phase 7H source mask.")
+        raise BoundedPopulationError("unsupported bounded sensory source mask.")
     if not math.isfinite(k) or k < 0:
         raise BoundedPopulationError(
             "transfer coefficient must be finite and nonnegative."

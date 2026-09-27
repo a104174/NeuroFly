@@ -1448,3 +1448,18 @@ MaleCNS structural counts remain metadata. This completes **313 explicit
 exploratory model states**, not calibrated visual physiology or biological
 looming validation. Phase 8A should bound the next neural→motor interface
 question. See [the Phase 7O execution assessment](science/all_311_sensory_population_execution.md).
+
+## 31. Phase 8A — DNp01-to-motor interface assessment
+
+Phase 8A audited the Phase 7O output and Phase 6C event-driven TTMn contract.
+The existing `DNp01_SPIKE_EVENT_ONLY` boundary remains the smallest
+defensible exploratory interface: Phase 7O produced no simulated DNp01 spikes
+in its reference run or tested `k=0,1,2` conditions, so its event-driven TTMn
+input is correctly zero. No sensory transfer or DNp01 threshold was retuned.
+MaleCNS chemical DNp01→TTMn counts remain structural metadata; electrical
+coupling evidence does not provide pair-specific conductance. Phase 6C's
+dimensionless TTMn state remains exploratory and is not muscle/behavior.
+Decision: validate the motor interface next using a provenance-separated
+`SYNTHETIC_MOTOR_INTERFACE_TEST`, not a fabricated Phase 7O event. No
+production code, API, or frontend changed. See
+[the Phase 8A DNp01-to-motor interface assessment](science/dnp01_motor_interface_assessment.md).

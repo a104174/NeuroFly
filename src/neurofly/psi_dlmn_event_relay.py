@@ -677,10 +677,17 @@ def _expected_configuration(pinned: dict[str, Any]) -> dict[str, Any]:
 
 def execute_reference_relay(
     pinned: dict[str, Any],
+    *,
+    fixtures: tuple[SyntheticDNp01FixtureConfig, ...] | None = None,
 ) -> tuple[dict[str, Any], dict[str, Any]]:
-    """Execute the six fixed Phase 8B synthetic fixtures through two route layers."""
+    """Execute the six fixed Phase 8B fixtures through the two relay layers.
 
-    return _run_payload_from_config(pinned)
+    A composing phase may supply the same immutable fixture objects already
+    consumed by another branch. Their serialized values must equal the
+    canonical battery; default execution and artifact identity remain stable.
+    """
+
+    return _run_payload_from_config(pinned, fixtures=fixtures)
 
 
 def validate_and_replay_payload(
@@ -713,15 +720,24 @@ def validate_and_replay_payload(
 
 def _run_payload_from_config(
     pinned: dict[str, Any],
+    *,
+    fixtures: tuple[SyntheticDNp01FixtureConfig, ...] | None = None,
 ) -> tuple[dict[str, Any], dict[str, Any]]:
     """Internal replay builder that avoids recursive validation."""
 
     config = build_relay_configuration(pinned)
     routes = active_routes_from_contract(pinned)
     reference = config["motor_contract"]
-    fixtures = [
-        _propagate_fixture(fixture, routes, reference)
-        for fixture in build_reference_fixture_battery()
+    canonical_fixtures = build_reference_fixture_battery()
+    selected_fixtures = canonical_fixtures if fixtures is None else tuple(fixtures)
+    if tuple(item.to_dict() for item in selected_fixtures) != tuple(
+        item.to_dict() for item in canonical_fixtures
+    ):
+        raise PsiDlmnEventRelayError(
+            "supplied fixtures differ from the canonical six-fixture battery"
+        )
+    fixture_results = [
+        _propagate_fixture(fixture, routes, reference) for fixture in selected_fixtures
     ]
     result: dict[str, Any] = {
         "schema_version": RESULT_SCHEMA_VERSION,
@@ -732,17 +748,17 @@ def _run_payload_from_config(
         "source_kind": SYNTHETIC_SOURCE_KIND,
         "event_semantics": RELAY_SEMANTICS,
         "sensory_source_artifact_id": None,
-        "fixtures": fixtures,
+        "fixtures": fixture_results,
         "summary": {
-            "fixture_count": len(fixtures),
+            "fixture_count": len(fixture_results),
             "source_event_count": sum(
-                item["counts"]["source_events"] for item in fixtures
+                item["counts"]["source_events"] for item in fixture_results
             ),
             "psi_routed_event_count": sum(
-                item["counts"]["psi_routed_events"] for item in fixtures
+                item["counts"]["psi_routed_events"] for item in fixture_results
             ),
             "dlmn_routed_event_count": sum(
-                item["counts"]["dlmn_routed_events"] for item in fixtures
+                item["counts"]["dlmn_routed_events"] for item in fixture_results
             ),
             "supplemental_psi_to_psi_propagated_event_count": 0,
         },

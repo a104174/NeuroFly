@@ -77,6 +77,12 @@ def _artifact_id(config_sha256: str, result_sha256: str) -> str:
     return _sha256_bytes(_json_bytes(identity))
 
 
+def psi_dlmn_event_relay_artifact_id(config_sha256: str, result_sha256: str) -> str:
+    """Return the unchanged content identity for a Phase 8G child payload."""
+
+    return _artifact_id(config_sha256, result_sha256)
+
+
 def _write(path: Path, payload: bytes) -> None:
     try:
         with path.open("wb") as stream:
@@ -324,4 +330,5 @@ __all__ = [
     "generate_psi_dlmn_event_relay_artifact",
     "load_psi_dlmn_event_relay_artifact",
     "replay_psi_dlmn_event_relay_artifact",
+    "psi_dlmn_event_relay_artifact_id",
 ]

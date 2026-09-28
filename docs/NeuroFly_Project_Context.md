@@ -1576,3 +1576,18 @@ unchanged. This validates provenance-preserving zero-event composition and
 test-local future nonzero compatibility, not sensory-driven motor activity,
 PSI/DLMn physiology, muscle output, or behavior. See
 [the Phase 8H production event adapter assessment](science/sensory_psi_dlmn_event_adapter.md).
+
+## 39. Phase 8I — synthetic parallel motor-branch composition
+
+Phase 8I composes the same immutable six-fixture synthetic DNp01 event
+battery through the unchanged Phase 6C TTMn integrator and Phase 8G PSI/DLMn
+relay. The artifact preserves common origin identities and separate output
+semantics: dimensionless TTMn exploratory state versus discrete
+`EXPLORATORY_ROUTED_MOTOR_EVENT` records. Per origin, software accounting is
+one TTMn input, two PSI receipts, and ten DLMn path records; these are not
+biological strength ratios. PSI↔PSI remains excluded, structural counts remain
+metadata, and no new parameter, production sensory input, muscle, or behavior
+is introduced. Artifact ID:
+`f4225f3f24bcf3a3ed27d5c0d313700426e788d6af232b2c57b9d77e3ae63bbf`.
+Deterministic replay and exact Phase 8B/8G child-result equality passed. See
+the [Phase 8I composition assessment](science/synthetic_parallel_motor_branch_composition.md).

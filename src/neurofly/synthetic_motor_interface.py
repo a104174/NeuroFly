@@ -430,11 +430,26 @@ def _run_fixture(
 
 def execute_reference_battery(
     circuit_contract: Any,
+    *,
+    fixtures: tuple[SyntheticDNp01FixtureConfig, ...] | None = None,
 ) -> tuple[dict[str, Any], dict[str, Any]]:
-    """Run only the fixed synthetic battery through Phase 6C's pure primitives."""
+    """Run the fixed synthetic battery through Phase 6C's pure primitives.
+
+    A composing phase may pass the already-validated immutable fixture objects
+    so parallel branches share one logical upstream event set. The supplied
+    objects must serialize exactly to the canonical six-fixture battery.
+    """
 
     config = build_fixture_configuration(circuit_contract)
-    results = [_run_fixture(fixture) for fixture in build_reference_fixture_battery()]
+    canonical_fixtures = build_reference_fixture_battery()
+    selected_fixtures = canonical_fixtures if fixtures is None else tuple(fixtures)
+    if tuple(item.to_dict() for item in selected_fixtures) != tuple(
+        item.to_dict() for item in canonical_fixtures
+    ):
+        raise SyntheticMotorInterfaceError(
+            "supplied fixtures differ from the canonical six-fixture battery."
+        )
+    results = [_run_fixture(fixture) for fixture in selected_fixtures]
     result = {
         "schema_version": RESULT_SCHEMA_VERSION,
         "source_kind": SYNTHETIC_SOURCE_KIND,

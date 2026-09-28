@@ -82,6 +82,12 @@ def _artifact_id(config_sha256: str, result_sha256: str) -> str:
     )
 
 
+def synthetic_motor_artifact_id(config_sha256: str, result_sha256: str) -> str:
+    """Return the unchanged content identity for a Phase 8B child payload."""
+
+    return _artifact_id(config_sha256, result_sha256)
+
+
 def _write(path: Path, payload: bytes) -> None:
     try:
         with path.open("wb") as stream:
@@ -312,4 +318,5 @@ __all__ = [
     "generate_synthetic_motor_artifact",
     "load_synthetic_motor_artifact",
     "replay_synthetic_motor_artifact",
+    "synthetic_motor_artifact_id",
 ]

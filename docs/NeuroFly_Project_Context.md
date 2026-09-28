@@ -1463,3 +1463,19 @@ Decision: validate the motor interface next using a provenance-separated
 `SYNTHETIC_MOTOR_INTERFACE_TEST`, not a fabricated Phase 7O event. No
 production code, API, or frontend changed. See
 [the Phase 8A DNp01-to-motor interface assessment](science/dnp01_motor_interface_assessment.md).
+
+## 32. Phase 8B — synthetic DNp01 event to TTMn interface
+
+Phase 8B validates six deterministic `SYNTHETIC_MOTOR_INTERFACE_TEST`
+fixtures (zero, unilateral, bilateral, and repeated events) through the exact
+Phase 6C DNp01 identity routes and unchanged TTMn exploratory integrator. The
+synthetic event config/result are separately content-addressed; the Phase 6C
+same-upstream-run invariant was not weakened, and no synthetic event was
+inserted into Phase 7O. Artifact ID:
+`4321adeee0412a79632ce4e008a1b8eaad22ee167f97f4a98521a9e71d9ef936`. A
+zero-event fixture leaves both dimensionless TTMn
+states at zero; one event routes only to its identity-matched target. Structural
+counts remain metadata and `tau_motor_ms=10`, `event_gain=0.25` remain
+`MODEL_ASSUMPTION`. This is an architecture/timing test, not sensory-derived
+motor activation, muscle output, behavior, or physiological validation. See
+[the Phase 8B synthetic motor-interface assessment](science/synthetic_dnp01_ttmn_interface.md).

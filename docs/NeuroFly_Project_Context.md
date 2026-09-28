@@ -1603,3 +1603,16 @@ not exact MaleCNS body-to-fiber mapping or pair-specific delay/gain/force.
 Decision: `PIN_MOTOR_NEURON_MUSCLE_TARGET_CONTRACT` next; DLMn latent state is
 not required for that no-dynamics contract. See the
 [Phase 8J boundary assessment](science/motor_neuron_muscle_boundary_readiness.md).
+
+## 41. Phase 8K — motor-neuron muscle-target contract
+
+Phase 8K pins a deterministic no-dynamics association contract for the 2
+source-verified TTMn and 10 DLMn bodies. It links MaleCNS neural identity to
+literature-supported TTM or DLM muscle class/group evidence, while preserving
+explicit confidence, unresolved exact fibers, and uncertain DLM target sides.
+Only the TTM mapping uses a qualified literature-supported ipsilateral side
+inference. The contract creates no MaleCNS peripheral edge and defines no
+output conversion or muscle dynamics. Artifact ID:
+`5f02960bb5bdd81bcd622334a93199bc6973749f233dbc7aa5fd15481a5eddf0`.
+Offline replay passed. See the
+[Phase 8K target contract assessment](science/motor_neuron_muscle_target_contract.md).

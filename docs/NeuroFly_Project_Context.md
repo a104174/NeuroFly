@@ -1496,3 +1496,19 @@ unchanged; structural counts remain metadata. This validates truthful
 zero-event composition and deterministic replay, not sensory-driven motor
 activation, TTMn physiology, muscle output, or behavior. See
 [the Phase 8C end-to-end adapter assessment](science/sensory_dnp01_ttmn_end_to_end_adapter.md).
+
+## 34. Phase 8D — PSI/DLMn motor-branch evidence assessment
+
+Phase 8D revalidated the scope of the pinned `looming_giant_fiber_v1`
+CircuitContract: it remains LC4/LPLC2/DNp01 only. A separate committed Phase
+6B audit records a bounded MaleCNS v1.0 query for DNp01→TTMn, DNp01→PSI, and
+PSI→DLMn chemical routes, with candidate PSI/DLMn identities; its query
+response has no independent content hash and is not an expanded CircuitContract.
+Primary literature supports mixed electrical/chemical GF→TTMn and GF→PSI
+pathway organization and positive cholinergic PSI→DLMn transmission. Fayyazuddin
+et al. report a class-level MN5 EPSP, but it does not identify gains for exact
+MaleCNS edges. Structural counts remain metadata; delay, pair conductance, and
+per-edge efficacy remain unresolved. Decision: add a separately versioned,
+no-dynamics motor identity/route contract only; PSI/DLMn dynamics are not
+approved. No code, source artifact, motor model, muscle, or behavior changed.
+See [the Phase 8D branch assessment](science/psi_dlmn_motor_branch_assessment.md).

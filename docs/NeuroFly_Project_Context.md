@@ -1616,3 +1616,16 @@ output conversion or muscle dynamics. Artifact ID:
 `5f02960bb5bdd81bcd622334a93199bc6973749f233dbc7aa5fd15481a5eddf0`.
 Offline replay passed. See the
 [Phase 8K target contract assessment](science/motor_neuron_muscle_target_contract.md).
+
+## 42. Phase 8L — synthetic motor-neuron output target dispatch
+
+Phase 8L validates explicit `SYNTHETIC_MOTOR_NEURON_OUTPUT_TEST` events
+against the replayed Phase 8K target contract. Each event creates one
+`EXPLORATORY_MUSCLE_TARGET_DISPATCH` receipt that preserves target class/group,
+confidence, qualified TTM laterality, and unresolved DLM sides/fibers. The
+eight-fixture artifact covers zero, both TTMn sides, DLMn a,b sides, one c-f
+identity per side, and all 12 target associations; full offline replay is
+deterministic. Phase 6C states and Phase 8G path receipts are not converted
+into output events. No muscle dynamics, NMJ parameters, force, or behavior
+are introduced. See the
+[Phase 8L dispatch assessment](science/synthetic_motor_neuron_target_dispatch.md).

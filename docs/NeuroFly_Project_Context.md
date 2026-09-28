@@ -1591,3 +1591,15 @@ is introduced. Artifact ID:
 `f4225f3f24bcf3a3ed27d5c0d313700426e788d6af232b2c57b9d77e3ae63bbf`.
 Deterministic replay and exact Phase 8B/8G child-result equality passed. See
 the [Phase 8I composition assessment](science/synthetic_parallel_motor_branch_composition.md).
+
+## 40. Phase 8J — motor-neuron output / neural→muscle readiness
+
+Phase 8J replayed the pinned motor contract and Phase 8I composition, then
+assessed the neural→muscle boundary without adding dynamics. Phase 6C TTMn
+output is a dimensionless exploratory neural state, not a spike or muscle
+activation; Phase 8G DLMn receipts are graph-path records, not DLMn output
+events. Primary evidence supports TTM and DLM target *classes/groups*, but
+not exact MaleCNS body-to-fiber mapping or pair-specific delay/gain/force.
+Decision: `PIN_MOTOR_NEURON_MUSCLE_TARGET_CONTRACT` next; DLMn latent state is
+not required for that no-dynamics contract. See the
+[Phase 8J boundary assessment](science/motor_neuron_muscle_boundary_readiness.md).

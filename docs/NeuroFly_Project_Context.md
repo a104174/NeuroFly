@@ -1545,3 +1545,16 @@ efficacy remain unresolved despite class/pathway-level positive evidence.
 Decision: `READY_FOR_SYNTHETIC_PSI_DLMN_EVENT_RELAY`; no dynamics were
 implemented and canonical sensory-derived zero events remain zero. See
 [the Phase 8F event-model readiness assessment](science/psi_dlmn_event_model_readiness.md).
+
+## 37. Phase 8G — synthetic PSI/DLMn routed-event ledger
+
+Phase 8G implements an offline, content-addressed two-layer relay using the
+pinned motor contract's four DNp01→PSI and ten PSI→DLMn chemical edges. Six
+Phase 8B synthetic fixtures preserve source identity, provenance and exact
+integer event boundaries. The relay produces path records only; reciprocal
+PSI edges remain excluded, structural counts remain metadata, and Phase 6C
+TTMn is unchanged. Artifact ID:
+`1da8963e9097c570d67a2683f71744c2dee8c59662faa253cdc56ad32ee5e5b3`.
+Offline full replay passed. No sensory-derived event, PSI/DLMn latent state,
+muscle or behavior was added. See
+[the Phase 8G routed-event ledger assessment](science/synthetic_psi_dlmn_event_relay.md).

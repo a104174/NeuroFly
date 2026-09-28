@@ -1479,3 +1479,20 @@ counts remain metadata and `tau_motor_ms=10`, `event_gain=0.25` remain
 `MODEL_ASSUMPTION`. This is an architecture/timing test, not sensory-derived
 motor activation, muscle output, behavior, or physiological validation. See
 [the Phase 8B synthetic motor-interface assessment](science/synthetic_dnp01_ttmn_interface.md).
+
+## 33. Phase 8C — persisted Phase 7O event to TTMn adapter
+
+Phase 8C adds a condition-explicit, provenance-preserving adapter from the
+immutable Phase 7O artifact to the unchanged Phase 6C event mapper and TTMn
+integrator. It accepts only persisted `SIMULATED_DNP01_MODEL_SPIKE` records,
+never infers events from voltage/drive/state, and keeps provenance distinct
+from Phase 8B's `SYNTHETIC_MOTOR_INTERFACE_TEST`. The canonical Phase 7O
+`reference_bilateral` condition and all 35 persisted conditions contain zero
+events; the resulting Phase 8C artifact therefore has zero mapped inputs and
+exactly zero TTMn state on both sides. Artifact ID:
+`5f57cbc6c0ac770d65582ffe97c0c690e539bab33fef549da15d5273912279bf`.
+Phase 6C's same-upstream-run invariant, motor parameters, and routes remain
+unchanged; structural counts remain metadata. This validates truthful
+zero-event composition and deterministic replay, not sensory-driven motor
+activation, TTMn physiology, muscle output, or behavior. See
+[the Phase 8C end-to-end adapter assessment](science/sensory_dnp01_ttmn_end_to_end_adapter.md).

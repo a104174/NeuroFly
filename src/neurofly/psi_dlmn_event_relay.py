@@ -35,6 +35,7 @@ RESULT_SCHEMA_VERSION = "synthetic_psi_dlmn_event_relay_result_v1"
 ARTIFACT_SCHEMA_VERSION = "synthetic_psi_dlmn_event_relay_artifact_v1"
 RELAY_SEMANTICS = "EXPLORATORY_ROUTED_MOTOR_EVENT"
 ACTIVE_ROUTE_POLICY_ID = RELAY_SCHEMA_VERSION
+SENSORY_SOURCE_KIND = "SIMULATED_FROM_SENSORY_EXPERIMENT"
 EXPECTED_MOTOR_CONTRACT_ID = (
     "a12b0115c7e50fac3df92bf66d151b3a145aa630f472277226a7d05dc915b22c"
 )
@@ -262,6 +263,40 @@ def _contract_reference(pinned: dict[str, Any]) -> dict[str, Any]:
     }
 
 
+def active_edge_policy_from_contract(pinned: dict[str, Any]) -> dict[str, Any]:
+    """Return the immutable Phase 8G active-edge policy from the pinned source."""
+
+    contract = _validate_pinned_motor_contract(pinned)
+    routes = active_routes_from_contract(pinned)
+    excluded = [
+        {
+            "edge_id": edge["edge_id"],
+            "source_body_id": edge["source_body_id"],
+            "target_body_id": edge["target_body_id"],
+            "structural_count": edge["structural_count"],
+            "query_group": edge["source_query_id"],
+            "active": False,
+        }
+        for edge in contract["chemical_edges"]
+        if edge["source_query_id"] == "psi_to_psi_supplemental"
+    ]
+    if len(excluded) != 2:
+        raise PsiDlmnEventRelayError("supplemental PSI routes differ from contract")
+    return {
+        "policy_id": RELAY_SCHEMA_VERSION,
+        "allowed_query_groups": ["dnp01_to_psi", "psi_to_dlmn"],
+        "excluded_query_groups": [
+            "dnp01_to_ttmn",
+            "psi_to_psi_supplemental",
+            "dnp01_to_candidate_dlmn",
+        ],
+        "propagation_layers": 2,
+        "recursive_graph_traversal": False,
+        "active_routes": [route.to_dict() for route in routes],
+        "excluded_supplemental_routes": excluded,
+    }
+
+
 def _event_record(event: Any, fixture: SyntheticDNp01FixtureConfig) -> dict[str, Any]:
     fixture_dict = fixture.to_dict()
     spike = event.to_spike_event()
@@ -299,7 +334,7 @@ def _event_record(event: Any, fixture: SyntheticDNp01FixtureConfig) -> dict[str,
 def _routed_event_id(
     *,
     schema_version: str,
-    synthetic_run_id: str,
+    origin_identity: dict[str, Any],
     origin_event_id: str,
     route_ids: tuple[str, ...],
     target_body_id: int,
@@ -312,7 +347,7 @@ def _routed_event_id(
         {
             "schema_version": schema_version,
             "relay_semantics": RELAY_SCHEMA_VERSION,
-            "synthetic_run_id": synthetic_run_id,
+            **origin_identity,
             "origin_event_id": origin_event_id,
             "route_ids": list(route_ids),
             "target_body_id": target_body_id,
@@ -323,17 +358,53 @@ def _routed_event_id(
     )
 
 
-def _propagate_fixture(
-    fixture: SyntheticDNp01FixtureConfig,
+def _propagate_origin_events(
+    source_events: list[dict[str, Any]],
     routes: tuple[ActiveRoute, ...],
     contract_reference: dict[str, Any],
+    *,
+    source_kind: str,
+    origin_identity: dict[str, Any],
+    context_fields: dict[str, Any],
+    dt_ms: float,
+    maximum_step: int,
 ) -> dict[str, Any]:
-    """Propagate exactly two route layers; never walks PSI↔PSI edges."""
+    """Route already-validated origin records through exactly two edge layers.
 
-    if fixture.source_kind != SYNTHETIC_SOURCE_KIND:
-        raise PsiDlmnEventRelayError("relay accepts synthetic fixture inputs only")
-    if not math.isfinite(fixture.dt_ms) or fixture.dt_ms <= 0:
-        raise PsiDlmnEventRelayError("fixture timestep is invalid")
+    This is the single Phase 8G/8H fan-out implementation. Source adapters
+    validate their own provenance before invoking it; PSI↔PSI is never walked.
+    """
+
+    if source_kind not in {SYNTHETIC_SOURCE_KIND, SENSORY_SOURCE_KIND}:
+        raise PsiDlmnEventRelayError("unsupported relay source provenance")
+    if not math.isfinite(dt_ms) or dt_ms <= 0:
+        raise PsiDlmnEventRelayError("source timestep is invalid")
+    if (
+        isinstance(maximum_step, bool)
+        or not isinstance(maximum_step, int)
+        or maximum_step < 1
+    ):
+        raise PsiDlmnEventRelayError("source run boundary is invalid")
+    if source_kind == SYNTHETIC_SOURCE_KIND:
+        if set(origin_identity) != {"synthetic_run_id"} or set(context_fields) != {
+            "fixture_id",
+            "fixture_config_sha256",
+            "synthetic_run_id",
+        }:
+            raise PsiDlmnEventRelayError("synthetic source identity is malformed")
+    elif (
+        set(origin_identity) != {"upstream_artifact_id", "source_condition_id"}
+        or set(context_fields) != {"upstream_artifact_id", "source_condition_id"}
+        or not isinstance(origin_identity.get("upstream_artifact_id"), str)
+        or len(origin_identity["upstream_artifact_id"]) != 64
+        or any(
+            char not in "0123456789abcdef"
+            for char in origin_identity["upstream_artifact_id"]
+        )
+        or not isinstance(origin_identity.get("source_condition_id"), str)
+        or not origin_identity["source_condition_id"]
+    ):
+        raise PsiDlmnEventRelayError("production source identity is malformed")
     dnp_routes: dict[int, list[ActiveRoute]] = {}
     psi_routes: dict[int, list[ActiveRoute]] = {}
     for route in routes:
@@ -353,11 +424,37 @@ def _propagate_fixture(
     ):
         raise PsiDlmnEventRelayError("active route set differs from Phase 8G policy")
 
-    fixture_dict = fixture.to_dict()
-    source_events = [_event_record(event, fixture) for event in fixture.events]
-    event_ids = [event["event_id"] for event in source_events]
+    if any(not isinstance(event, dict) for event in source_events):
+        raise PsiDlmnEventRelayError("source event record is malformed")
+    event_ids = [event.get("event_id") for event in source_events]
+    if any(not isinstance(event_id, str) or not event_id for event_id in event_ids):
+        raise PsiDlmnEventRelayError("source event identity is malformed")
     if len(event_ids) != len(set(event_ids)):
         raise PsiDlmnEventRelayError("duplicate source event identity")
+    for event in source_events:
+        if (
+            not isinstance(event, dict)
+            or event.get("source_kind") != source_kind
+            or isinstance(event.get("source_body_id"), bool)
+            or not isinstance(event.get("source_body_id"), int)
+            or event.get("neuron_type") != "DNp01"
+            or event.get("source_side") not in {"L", "R"}
+            or isinstance(event.get("step"), bool)
+            or not isinstance(event.get("step"), int)
+            or event["step"] < 1
+            or event["step"] > maximum_step
+            or isinstance(event.get("time_ms"), bool)
+            or not isinstance(event.get("time_ms"), (int, float))
+            or not math.isfinite(event["time_ms"])
+            or event["time_ms"] != event["step"] * dt_ms
+            or (
+                source_kind == SENSORY_SOURCE_KIND
+                and any(
+                    event.get(key) != value for key, value in origin_identity.items()
+                )
+            )
+        ):
+            raise PsiDlmnEventRelayError("source event identity/timing is invalid")
 
     psi_events: list[dict[str, Any]] = []
     dlmn_events: list[dict[str, Any]] = []
@@ -390,7 +487,7 @@ def _propagate_fixture(
                 )
             psi_id = _routed_event_id(
                 schema_version=PSI_EVENT_SCHEMA_VERSION,
-                synthetic_run_id=source_event["synthetic_run_id"],
+                origin_identity=origin_identity,
                 origin_event_id=source_event["event_id"],
                 route_ids=(route.edge_id,),
                 target_body_id=route.target_body_id,
@@ -402,11 +499,9 @@ def _propagate_fixture(
                 "schema_version": PSI_EVENT_SCHEMA_VERSION,
                 "event_id": psi_id,
                 "event_semantics": RELAY_SEMANTICS,
-                "origin_source_kind": SYNTHETIC_SOURCE_KIND,
+                "origin_source_kind": source_kind,
                 "provenance_kind": RELAY_SEMANTICS,
-                "fixture_id": source_event["fixture_id"],
-                "fixture_config_sha256": source_event["fixture_config_sha256"],
-                "synthetic_run_id": source_event["synthetic_run_id"],
+                **context_fields,
                 "origin_event_id": source_event["event_id"],
                 "origin_dnp01_body_id": body_id,
                 "immediate_source_body_id": body_id,
@@ -436,7 +531,7 @@ def _propagate_fixture(
                 route_ids = (route.edge_id, dlmn_route.edge_id)
                 dlmn_id = _routed_event_id(
                     schema_version=DLMN_EVENT_SCHEMA_VERSION,
-                    synthetic_run_id=source_event["synthetic_run_id"],
+                    origin_identity=origin_identity,
                     origin_event_id=source_event["event_id"],
                     route_ids=route_ids,
                     target_body_id=dlmn_route.target_body_id,
@@ -449,11 +544,9 @@ def _propagate_fixture(
                         "schema_version": DLMN_EVENT_SCHEMA_VERSION,
                         "event_id": dlmn_id,
                         "event_semantics": RELAY_SEMANTICS,
-                        "origin_source_kind": SYNTHETIC_SOURCE_KIND,
+                        "origin_source_kind": source_kind,
                         "provenance_kind": RELAY_SEMANTICS,
-                        "fixture_id": source_event["fixture_id"],
-                        "fixture_config_sha256": source_event["fixture_config_sha256"],
-                        "synthetic_run_id": source_event["synthetic_run_id"],
+                        **context_fields,
                         "origin_event_id": source_event["event_id"],
                         "origin_dnp01_body_id": body_id,
                         "parent_psi_event_id": psi_id,
@@ -492,10 +585,7 @@ def _propagate_fixture(
         )
     )
     return {
-        "fixture_id": fixture.fixture_id,
-        "fixture_config_sha256": fixture_dict["fixture_config_sha256"],
-        "synthetic_run_id": fixture_dict["synthetic_run_id"],
-        "source_kind": SYNTHETIC_SOURCE_KIND,
+        "source_kind": source_kind,
         "event_semantics": RELAY_SEMANTICS,
         "source_events": source_events,
         "psi_routed_events": psi_events,
@@ -510,25 +600,43 @@ def _propagate_fixture(
     }
 
 
+def _propagate_fixture(
+    fixture: SyntheticDNp01FixtureConfig,
+    routes: tuple[ActiveRoute, ...],
+    contract_reference: dict[str, Any],
+) -> dict[str, Any]:
+    """Validate a Phase 8B fixture, then call the shared two-layer relay."""
+
+    if fixture.source_kind != SYNTHETIC_SOURCE_KIND:
+        raise PsiDlmnEventRelayError("relay accepts synthetic fixture inputs only")
+    fixture_dict = fixture.to_dict()
+    source_events = [_event_record(event, fixture) for event in fixture.events]
+    result = _propagate_origin_events(
+        source_events,
+        routes,
+        contract_reference,
+        source_kind=SYNTHETIC_SOURCE_KIND,
+        origin_identity={"synthetic_run_id": fixture_dict["synthetic_run_id"]},
+        context_fields={
+            "fixture_id": fixture.fixture_id,
+            "fixture_config_sha256": fixture_dict["fixture_config_sha256"],
+            "synthetic_run_id": fixture_dict["synthetic_run_id"],
+        },
+        dt_ms=fixture.dt_ms,
+        maximum_step=fixture.interval_count,
+    )
+    return {
+        "fixture_id": fixture.fixture_id,
+        "fixture_config_sha256": fixture_dict["fixture_config_sha256"],
+        "synthetic_run_id": fixture_dict["synthetic_run_id"],
+        **result,
+    }
+
+
 def build_relay_configuration(pinned: dict[str, Any]) -> dict[str, Any]:
     """Build a content-addressed run config from the pinned contract and 8B fixtures."""
 
-    contract = _validate_pinned_motor_contract(pinned)
-    routes = active_routes_from_contract(pinned)
-    excluded = [
-        {
-            "edge_id": edge["edge_id"],
-            "source_body_id": edge["source_body_id"],
-            "target_body_id": edge["target_body_id"],
-            "structural_count": edge["structural_count"],
-            "query_group": edge["source_query_id"],
-            "active": False,
-        }
-        for edge in contract["chemical_edges"]
-        if edge["source_query_id"] == "psi_to_psi_supplemental"
-    ]
-    if len(excluded) != 2:
-        raise PsiDlmnEventRelayError("supplemental PSI routes differ from contract")
+    _validate_pinned_motor_contract(pinned)
     payload = {
         "schema_version": "synthetic_psi_dlmn_event_relay_config_v1",
         "artifact_schema_version": ARTIFACT_SCHEMA_VERSION,
@@ -536,19 +644,7 @@ def build_relay_configuration(pinned: dict[str, Any]) -> dict[str, Any]:
         "motor_contract": _contract_reference(pinned),
         "source_kind": SYNTHETIC_SOURCE_KIND,
         "derived_event_semantics": RELAY_SEMANTICS,
-        "active_edge_policy": {
-            "policy_id": RELAY_SCHEMA_VERSION,
-            "allowed_query_groups": ["dnp01_to_psi", "psi_to_dlmn"],
-            "excluded_query_groups": [
-                "dnp01_to_ttmn",
-                "psi_to_psi_supplemental",
-                "dnp01_to_candidate_dlmn",
-            ],
-            "propagation_layers": 2,
-            "recursive_graph_traversal": False,
-            "active_routes": [route.to_dict() for route in routes],
-            "excluded_supplemental_routes": excluded,
-        },
+        "active_edge_policy": active_edge_policy_from_contract(pinned),
         "fixtures": [
             fixture.to_dict() for fixture in build_reference_fixture_battery()
         ],
@@ -694,7 +790,9 @@ __all__ = [
     "RELAY_SEMANTICS",
     "RESULT_SCHEMA_VERSION",
     "SYNTHETIC_SOURCE_KIND",
+    "SENSORY_SOURCE_KIND",
     "active_routes_from_contract",
+    "active_edge_policy_from_contract",
     "build_relay_configuration",
     "execute_reference_relay",
     "load_pinned_motor_contract",

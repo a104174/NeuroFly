@@ -1558,3 +1558,21 @@ TTMn is unchanged. Artifact ID:
 Offline full replay passed. No sensory-derived event, PSI/DLMn latent state,
 muscle or behavior was added. See
 [the Phase 8G routed-event ledger assessment](science/synthetic_psi_dlmn_event_relay.md).
+
+## 38. Phase 8H — production Phase 7O event to PSI/DLMn adapter
+
+Phase 8H adds a condition-explicit production adapter from genuine persisted
+Phase 7O `SIMULATED_DNP01_MODEL_SPIKE` records into the shared Phase 8G
+two-layer route core. It reuses the pinned motor contract and exact active
+DNp01→PSI→DLMn policy; reciprocal PSI edges remain excluded, and Phase 6C/8C
+TTMn remains a separate parallel branch. The canonical Phase 7O
+`reference_bilateral` condition and all 35 conditions contain no DNp01 events,
+so the valid Phase 8H result has no PSI or DLMn route records. No event is
+inferred from Vm, drive or filtered state, and no synthetic fallback is
+allowed. Artifact ID:
+`b13813300a8be7ffa644393d01e78f032705fd4e155665bc60f50f7abee45803`.
+Full offline replay passed; the Phase 8G synthetic artifact identity remains
+unchanged. This validates provenance-preserving zero-event composition and
+test-local future nonzero compatibility, not sensory-driven motor activity,
+PSI/DLMn physiology, muscle output, or behavior. See
+[the Phase 8H production event adapter assessment](science/sensory_psi_dlmn_event_adapter.md).

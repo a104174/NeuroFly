@@ -1531,3 +1531,17 @@ Phase 6C/8C DNp01→TTMn identities/counts remain an exact compatible subset;
 historical artifacts were not migrated. Decision:
 `MOTOR_STRUCTURAL_CONTRACT_PINNED`. No PSI/DLMn dynamics, API, or frontend
 changes. See [the Phase 8E motor structural contract assessment](science/motor_neural_pathway_contract.md).
+
+## 36. Phase 8F — PSI/DLMn event-model readiness
+
+Phase 8F replayed the pinned Phase 8E contract and assessed a minimal
+synthetic DNp01 event→PSI→DLMn vertical slice. The proposed first model is an
+identity-resolved, zero-added-delay exploratory event relay with no PSI/DLMn
+latent state, gain, or structural-count scaling. It includes the four
+DNp01→PSI and ten PSI→DLMn routes; the two supplemental reciprocal PSI edges
+remain structural-only to avoid undefined event recurrence. Phase 6C's
+parallel DNp01→TTMn branch is unchanged. Pair-specific sign, delay and
+efficacy remain unresolved despite class/pathway-level positive evidence.
+Decision: `READY_FOR_SYNTHETIC_PSI_DLMN_EVENT_RELAY`; no dynamics were
+implemented and canonical sensory-derived zero events remain zero. See
+[the Phase 8F event-model readiness assessment](science/psi_dlmn_event_model_readiness.md).

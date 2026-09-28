@@ -1512,3 +1512,22 @@ per-edge efficacy remain unresolved. Decision: add a separately versioned,
 no-dynamics motor identity/route contract only; PSI/DLMn dynamics are not
 approved. No code, source artifact, motor model, muscle, or behavior changed.
 See [the Phase 8D branch assessment](science/psi_dlmn_motor_branch_assessment.md).
+
+## 35. Phase 8E — pinned motor neural structural contract
+
+Phase 8E reconstructed the bounded Phase 6B MaleCNS v1.0 query against the
+official annotation snapshot and live neuPrint source. The immutable
+`motor_neural_pathway_contract_v1` has 16 source-identified nodes, 16
+historical DNp01/TTMn/PSI/DLMn chemical pathway edges, and two separately
+labeled supplemental PSI↔PSI chemical edges. The bounded direct
+DNp01→candidate-DLMn query returned zero edges. Query-response SHA-256:
+`845c1c1ddc60183fd02f8ac2ceaac5e1a16cba34c803707fb974e7b52861e43e`;
+contract ID:
+`a12b0115c7e50fac3df92bf66d151b3a145aa630f472277226a7d05dc915b22c`.
+Offline replay is deterministic and explicit live refresh returned `MATCH`.
+The contract preserves chemical structural counts as metadata, keeps
+literature electrical/mixed evidence separate, and contains no dynamics.
+Phase 6C/8C DNp01→TTMn identities/counts remain an exact compatible subset;
+historical artifacts were not migrated. Decision:
+`MOTOR_STRUCTURAL_CONTRACT_PINNED`. No PSI/DLMn dynamics, API, or frontend
+changes. See [the Phase 8E motor structural contract assessment](science/motor_neural_pathway_contract.md).

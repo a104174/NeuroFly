@@ -1737,3 +1737,16 @@ underdetermined by the pinned scalar evidence. The next bounded Phase 8U is a
 metadata-only observation-mapping contract with explicit protocol and model
 boundary gates; no muscle dynamics or comparison runner is authorized by this
 assessment. See the [Phase 8T assessment](science/ttm_g1_observation_model_feasibility.md).
+
+## 51. Phase 8U — TTM G1 observation-mapping contract
+
+Phase 8U pins nine metadata-only mappings referencing the exact Phase 8S
+observation IDs in source order. Candidate operators, protocol requirements,
+comparison roles, and structured blockers remain explicit; all operators are
+non-executable, all current-model comparability claims are false, and zero
+mappings are formal-comparison-ready. The Phase 8T readiness snapshot,
+unresolved electrical-input semantics, context-only prior analysis input, and
+Kadas system-boundary mismatch are preserved. Contract
+`f30f8ea3eaabb247b1c2999bf9b661c5eef1bf1b96ebfbd3d7f3826a0318b34f`
+replays offline through the unchanged Phase 8S source. See the
+[Phase 8U contract](science/ttm_g1_observation_mapping_contract.md).

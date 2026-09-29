@@ -1683,3 +1683,15 @@ exact-body release, whole-TTM activation or force. The next bounded boundary
 is an exploratory **NMJ-input receipt only**, distinct from Phase 8O target
 association and with no muscle state or transmission-success claim. See the
 [Phase 8P assessment](science/ttmn_ttm_neuromuscular_readiness.md).
+
+## 47. Phase 8Q — TTMn neuromuscular-input receipt
+
+Phase 8Q consumes the fully replayed Phase 8O model-derived TTMn target
+dispatches and emits one provenance-linked `ttm_neuromuscular_input_receipt_v1`
+per dispatch (8 receipts across the six independent reference fixtures, 4 per
+TTMn body). This records only an exploratory software handoff to the pinned
+TTM target association: no successful release, biological NMJ timing, muscle
+response, depression, or muscle state is modelled. Phase 8L remains a separate
+synthetic-output test, and production Phase 7O data are not included. Artifact
+`e04803f60304f58d0e6d27fdea5d15debb60358b46721caac09f10165c6df9c4` replays
+offline. See the [Phase 8Q receipt assessment](science/ttm_neuromuscular_input_receipt.md).

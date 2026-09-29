@@ -1695,3 +1695,17 @@ response, depression, or muscle state is modelled. Phase 8L remains a separate
 synthetic-output test, and production Phase 7O data are not included. Artifact
 `e04803f60304f58d0e6d27fdea5d15debb60358b46721caac09f10165c6df9c4` replays
 offline. See the [Phase 8Q receipt assessment](science/ttm_neuromuscular_input_receipt.md).
+
+## 48. Phase 8R — TTM G1 observation-contract readiness
+
+Phase 8R is documentation-only. Directly verified publisher-indexed Koenig &
+Ikeda 2007 Methods/Results and the open Kadas et al. 2019 article support a
+bounded, protocol-specific **observation** contract for G1 electrical/context
+values and a separately labelled composite TTMn-region stimulation→TTM
+potential-onset latency. The Koenig & Ikeda 2005 abstract supports only a
+qualitative depression comparison here; its quantitative curve is excluded.
+None of these observations is a NeuroFly parameter, whole-TTM voltage,
+exact-MaleCNS-body physiology, isolated NMJ delay, or evidence of Phase 8Q
+release/response. The next bounded Phase 8S is to pin and replay the
+observation-only contract before any observation model or electrical muscle
+dynamics. See the [Phase 8R assessment](science/ttm_g1_electrophysiology_observation_readiness.md).

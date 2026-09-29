@@ -1723,3 +1723,17 @@ muscle dynamics remain excluded. Contract
 `5993f2915c2281b13bee35919cadeb261e42cbf60c10f514171a059ce318ff1f` replays
 offline. See the
 [Phase 8S observation contract](science/ttm_g1_electrophysiology_observation_contract.md).
+
+## 50. Phase 8T — G1 observation-model feasibility
+
+Phase 8T assessed all nine Phase 8S records against the Phase 8Q software
+handoff and candidate future G1 electrical outputs. No Phase 8S record is yet
+a formal protocol-matched numeric validation target: the approximately −95 mV
+resting value is descriptive context, the reused 45 mV evoked value lacks
+verified 2005 protocol/operator detail, miniature/quantal and recycling
+observations require additional release/history models, and the Kadas latency
+starts before the Phase 8Q boundary. Candidate electrical model families are
+underdetermined by the pinned scalar evidence. The next bounded Phase 8U is a
+metadata-only observation-mapping contract with explicit protocol and model
+boundary gates; no muscle dynamics or comparison runner is authorized by this
+assessment. See the [Phase 8T assessment](science/ttm_g1_observation_model_feasibility.md).

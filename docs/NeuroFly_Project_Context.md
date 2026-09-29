@@ -1709,3 +1709,17 @@ exact-MaleCNS-body physiology, isolated NMJ delay, or evidence of Phase 8Q
 release/response. The next bounded Phase 8S is to pin and replay the
 observation-only contract before any observation model or electrical muscle
 dynamics. See the [Phase 8R assessment](science/ttm_g1_electrophysiology_observation_readiness.md).
+
+## 49. Phase 8S — TTM G1 electrophysiology observation contract
+
+Phase 8S pins nine protocol-specific adult *Drosophila* TTM/G1 literature
+observations in an offline, content-addressed contract. Descriptive, reused,
+analysis-input, categorical, summary, and derived quantities retain distinct
+classifications and source/protocol provenance; unknown uncertainty and
+protocol fields remain explicit. G1 is not whole TTM or exact MaleCNS-body
+physiology, and observations are not NeuroFly parameters. Quantitative Koenig
+& Ikeda 2005 depression data, figure digitization, model calibration, and
+muscle dynamics remain excluded. Contract
+`5993f2915c2281b13bee35919cadeb261e42cbf60c10f514171a059ce318ff1f` replays
+offline. See the
+[Phase 8S observation contract](science/ttm_g1_electrophysiology_observation_contract.md).

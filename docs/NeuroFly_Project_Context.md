@@ -1750,3 +1750,16 @@ Kadas system-boundary mismatch are preserved. Contract
 `f30f8ea3eaabb247b1c2999bf9b661c5eef1bf1b96ebfbd3d7f3826a0318b34f`
 replays offline through the unchanged Phase 8S source. See the
 [Phase 8U contract](science/ttm_g1_observation_mapping_contract.md).
+
+## 52. Phase 8V — TTM neuromuscular-input semantics
+
+Phase 8V recommends a model-family-neutral abstract TTM-class electrical-input
+event downstream of Phase 8Q, not release, current, conductance or voltage.
+One receipt may be admitted as one token under an explicit zero-added-model-
+delay assumption, with no amplitude or biological-success claim. Model-specific
+input transformations remain separate; using TTM-class input in a G1 model
+requires an explicit proxy mapping contract. Phase 8U blockers and zero-ready
+comparability remain unchanged. Exactly one bounded Phase 8W is recommended:
+pin/replay the abstract class-level input contract, without a G1 mapping,
+electrical dynamics or comparisons. See the
+[Phase 8V assessment](science/ttm_neuromuscular_input_semantics.md).

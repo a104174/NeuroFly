@@ -321,6 +321,40 @@ def _association_id(row: dict[str, Any]) -> str:
     return f"motor-muscle-target-association-v1:{canonical_sha256(row)}"
 
 
+def resolve_target_association(
+    contract: dict[str, Any],
+    *,
+    motor_neuron_body_id: int,
+    motor_neuron_type: str,
+    neural_side: str,
+) -> dict[str, Any]:
+    """Resolve a neural identity through the pinned target records only.
+
+    This identity-only primitive is shared with later adapters. Provenance and
+    input-schema validation remain the responsibility of each public adapter;
+    in particular, the Phase 8L fixture API below remains synthetic-only.
+    """
+
+    records = _target_records(contract)
+    association = records.get(motor_neuron_body_id)
+    if association is None or (
+        motor_neuron_type != association["motor_neuron_type"]
+        or neural_side != association["neural_side"]
+    ):
+        raise SyntheticMotorTargetDispatchError(
+            "motor-neuron identity does not match the target contract"
+        )
+    return copy.deepcopy(association)
+
+
+def target_association_id(association: dict[str, Any]) -> str:
+    """Return the stable identity used by target-dispatch records."""
+
+    if not isinstance(association, dict):
+        raise SyntheticMotorTargetDispatchError("target association is malformed")
+    return _association_id(association)
+
+
 def _dispatch_record(
     event: dict[str, Any], association: dict[str, Any], contract: dict[str, Any]
 ) -> dict[str, Any]:
@@ -373,18 +407,14 @@ def _execute_fixture(
     config: dict[str, Any], contract: dict[str, Any]
 ) -> dict[str, Any]:
     _validate_fixture_config(config, contract)
-    records = _target_records(contract)
     dispatches = []
     for event in config["events"]:
-        body_id = event["motor_neuron_body_id"]
-        association = records.get(body_id)
-        if association is None or (
-            event["motor_neuron_type"] != association["motor_neuron_type"]
-            or event["neural_side"] != association["neural_side"]
-        ):
-            raise SyntheticMotorTargetDispatchError(
-                "synthetic output identity does not match the target contract"
-            )
+        association = resolve_target_association(
+            contract,
+            motor_neuron_body_id=event["motor_neuron_body_id"],
+            motor_neuron_type=event["motor_neuron_type"],
+            neural_side=event["neural_side"],
+        )
         dispatches.append(_dispatch_record(event, association, contract))
     dispatches.sort(
         key=lambda row: (
@@ -540,5 +570,7 @@ __all__ = [
     "dispatch_fixture_config",
     "execute_reference_battery",
     "fixture_result",
+    "resolve_target_association",
+    "target_association_id",
     "validate_and_replay_payload",
 ]

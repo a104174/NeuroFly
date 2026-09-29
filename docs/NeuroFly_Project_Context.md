@@ -1656,3 +1656,19 @@ changing Phase 6C trajectories. Upstream provenance remains
 DLMn generator, muscle dynamics, or production adapter was added. Artifact
 `1c8aeac685646dac16fbb66f163743b662a3cd9a0e8f9f7582210fd7b39b9ab3` replays
 offline. See the [Phase 8N output-rule assessment](science/synthetic_ttmn_output_rule.md).
+
+## 45. Phase 8O — model-derived TTMn target dispatch
+
+Phase 8O consumes the canonical, fully replayed Phase 8N TTMn output events
+and resolves each through the unchanged Phase 8K target contract. It reuses
+the Phase 8L identity-only target resolver while retaining a distinct
+model-derived dispatch schema; Phase 8L remains synthetic-output-test-only.
+The six Phase 8N fixtures contain 8 model-derived events and produce exactly
+8 target-association receipts (4 per TTMn body), with step/time and the full
+Phase 8B fixture → Phase 6C TTMn trajectory → Phase 8N event ancestry
+preserved. No threshold is reapplied, no DLMn output is accepted, and no
+muscle/NMJ dynamics or production sensory path is added. Artifact
+`3bc011f9a8831f5291b6078d6132ef0dc6d6d7e87cc45ecfaa957ec80b8af360`
+replays offline. This establishes only event-to-target association, not
+neuromuscular transmission or muscle activation. See the
+[Phase 8O target-dispatch assessment](science/model_derived_ttmn_target_dispatch.md).

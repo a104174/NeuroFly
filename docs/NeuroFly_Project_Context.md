@@ -1629,3 +1629,15 @@ deterministic. Phase 6C states and Phase 8G path receipts are not converted
 into output events. No muscle dynamics, NMJ parameters, force, or behavior
 are introduced. See the
 [Phase 8L dispatch assessment](science/synthetic_motor_neuron_target_dispatch.md).
+
+## 43. Phase 8M — motor-neuron output-source readiness
+
+Phase 8M audited the current TTMn state and DLMn route-receipt semantics
+without changing models. A dimensionless TTMn threshold-crossing output rule
+is possible only as an explicit, uncalibrated model assumption; a DLMn path
+receipt cannot be treated as an output event and requires a neural
+input/state model first. A shared future output-event envelope can preserve
+identity and provenance without forcing shared dynamics. The next bounded
+step is a TTMn-only exploratory threshold-rule definition/test, using only
+synthetic fixtures and no muscle interface. Canonical Phase 7O remains silent.
+See the [Phase 8M readiness assessment](science/motor_neuron_output_source_readiness.md).

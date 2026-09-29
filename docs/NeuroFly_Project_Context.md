@@ -1641,3 +1641,18 @@ identity and provenance without forcing shared dynamics. The next bounded
 step is a TTMn-only exploratory threshold-rule definition/test, using only
 synthetic fixtures and no muscle interface. Canonical Phase 7O remains silent.
 See the [Phase 8M readiness assessment](science/motor_neuron_output_source_readiness.md).
+
+## 44. Phase 8N — TTMn exploratory threshold-crossing output rule
+
+Phase 8N adds a TTMn-only output operator over the exact replayed Phase 8B /
+Phase 6C dimensionless trajectories. At the explicit uncalibrated
+`MODEL_ASSUMPTION` threshold 0.25, the strict upward crossing rule is
+`x_prev < threshold <= x_current`; equality at the new boundary counts and
+re-arming occurs only after state is below threshold. The six-fixture reference
+battery yields 8 `EXPLORATORY_MODEL_DERIVED_MOTOR_NEURON_OUTPUT` records; the
+0.20 / 0.25 / 0.30 / 0.50 sensitivity probes yield 6 / 8 / 2 / 0 without
+changing Phase 6C trajectories. Upstream provenance remains
+`SYNTHETIC_MOTOR_INTERFACE_TEST`; no biological spike claim, Phase 8L dispatch,
+DLMn generator, muscle dynamics, or production adapter was added. Artifact
+`1c8aeac685646dac16fbb66f163743b662a3cd9a0e8f9f7582210fd7b39b9ab3` replays
+offline. See the [Phase 8N output-rule assessment](science/synthetic_ttmn_output_rule.md).

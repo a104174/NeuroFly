@@ -1672,3 +1672,14 @@ muscle/NMJ dynamics or production sensory path is added. Artifact
 replays offline. This establishes only event-to-target association, not
 neuromuscular transmission or muscle activation. See the
 [Phase 8O target-dispatch assessment](science/model_derived_ttmn_target_dispatch.md).
+
+## 46. Phase 8P — TTMn→TTM neuromuscular readiness
+
+Phase 8P is documentation-only. Primary adult *Drosophila* TTM NMJ studies
+measure muscle electrical responses and activity-dependent depression; direct
+TTMn stimulation constrains a motor-axon+NMJ+muscle-potential **subpath**, not an
+isolated NMJ delay. None calibrates the uncalibrated Phase 8N model event to
+exact-body release, whole-TTM activation or force. The next bounded boundary
+is an exploratory **NMJ-input receipt only**, distinct from Phase 8O target
+association and with no muscle state or transmission-success claim. See the
+[Phase 8P assessment](science/ttmn_ttm_neuromuscular_readiness.md).

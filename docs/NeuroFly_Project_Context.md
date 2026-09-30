@@ -1871,3 +1871,24 @@ not biological calibration. A separate empirical benchmark mode is recommended
 for later protocol-aligned work, not implemented now. No model code, source
 contract, artifact, unit conversion or observation comparison changes. See
 [Phase 9D](science/g1_proxy_observation_compatibility.md).
+
+## 60. Phase 9E — model-space peak-deflection extraction
+
+One executable extractor observes persisted/replayed canonical Phase 9B output:
+immediate pre-event boundary baseline, followed by maximum positive deflection
+over event boundary through trajectory end, earliest peak on ties. Four isolated
+peaks are 2 mV_eq at step 10 / 1 ms; four separate controls have stable baseline
+0 mV_eq and zero maximum absolute deviation. Entire repeated-event fixtures are
+excluded. No dynamics, biological voltage conversion, fitting or empirical
+comparison is added. Phase 8U remains unchanged and zero-ready.
+Operator `7a9cbf8f4341382757a118f3485780a1f49c6f810a5151f35112eb60286b1e19`;
+artifact `2c775d6e00d74b3b3a3ca5a36bb84fd4032959d29f3c7d4c8b0bca934e2942b8`;
+config hash `44be1b554dafc1c867f92ff1c50100157aa0787ea04cf2480e390cc7f0a778ca`;
+result hash `766b98a29bd6343f3ba633cfa5a9de900f697ff93be8ac89da3f083e1325dba9`.
+Empirical validation remains not ready. Proposed Phase 9F is one bounded
+read-only isolated-G1 benchmark protocol/amplitude source-readiness assessment,
+not a runner or calibration. See
+[Phase 9E](science/g1_proxy_model_space_peak_deflection.md).
+Decision: `FIRST_MODEL_SPACE_PEAK_DEFLECTION_OPERATOR_VALIDATED` (software and
+extraction semantics only, not biological validation). Offline replay and
+repository quality gates pass.

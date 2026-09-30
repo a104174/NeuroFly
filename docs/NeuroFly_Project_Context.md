@@ -1818,3 +1818,22 @@ validation claim is introduced. Exactly one Phase 9B is defined: implement
 and replay that deterministic model on the existing six fixtures. Phase 9A
 adds no model code, schemas, artifacts, operators or comparisons. See the
 [Phase 9A assessment](science/ttm_g1_first_electrical_model_readiness.md).
+
+## 57. Phase 9B — first exploratory G1-proxy electrical response
+
+`passive_g1_proxy_electrical_model_v1` now computes independent fixture/body
+trajectories from validated Phase 8W tokens in the Phase 8Y virtual G1 domain.
+The explicit uncalibrated reference assumptions are 0 mV-equivalent reference,
+1 ms effective tau and 2 mV-equivalent increment/token; grid remains 0.1 ms,
+80 intervals. Zero input stays baseline, singles decay, repeated inputs sum
+linearly and bilateral states remain distinct. These are model behavior gates,
+not physiological validation. No release/current/conductance model, fitting,
+comparison or upstream contract change exists; Phase 8U remains zero-ready.
+Artifact `72636cc94c1508c074950b1d5b3847a9e0283ecb0cde04f3f85a36b2c62d2e0f`
+has config hash
+`d3807d88f777e8f6754a8e3aab591e42b643974e7417451509771581d7c013d0`
+and result hash
+`fa11b093b1a3013d397bb459c3c1f39b1a96543b8380a792e89dc0bdfa8e91d8`.
+Next: one bounded Phase 9C assumption sensitivity/identifiability experiment,
+without fitting. See the
+[Phase 9B model](science/g1_proxy_passive_electrical_response.md).

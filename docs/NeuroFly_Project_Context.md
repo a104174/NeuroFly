@@ -1789,3 +1789,18 @@ Phase 8U mappings remain zero-ready. Exactly one bounded Phase 8Y is proposed:
 pin/replay that metadata-only proxy mapping without electrical dynamics,
 physical input transformation or comparisons. See the
 [Phase 8X assessment](science/ttm_g1_proxy_mapping_readiness.md).
+
+## 55. Phase 8Y — pinned exploratory G1 proxy domain metadata
+
+Phase 8Y pins one side-unresolved virtual G1 observation-domain type and two
+distinct TTMn source-association links, preserving 800146/R and 804642/L.
+The mapping is a modelling assumption, not tracing, a shared physical fiber,
+bilateral physiological equivalence or whole-TTM representation. Phase 8W
+remains class-only; Phase 8S remains empirical authority and Phase 8U stays
+zero-ready. Contract
+`030a9d22a27e4017f38d6bda166ba41515ea654c59d571f44bed2d37c7d3e3d8`
+replays offline through all four unchanged sources. No runtime events,
+electrical inputs/dynamics or comparisons are added. Exactly one bounded
+Phase 8Z is proposed: assess model-specific input-transformation feasibility
+without implementation. See the
+[Phase 8Y contract](science/ttm_g1_proxy_mapping_contract.md).

@@ -2117,3 +2117,37 @@ Decision `FIRST_EXPLORATORY_BODY_PLANT_VALIDATED`; Phase 12B `PASS`.
 Focused tests: 37 passed. Full tests: 936 passed, 1 deselected, two existing
 dependency warnings. Ruff check/format and diff check pass; frontend regression
 tests (38), lint, typecheck and build pass. No commit/push.
+
+## Phase 13A — first closed-loop scenario architecture
+
+Select `LOOMING_CIRCUIT_VALIDATION` as an initial circuit-validation scenario,
+not a replacement for Baseline / Light-Dark / Obstacle / Resource / Adversity /
+Changing World taxonomy. Same runner includes an object-disabled Baseline.
+Backend causal ticks preserve all 311 sensory identities and fixed model
+parameters. A declared R/(23,9) relative-column centre receives exploratory
+distance-derived expansion; no absolute retinal registration is asserted.
+Proposed unit model object radius 1 at (0,4), prescribed z velocity -1 world_eq/ms,
+projection radius floor(10*atan2(radius,distance)), fixed 1.4 ms / 0.1 ms grid.
+All world/projection quantities are explicit uncalibrated model assumptions.
+
+13B must compose genuine DNp01→TTMn→output→target→receipt→abstract token→G1→
+activation→actuator→plant with actual event ancestry and body feedback.
+Historical artifact wrappers remain synthetic/pinned; bounded shared-kernel
+extraction and scenario provenance adapters are required, not fabricated IDs.
+Sensory s[n] drives neural interval n→n+1; resulting spikes belong to n+1,
+whose actuator commands drive the subsequent body interval. No final extra tick.
+Required historical source replays pass; all 35 genuine 7O conditions and 8C
+remain zero. Zero movement is expected and valid; capability of feedback is
+tested separately from actual canonical movement-driven sensory change.
+
+Decisions: `PRODUCTION_CHAIN_ADAPTER_REQUIRED_BUT_BOUNDED`,
+`SINGLE_BACKEND_CAUSAL_TICK_RUNNER`,
+`READY_FOR_FIRST_EXECUTABLE_CLOSED_LOOP_SCENARIO`.
+Next exactly executable Phase 13B: deterministic world/projection, complete
+causal composition, body feedback, integrated artifact/replay and tests; no
+frontend/API, retuning, scripted fallback or metadata-only intermediate phases.
+Phase 14 renders authoritative snapshots and adds scenario selection/transport.
+See [Phase 13A](science/first_closed_loop_scenario_readiness.md).
+Phase 13A `PASS`, documentation only. Full tests: 936 passed, 1 deselected,
+two existing dependency warnings; Ruff check/format and diff check pass.
+Frontend regression tests (38), lint, typecheck and build pass. No commit/push.

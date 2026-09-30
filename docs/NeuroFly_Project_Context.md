@@ -2092,3 +2092,28 @@ Status `PASS`, documentation only; no plant/schema/artifact implemented.
 Full tests: 899 passed, 1 deselected, two existing dependency warnings.
 Ruff check/format, diff check and frontend test (38)/lint/typecheck/build pass.
 Only intended documentation changes remain; no commit/push.
+
+## Phase 12B — executable synthetic planar body plant
+
+`exploratory_planar_body_plant_v1` consumes persisted Phase 11B commands only.
+Common mode is (R+L)/2; gain 1.0 world_eq/ms and initial x/z 0 are explicit
+MODEL_ASSUMPTIONs. Fixed +Z heading, no steering/contact/inertia/physical units.
+Boundary n drives interval n→n+1: 80 intervals, 81 stored boundaries, no final
+extra interval. Six body trajectories contain 486 samples; x remains zero.
+Final z: zero 0; either single 0.10498749586386545; bilateral
+0.2099749917277309; either repeated 0.209362769474689 world_eq.
+
+Artifact `bb3696faae558778555601991de3fd36081d5853c889fcb7aac5ffd79593eba3`;
+config hash `88df5840456eaa2a9df92cd60cbe1555e3365cd4e8f87434d06bed6013272cd0`;
+result hash `4b8b462ebe703c92e68f24d10f8f49784d0087dd27f919b0ce5650320874728e`.
+Generated data remains ignored, offline replayable and uncalibrated.
+This is synthetic mechanics validation, not autonomous connectome-driven
+movement. Genuine 7O/8C replays remain zero; no production actuator composition
+was added. World→sensory geometry, causal runtime/composition, nonzero neural
+output and later frontend integration remain Phase 13 blockers.
+Next exactly Phase 13A decides first world/scenario closed-loop architecture;
+no Phase 12C. See [Phase 12B](science/exploratory_planar_body_plant.md).
+Decision `FIRST_EXPLORATORY_BODY_PLANT_VALIDATED`; Phase 12B `PASS`.
+Focused tests: 37 passed. Full tests: 936 passed, 1 deselected, two existing
+dependency warnings. Ruff check/format and diff check pass; frontend regression
+tests (38), lint, typecheck and build pass. No commit/push.

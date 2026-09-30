@@ -899,6 +899,58 @@ def _initial_values(
     return state
 
 
+def lif_interval_step(config, v, s, refractory_remaining, drive):
+    """Shared numerical interval kernel; caller owns graph deliveries/events.
+
+    Keeps the batch authority's array arithmetic, threshold and refractory order.
+    Returns pre-reset next membrane, decayed synaptic state and threshold indices.
+    """
+    exp_m = math.exp(-config.dt_ms / config.tau_m_ms)
+    exp_s = math.exp(-config.dt_ms / config.tau_s_ms)
+    leak_drive_factor = 1.0 - exp_m
+    if math.isclose(config.tau_s_ms, config.tau_m_ms, rel_tol=0.0, abs_tol=1e-12):
+        filtered_factor = (config.dt_ms / config.tau_m_ms) * exp_m
+    else:
+        filtered_factor = (
+            config.tau_s_ms / (config.tau_s_ms - config.tau_m_ms) * (exp_s - exp_m)
+        )
+    can_integrate = refractory_remaining == 0
+    old_s = s.copy()
+    s *= exp_s
+    next_v = v.copy()
+    next_v[can_integrate] = (
+        config.rest_mv
+        + (v[can_integrate] - config.rest_mv) * exp_m
+        + drive[can_integrate] * leak_drive_factor
+        + old_s[can_integrate] * filtered_factor
+    )
+    next_v[~can_integrate] = config.reset_mv
+    refractory_remaining[~can_integrate] -= 1
+    if not np.isfinite(s).all() or not np.isfinite(next_v).all():
+        raise SimulationError(
+            "Simulation state became non-finite; reduce drive or parameters."
+        )
+    thresholded = np.flatnonzero(can_integrate & (next_v >= config.threshold_mv))
+    return next_v, s, thresholded
+
+
+def make_spike_event(
+    node, node_index: int, spike_step: int, config: LIFConfig
+) -> SpikeEvent:
+    return SpikeEvent(
+        time_ms=spike_step * config.dt_ms,
+        step=spike_step,
+        body_id=node.body_id,
+        node_index=node_index,
+        neuron_type=node.type or "",
+    )
+
+
+def apply_spike_reset(config, next_v, refractory_remaining, node_index):
+    next_v[node_index] = config.reset_mv
+    refractory_remaining[node_index] = config.refractory_steps
+
+
 class LIFSimulator:
     """Run the deterministic M1 model on an explicit simulation graph."""
 
@@ -1000,23 +1052,6 @@ class LIFSimulator:
             for source, edges in outgoing_lists.items()
         }
 
-        exp_m = math.exp(-self.config.dt_ms / self.config.tau_m_ms)
-        exp_s = math.exp(-self.config.dt_ms / self.config.tau_s_ms)
-        leak_drive_factor = 1.0 - exp_m
-        if math.isclose(
-            self.config.tau_s_ms,
-            self.config.tau_m_ms,
-            rel_tol=0.0,
-            abs_tol=1e-12,
-        ):
-            filtered_factor = (self.config.dt_ms / self.config.tau_m_ms) * exp_m
-        else:
-            filtered_factor = (
-                self.config.tau_s_ms
-                / (self.config.tau_s_ms - self.config.tau_m_ms)
-                * (exp_s - exp_m)
-            )
-
         for step in range(steps):
             delivery = sorted(
                 events.pop(step, []),
@@ -1045,44 +1080,19 @@ class LIFSimulator:
                     )
                 )
 
-            can_integrate = refractory_remaining == 0
-            old_s = s.copy()
-            s *= exp_s
-            next_v = v.copy()
-            next_v[can_integrate] = (
-                self.config.rest_mv
-                + (v[can_integrate] - self.config.rest_mv) * exp_m
-                + drive[step, can_integrate] * leak_drive_factor
-                + old_s[can_integrate] * filtered_factor
-            )
-            next_v[~can_integrate] = self.config.reset_mv
-            refractory_remaining[~can_integrate] -= 1
-
-            if not np.isfinite(s).all() or not np.isfinite(next_v).all():
-                raise SimulationError(
-                    "Simulation state became non-finite; reduce drive or parameters."
-                )
-
-            thresholded = np.flatnonzero(
-                can_integrate & (next_v >= self.config.threshold_mv)
+            next_v, s, thresholded = lif_interval_step(
+                self.config, v, s, refractory_remaining, drive[step]
             )
             spike_step = step + 1
             spike_time_ms = spike_step * self.config.dt_ms
             for node_index in thresholded.tolist():
                 node = self.graph.nodes[node_index]
                 spikes.append(
-                    SpikeEvent(
-                        time_ms=spike_time_ms,
-                        step=spike_step,
-                        body_id=node.body_id,
-                        node_index=node_index,
-                        neuron_type=node.type or "",
-                    )
+                    make_spike_event(node, node_index, spike_step, self.config)
                 )
                 if first_spike[node.body_id] is None:
                     first_spike[node.body_id] = spike_time_ms
-                next_v[node_index] = self.config.reset_mv
-                refractory_remaining[node_index] = self.config.refractory_steps
+                apply_spike_reset(self.config, next_v, refractory_remaining, node_index)
                 for edge in outgoing.get(node_index, ()):
                     events[spike_step + self.config.delay_steps].append(edge)
 

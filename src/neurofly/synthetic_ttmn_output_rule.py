@@ -191,6 +191,11 @@ def _validate_trajectory(
     )
 
 
+def threshold_crossed(previous: float, current: float, threshold: float) -> bool:
+    """Boundary crossing, not a level detector or repeated event generator."""
+    return previous < threshold <= current
+
+
 def _crossing_steps(
     states: list[float], threshold_dimensionless: Any
 ) -> tuple[int, ...]:
@@ -207,7 +212,7 @@ def _crossing_steps(
     return tuple(
         step
         for step in range(1, len(states))
-        if states[step - 1] < threshold <= states[step]
+        if threshold_crossed(states[step - 1], states[step], threshold)
     )
 
 

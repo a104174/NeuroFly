@@ -76,6 +76,38 @@ def event_id(event: dict) -> str:
     )
 
 
+def abstract_input_semantics() -> dict:
+    return {
+        "input_semantics_kind": INPUT_SEMANTICS,
+        "added_delay_semantics": TIMING_SEMANTICS,
+        "success_semantics": SUCCESS_SEMANTICS,
+        "biological_transmission_success": "UNREPRESENTED_NOT_ASSERTED",
+        "model_family_semantics": "NEUTRAL_REQUIRES_SEPARATE_TRANSFORMATION",
+        "scientific_boundary": list(BOUNDARIES),
+    }
+
+
+def token_runtime_receipt(receipt: dict) -> dict:
+    """Scenario-owned token; not admitted into the historical Phase 8W artifact."""
+    if receipt.get("schema_version") != "scenario_ttm_neuromuscular_receipt_v1":
+        raise TTMAbstractInputError("unsupported runtime receipt")
+    record = {
+        "schema_version": "scenario_abstract_electrical_input_event_v1",
+        "parent_receipt_id": receipt["receipt_id"],
+        "scenario_execution_id": receipt["scenario_execution_id"],
+        "motor_neuron_body_id": receipt["motor_neuron_body_id"],
+        "neural_side": receipt["neural_side"],
+        "target_association_id": receipt["target_association_id"],
+        "target_contract_id": receipt["target_contract_id"],
+        "target_class": receipt["target_semantics"]["target_class"],
+        "step": receipt["step"],
+        "time_ms": receipt["time_ms"],
+        "provenance_kind": PROVENANCE,
+        **abstract_input_semantics(),
+    }
+    return {"event_id": event_id(record), **record}
+
+
 def _token(receipt: dict) -> dict:
     target = receipt["target_semantics"]
     event = {
@@ -102,12 +134,7 @@ def _token(receipt: dict) -> dict:
         "mapping_confidence_scope": target["mapping_confidence_scope"],
         "step": receipt["step"],
         "time_ms": receipt["time_ms"],
-        "input_semantics_kind": INPUT_SEMANTICS,
-        "added_delay_semantics": TIMING_SEMANTICS,
-        "success_semantics": SUCCESS_SEMANTICS,
-        "biological_transmission_success": "UNREPRESENTED_NOT_ASSERTED",
-        "model_family_semantics": "NEUTRAL_REQUIRES_SEPARATE_TRANSFORMATION",
-        "scientific_boundary": list(BOUNDARIES),
+        **abstract_input_semantics(),
     }
     event["event_id"] = event_id(event)
     return event

@@ -11,6 +11,11 @@ from typing import Any
 from neurofly.malecns.errors import StimulusSpecificationError
 
 
+def angular_half_size(radius: float, distance: float) -> float:
+    """Unit-neutral geometric half-angle; lengths must use the same units."""
+    return math.atan2(radius, distance)
+
+
 def _finite(value: float, field_name: str) -> float:
     if not isinstance(value, (int, float)) or isinstance(value, bool):
         raise StimulusSpecificationError(f"{field_name} must be finite and numeric.")
@@ -103,7 +108,7 @@ class LoomingStimulus:
             )
 
         distance = self.initial_distance_m - self.approach_velocity_m_s * time
-        angular_size = 2.0 * math.atan2(self.object_radius_m, distance)
+        angular_size = 2.0 * angular_half_size(self.object_radius_m, distance)
         expansion_velocity = (
             2.0
             * self.object_radius_m

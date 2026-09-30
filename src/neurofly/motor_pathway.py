@@ -638,6 +638,11 @@ def _map_motor_inputs(
     return tuple(sorted(mapped, key=lambda item: (item.step, item.source_body_id)))
 
 
+def ttmn_boundary_step(previous: float, count: int, decay: float, gain: float) -> float:
+    """Shared passive decay then same-boundary DNp01 event injection."""
+    return previous * decay + count * gain
+
+
 def _integrate_ttmn(
     *,
     times_ms: tuple[float, ...],
@@ -664,11 +669,14 @@ def _integrate_ttmn(
     for body_id in target_ids:
         values = [0.0] * len(times_ms)
         for step in range(len(times_ms)):
-            if step > 0:
-                values[step] = values[step - 1] * decay
             # Events are injected at their stored DNp01 boundary; no delay is
             # added and structural_weight is not an input to this update.
-            values[step] += inputs_by_body_step[(body_id, step)] * model.event_gain
+            values[step] = ttmn_boundary_step(
+                values[step - 1] if step else 0.0,
+                inputs_by_body_step[(body_id, step)],
+                decay,
+                model.event_gain,
+            )
         peak_step = max(range(len(values)), key=values.__getitem__)
         identity = identities[body_id]
         trajectories.append(

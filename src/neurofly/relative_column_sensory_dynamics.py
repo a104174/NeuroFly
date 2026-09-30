@@ -346,6 +346,16 @@ def _validate_model_parameters(
     return tau, scale, input_metric_id
 
 
+def sensory_state_step(
+    state: float, exposure: float, decay: float, gain: float
+) -> float:
+    """Shared exact held-exposure transition; boundary n input produces n+1."""
+    value = state * decay + gain * exposure * (1.0 - decay)
+    if not math.isfinite(value) or value < 0.0:
+        raise RelativeColumnSensoryDynamicsError("invalid sensory step state")
+    return value
+
+
 def integrate_exposure_values(
     exposures: Sequence[float],
     *,
@@ -401,7 +411,7 @@ def integrate_exposure_values(
                 "assignment steps must be contiguous and start at zero."
             )
         state_step = input_offset + 1
-        state = state * decay + scale * exposure * (1.0 - decay)
+        state = sensory_state_step(state, exposure, decay, scale)
         if not math.isfinite(state) or state < 0.0:
             raise RelativeColumnSensoryDynamicsError(
                 "sensory model state became non-finite or negative."

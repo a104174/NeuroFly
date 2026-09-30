@@ -229,6 +229,32 @@ def _association_fields(association: dict[str, Any]) -> dict[str, Any]:
     return {key: copy.deepcopy(association[key]) for key in keys}
 
 
+def dispatch_runtime_output(event: dict, contract: dict) -> dict:
+    """Scenario-owned output handoff; never impersonates a Phase 8O fixture."""
+    if event.get("schema_version") != "scenario_ttmn_output_event_v1":
+        raise ModelDerivedTTMnDispatchError("unsupported runtime output event")
+    association = resolve_target_association(
+        contract,
+        motor_neuron_body_id=event["motor_neuron_body_id"],
+        motor_neuron_type="TTMn",
+        neural_side=event["neural_side"],
+    )
+    record = {
+        "schema_version": "scenario_ttm_target_dispatch_v1",
+        "parent_event_id": event["event_id"],
+        "scenario_execution_id": event["scenario_execution_id"],
+        "step": event["step"],
+        "time_ms": event["time_ms"],
+        "provenance_kind": DISPATCH_PROVENANCE,
+        "target_contract_id": contract["contract_id"],
+        "target_association_id": target_association_id(association),
+        **_association_fields(association),
+        "time_semantics": TIME_SEMANTICS,
+        "dispatch_semantics": DISPATCH_SEMANTICS,
+    }
+    return {"dispatch_id": canonical_sha256(record), **record}
+
+
 def _validate_event(
     event: dict[str, Any],
     *,

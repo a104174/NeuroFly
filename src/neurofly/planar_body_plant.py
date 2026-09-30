@@ -113,6 +113,21 @@ def reference_config() -> PlantConfig:
     return PlantConfig(1.0)
 
 
+def body_interval_step(
+    x: float, z: float, dt: float, speed: float
+) -> tuple[float, float]:
+    """Shared model-space interval integration; velocity is not persistent state."""
+    return x, z + dt * speed
+
+
+def common_mode_speed(
+    right: float, left: float, config: PlantConfig
+) -> tuple[float, float]:
+    """Exact arithmetic common mode, without differential steering."""
+    common = (right + left) / 2
+    return common, config.motion_gain_world_eq_per_ms * common
+
+
 def integrate_commands(
     times: list[float], right: list[float], left: list[float], config: PlantConfig
 ) -> dict:
@@ -137,13 +152,17 @@ def integrate_commands(
         ):
             raise ValueError("require one finite [0,1] command per source boundary")
     common = [
-        (right_value + left_value) / 2
+        common_mode_speed(right_value, left_value, config)[0]
         for right_value, left_value in zip(right[:-1], left[:-1], strict=True)
     ]
     speed = [config.motion_gain_world_eq_per_ms * c for c in common]
     z = [float(config.initial_z_world_eq)]
     for n, v in enumerate(speed):
-        z.append(z[-1] + (times[n + 1] - times[n]) * v)
+        z.append(
+            body_interval_step(
+                config.initial_x_world_eq, z[-1], times[n + 1] - times[n], v
+            )[1]
+        )
     if any(not _finite(v) for v in (*speed, *z)):
         raise ValueError("nonfinite plant speed/position")
     return {

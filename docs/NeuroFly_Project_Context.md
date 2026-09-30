@@ -2151,3 +2151,40 @@ See [Phase 13A](science/first_closed_loop_scenario_readiness.md).
 Phase 13A `PASS`, documentation only. Full tests: 936 passed, 1 deselected,
 two existing dependency warnings; Ruff check/format and diff check pass.
 Frontend regression tests (38), lint, typecheck and build pass. No commit/push.
+
+## Phase 13B — executable genuine closed-loop scenario runtime
+
+`closed_loop_scenario_config_v1` / `closed_loop_scenario_result_v1` execute
+Baseline Control and Looming Circuit Validation through one backend causal
+runner. Preserves all 311 identities and fixed neural/motor parameters.
+Looming: (0,4), radius 1, velocity (0,-1) world_eq/ms; R / hex(23,9),
+floor(10*atan2(radius,current body-relative distance)), all MODEL_ASSUMPTIONs.
+0.1 ms dt, 14 intervals / 15 boundaries; body reset (0,0), heading +Z.
+Baseline has an explicitly empty stimulus, not radius zero. Strategic world
+taxonomy is unchanged; Looming remains an initial circuit-validation scenario.
+
+Shared kernels preserve historical batch replay. Scenario-owned parent-event
+envelopes compose genuine DNp01→TTMn→crossing→target→receipt→abstract token→
+G1→activation→actuator→body, without spoofing synthetic artifacts. Updated
+body/object state drives the next projection. Canonical Baseline/Looming both
+produce zero genuine spikes, downstream events, commands and movement.
+Looming exposure changes (19→22 bodies, radius 2→3); maximum DNp01 membrane
+-51.933657842035174. Feedback is wired, not realized by canonical body movement.
+TEST_ONLY_NONCANONICAL events prove full nonzero composition and future exposure
+change; no injection option or synthetic event enters canonical results.
+
+Artifact `55e2f4d37bc6f8fb81aee67886d8680a76646a0317961bd90cf0e3fbabb2c46b`;
+config `3145673ad2bb6345fa9287adab37eee859861b7b029c40989a9a0fc352dff7c6`;
+result `e33d5d8163b4b24755ea8479475258c28c44f8d8f351de2444a1693629435242`.
+Ignored artifact 1,137,837 bytes. Measured two-run tick execution 0.113 s;
+source validation 5.89 s and offline replay 6.42 s during regressions.
+Scientific state/telemetry is sufficient for Phase 14 scenario selection and
+backend-authoritative 3D playback/live presentation; transport/render adapters
+remain Phase 14 work. No frontend/API, retuning or scripted behavior added.
+See [Phase 13B](science/closed_loop_looming_scenario.md). No Phase 13C.
+Decision `FIRST_CLOSED_LOOP_SCENARIO_RUNTIME_VALIDATED`; movement
+`CANONICAL_GENUINE_MOVEMENT_ZERO`; handoff
+`READY_FOR_PHASE14_SCENARIO_FRONTEND_INTEGRATION`; Phase 13B `PASS`.
+Focused scenario tests 39 passed; full tests 975 passed, 1 deselected, two
+existing dependency warnings. Ruff check/format, diff check and frontend
+regressions (38 tests, lint, typecheck, build) pass. No commit/push.

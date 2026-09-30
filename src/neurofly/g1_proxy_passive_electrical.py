@@ -124,6 +124,13 @@ def reference_config() -> PassiveConfig:
     return PassiveConfig(0.1, 80, 0.0, 1.0, 2.0, PROXY_DOMAIN_ID)
 
 
+def electrical_boundary_step(
+    previous: float, count: int, alpha: float, scale: float
+) -> float:
+    """Shared decay then abstract-token increment; no release/current semantics."""
+    return alpha * previous + count * scale
+
+
 def integrate_counts(config: PassiveConfig, counts: list[int]) -> dict:
     """Numerical primitive only; the fixture runner supplies validated token counts."""
     if len(counts) != config.interval_count + 1 or any(
@@ -134,7 +141,9 @@ def integrate_counts(config: PassiveConfig, counts: list[int]) -> dict:
     deviations, voltages = [], []
     u = 0.0
     for step, count in enumerate(counts):
-        u = (alpha * u if step else 0.0) + count * config.event_scale_effective_mV_eq
+        u = electrical_boundary_step(
+            u if step else 0.0, count, alpha, config.event_scale_effective_mV_eq
+        )
         voltage = config.reference_voltage_mV_eq + u
         if not math.isfinite(u) or not math.isfinite(voltage):
             raise ValueError("nonfinite model trajectory")

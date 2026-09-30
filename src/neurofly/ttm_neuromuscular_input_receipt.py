@@ -266,6 +266,36 @@ def _target_associations(
     }
 
 
+def receipt_target_semantics(association: dict) -> dict:
+    return {key: copy.deepcopy(association[key]) for key in TARGET_ASSOCIATION_FIELDS}
+
+
+def receipt_runtime_dispatch(dispatch: dict) -> dict:
+    """One scenario dispatch→one handoff receipt, without release success."""
+    if (
+        dispatch.get("schema_version") != "scenario_ttm_target_dispatch_v1"
+        or dispatch.get("motor_neuron_type") != "TTMn"
+    ):
+        raise ValueError("unsupported runtime TTM dispatch")
+    record = {
+        "schema_version": "scenario_ttm_neuromuscular_receipt_v1",
+        "parent_dispatch_id": dispatch["dispatch_id"],
+        "scenario_execution_id": dispatch["scenario_execution_id"],
+        "step": dispatch["step"],
+        "time_ms": dispatch["time_ms"],
+        "motor_neuron_body_id": dispatch["motor_neuron_body_id"],
+        "neural_side": dispatch["neural_side"],
+        "target_association_id": dispatch["target_association_id"],
+        "target_contract_id": dispatch["target_contract_id"],
+        "target_semantics": receipt_target_semantics(dispatch),
+        "provenance_kind": RECEIPT_PROVENANCE,
+        "time_semantics": TIME_SEMANTICS,
+        "receipt_semantics": RECEIPT_SEMANTICS,
+        "boundary": "HANDOFF_RECORD_ONLY_NO_RELEASE_OR_MUSCLE_RESPONSE_CLAIM",
+    }
+    return {"receipt_id": canonical_sha256(record), **record}
+
+
 def _receipt(
     dispatch: dict[str, Any],
     association: dict[str, Any],
@@ -319,9 +349,7 @@ def _receipt(
         "upstream_provenance_kind": dispatch["upstream_provenance_kind"],
         "origin_provenance_kind": dispatch["origin_provenance_kind"],
         "dispatch_provenance_kind": dispatch["provenance_kind"],
-        "target_semantics": {
-            key: copy.deepcopy(association[key]) for key in TARGET_ASSOCIATION_FIELDS
-        },
+        "target_semantics": receipt_target_semantics(association),
         "time_semantics": TIME_SEMANTICS,
         "receipt_semantics": RECEIPT_SEMANTICS,
         "boundary": "HANDOFF_RECORD_ONLY_NO_RELEASE_OR_MUSCLE_RESPONSE_CLAIM",

@@ -73,6 +73,14 @@ def validate_config(config: dict) -> None:
         raise ValueError("actuator routing/config semantics changed")
 
 
+def actuator_channel(body_id: int, side: str) -> str:
+    """Identity-validated functional routing, independent of artifact envelopes."""
+    for row in routing_config()["routing_records"]:
+        if (body_id, side) == (row["source_body_id"], row["source_neural_side"]):
+            return row["actuator_id"]
+    raise ValueError("unknown/cross-sided actuator source")
+
+
 def route_activation(source: dict, config: dict) -> dict:
     """Observe a validated canonical source. Never integrate or read tokens.
 
@@ -162,7 +170,9 @@ def route_activation(source: dict, config: dict) -> dict:
                     "proxy_domain_id": row["proxy_domain_id"],
                     "proxy_source_mapping_id": row["proxy_source_mapping_id"],
                     "routing_id": routing["routing_id"],
-                    "actuator_id": routing["actuator_id"],
+                    "actuator_id": actuator_channel(
+                        row["source_body_id"], row["source_side"]
+                    ),
                     "actuator_side": routing["actuator_side"],
                     "action_kind": ACTION,
                     "config_id": config_hash,

@@ -1837,3 +1837,22 @@ and result hash
 Next: one bounded Phase 9C assumption sensitivity/identifiability experiment,
 without fitting. See the
 [Phase 9B model](science/g1_proxy_passive_electrical_response.md).
+
+## 58. Phase 9C — G1-proxy model sensitivity and internal separability
+
+The unchanged Phase 9B model now has a deterministic nine-cell sensitivity
+experiment: tau 0.5/1/2 ms × event scale 1/2/4 mV-equivalent, with unchanged
+reference coordinate, grid, six fixtures and causal/proxy identities. Scale
+linearity and normalized invariance pass; tau controls retention and repeated
+residual accumulation. Full model trajectories structurally separate scale
+and tau, while reduced late-sample summaries confound them. Neither parameter
+is currently biologically identifiable; Phase 8U remains zero-ready. The
+reference cell exactly reproduces Phase 9B, with no best-cell selection or fit.
+Artifact `dfe98ec90078124f4a66df825b552d05ed317fcb89d33e0f374b99c6bfd4bfa4`
+has config hash
+`58ec7a9fa8125b48ed62a4ca66f794e4a47c83a0d789e6fbd078a05555b80073`
+and result hash
+`bd24acf765556e8f0e2b2189ba5d6a0cf14824253c44ba951c07bd0d24d804f3`.
+Decision: `G1_ELECTRICAL_SENSITIVITY_VALIDATED`; retain the exploratory baseline
+and proceed to one read-only Phase 9D observation-compatibility assessment.
+See [Phase 9C](science/g1_proxy_electrical_sensitivity.md).

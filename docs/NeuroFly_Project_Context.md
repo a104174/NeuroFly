@@ -1950,3 +1950,26 @@ No implementation or new metadata contract in 10A. See
 Assessment status: `PASS`; ready for the first executable activation proxy.
 Full tests: 789 passed, 1 deselected; all Python/frontend regression and diff
 gates pass. Documentation only; no commit/push.
+
+## 64. Phase 10B — executable static activation proxy
+
+`static_normalized_muscle_activation_model_v1` consumes persisted/replayed
+Phase 9B deviations, not tokens or peak observations:
+`activation_proxy = min(1, max(0, u) / 10.0)`. Scale 10 mV_eq, rectification,
+ceiling and shared config are explicit uncalibrated `MODEL_ASSUMPTION`s.
+No activation tau/threshold/delay; source grid and both causal identities are
+preserved. Six fixtures yield 12 trajectories × 81 boundaries: zero controls
+remain zero, singles/bilateral peak at 0.2 per active instance, repeated peaks
+at 0.22706705664732252; no canonical ceiling occupancy. No contraction, force,
+calcium, whole-TTM aggregation, physical calibration or empirical comparison.
+Artifact `4e4a3e0528500cd87c49a272f01891e8cf24c5232e5c11588d6f1c25887e06fb`;
+config hash `be33c72048caeae4227a504aa251d10acec454ef283a73adf77104d0a4c424c9`;
+result hash `288b67f791f66765a17d6bdd6cadd30b9c98f4480dd23434bd4c6e9ae5667fce`.
+Generated data remains ignored. Phase 8U stays zero-ready; historical sources
+remain unchanged. Next: one Phase 10C scale sweep at 5/10/20 mV_eq with fixed
+electrical trajectories plus mechanics-interface suitability assessment.
+See [Phase 10B](science/ttm_g1_static_muscle_activation.md).
+Decision: `FIRST_EXPLORATORY_MUSCLE_ACTIVATION_MODEL_VALIDATED`; status `PASS`
+for exploratory model/software behavior only. Focused tests: 41 passed; full
+suite: 830 passed, 1 deselected. Replay, Python, frontend regression and diff
+gates pass. No frontend/API changes or commit/push.

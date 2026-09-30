@@ -1892,3 +1892,22 @@ not a runner or calibration. See
 Decision: `FIRST_MODEL_SPACE_PEAK_DEFLECTION_OPERATOR_VALIDATED` (software and
 extraction semantics only, not biological validation). Offline replay and
 repository quality gates pass.
+
+## 61. Phase 9F — isolated G1 benchmark protocol readiness
+
+Required Phase 9E/9B/8S/8U sources replay unchanged; Phase 8U remains zero-ready.
+The primary 2005 abstract and publisher-indexed 2007 Methods/Results were audited,
+without claiming complete publisher access. The reused evoked record remains
+`PRIOR_PRIMARY_RESULT_REUSED`; original preparation/stimulus and amplitude
+baseline/window fields are not verified. A source-matched runner is therefore
+not ready. Phase 9E is a valid model-space extractor but has no unchanged
+admission path for a new empirical benchmark trajectory; no synthetic ancestry
+may be fabricated. Biological unit mapping and all parameters remain unidentified.
+Decision: `PRIMARY_SOURCE_PROTOCOL_RECOVERY_REQUIRED`; next phase:
+`RECOVER_PRIMARY_2005_PROTOCOL_DETAILS`. One bounded Phase 9G should obtain and
+audit lawful original Methods/amplitude sections, with a user-supplied copy if
+needed, before a runner go/no-go decision. No code, contracts, artifacts,
+parameters, unit mapping or comparison changed. See
+[Phase 9F](science/g1_isolated_evoked_benchmark_readiness.md).
+Assessment status: `PASS`; benchmark implementation remains not ready. All
+repository quality gates pass.

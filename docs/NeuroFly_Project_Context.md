@@ -1856,3 +1856,18 @@ and result hash
 Decision: `G1_ELECTRICAL_SENSITIVITY_VALIDATED`; retain the exploratory baseline
 and proceed to one read-only Phase 9D observation-compatibility assessment.
 See [Phase 9C](science/g1_proxy_electrical_sensitivity.md).
+
+## 59. Phase 9D — post-model observation compatibility
+
+Phase 9D reassesses all nine pinned observations without comparison or fitting.
+Baseline, evoked and repeated response scaffolds now exist in model-space
+`mV_eq`, but no biological mV mapping, executable source-matched observation
+operator or experimental protocol match exists. Miniature/quantal/spontaneous/
+vesicle quantities remain absent; Kadas retains the full-path boundary mismatch.
+Phase 8U remains an unchanged zero-ready historical snapshot. No parameter is
+currently empirically identified. The next executable slice is one Phase 9E
+model-space peak-deflection extractor with an explicit baseline/window helper,
+not biological calibration. A separate empirical benchmark mode is recommended
+for later protocol-aligned work, not implemented now. No model code, source
+contract, artifact, unit conversion or observation comparison changes. See
+[Phase 9D](science/g1_proxy_observation_compatibility.md).

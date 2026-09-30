@@ -1804,3 +1804,17 @@ electrical inputs/dynamics or comparisons are added. Exactly one bounded
 Phase 8Z is proposed: assess model-specific input-transformation feasibility
 without implementation. See the
 [Phase 8Y contract](science/ttm_g1_proxy_mapping_contract.md).
+
+## 56. Phase 9A — first exploratory G1 electrical model selection
+
+Phase 9A selects passive voltage-valued relaxation with an effective
+voltage-equivalent event jump driven by validated Phase 8W tokens under the
+pinned Phase 8Y G1 proxy assumption. Baseline, effective tau and event scale
+must be explicit uncalibrated model assumptions, not copied or fitted from
+Phase 8S. Separate fixture/body trajectories may share config only as an
+assumption; zero-added-model-delay timing is retained. Phase 8U remains
+zero-ready, and no current, conductance, release, whole-TTM or physiological
+validation claim is introduced. Exactly one Phase 9B is defined: implement
+and replay that deterministic model on the existing six fixtures. Phase 9A
+adds no model code, schemas, artifacts, operators or comparisons. See the
+[Phase 9A assessment](science/ttm_g1_first_electrical_model_readiness.md).

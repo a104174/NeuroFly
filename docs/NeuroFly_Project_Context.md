@@ -1929,3 +1929,24 @@ phase. No implementation, fitting, digitization, parameter or contract changes.
 See [Phase 9G](science/g1_2005_evoked_protocol_recovery.md).
 Assessment status: `PASS` with definitive benchmark NO-GO. Full suite: 789 passed,
 1 deselected; Python, frontend regression and diff gates pass. No commit/push.
+
+## 63. Phase 10A — first electrical-to-activation model selection
+
+Required Phase 9B/9C/9E and Phase 8Y/8W artifacts replay unchanged from a clean
+committed Phase 9G baseline. No existing activation or muscle/body mechanics
+implementation was found; frontend intensity is presentation-only. Select
+`STATIC_NORMALIZED_ACTIVATION_PROXY`: full persisted electrical deviation
+trajectory → `min(1, max(0, u) / activation_scale_mV_eq)` per causal instance.
+One explicit uncalibrated scale, fixed model normalization ceiling, no additional
+activation tau/threshold/lag. Scale value is deferred to an independently
+declared Phase 10B reference config, never derived from empirical or peak data.
+Both causal bodies remain independent under shared exploratory assumptions;
+output is dimensionless [0,1], not calcium, contraction or force. Phase 9's
+external 2005-source validation blocker remains but does not block this slice.
+Next: one executable Phase 10B model/runner/artifact/replay, all six electrical
+fixtures; later Phase 10C tests scale sensitivity and mechanics-facing suitability.
+No implementation or new metadata contract in 10A. See
+[Phase 10A](science/ttm_g1_first_muscle_activation_model_readiness.md).
+Assessment status: `PASS`; ready for the first executable activation proxy.
+Full tests: 789 passed, 1 deselected; all Python/frontend regression and diff
+gates pass. Documentation only; no commit/push.

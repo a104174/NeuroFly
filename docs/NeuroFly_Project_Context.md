@@ -2025,3 +2025,35 @@ Status `PASS`, documentation only. Full suite: 857 passed, 1 deselected,
 two existing deprecation warnings; Ruff check/format, diff check and frontend
 test (38)/lint/typecheck/build pass. No implementation, new artifact or
 commit/push; Phase 9 external validation blocker remains unchanged.
+
+## 67. Phase 11B — executable functional TTM actuator commands
+
+`ttm_exploratory_actuator_command_v1` consumes replay-validated persisted Phase
+10B activation arrays. Exact same-boundary passthrough, no numerical gain,
+threshold, delay or dynamics: `actuator_command = activation_proxy`.
+Two fixed `MODEL_ASSUMPTION` routing records preserve 800146/R →
+RIGHT_TTM_ACTUATOR and 804642/L → LEFT_TTM_ACTUATOR, with action kind
+`TTM_ASSOCIATED_FEMUR_EXTENSION_DRIVE`. These are virtual functional channels,
+not anatomical attachments, physical joints or force vectors.
+Routing IDs: `6cf14bc3b7dfefa77cdca953459499c6c78d0a1a0329dfd46a2178f027022ce5`
+(right), `a77193428fc74b9de95306b195a6615f751a38f4f6cfee143133af086356c58f`
+(left). All six fixtures preserve 12 independent trajectories and 972 samples;
+zero/inactive channels remain zero, singles/bilateral peak at 0.2 per active
+channel, repeated peaks at 0.22706705664732252. No whole-body command/aggregation.
+Artifact `478b4a9d4b089dc0a0fffdb699f8bbab1c7483eddf2eed0a8b06185b48b04d40`;
+config hash `94da685537241558bf1cc64ae9a8c051fce5a651f02bab871f192d518406b974`;
+result hash `78f277a4714f983d35212cd4314ec3a257664356426e1caf7cc3ce9214bf8c9f`.
+Generated artifact remains ignored; canonical offline replay and tamper
+rejection protect source/routing/value/time identities. No empirical
+calibration, force, contraction, geometry, body movement or frontend changes.
+Interactive scenarios still do not exist. Next: exactly one Phase 12A
+body/world plant and closed-loop mechanics architecture decision, covering
+kinematic vs dynamic modeling, coordinates, actuator-to-state mapping,
+contact and backend simulation ownership versus rendering/interpolation.
+See [Phase 11B](science/ttm_exploratory_actuator_commands.md).
+Decision: `FIRST_EXPLORATORY_TTM_ACTUATOR_LAYER_VALIDATED`; status `PASS`
+for exploratory functional routing only. Focused tests 42 passed; combined
+historical regression 117 passed. Full invocation 895 passed, 1 deselected,
+two existing warnings; four subsequently added cases also passed in focused
+runs. Ruff, format, diff and frontend test/lint/typecheck/build gates pass.
+Only Phase 11B changes remain; generated data ignored; no commit/push.

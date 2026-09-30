@@ -2057,3 +2057,38 @@ historical regression 117 passed. Full invocation 895 passed, 1 deselected,
 two existing warnings; four subsequently added cases also passed in focused
 runs. Ruff, format, diff and frontend test/lint/typecheck/build gates pass.
 Only Phase 11B changes remain; generated data ignored; no commit/push.
+
+## 68. Phase 12A — select the first body/world plant
+
+Clean committed 11B baseline `68e3de4` equals local `origin/main`; 11B/10B/9B
+and genuine 7O/8C artifacts replay unchanged. Audit confirms no body/world plant,
+physics/contact solver or live scenario transport. GLB legs remain static,
+without skin/animation/validated joints; frontend owns presentation, not motion.
+
+Select `EXPLORATORY_KINEMATIC_BODY_PLANT`, `PLANAR_2D`: full 11B right/left
+commands → arithmetic common-mode mean → assumed +Z world_eq speed → integrated
+position. One positive model-space speed gain (proposed unit reference 1.0
+world_eq/ms), reset position [0,0], fixed heading, source 0.1 ms tick and
+left-boundary interval hold. No steering, inertia, gravity, contact, physical
+force/geometry or frontend implementation. Backend state is authoritative;
+future rendering interpolation never drives sensor feedback.
+
+Full 7O replay verifies zero DNp01 events in all 35 conditions; 8C has zero
+inputs and exactly zero TTMn states. Crucially, later fixture-pinned electrical/
+activation/actuator artifacts descend from synthetic 8B ancestry, not 8C:
+`PRODUCTION_PATH_NOT_CONNECTED_TO_ACTUATOR`. No persisted genuine downstream
+activation/actuator result is asserted. Synthetic fixtures can validate 12B
+mechanics but cannot demonstrate connectome-driven movement. No neural retuning.
+
+Decision: `READY_FOR_FIRST_EXECUTABLE_BODY_PLANT`; physical mechanics not ready;
+`ADDITIONAL_MAJOR_BLOCKERS_REMAIN` for a scenario. World/body/object→relative-
+column sensory mapping, causal runtime/production composition, nonzero neural
+output and frontend integration remain separate gaps. Exactly one next 12B
+implements six body trajectories from the six actuator fixture pairs, with
+deterministic reset/artifact/replay. Phase 13 then addresses world/scenario
+runtime and explicit sensory feedback; no additional mechanics metadata phase.
+See [Phase 12A](science/first_body_world_plant_readiness.md).
+Status `PASS`, documentation only; no plant/schema/artifact implemented.
+Full tests: 899 passed, 1 deselected, two existing dependency warnings.
+Ruff check/format, diff check and frontend test (38)/lint/typecheck/build pass.
+Only intended documentation changes remain; no commit/push.

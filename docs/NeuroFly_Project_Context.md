@@ -1973,3 +1973,27 @@ Decision: `FIRST_EXPLORATORY_MUSCLE_ACTIVATION_MODEL_VALIDATED`; status `PASS`
 for exploratory model/software behavior only. Focused tests: 41 passed; full
 suite: 830 passed, 1 deselected. Replay, Python, frontend regression and diff
 gates pass. No frontend/API changes or commit/push.
+
+## 65. Phase 10C — activation sensitivity and downstream interface
+
+Fixed persisted Phase 9B samples drive the unchanged Phase 10B transform at
+scales 5/10/20 mV_eq: three cells, 18 fixture runs, 36 independent trajectories.
+Inverse scale, normalized reconstruction, zero control, temporal shape and
+bilateral/source independence are verified. All canonical samples remain
+unclipped; clipping and rectification still intentionally lose information
+outside that regime. Scale 10 remains reference-by-history, never calibrated.
+Artifact `b605e51e4ed42813d2562d61aa58129ed3d5b43e875ab1fd0de98ca0360c9a6e`;
+config hash `7b3826904b71182fe1dab3cbca9d2897e1c02ff23c2c2a2c448139599721d88e`;
+result hash `7f6e580b770741967f0dda3e87dcb3c9b1288575ccb2b872035751ed562d36dc`.
+Full activation trajectories are ready as exploratory downstream model inputs,
+not physical actuator commands. Activation scale is confounded with upstream
+magnitude and a hypothetical future force gain. Physical force scale, actuator/
+attachment geometry and contraction kinetics remain undefined; no mechanics
+are implemented. Phase 10 activation layer is complete as a model/software
+milestone. Next: exactly one Phase 11A first contraction/force-model decision,
+favoring assessment of a dimensionless proxy before uncalibrated physical force.
+See [Phase 10C](science/muscle_activation_scale_sensitivity_and_mechanics_interface.md).
+Decision: `ACTIVATION_SCALE_SENSITIVITY_VALIDATED`; status `PASS`.
+Completion: `PHASE10_ACTIVATION_LAYER_COMPLETE` (exploratory only). Focused tests
+27 passed; full suite 857 passed, 1 deselected. Replay, Python, frontend
+regression and diff gates pass; generated data ignored; no commit/push.

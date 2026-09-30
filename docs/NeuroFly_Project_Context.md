@@ -1775,3 +1775,17 @@ electrical state or G1 destination is represented. Contract
 replays offline through unchanged Phase 8Q ancestry. Phase 8U remains
 zero-ready; physical transformation and G1 proxy mapping require separate
 work. See the [Phase 8W contract](science/ttm_abstract_electrical_input_contract.md).
+
+## 54. Phase 8X — TTM-class to G1 observation-domain proxy readiness
+
+Phase 8X recommends an explicitly exploratory G1 observation-domain proxy,
+not an anatomically resolved MaleCNS destination or whole-TTM state. Primary
+pathway and fiber-group evidence supports a bounded reduced-domain choice,
+not identical physiology across fibers or independently measured bilateral
+equivalence. The next metadata contract should define one side-unresolved
+proxy domain type while preserving both distinct causal TTMn associations;
+Phase 8W stays TTM-class only. Phase 8S observations remain evidence, and all
+Phase 8U mappings remain zero-ready. Exactly one bounded Phase 8Y is proposed:
+pin/replay that metadata-only proxy mapping without electrical dynamics,
+physical input transformation or comparisons. See the
+[Phase 8X assessment](science/ttm_g1_proxy_mapping_readiness.md).

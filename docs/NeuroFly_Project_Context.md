@@ -1763,3 +1763,15 @@ comparability remain unchanged. Exactly one bounded Phase 8W is recommended:
 pin/replay the abstract class-level input contract, without a G1 mapping,
 electrical dynamics or comparisons. See the
 [Phase 8V assessment](science/ttm_neuromuscular_input_semantics.md).
+
+## 53. Phase 8W — abstract TTM electrical-input admission
+
+Phase 8W pins eight model-family-neutral abstract input tokens from the eight
+canonical Phase 8Q receipts. Parent identity, timing and qualified TTM-class
+target semantics are retained; same-boundary scheduling is explicitly a
+zero-added-model-delay assumption. No physical magnitude, release success,
+electrical state or G1 destination is represented. Contract
+`1a4a0e80a86945f10126ae5316b39332c55e7d2280fd0bda98c19544d69ec6fa`
+replays offline through unchanged Phase 8Q ancestry. Phase 8U remains
+zero-ready; physical transformation and G1 proxy mapping require separate
+work. See the [Phase 8W contract](science/ttm_abstract_electrical_input_contract.md).

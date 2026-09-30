@@ -1997,3 +1997,31 @@ Decision: `ACTIVATION_SCALE_SENSITIVITY_VALIDATED`; status `PASS`.
 Completion: `PHASE10_ACTIVATION_LAYER_COMPLETE` (exploratory only). Focused tests
 27 passed; full suite 857 passed, 1 deselected. Replay, Python, frontend
 regression and diff gates pass; generated data ignored; no commit/push.
+
+## 66. Phase 11A — select the first mechanics-facing actuator boundary
+
+Clean committed Phase 10C baseline `083c955` matches local `origin/main`.
+Phase 10B/10C/9B and motor-target ancestry replay unchanged. No body physics,
+actuator runtime or articulated biomechanical rig exists: the presentation GLB
+has static leg meshes, zero skins/animations and no physical scale/attachments.
+Primary evidence supports TTM-associated femur extension, not complete jump
+prediction; skinned-bundle and tethered-fly force measurements do not calibrate
+the current G1 proxy. Physical force and actuator geometry remain not ready.
+
+Select `DEFINE_EXPLORATORY_TTM_ACTUATOR_MAPPING`: one executable Phase 11B
+adapter consuming full persisted 10B activation trajectories and routing them
+to distinct right/left virtual mesothoracic femur-extension command channels.
+Magnitude remains dimensionless and unchanged; same-boundary, no gain, new
+temporal state, force, shortening, geometry, aggregation or movement. Added
+value is explicit functional actuator addressing/consumer semantics, not a
+renamed contraction/force scalar. Redundant proxy layers are rejected; existing
+electrical/activation/future-gain confounding remains explicit.
+Decision: `READY_FOR_FIRST_EXECUTABLE_ACTUATOR_LAYER`;
+`PHASE11B_OUTPUT_CAN_FEED_FUTURE_WORLD_MECHANICS`. Phase 12 must separately
+decide actuator-to-plant mapping/contact/state; rendering observes simulation
+state, never scripts escape or controls the fly through an LLM.
+See [Phase 11A](science/first_ttm_contraction_force_actuator_readiness.md).
+Status `PASS`, documentation only. Full suite: 857 passed, 1 deselected,
+two existing deprecation warnings; Ruff check/format, diff check and frontend
+test (38)/lint/typecheck/build pass. No implementation, new artifact or
+commit/push; Phase 9 external validation blocker remains unchanged.

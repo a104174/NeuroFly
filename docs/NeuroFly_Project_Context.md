@@ -1911,3 +1911,21 @@ parameters, unit mapping or comparison changed. See
 [Phase 9F](science/g1_isolated_evoked_benchmark_readiness.md).
 Assessment status: `PASS`; benchmark implementation remains not ready. All
 repository quality gates pass.
+
+## 62. Phase 9G — original 2005 protocol recovery gate
+
+The clean committed Phase 9F baseline and Phase 9E/9B/8S/8U replays pass;
+Phase 8U remains unchanged and zero-ready. Lawful publisher, bibliographic and
+repository recovery found the authentic 2005 abstract but no full text or
+project-supplied copy. Access is `ABSTRACT_ONLY`; the original 45 mV location,
+amplitude/baseline/window operation and material stimulus/preparation/recording
+fields remain unverified. Reused 2007 evidence is not original protocol recovery.
+Phase 8S remains incomplete but valid; physical mV mapping and tau remain
+unconstrained. Runner decision: `NO_GO_REQUIRE_USER_SUPPLIED_2005_FULL_TEXT`.
+This completed negative gate stops benchmark implementation pending a lawful
+2005 copy: Methods, G1 response Results, associated captions and amplitude
+definitions. Resume Phase 9G only when supplied; do not create another recovery
+phase. No implementation, fitting, digitization, parameter or contract changes.
+See [Phase 9G](science/g1_2005_evoked_protocol_recovery.md).
+Assessment status: `PASS` with definitive benchmark NO-GO. Full suite: 789 passed,
+1 deselected; Python, frontend regression and diff gates pass. No commit/push.

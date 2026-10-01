@@ -796,6 +796,8 @@ function parseHttpError(value: unknown, status: number): NeuroflyApiError {
       connectivity_provenance_mismatch: "The CircuitContract does not match the fixed connectivity projection.",
       unsupported_connectivity_projection: "The requested connectivity projection is unsupported.",
       invalid_time_range: "The requested timeline range is invalid.",
+      unsupported_scenario: "This scenario preset is not available.",
+      scenario_unavailable: "The canonical scenario could not be replay-validated. Check the backend source artifacts.",
     };
     return new NeuroflyApiError(
       code,
@@ -832,7 +834,7 @@ function apiBaseUrl(): string {
   }
 }
 
-async function requestJson<T>(
+export async function requestJson<T>(
   path: string,
   parse: (value: unknown) => T,
   search?: URLSearchParams,

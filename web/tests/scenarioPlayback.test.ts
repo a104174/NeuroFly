@@ -1,0 +1,100 @@
+import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
+import test from "node:test";
+import { loadScenarioPlayback } from "../src/app/scenarios/actions";
+import { advanceScenarioCursor, parseScenarioCatalog, parseScenarioPlayback, scenarioScene, PRESENTATION_SCALE, type ScenarioPlaybackResult } from "../src/lib/scenarioPlayback";
+
+// TEST_ONLY_NONCANONICAL transport, not a generated scientific artifact.
+function fixture(): ScenarioPlaybackResult {
+  return {
+    schema: "scenario_playback_v1", artifact_id: "a".repeat(64), run_id: "b".repeat(64),
+    scenario: { id: "LOOMING_CIRCUIT_VALIDATION", scenario_kind: "LOOMING_CIRCUIT_VALIDATION", title: "Looming", description: "Test only", availability: "CANONICAL_PRESET", preset_only: true, scientific_caveat: "Not biology" },
+    dt_ms: 0.1, duration_ms: 0.2, source_operation: "VALIDATED_CANONICAL_REPLAY", dnp01_body_ids: [10001,10010], total_dnp01_spikes: 0, scientific_limitations: ["Model space"],
+    statuses: { closed_loop_execution_completed: true, environment_affected_sensory_input: true, body_state_feedback_wired: true, body_state_feedback_realized: false, genuine_nonzero_actuation_occurred: false, body_movement_occurred: false },
+    frames: [0,1,2].map(i => ({ step: i, time_ms: i * 0.1,
+      body: { x_world_eq: 0, z_world_eq: 0, fixed_heading: "POSITIVE_Z" },
+      object: { x_world_eq: 0, z_world_eq: 4 - i, radius_world_eq: 1 },
+      relative_distance_world_eq: 4 - i, lattice_radius: 2, active_sensory_body_count: 19,
+      sensory_summaries: [{ neuron_type: "LC4", side: "R", state_sum: i }], dnp01_membrane_mv: [-52+i*.01,-52], dnp01_spike_body_ids: [], ttmn_state: [0,0], actuator_commands: { RIGHT_TTM_ACTUATOR: 0, LEFT_TTM_ACTUATOR: 0 },
+    })),
+  };
+}
+test("typed payload preserves execution true and movement false independently", () => {
+  const r = parseScenarioPlayback(fixture());
+  assert.equal(r.statuses.closed_loop_execution_completed, true);
+  assert.equal(r.statuses.body_movement_occurred, false);
+  assert.equal(r.frames.length, 3);
+});
+test("exact two supported preset definitions and no phantom worlds", () => {
+  const s = fixture().scenario;
+  assert.equal(parseScenarioCatalog([{...s,id:"BASELINE_CONTROL",scenario_kind:"BASELINE_CONTROL"},s]).length, 2);
+  assert.throws(() => parseScenarioCatalog([s]));
+  assert.throws(() => parseScenarioCatalog([{...s,id:"LIGHT_DARK"},s]));
+});
+test("malformed grid, nonfinite positions, unknown kind and command are rejected", () => {
+  for (const mutate of [
+    (r: ScenarioPlaybackResult) => { r.frames[1].time_ms = 99; },
+    (r: ScenarioPlaybackResult) => { r.frames[0].body.z_world_eq = NaN; },
+    (r: ScenarioPlaybackResult) => { r.frames[1].actuator_commands.RIGHT_TTM_ACTUATOR = 2; },
+    (r: ScenarioPlaybackResult) => { r.frames[0].object = null; },
+  ]) { const r = fixture(); mutate(r); assert.throws(() => parseScenarioPlayback(r)); }
+  assert.throws(() => parseScenarioPlayback({ ...fixture(), scenario: { ...fixture().scenario, id: "ESCAPE" } }));
+});
+test("baseline is object absent, not an object at zero", () => {
+  const r = fixture();
+  r.scenario.id = r.scenario.scenario_kind = "BASELINE_CONTROL";
+  r.frames.forEach(f => { f.object = null; f.relative_distance_world_eq = null; f.lattice_radius = null; f.active_sensory_body_count = 0; });
+  const parsed = parseScenarioPlayback(r);
+  assert.equal(scenarioScene(parsed, 1).objectPosition, null);
+});
+test("presentation clock play pause finish do not mutate scientific time", () => {
+  const r = fixture(), original = JSON.stringify(r);
+  assert.equal(advanceScenarioCursor(0, 3000, true, 2), 1);
+  assert.equal(advanceScenarioCursor(1, 3000, false, 2), 1);
+  assert.equal(advanceScenarioCursor(1, 99999, true, 2), 2);
+  assert.equal(scenarioScene(r, 0).frame.step, 0); // reset
+  assert.equal(scenarioScene(r, 2).frame.step, 2); // scrub
+  assert.equal(JSON.stringify(r), original);
+});
+test("neighbor-only render interpolation; exact telemetry and authoritative transforms", () => {
+  const r = fixture(), scene = scenarioScene(r, 0.5);
+  assert.equal(scene.frame, r.frames[0]);
+  assert.equal(scene.objectPosition![2], 3.5 * PRESENTATION_SCALE);
+  assert.deepEqual(scene.bodyPosition, [0,0,0]);
+  // Noncanonical body snapshots must actually control rendered position.
+  r.frames[1].body.x_world_eq = 4;
+  r.frames[1].body.z_world_eq = 6;
+  assert.deepEqual(scenarioScene(r, 1).bodyPosition, [4*PRESENTATION_SCALE,0,6*PRESENTATION_SCALE]);
+});
+test("UI uses backend action, no full artifact parsing, no frame physics", () => {
+  const ui = readFileSync(new URL("../src/components/ScenarioCockpit.tsx", import.meta.url),"utf8");
+  const scene = readFileSync(new URL("../src/components/ScenarioWorld.tsx", import.meta.url),"utf8");
+  const action = readFileSync(new URL("../src/app/scenarios/actions.ts", import.meta.url),"utf8");
+  assert.match(ui,/loadScenarioPlayback\(scenario.id\)/);
+  assert.match(ui,/setPlaying\(false\); setCursor\(0\)/);
+  assert.match(ui,/setCursor\(Number\(e.target.value\)\)/);
+  assert.match(scene,/position=\{scene.bodyPosition\}/);
+  assert.match(scene,/position=\{scene.objectPosition\}/);
+  assert.match(action,/parseScenarioPlayback/);
+  assert.doesNotMatch(scene,/useFrame|velocity|atan2|animateJump|jump\(/);
+  assert.doesNotMatch(ui,/sensory_state_by_boundary|scenarios.json|escape successful|movement detected/);
+});
+
+test("backend action handles typed API errors and malformed payload without fallback", async () => {
+  const originalFetch = globalThis.fetch, originalUrl = process.env.NEUROFLY_API_BASE_URL;
+  process.env.NEUROFLY_API_BASE_URL = "http://127.0.0.1:8000";
+  try {
+    globalThis.fetch = async () => new Response(JSON.stringify({schema:"experiment_http_error_v1",code:"scenario_unavailable",message:"Replay unavailable"}),{status:503});
+    assert.match((await loadScenarioPlayback("LOOMING_CIRCUIT_VALIDATION") as {error:string}).error,/could not be replay-validated/);
+    globalThis.fetch = async () => new Response(JSON.stringify({schema:"full_internal_artifact"}),{status:200});
+    assert.match((await loadScenarioPlayback("LOOMING_CIRCUIT_VALIDATION") as {error:string}).error,/Malformed/);
+    globalThis.fetch = async () => new Response(JSON.stringify(fixture()),{status:200});
+    const success = await loadScenarioPlayback("LOOMING_CIRCUIT_VALIDATION");
+    assert.ok("result" in success);
+    assert.deepEqual(await loadScenarioPlayback("BASELINE_CONTROL"),{error:"Backend returned the wrong scenario."});
+  } finally {
+    globalThis.fetch = originalFetch;
+    if (originalUrl === undefined) delete process.env.NEUROFLY_API_BASE_URL;
+    else process.env.NEUROFLY_API_BASE_URL = originalUrl;
+  }
+});

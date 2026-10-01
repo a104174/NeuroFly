@@ -1,0 +1,46 @@
+.scenario-route { max-width: 1480px; margin: 0 auto; padding: 32px clamp(18px,4vw,56px) 64px; }
+.scenario-route h1 { font-size: clamp(28px,4vw,46px); letter-spacing: -.04em; margin: 12px 0; }
+.scenario-intro { max-width: 740px; color: #a9bfc4; font-size: 18px; line-height: 1.6; }
+.scenario-catalog { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 22px; margin: 36px 0; }
+.scenario-card { padding: 32px; border: 1px solid #29434c; background: linear-gradient(135deg,#162d36,#102028); border-radius: 12px; color: inherit; text-decoration: none; transition: border-color .2s, background .2s; }
+.scenario-card:hover { border-color: #a4cabb; background: #17313a; }
+.scenario-card h2 { font-size: 27px; margin: 24px 0; }
+.scenario-card p { line-height: 1.6; color: #b4c8cc; }
+.scenario-caveat { font-size: 13px; border-top: 1px solid #2b434a; padding-top: 18px; }
+.scenario-card-action { display: block; margin-top: 30px; color: #b4d5c7; }
+.scenario-heading { display: flex; justify-content: space-between; gap: 24px; align-items: center; margin: 24px 0; }
+.scenario-heading p { color: #b3c5ca; max-width: 780px; }
+.scenario-route button { color: #dbece7; background: #23403e; border: 1px solid #496b63; padding: 10px 18px; border-radius: 6px; cursor: pointer; font: inherit; }
+.scenario-route button:disabled { opacity: .65; cursor: wait; }
+.scenario-route button:focus-visible, .scenario-card:focus-visible, .scenario-route input:focus-visible { outline: 2px solid #d4b285; outline-offset: 4px; }
+.scenario-run { white-space: nowrap; }
+.scenario-ready { margin-top: 36px; padding: 70px 36px; background: radial-gradient(ellipse at top right,#26414a,#101f28); border: 1px solid #2c434b; border-radius: 12px; }
+.scenario-ready p { max-width: 760px; color: #b3c8cc; line-height: 1.7; }
+.scenario-world { position: relative; height: clamp(350px,48vw,570px); background: #0d1c22; border: 1px solid #29434c; border-radius: 12px 12px 0 0; overflow: hidden; }
+.scenario-world-label { position: absolute; bottom: 18px; left: 22px; right: 22px; display: flex; justify-content: space-between; font-size: 11px; letter-spacing: .1em; color: #b6cbd0; pointer-events: none; }
+.scenario-scene-error { padding: 36px; }
+.scenario-transport { padding: 20px 24px; border: 1px solid #29434c; background: #142830; border-radius: 0 0 12px 12px; }
+.scenario-control-row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 16px; }
+.scenario-control-row span { margin-left: auto; font-size: 14px; }
+.scenario-transport label { display: block; font-size: 12px; color: #adc3c9; }
+.scenario-transport input { display: block; width: 100%; margin: 12px 0; accent-color: #b5d3be; }
+.scenario-transport small { color: #9bb3bc; }
+.scenario-interpretation { padding: 28px 0 18px; }
+.scenario-interpretation p { color: #b0c4c8; line-height: 1.6; max-width: 1060px; }
+.scenario-statuses { display: flex; flex-wrap: wrap; gap: 8px; font-size: 12px; }
+.scenario-statuses span { padding: 8px 10px; background: #152a32; border: 1px solid #2b434b; border-radius: 4px; }
+.scenario-telemetry { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 1px; background: #29434c; border: 1px solid #29434c; border-radius: 8px; overflow: hidden; }
+.scenario-telemetry > div { padding: 22px 18px; background: #11252d; }
+.scenario-telemetry h3 { font-family: monospace; font-size: 18px; }
+.scenario-telemetry small, .scenario-telemetry p:not(.eyebrow) { font-size: 12px; color: #a8c0c7; }
+.scenario-sensory { grid-column: 1/-1; display: flex; gap: 22px; flex-wrap: wrap; font-size: 13px; }
+.scenario-sensory p { width: 100%; margin-bottom: 0; }
+.scenario-details { margin-top: 24px; padding: 20px; border: 1px solid #29434c; color: #a5bfc5; font-size: 13px; line-height: 1.8; border-radius: 8px; }
+.scenario-details summary { cursor: pointer; color: #d0e1df; }
+.scenario-hash { overflow-wrap: anywhere; font-family: monospace; }
+.scenario-error { border: 1px solid #bb7667; padding: 24px; color: #edb9aa; }
+.scenario-pending { padding: 32px; border: 1px solid #516963; color: #bdd1c8; }
+@media(max-width:900px) { .scenario-telemetry { grid-template-columns: repeat(2,minmax(0,1fr)); } .scenario-heading { align-items: flex-start; flex-direction: column; } }
+@media(max-width:600px) { .scenario-catalog { grid-template-columns: 1fr; } .scenario-telemetry { grid-template-columns: 1fr; } .scenario-control-row span { margin-left: 0; width: 100%; } .scenario-world-label { font-size: 9px; } .scenario-card { padding: 24px; } }
+/* Three destinations must remain usable after adding the scenario entry. */
+@media(max-width:600px) { .app-header { height: auto; min-height: 68px; flex-wrap: wrap; gap: 16px; padding: 16px 20px; } .header-nav { flex-wrap: wrap; gap: 18px; } }

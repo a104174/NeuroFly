@@ -1,9 +1,10 @@
-"""Minimal GET-only HTTP adapter for the Phase 4A application boundary.
+"""GET-only experiment adapter with Phase 14 canonical scenario playback.
 
 This module is deliberately the only NeuroFly module that imports FastAPI.
 It translates requests into calls to :class:`ExperimentArtifactStore` and
-returns the already validated, JSON-safe Phase 4A DTOs.  It never executes an
-experiment and contains no stimulus, encoder, neural, or comparison logic.
+returns validated JSON-safe DTOs. Historical experiment routes never execute
+models; scenario playback performs full canonical scientific replay. Equations
+remain in the scientific modules, never in this HTTP adapter.
 """
 
 from __future__ import annotations
@@ -60,6 +61,13 @@ from neurofly.motor_pathway_artifacts import (
     MotorArtifactNotFoundError,
     MotorArtifactSchemaError,
     MotorPathwayArtifactStore,
+)
+from neurofly.scenario_playback_api import (
+    DEFAULT_SCENARIO_PATH,
+    ScenarioDefinition,
+    ScenarioPlaybackResult,
+    load_scenario_playback,
+    scenario_catalog,
 )
 
 HTTP_API_SCHEMA_VERSION = "experiment_http_v1"
@@ -483,6 +491,7 @@ def create_app(
     morphology_artifact_root: str | Path | None = None,
     circuit_contract_root: str | Path | None = None,
     motor_experiment_artifact_root: str | Path | None = None,
+    scenario_artifact_path: str | Path = DEFAULT_SCENARIO_PATH,
 ) -> FastAPI:
     """Create an isolated read-only API over one configured artifact root."""
 
@@ -491,8 +500,8 @@ def create_app(
         title="NeuroFly read-only experiment API",
         version=HTTP_API_VERSION,
         description=(
-            "GET-only transport adapter for completed NeuroFly experiment "
-            "artifacts. Requests never run the simulator."
+            "GET-only transport for completed experiment artifacts and "
+            "numerically replay-validated canonical scenario playback."
         ),
     )
     app.state.experiment_artifact_store = store
@@ -512,6 +521,31 @@ def create_app(
         else MotorPathwayArtifactStore(motor_experiment_artifact_root)
     )
     _register_error_handlers(app)
+
+    @app.get(
+        "/api/v1/scenarios", response_model=list[ScenarioDefinition], tags=["scenarios"]
+    )
+    def list_scenarios():
+        return scenario_catalog()
+
+    @app.get(
+        "/api/v1/scenarios/{scenario_id}/playback",
+        response_model=ScenarioPlaybackResult,
+        tags=["scenarios"],
+    )
+    def scenario_playback(scenario_id: str):
+        if scenario_id not in {s.id for s in scenario_catalog()}:
+            return _error_response(
+                404, "unsupported_scenario", "scenario is not available"
+            )
+        try:
+            return load_scenario_playback(scenario_id, Path(scenario_artifact_path))
+        except (ValueError, OSError, KeyError, TypeError, StopIteration):
+            return _error_response(
+                503,
+                "scenario_unavailable",
+                "canonical scenario could not be replay-validated",
+            )
 
     @app.get("/health", tags=["system"])
     def health() -> dict[str, Any]:
@@ -655,7 +689,13 @@ def create_app_from_env() -> FastAPI:
     morphology_root = os.environ.get(MORPHOLOGY_ARTIFACT_ROOT_ENV)
     circuit_contract_root = os.environ.get(CIRCUIT_CONTRACT_ROOT_ENV)
     motor_root = os.environ.get(MOTOR_EXPERIMENT_ARTIFACT_ROOT_ENV)
-    return create_app(configured, morphology_root, circuit_contract_root, motor_root)
+    return create_app(
+        configured,
+        morphology_root,
+        circuit_contract_root,
+        motor_root,
+        os.environ.get("NEUROFLY_SCENARIO_ARTIFACT_PATH", str(DEFAULT_SCENARIO_PATH)),
+    )
 
 
 __all__ = [

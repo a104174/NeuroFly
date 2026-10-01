@@ -2188,3 +2188,36 @@ Decision `FIRST_CLOSED_LOOP_SCENARIO_RUNTIME_VALIDATED`; movement
 Focused scenario tests 39 passed; full tests 975 passed, 1 deselected, two
 existing dependency warnings. Ruff check/format, diff check and frontend
 regressions (38 tests, lint, typecheck, build) pass. No commit/push.
+
+## Phase 14 — scenario selection and authoritative scientific 3D playback
+
+Existing product navigation now includes `/scenarios` and two backend-owned
+canonical presets: Baseline Control / Looming Circuit Validation. A compact
+`scenario_playback_v1` Pydantic/TypeScript contract is exposed through existing
+FastAPI GET routes `/api/v1/scenarios` and `/api/v1/scenarios/{id}/playback`.
+Every playback request fully numerically replays Phase 13B and validates
+historical provenance; no scientific parameter or artifact identity changed.
+Next server action loads the result; completed preset URLs support
+`?replay=canonical` restoration. No database, streaming service or model editor.
+
+R3F reuses the existing fly asset and renders authoritative body/object
+snapshots only. Six-second display playback leaves 0.1 ms dt / 1.4 ms scientific
+time unchanged; neighbor-only visual interpolation never affects discrete
+telemetry. Play/pause/reset/scrub are independent of scientific execution.
+Baseline has no object/exposure. Looming approaches (4→2.6 world_eq), exposure
+19→22 and lattice radius 2→3; genuine spikes/actuation/movement remain zero.
+Closed-loop completion, sensory change, feedback wiring/realization, actuation
+and movement are separately visible. No fly jiggle, physics or escape fallback.
+
+Compact responses measured 10,216 / 11,947 bytes; requests 8.99 / 9.84 s during
+parallel regression work (full source validation retained). Real browser smoke
+covered both presets, controls, deep links, desktop/mobile layout and errors;
+no rendering errors observed. See
+[Phase 14 integration](architecture/scenario_scientific_playback.md).
+Remaining limitation: no nonzero genuine movement or calibrated retinotopy /
+biomechanics. Next milestone is evidence-backed characterization of the silent
+canonical sensory→DNp01 response, not fake movement or another metadata chain.
+Phase 14 `PASS`: full Python 979 passed / 1 deselected, frontend 46 passed;
+Ruff, diff check, lint, typecheck and build pass. Browser verification passed;
+render dependency emitted a nonblocking Clock deprecation warning. No
+commit/push; only intended Phase 14 transport/UI/tests/docs changes remain.

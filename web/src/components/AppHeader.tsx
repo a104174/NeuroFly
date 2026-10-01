@@ -14,6 +14,7 @@ export function AppHeader() {
       </Link>
       <nav className="header-nav" aria-label="Primary navigation">
         <Link href="/">Experiments</Link>
+        <Link href="/scenarios">Scenarios</Link>
         <Link href="/morphology">Morphology</Link>
         <span className="header-status" aria-label="Application status">
           <span className="status-dot" aria-hidden="true" />

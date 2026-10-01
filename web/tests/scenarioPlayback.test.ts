@@ -1,6 +1,10 @@
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import test from "node:test";
+import { createElement } from "react";
+import { renderToStaticMarkup } from "react-dom/server";
+import { ScenarioExplanation } from "../src/components/ScenarioExplanation";
+import { scenarioNarrative } from "../src/lib/scenarioPresentation";
 import { loadScenarioPlayback } from "../src/app/scenarios/actions";
 import { advanceScenarioCursor, parseScenarioCatalog, parseScenarioPlayback, scenarioScene, PRESENTATION_SCALE, type ScenarioPlaybackResult } from "../src/lib/scenarioPlayback";
 
@@ -97,4 +101,63 @@ test("backend action handles typed API errors and malformed payload without fall
     if (originalUrl === undefined) delete process.env.NEUROFLY_API_BASE_URL;
     else process.env.NEUROFLY_API_BASE_URL = originalUrl;
   }
+});
+
+test("baseline rendered explanation makes stationary control intentional", () => {
+  const r = fixture();
+  r.scenario.id = r.scenario.scenario_kind = "BASELINE_CONTROL";
+  r.frames.forEach(f => { f.object = null; f.lattice_radius = null; f.relative_distance_world_eq = null; f.active_sensory_body_count = 0; f.sensory_summaries.forEach(s => { s.state_sum = 0; }); });
+  const html = renderToStaticMarkup(createElement(ScenarioExplanation, {result:r, frame:r.frames[0]}));
+  assert.match(html,/A control, not a broken simulation/);
+  assert.match(html,/No external stimulus/);
+  assert.match(html,/Body stationary/);
+  assert.match(html,/Stimulus disabled/);
+  assert.match(html,/No genuine motor command/);
+  assert.equal(scenarioScene(r,1).objectPosition,null);
+});
+test("looming rendered causal narrative explains subthreshold zero movement", () => {
+  const r = fixture(), f = r.frames[2];
+  const html = renderToStaticMarkup(createElement(ScenarioExplanation,{result:r,frame:f}));
+  for (const text of ["Approaching object","Visual circuit responding","Below model spike threshold","SUBTHRESHOLD","No genuine motor command","Body stationary","RUN COMPLETE"]) assert.ok(html.includes(text),text);
+  assert.match(html,/No genuine actuator command was produced/);
+  assert.doesNotMatch(html,/escape failed/);
+});
+test("scientific values and selected-boundary story are sourced from DTO, not canonical literals", () => {
+  const r = fixture(), f = r.frames[1];
+  f.active_sensory_body_count = 31; f.lattice_radius = 8; f.dnp01_membrane_mv[0] = -48.125;
+  const html = renderToStaticMarkup(createElement(ScenarioExplanation,{result:r,frame:f}));
+  assert.match(html,/31/); assert.match(html,/Radius 8/); assert.match(html,/-48.125/); assert.match(html,/0.1/);
+  assert.equal(scenarioNarrative(r,r.frames[0]).stages[1].state,"INITIAL STATE");
+  assert.equal(scenarioNarrative(r,f).stages[1].state,"RESPONDING");
+  assert.equal(scenarioScene(r,1).frame,f);
+});
+test("noncanonical nonzero records change labels, never inject or fake scientific motion", () => {
+  const r = fixture(), f = r.frames[1];
+  r.total_dnp01_spikes = 1; f.dnp01_spike_body_ids = [10001];
+  f.actuator_commands.RIGHT_TTM_ACTUATOR = 0.4;
+  r.statuses.genuine_nonzero_actuation_occurred = true; r.statuses.body_movement_occurred = true;
+  f.body.z_world_eq = 2;
+  const story = scenarioNarrative(r,f);
+  assert.equal(story.stages[2].state,"SPIKE"); assert.equal(story.stages[3].state,"COMMAND");
+  assert.equal(scenarioScene(r,1).bodyPosition[2],2*PRESENTATION_SCALE);
+  assert.doesNotMatch(story.summary,/produced no DNp01 spikes/);
+});
+test("one current object, no opaque history spheres, no fake retinal geometry", () => {
+  const scene = readFileSync(new URL("../src/components/ScenarioWorld.tsx",import.meta.url),"utf8");
+  assert.equal(scene.match(/name="authoritative-looming-object"/g)?.length,1);
+  assert.equal(scene.match(/<sphereGeometry/g)?.length,1);
+  assert.match(scene,/LineDashedMaterial/);
+  assert.match(scene,/!baseline && <ApproachGuide/);
+  assert.match(scene,/scene.frame.lattice_radius/);
+  assert.match(scene,/scene.frame.active_sensory_body_count/);
+  assert.match(scene,/not a calibrated retinal map/);
+  assert.doesNotMatch(scene,/atan2|Math.floor|useFrame|setInterval|animateJump/);
+});
+test("scenario-only material clone preserves historical asset and avoids idle motion", () => {
+  const asset = readFileSync(new URL("../src/components/ScenarioFlyVisual.tsx",import.meta.url),"utf8");
+  assert.match(asset,/gltf.scene.clone\(true\)/);
+  assert.match(asset,/opacity: 0.22/);
+  assert.doesNotMatch(asset,/useFrame|rotation\.set|position\.add|random|sin\(/);
+  const ui = readFileSync(new URL("../src/components/ScenarioCockpit.tsx",import.meta.url),"utf8");
+  assert.match(ui,/<ScenarioExplanation result=\{result\} frame=\{frame\}/);
 });

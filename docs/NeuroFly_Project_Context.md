@@ -2221,3 +2221,27 @@ Phase 14 `PASS`: full Python 979 passed / 1 deselected, frontend 46 passed;
 Ruff, diff check, lint, typecheck and build pass. Browser verification passed;
 render dependency emitted a nonblocking Clock deprecation warning. No
 commit/push; only intended Phase 14 transport/UI/tests/docs changes remain.
+
+## Phase 15 — explainable scenario and scientific 3D presentation
+
+Scenario catalog now foregrounds Looming Circuit Validation and labels Baseline
+as an intentional zero-stimulus control. Scenario playback uses one current
+looming object, a faint dashed approach guide, backend exposure inset and
+prominent fixed fly; cloned scenario-only materials, lighting and cameras
+improve the existing simplified GLB without changing geometry or historical
+cockpit assets. No rigging, idle motion, physics or fake escape.
+
+Selected-boundary WORLD→SENSORY→DNp01→MOTOR→BODY explanation shows the genuine
+subthreshold response and why no actuator command/body movement occurs.
+Compact telemetry and full-run interpretation lead; exact records/provenance
+remain in details. Phase 14 DTO, scientific models/configs/timestamps and Phase
+13B artifact identity remain unchanged. Scientific 1.4 ms is still presented
+over six seconds; 390 px layout and desktop browser controls verified.
+
+See [Phase 15 presentation](architecture/scenario_explainability_and_specimen_presentation.md)
+for asset audit, bounded future Blender requirement, browser evidence and
+limitations. Full Python 979 passed / 1 deselected; frontend 52 passed; Ruff,
+lint/typecheck/build and diff check pass. Phase 15 `PASS`, no commit/push.
+R3F's upstream nonblocking Clock deprecation remains; no dependency patch.
+Next: characterize genuine subthreshold DNp01 looming response without
+visually motivated retuning. No scientific nonzero movement claim.

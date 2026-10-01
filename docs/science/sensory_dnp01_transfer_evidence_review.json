@@ -1,0 +1,143 @@
+{
+  "schema": "sensory_dnp01_transfer_evidence_review_v1",
+  "review_id": "f7d278372f3527393bb041e4db3b45126668a5ec904ce65cb1f9f3546b28d267",
+  "review": {
+    "repository_commit": "090f462a8d4f7e7c28f5de3a3ea14c964e1cc295",
+    "review_date": "2026-10-01",
+    "kind": "EVIDENCE_REVIEW_NOT_SIMULATION_ARTIFACT",
+    "contract": {
+      "schema": "sensory_dnp01_transfer_contract_current_v1",
+      "authority": "neurofly.relative_column_dnp01_transfer.route_population_drive",
+      "source_model": "relative_column_exploratory_sensory_state_v1",
+      "transfer_model": "exploratory_edge_routed_model_drive_v1",
+      "source_state": "DIMENSIONLESS_EXPLORATORY_PER_BODY_STATE",
+      "equation": "d_i[n]=a_i*k*x_i[n]; D_j[n]=sum(d_i[n] for validated routes i->j)",
+      "aggregation": "UNNORMALIZED_ADDITIVE_SUM_IN_SOURCE_BODY_ORDER",
+      "normalization": "NONE",
+      "coefficient": {
+        "name": "k_transfer_mveq_per_state",
+        "reference_value": 1.0,
+        "units": "UNCALIBRATED_MV_EQ_PER_DIMENSIONLESS_STATE",
+        "classification": "MODEL_ASSUMPTION",
+        "scope": "SHARED_ALL_BODIES_TYPES_SIDES"
+      },
+      "source_populations": {"LC4": 126, "LPLC2": 185},
+      "targets": [
+        {"body_id": 10001, "side": "R", "routed_sources": 146},
+        {"body_id": 10010, "side": "L", "routed_sources": 165}
+      ],
+      "side_semantics": "PINNED_IPSILATERAL_ROUTING_NO_CROSS_SIDE_DRIVE",
+      "structural_count_semantics": "ROUTING_METADATA_ONLY_NOT_NUMERICAL_EFFICACY",
+      "target_input": "HELD_EXTERNAL_MV_EQ_DRIVE_NOT_INSTANTANEOUS_EPSP",
+      "time_semantics": "STATE_N_DRIVES_INTERVAL_N_TO_N_PLUS_1_EXPOSURE_N_FIRST_AFFECTS_MEMBRANE_N_PLUS_2",
+      "population_size_dependence": "TOTAL_DRIVE_DEPENDS_ON_SUM_OF_STATES_AND_ROUTED_CARDINALITY",
+      "lc4_lplc2_equality_provenance": "MODEL_SIMPLIFICATION"
+    },
+    "provenance": {
+      "coefficient_and_aggregation_commit": "8e1775b9af1d96b0a1cc60202621c3a721b36b68",
+      "phase": "7F",
+      "original_value": 1.0,
+      "recorded_rationale": "SIMPLE_NUMERICALLY_SAFE_SOFTWARE_REFERENCE_NOT_BIOLOGICAL_FIT",
+      "aggregation_deliberately_documented": true,
+      "generalization_commit": "3a820ebe5f637c015142cdf8eee30e13aae1f83e",
+      "sensitivity_audit": {
+        "historical_fixed_grid": [0.0, 0.5, 1.0, 2.0, 4.0],
+        "separate_preexecution_preregistration_established": false,
+        "historical_phase7g_stress_search": "OUTPUT_TARGETING_NOT_CALIBRATION_NOT_REPEATED_CROSSING_VALUES_NOT_REPORTED",
+        "new_sweep_performed": false
+      }
+    },
+    "source_artifact_ids": {
+      "phase18": "ee781bd8c7e903c5fab78aff02d916fe68d26998a7caf774806778cacd2b616c",
+      "phase16_corrected": "bb1d227dd3dc56d74939c37e231ca0f8aa02f8d0140964eef7f1fb31e00b101b",
+      "phase13b": "55e2f4d37bc6f8fb81aee67886d8680a76646a0317961bd90cf0e3fbabb2c46b",
+      "phase7o": "99eeea47542abd5f9af2c1918e6e0514fa2c4b8f04d9a3f14a75ac1f8dbbcaa5",
+      "phase8c": "5f57cbc6c0ac770d65582ffe97c0c690e539bab33fef549da15d5273912279bf"
+    },
+    "evidence_records": [
+      {
+        "key": "ACHE_2019",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/30827912/",
+        "doi": "10.1016/j.cub.2019.01.079",
+        "category": ["ANATOMY", "POSTSYNAPTIC_POPULATION_VOLTAGE", "SILENCING", "BEHAVIOR"],
+        "source_populations": ["LC4", "LPLC2"],
+        "target": "GF_DNP01_TYPE_MATCH_NOT_MALECNS_BODY_MATCH",
+        "measured_quantity": "GF_VOLTAGE_AND_PATHWAY_DEPENDENCE",
+        "reported_result": "COMPLEMENTARY_EXCITATORY_FEATURE_COMPONENTS",
+        "applicability": "PATHWAY_LEVEL_NOT_CURRENT_STATE_SCALE",
+        "limitations": "POPULATION_MANIPULATION_CONTEXT_NOT_UNITARY_EFFICACY",
+        "constrains": ["TOPOLOGY", "QUALITATIVE_SIGN", "BIOLOGICAL_RESPONSE_TIMING"],
+        "constrains_absolute_model_magnitude": false
+      },
+      {
+        "key": "KLAPOETKE_2017",
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7457385/",
+        "doi": "10.1038/nature24626",
+        "category": ["OPTOGENETIC_GF_VOLTAGE", "CALCIUM_IMAGING"],
+        "source_populations": ["LPLC2"],
+        "target": "GF_FOR_ELECTROPHYSIOLOGY_LPLC2_FOR_CALCIUM",
+        "measured_quantity": "GF_VOLTAGE_AND_SEPARATE_SOURCE_FLUORESCENCE",
+        "reported_result": "EXCITATORY_GF_RESPONSE_AND_LOOMING_SELECTIVITY",
+        "applicability": "FUNCTIONAL_POPULATION_CONNECTION",
+        "limitations": "NO_MAPPING_FROM_SOURCE_FLUORESCENCE_OR_ACTIVATION_TO_X_I",
+        "constrains": ["QUALITATIVE_SIGN", "SOURCE_FEATURE_SELECTIVITY"],
+        "constrains_absolute_model_magnitude": false
+      },
+      {
+        "key": "VON_REYN_2017",
+        "url": "https://www.sciencedirect.com/science/article/pii/S0896627317304749",
+        "doi": "10.1016/j.neuron.2017.05.036",
+        "category": ["FUNCTIONAL_ELECTROPHYSIOLOGY", "MANIPULATION", "BEHAVIOR"],
+        "source_populations": ["LC4"],
+        "target": "GF",
+        "measured_quantity": "GF_FEATURE_RESPONSE_AND_MOTOR_PROGRAM_SELECTION",
+        "reported_result": "LC4_ASSOCIATED_ANGULAR_VELOCITY_COMPONENT",
+        "applicability": "TYPE_LEVEL_PATHWAY",
+        "limitations": "ABSTRACT_SCOPE_NOT_UNITARY_TRANSFER_OR_CURRENT_MODEL_STATE",
+        "constrains": ["QUALITATIVE_PATHWAY_ROLE"],
+        "constrains_absolute_model_magnitude": false
+      },
+      {
+        "key": "NEUPRINT_GRAPH_SPECIFICATION",
+        "url": "https://github.com/connectome-neuprint/neuPrint/blob/master/pgmspecs.md",
+        "category": ["OFFICIAL_STRUCTURAL_SCHEMA"],
+        "source_populations": ["RECONSTRUCTED_SEGMENTS"],
+        "target": "RECONSTRUCTED_SEGMENTS",
+        "measured_quantity": "POSTSYNAPTIC_DENSITY_COUNT_PER_CONNECTION",
+        "reported_result": "CONNECTSTO_WEIGHT_IS_COUNT",
+        "applicability": "STRUCTURAL_EDGE_SEMANTICS",
+        "limitations": "NO_PHYSIOLOGICAL_EFFICACY_OR_TIMING",
+        "constrains": ["TOPOLOGY", "STRUCTURAL_COUNTS"],
+        "constrains_absolute_model_magnitude": false
+      },
+      {
+        "key": "MALECNS_OFFICIAL_DOWNLOAD",
+        "url": "https://male-cns.janelia.org/download/",
+        "category": ["OFFICIAL_CONNECTOME_DATA"],
+        "source_populations": ["MALE_DROSOPHILA_CNS_SEGMENTS"],
+        "target": "MALE_DROSOPHILA_CNS_SEGMENTS",
+        "measured_quantity": "CONFIDENCE_FILTERED_CONNECTIONS_AND_SYNAPSE_LOCATIONS",
+        "reported_result": "RECONSTRUCTION_METADATA",
+        "applicability": "PINNED_IDENTITIES_ROUTING_AND_TOPOLOGY",
+        "limitations": "RECONSTRUCTION_FILTERING_NOT_FUNCTIONAL_CALIBRATION",
+        "constrains": ["TOPOLOGY", "STRUCTURAL_COUNTS"],
+        "constrains_absolute_model_magnitude": false
+      }
+    ],
+    "direct_physiology_status": "POPULATION_GF_VOLTAGE_LOCATED_MATCHED_SINGLE_SOURCE_UNITARY_TRANSFER_NOT_LOCATED_IN_BOUNDED_SEARCH",
+    "normalization_classification": "CURRENT_NORMALIZATION_ACCEPTABLE_EXPLORATORY_ASSUMPTION",
+    "magnitude_identifiability": "QUALITATIVELY_CONSTRAINED_BUT_NOT_NUMERICALLY_IDENTIFIABLE",
+    "equality_classification": "EQUAL_TRANSFER_MAGNITUDE_ACCEPTABLE_SIMPLIFICATION",
+    "structural_vs_functional": "CONTACT_COUNTS_ESTABLISH_ROUTING_NOT_EFFICACY",
+    "unresolved_questions": [
+      "OBSERVATION_OPERATOR_FROM_MODEL_X_I_TO_MEASURED_SOURCE_STATE",
+      "OBSERVATION_OPERATOR_FROM_MV_EQ_DRIVE_TO_GF_PHYSIOLOGY",
+      "ASSAY_COMPATIBLE_PER_BODY_AND_POPULATION_AGGREGATION_EVIDENCE"
+    ],
+    "decision": "CURRENT_TRANSFER_CONTRACT_RETAIN_AS_EXPLORATORY_UNCALIBRATED_MODEL",
+    "next_bounded_action": "DEFINE_SOURCE_TARGET_OBSERVATION_OPERATOR_AND_ASSAY_COMPATIBILITY_SPECIFICATION_NO_FITTING",
+    "no_retuning_performed": true,
+    "no_required_gain_calculation": true,
+    "no_production_model_changes": true
+  }
+}

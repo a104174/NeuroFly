@@ -2364,3 +2364,32 @@ Phase 18 `PASS`, decision `EXPLORATORY_LOOMING_WORLD_EXPERIMENT_VALIDATED`:
 passed. Historical 16/13B/full-7O/8C replays and all-three-preset real-browser
 smoke passed, including 390 px and playback controls. No commit/push; only
 intended Phase 18 changes remain. No scientific parameter changed after freeze.
+
+### Phase 19 — sensory→DNp01 transfer evidence/contract review
+
+The current contract is a deterministic ipsilateral unnormalized sum
+`D_j[n] = sum(k*x_i[n])` over pinned source-body routes, with shared
+`k=1.0 mV_eq/state` for LC4/LPLC2 and both sides. Phase 7F introduced it as
+an explicit software/model assumption, not a fitted physiological coefficient.
+Contact counts validate routing only and do not scale numerical contributions.
+
+Normalization: `CURRENT_NORMALIZATION_ACCEPTABLE_EXPLORATORY_ASSUMPTION`.
+Magnitude: `QUALITATIVELY_CONSTRAINED_BUT_NOT_NUMERICALLY_IDENTIFIABLE`;
+positive population pathway evidence does not identify a numeric coefficient.
+Equality: `EQUAL_TRANSFER_MAGNITUDE_ACCEPTABLE_SIMPLIFICATION`, not measured
+equal efficacy. Direct population GF voltage evidence exists; a matched
+observation operator for source states and mV_eq drive is absent.
+
+Decision: `CURRENT_TRANSFER_CONTRACT_RETAIN_AS_EXPLORATORY_UNCALIBRATED_MODEL`.
+Evidence-review schema `sensory_dnp01_transfer_evidence_review_v1`, identity
+`f7d278372f3527393bb041e4db3b45126668a5ec904ce65cb1f9f3546b28d267`.
+See [Phase 19 review](science/sensory_dnp01_transfer_evidence_review.md).
+No production scientific/frontend changes, retuning, new sweep or required-gain
+calculation. Historical 18/corrected-16/13B/full-7O/8C replays remain unchanged.
+Exactly one next bounded action: specify source/target observation operators
+and assay compatibility for LC4/LPLC2-associated GF physiology, without fitting
+or selecting a replacement gain.
+
+Phase 19 `PASS`: 1,018 Python tests and 53 frontend regression tests passed;
+focused transfer tests (13), canonical review hash/mutation checks, Ruff,
+format/diff checks and frontend lint/typecheck/build passed. No commit/push.

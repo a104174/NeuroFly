@@ -2283,3 +2283,35 @@ Phase 16 `PASS`: focused 25 / full 1,004 tests passed, 1 deselected, two existin
 dependency warnings; Ruff/diff check and frontend regressions (52 tests,
 lint/typecheck/build) pass. Diagnostic offline replay/tamper rejection passes.
 No commit/push; only intended Phase 16 files remain.
+
+## Phase 17 — looming scenario temporal-design evidence review
+
+Temporal provenance is `TEST_FIXTURE_INHERITANCE`: Phase 7D's four synthetic
+0.1 ms exposure intervals plus Phase 7E's ten-step inspection/recovery tail
+became the 7O reference horizon; Phase 13A deliberately inherited its length,
+not its exposure schedule. It is not biological timing calibration or a bug.
+The numerical 0.1 ms dt and six-second frontend playback are separate choices.
+
+Current-design decision: `KEEP_1P4_MS_FOR_CURRENT_CIRCUIT_VALIDATION_ROLE`,
+explicitly a `MICRO_WINDOW_CIRCUIT_EXECUTION_TEST`, not a complete biological
+looming response or behavior experiment. Next-design decision:
+`SEPARATE_CIRCUIT_VALIDATION_FROM_BEHAVIOR_SCALE_SCENARIO`.
+
+Phase 16 confirms exposure affects membrane at n+2; the radius change at n=8
+first affects membrane at n=10, leaving five consuming intervals (0.5 ms).
+At unchanged stationary-body trajectory, zero forward separation is reached
+at 4 ms and rejected; forward body motion could invalidate geometry earlier.
+This domain limit is not a proposed horizon. World_eq/ms is not physical speed.
+Primary source verification distinguishes GF sensory onset (Ache's 19 ms),
+LPLC2 calcium-analysis windows, post-GF leg/flight timing and electrical
+stimulus-to-muscle latency; none identifies an exact replacement duration.
+
+See [Phase 17 evidence review](science/looming_scenario_temporal_design_evidence.md).
+Exactly one next action is a bounded joint trajectory/horizon design for a
+separate model-space looming world experiment, preserving body feedback and
+honest zero-output acceptance. No new scenario/duration, model retuning,
+alternate execution, scientific artifact change or frontend change occurred.
+Phase 17 `PASS`: Phase 16/13B/7O/8C replay unchanged; 1,004 Python tests passed
+(1 deselected, two existing dependency warnings), 52 frontend tests passed,
+Ruff/diff check and frontend lint/typecheck/build passed. Documentation only;
+no commit/push.

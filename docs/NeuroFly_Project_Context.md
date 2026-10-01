@@ -2245,3 +2245,41 @@ lint/typecheck/build and diff check pass. Phase 15 `PASS`, no commit/push.
 R3F's upstream nonblocking Clock deprecation remains; no dependency patch.
 Next: characterize genuine subthreshold DNp01 looming response without
 visually motivated retuning. No scientific nonzero movement claim.
+
+## Phase 16 — genuine subthreshold DNp01 looming diagnosis
+
+Read-only scientific response accounting consumes the unchanged Phase 13B
+artifact. New result `dnp01_subthreshold_diagnostic_v1` / generated ignored
+artifact `bb1d227dd3dc56d74939c37e231ca0f8aa02f8d0140964eef7f1fb31e00b101b`
+(91,070 bytes); config hash
+`6740139521b4d39c49400faf0a0f4811ee1a9ece38bff655e5642e35a8f7993a`, result hash
+`3166abdb1f2dd072b26d40aba869c6a9d49bc45c85672f478180e685bf3fb39c`.
+Semantic correction changes only the projection classification/explanation;
+direct comparison verifies unchanged numerical results, config and config hash.
+
+Right DNp01 10001 peaks at boundary 14 / 1.4 ms, -51.933657842035 model
+coordinate, threshold -45, margin 6.933657842035; rest displacement
+0.066342157965 (0.009477451138 of the 7-unit threshold excursion). Left 10010
+remains -52 with margin 7. LC4/LPLC2 integrated-drive fractions are
+0.274948417515 / 0.725051582485. Exposure 19→22, radius 2→3; initial exposure
+affects membrane at n+2. Duration/tau_m=0.07. No missing drive, routing or
+integration contradiction was found.
+
+Recorded-footprint drive bound is 3.474071129128 with pinned gain/k, already
+below the threshold excursion: projection is a material model limiter, not a
+demonstrated dominant limiter. Spatial exposure, sensory/membrane dynamics,
+short window and causal latency are coupled material joint limiters, not
+statistically or causally independent factors; transfer adequacy is not
+identifiable. Verified existing
+all-311 full-exposure bound stays subthreshold at the same horizon (-47.667417
+R / -47.103588 L). No unique biological culprit or parameter target is inferred.
+
+See [Phase 16 diagnosis](science/dnp01_subthreshold_looming_diagnosis.md).
+Decision `SUBTHRESHOLD_RESPONSE_CHARACTERIZED_TARGETED_MODEL_REVIEW_JUSTIFIED`:
+exactly one future question is evidence for the 1.4 ms scenario temporal
+design, not a replacement duration or retuning. Canonical Baseline/Looming,
+historical model identities, frontend and scientific parameters are unchanged.
+Phase 16 `PASS`: focused 25 / full 1,004 tests passed, 1 deselected, two existing
+dependency warnings; Ruff/diff check and frontend regressions (52 tests,
+lint/typecheck/build) pass. Diagnostic offline replay/tamper rejection passes.
+No commit/push; only intended Phase 16 files remain.

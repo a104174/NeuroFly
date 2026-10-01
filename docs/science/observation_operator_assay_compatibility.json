@@ -1,0 +1,229 @@
+{
+  "schema": "neurofly_observation_operator_contract_v1",
+  "contract_id": "ae50e1faad223cdde63125a6216ce0993523f9933025fe1f04e9265450dec824",
+  "contract": {
+    "schema": "neurofly_observation_operator_contract_v1",
+    "repository_commit": "49ac64824b042e288f86305dffc57f264c781bbd",
+    "purpose": "SPECIFICATION_ONLY_NO_PRODUCTION_DEPENDENCY_NO_FITTING",
+    "source_classes": ["MALECNS_STRUCTURAL_DATA", "NEUROFLY_MODEL_STATE", "DERIVED_MODEL_DIAGNOSTIC", "PRIMARY_PHYSIOLOGICAL_MEASUREMENT", "CALCIUM_IMAGING_MEASUREMENT", "OPTOGENETIC_MANIPULATION", "BEHAVIORAL_OBSERVATION", "MODEL_SPACE_PRESENTATION_VALUE"],
+    "comparison_policy": {
+      "default": "DENY_NUMERICAL_BIOLOGICAL_COMPARISON_UNTIL_ALL_GATES_PASS",
+      "required_gates": ["CELL_TYPE_AND_PREPARATION_MATCH", "SOURCE_POPULATION_AND_ROI_MAPPING", "STIMULUS_REFERENCE_MATCH", "BASELINE_AND_UNITS_EXPLICIT", "OBSERVATION_TRANSFORM_ESTABLISHED", "TEMPORAL_FILTER_AND_ALIGNMENT_DECLARED", "AGGREGATION_AND_UNCERTAINTY_DECLARED", "DATA_SUFFICIENCY_AND_IDENTIFIABILITY_ASSESSED"],
+      "unknown_metadata_policy": "UNKNOWN_IS_NOT_MATCHED",
+      "structural_counts_used_as_observation_weights": false,
+      "mv_eq_equals_biological_mv": false,
+      "sensory_state_equals_fluorescence": false,
+      "population_response_divided_by_body_count_is_efficacy": false,
+      "behavior_calibrates_transfer": false,
+      "numeric_comparison_enabled": false
+    },
+    "model_variables": [
+      {
+        "id": "structural_edge_count", "model_name": "ConnectsTo.weight", "source_class": "MALECNS_STRUCTURAL_DATA", "model_units": "postsynaptic_density_count",
+        "allowed_interpretation": "Pinned reconstructed connection count and topology", "forbidden_interpretation": "Conductance, efficacy or assay averaging weight",
+        "candidate_observable": "Count in the same pinned reconstruction", "compatible_assays": ["anatomy"], "operator_status": "DIRECTLY_OBSERVABLE", "calibration_status": "NOT_APPLICABLE",
+        "temporal_semantics": "Static reconstruction, not physiological time", "population_semantics": "Ordered source-target pair and dataset version", "evidence_sources": ["neuprint", "malecns"], "identifiability_status": "KNOWN_PINNED_STRUCTURAL_QUANTITY_ONLY", "mapping_ids": ["structural_count_lookup"]
+      },
+      {
+        "id": "relative_column_exposure", "model_name": "column_overlap_fraction", "source_class": "NEUROFLY_MODEL_STATE", "model_units": "dimensionless_fraction",
+        "allowed_interpretation": "Record-overlap exposure under exploratory fixed-column projection", "forbidden_interpretation": "Measured receptive-field activation or calibrated retinal illumination",
+        "candidate_observable": "Stimulus coverage of independently registered receptive fields", "compatible_assays": ["anatomy", "calcium"], "operator_status": "OBSERVABLE_WITH_UNKNOWN_TRANSFORM", "calibration_status": "UNCALIBRATED",
+        "temporal_semantics": "Exposure n held over interval n to n+1", "population_semantics": "Per-body column records and side, not retinal pixels", "evidence_sources": ["project", "klapoetke"], "identifiability_status": "WORLD_TO_RETINAL_AND_RF_REGISTRATION_UNKNOWN", "mapping_ids": ["exposure_registration"]
+      },
+      {
+        "id": "sensory_state", "model_name": "x_i / sensory_state_by_boundary", "source_class": "NEUROFLY_MODEL_STATE", "model_units": "dimensionless_state",
+        "allowed_interpretation": "Per-body exploratory leaky sensory state", "forbidden_interpretation": "Calcium, fluorescence, voltage or firing rate by identity",
+        "candidate_observable": "LC4 or LPLC2 source activity in a declared modality", "compatible_assays": ["calcium", "intracellular_voltage"], "operator_status": "OBSERVABLE_WITH_UNKNOWN_TRANSFORM", "calibration_status": "UNCALIBRATED",
+        "temporal_semantics": "Exposure n produces state n+1; state n drives target interval n", "population_semantics": "311 individual bodies, no interchangeable type observation model", "evidence_sources": ["project", "klapoetke", "von_reyn"], "identifiability_status": "SOURCE_ACTIVITY_OBSERVATION_OPERATOR_UNKNOWN", "mapping_ids": ["sensory_calcium", "sensory_voltage"]
+      },
+      {
+        "id": "sensory_contribution", "model_name": "d_i / model_drive_mveq", "source_class": "DERIVED_MODEL_DIAGNOSTIC", "model_units": "mV_eq",
+        "allowed_interpretation": "Additive ledger contribution k*x_i", "forbidden_interpretation": "Unitary EPSP or current", "candidate_observable": "Controlled identified-source effect on GF",
+        "compatible_assays": ["intracellular_voltage"], "operator_status": "NO_VALID_OBSERVATION_OPERATOR_CURRENTLY_DEFINED", "calibration_status": "NOT_CALIBRATABLE_FROM_CURRENT_ASSAY",
+        "temporal_semantics": "Boundary n source state contributes to held target drive", "population_semantics": "One validated body-target route, not one synapse", "evidence_sources": ["project", "ache"], "identifiability_status": "MATCHED_SINGLE_SOURCE_EFFECT_NOT_LOCATED", "mapping_ids": ["source_effect"]
+      },
+      {
+        "id": "aggregate_drive", "model_name": "D_j / dnp01_drive_by_interval", "source_class": "NEUROFLY_MODEL_STATE", "model_units": "mV_eq",
+        "allowed_interpretation": "Unnormalized summed external model drive", "forbidden_interpretation": "Measured current, conductance or instantaneous voltage", "candidate_observable": "Population-associated postsynaptic GF drive",
+        "compatible_assays": ["intracellular_voltage", "optogenetics"], "operator_status": "NO_VALID_OBSERVATION_OPERATOR_CURRENTLY_DEFINED", "calibration_status": "NOT_CALIBRATABLE_FROM_CURRENT_ASSAY",
+        "temporal_semantics": "Held drive over interval n to n+1", "population_semantics": "146 R and 165 L routes; source mask and state magnitudes matter", "evidence_sources": ["project", "ache", "klapoetke"], "identifiability_status": "DRIVE_TO_PHYSIOLOGICAL_INPUT_TRANSFORM_UNKNOWN", "mapping_ids": ["population_drive"]
+      },
+      {
+        "id": "dnp01_membrane", "model_name": "dnp01_membrane_mv", "source_class": "NEUROFLY_MODEL_STATE", "model_units": "mV_eq",
+        "allowed_interpretation": "Point-neuron LIF membrane coordinate", "forbidden_interpretation": "Absolute biological mV or measured GF soma voltage", "candidate_observable": "Baseline-relative intracellular GF voltage",
+        "compatible_assays": ["intracellular_voltage"], "operator_status": "OBSERVABLE_WITH_UNKNOWN_TRANSFORM", "calibration_status": "UNCALIBRATED",
+        "temporal_semantics": "Interval n produces boundary n+1 membrane; stored spikes reset coordinate", "population_semantics": "10001/R and 10010/L retained separately; soma vs point-neuron mismatch", "evidence_sources": ["project", "ache", "klapoetke", "namiki"], "identifiability_status": "TARGET_SCALE_FILTER_AND_STIMULUS_ALIGNMENT_UNKNOWN", "mapping_ids": ["gf_relative_voltage", "gf_absolute_voltage"]
+      },
+      {
+        "id": "dnp01_spikes", "model_name": "DNp01 SpikeEvent", "source_class": "NEUROFLY_MODEL_STATE", "model_units": "event_step_and_ms",
+        "allowed_interpretation": "Model threshold-crossing event class", "forbidden_interpretation": "Biologically calibrated latency or spike waveform", "candidate_observable": "Identified GF action-potential occurrence/time",
+        "compatible_assays": ["intracellular_voltage", "extracellular_spikes"], "operator_status": "QUALITATIVELY_COMPARABLE_ONLY", "calibration_status": "NOT_CALIBRATABLE_FROM_CURRENT_ASSAY",
+        "temporal_semantics": "Crossing in interval n stamps event at n+1; no within-step timing", "population_semantics": "Target identity retained; experimental spike sorting/identification required", "evidence_sources": ["project", "ache", "von_reyn", "kadas"], "identifiability_status": "EVENT_CLASS_SUPPORTED_CURRENT_STIMULUS_TIME_MAP_UNKNOWN", "mapping_ids": ["gf_spike_events"]
+      },
+      {
+        "id": "ttmn_state", "model_name": "TTMn integrator state", "source_class": "NEUROFLY_MODEL_STATE", "model_units": "dimensionless_state",
+        "allowed_interpretation": "Decaying event-driven model accumulator", "forbidden_interpretation": "TTMn voltage or measured spike rate", "candidate_observable": "TTMn neural response only with a separately justified state mapping",
+        "compatible_assays": [], "operator_status": "NO_VALID_OBSERVATION_OPERATOR_CURRENTLY_DEFINED", "calibration_status": "NOT_CALIBRATABLE_FROM_CURRENT_ASSAY",
+        "temporal_semantics": "Decay then same-boundary event injection; model crossing output", "population_semantics": "800146/R and 804642/L independent", "evidence_sources": ["project", "kadas"], "identifiability_status": "STATE_TO_MOTOR_PHYSIOLOGY_UNDEFINED", "mapping_ids": ["motor_state"]
+      },
+      {
+        "id": "electrical_input_token", "model_name": "abstract electrical-input token", "source_class": "NEUROFLY_MODEL_STATE", "model_units": "abstract_event_count",
+        "allowed_interpretation": "Receipt-derived causal software input", "forbidden_interpretation": "Released quantum, synaptic success or measured electrical pulse", "candidate_observable": null,
+        "compatible_assays": [], "operator_status": "NOT_A_BIOLOGICAL_OBSERVABLE", "calibration_status": "NOT_APPLICABLE",
+        "temporal_semantics": "Zero-added-model-delay receipt-to-token at same boundary", "population_semantics": "Source body/side/proxy ancestry retained", "evidence_sources": ["project"], "identifiability_status": "SEMANTIC_TOKEN_NO_EMPIRICAL_EQUIVALENCE", "mapping_ids": ["abstract_token"]
+      },
+      {
+        "id": "g1_proxy", "model_name": "voltage_deviation_mV_eq / proxy_voltage_mV_eq", "source_class": "NEUROFLY_MODEL_STATE", "model_units": "mV_eq",
+        "allowed_interpretation": "Passive electrical-shaped proxy, neutral reference origin", "forbidden_interpretation": "Measured G1 voltage, quanta or whole-TTM response", "candidate_observable": "Protocol-matched intracellular G1 evoked deflection",
+        "compatible_assays": ["muscle_ephys"], "operator_status": "OBSERVABLE_WITH_UNKNOWN_TRANSFORM", "calibration_status": "UNCALIBRATED",
+        "temporal_semantics": "Decay then boundary token increment; no empirical NMJ delay", "population_semantics": "Independent TTMn-associated proxy instances, not verified G1 fiber identity", "evidence_sources": ["project", "koenig", "kadas"], "identifiability_status": "FIBER_PROTOCOL_INPUT_SCALE_AND_OPERATOR_UNMATCHED", "mapping_ids": ["g1_evoked_deflection"]
+      },
+      {
+        "id": "activation_proxy", "model_name": "activation_proxy", "source_class": "NEUROFLY_MODEL_STATE", "model_units": "dimensionless_0_to_1",
+        "allowed_interpretation": "Static rectified/clipped electrical-proxy normalization", "forbidden_interpretation": "Calcium activation, contraction fraction or force", "candidate_observable": null,
+        "compatible_assays": [], "operator_status": "NO_VALID_OBSERVATION_OPERATOR_CURRENTLY_DEFINED", "calibration_status": "NOT_CALIBRATABLE_FROM_CURRENT_ASSAY",
+        "temporal_semantics": "Same-boundary pointwise mapping, no new state", "population_semantics": "Two causal proxy instances, not whole-muscle activation measurement", "evidence_sources": ["project"], "identifiability_status": "NO_MATCHED_ACTIVATION_OBSERVABLE", "mapping_ids": ["activation"]
+      },
+      {
+        "id": "actuator_command", "model_name": "RIGHT_TTM_ACTUATOR / LEFT_TTM_ACTUATOR", "source_class": "NEUROFLY_MODEL_STATE", "model_units": "dimensionless_0_to_1",
+        "allowed_interpretation": "Virtual functional addressing with exact magnitude passthrough", "forbidden_interpretation": "Physical joint command, contraction or force", "candidate_observable": null,
+        "compatible_assays": [], "operator_status": "NOT_A_BIOLOGICAL_OBSERVABLE", "calibration_status": "NOT_APPLICABLE",
+        "temporal_semantics": "Same boundary as activation, no dynamics", "population_semantics": "Side-preserving virtual actuator identities", "evidence_sources": ["project"], "identifiability_status": "FUNCTIONAL_SOFTWARE_COMMAND_ONLY", "mapping_ids": ["actuator"]
+      },
+      {
+        "id": "planar_body", "model_name": "x_world_eq / z_world_eq", "source_class": "NEUROFLY_MODEL_STATE", "model_units": "world_eq",
+        "allowed_interpretation": "Exploratory fixed-heading planar kinematic state", "forbidden_interpretation": "Millimeters, biological jump distance or takeoff velocity", "candidate_observable": "Tracked body position in a matched preparation",
+        "compatible_assays": ["behavior"], "operator_status": "OBSERVABLE_WITH_UNKNOWN_TRANSFORM", "calibration_status": "UNCALIBRATED",
+        "temporal_semantics": "Boundary n command drives interval n to n+1; no final outgoing interval", "population_semantics": "One body per run; mean bilateral drive, no steering/contact", "evidence_sources": ["project", "ache"], "identifiability_status": "SPATIAL_AND_BIOMECHANICAL_TRANSFORM_UNDEFINED", "mapping_ids": ["body_tracking"]
+      },
+      {
+        "id": "threshold_margin", "model_name": "threshold_mV_eq - membrane_mV_eq", "source_class": "DERIVED_MODEL_DIAGNOSTIC", "model_units": "mV_eq",
+        "allowed_interpretation": "Distance to pinned model threshold", "forbidden_interpretation": "Measured physiological threshold margin", "candidate_observable": null,
+        "compatible_assays": [], "operator_status": "NO_VALID_OBSERVATION_OPERATOR_CURRENTLY_DEFINED", "calibration_status": "NOT_CALIBRATABLE_FROM_CURRENT_ASSAY",
+        "temporal_semantics": "Boundary diagnostic using pinned threshold", "population_semantics": "Per-DNp01 model identity", "evidence_sources": ["project"], "identifiability_status": "BIOLOGICAL_THRESHOLD_MEASUREMENT_NOT_MATCHED", "mapping_ids": ["margin"]
+      },
+      {
+        "id": "presentation_position", "model_name": "render-only interpolated scene transform", "source_class": "MODEL_SPACE_PRESENTATION_VALUE", "model_units": "presentation_units",
+        "allowed_interpretation": "Display mapping of neighboring authoritative snapshots", "forbidden_interpretation": "Scientific state or sensor feedback", "candidate_observable": null,
+        "compatible_assays": [], "operator_status": "NOT_A_BIOLOGICAL_OBSERVABLE", "calibration_status": "NOT_APPLICABLE",
+        "temporal_semantics": "Display clock separate from scientific time", "population_semantics": "Render objects only, never assay populations", "evidence_sources": ["project"], "identifiability_status": "NOT_APPLICABLE", "mapping_ids": ["presentation"]
+      }
+    ],
+    "assay_types": ["anatomy", "calcium", "intracellular_voltage", "extracellular_spikes", "optogenetics", "muscle_ephys", "behavior"],
+    "assays": [
+      {
+        "id": "male_connectome", "assay_type": "anatomy", "evidence_sources": ["malecns", "neuprint"], "source_class": "MALECNS_STRUCTURAL_DATA",
+        "neuron_population": "Pinned male CNS bodies and routes", "preparation": "Male D. melanogaster EM reconstruction", "stimulus": "NOT_APPLICABLE", "observable": "Synaptic partner counts and column records", "units": "count_and_reconstruction_coordinates", "baseline": "NOT_APPLICABLE", "time_reference": "Static dataset version", "temporal_resolution": "NOT_APPLICABLE", "population_aggregation": "Exact source-target pairs, dataset filtering", "reported_result": "Structural topology and identity", "data_form": "PINNED_MACHINE_READABLE_SOURCE", "data_sufficiency": "INCOMPATIBLE", "relevance": "Structural lookup only; incompatible with transfer calibration", "limitations": "No physiological magnitude; confidence/reconstruction limits"
+      },
+      {
+        "id": "ache_gf_voltage", "assay_type": "intracellular_voltage", "evidence_sources": ["ache"], "source_class": "PRIMARY_PHYSIOLOGICAL_MEASUREMENT",
+        "neuron_population": "Right GF with LC4/LPLC2-associated population perturbations", "preparation": "Tethered D. melanogaster females 3-5 days; soma current clamp", "stimulus": "Projected dark disk 10 to 90 degrees, r/v 10-80 ms; silencing contexts separate", "observable": "GF voltage waveform, relative components and spikes", "units": "biological_mV_and_ms", "baseline": "Recorded rest; no holding current; junction correction absent", "time_reference": "Measured visual onset and loom/TTC reference must be supplied", "temporal_resolution": "20 kHz digitization, 10 kHz low-pass, 360 Hz visual projector", "population_aggregation": "Across-fly traces and silencing-defined components, not per-MaleCNS body", "reported_result": "Complementary size/velocity pathway contributions", "data_form": "PUBLISHED_TRACES_AND_SUMMARIES_RAW_SYNCHRONIZED_TRIAL_DATA_NOT_LOCATED_IN_THIS_AUDIT", "data_sufficiency": "SUFFICIENT_FOR_OPERATOR_DESIGN_ONLY", "relevance": "Closest candidate target voltage assay", "limitations": "Unknown source-state/target-scale mapping and experimental stimulus registration"
+      },
+      {
+        "id": "lplc2_opto_gf", "assay_type": "optogenetics", "evidence_sources": ["klapoetke"], "source_class": "OPTOGENETIC_MANIPULATION",
+        "neuron_population": "Population LPLC2 stimulation; GF voltage readout", "preparation": "Tethered females 3-5 days; legs cut/glued, exposed GF soma", "stimulus": "595 nm 50 ms pulse every 30 s", "observable": "GF current-clamp depolarization, not optical activation magnitude", "units": "biological_mV_and_ms", "baseline": "No injected current; uncorrected junction potential; per-trial rest needed", "time_reference": "Optical trigger distinct from visual stimulus onset", "temporal_resolution": "40 kHz digitization, 10 kHz low-pass", "population_aggregation": "N=4 flies/group; unknown activated-body state distribution", "reported_result": "Rapid excitatory population-associated response", "data_form": "PUBLISHED_TRACES_AND_PEAKS", "data_sufficiency": "QUALITATIVE_ONLY", "relevance": "Connectivity/sign, not k from voltage divided by x", "limitations": "Actuator expression, illumination and presynaptic activation map unknown"
+      },
+      {
+        "id": "lplc2_calcium", "assay_type": "calcium", "evidence_sources": ["klapoetke"], "source_class": "CALCIUM_IMAGING_MEASUREMENT",
+        "neuron_population": "LPLC2 axon terminals and individual axon ROIs", "preparation": "Mounted females 2-5 days; optical imaging preparation", "stimulus": "Visual expansion/radial-motion protocols; protocol-specific RF-centered stimuli", "observable": "Fluorescence, not voltage or source release", "units": "deltaF_over_F_or_peak_normalized_deltaF", "baseline": "Terminal 2 s prestimulus fluorescence; single-axon peak normalization differs", "time_reference": "Motion onset and offset, acquisition timestamps required", "temporal_resolution": "Indicator/acquisition filtering; 300 ms peak averaging window, 500 ms post-motion search", "population_aggregation": "Declared axon/terminal ROI and trial/cell averaging", "reported_result": "Looming-selective sensory responses", "data_form": "PUBLISHED_CURVES_AND_METHODS_NO_FIGURE_DIGITIZATION", "data_sufficiency": "SUFFICIENT_FOR_OPERATOR_DESIGN_ONLY", "relevance": "Candidate sensory observation model", "limitations": "Unknown x-to-activity/calcium/indicator transform, RF/body crosswalk and raw data"
+      },
+      {
+        "id": "lc4_functional", "assay_type": "intracellular_voltage", "evidence_sources": ["von_reyn", "ache"], "source_class": "PRIMARY_PHYSIOLOGICAL_MEASUREMENT",
+        "neuron_population": "LC4-associated GF response, not LC4 intracellular source trace", "preparation": "D. melanogaster in vivo; inherited assay details require dataset-specific verification", "stimulus": "Looming with LC4 removal/manipulation", "observable": "Target GF feature-dependent response", "units": "biological_voltage_and_behavioral_observables", "baseline": "Dataset-specific; not silently inherited from LPLC2 imaging", "time_reference": "Visual onset/TTC protocol required", "temporal_resolution": "Unknown for an independently acquired source trace", "population_aggregation": "Population perturbation, not identified-body response", "reported_result": "LC4-associated velocity component", "data_form": "PRIMARY_PUBLICATION_AND_COMPONENT_TRACES", "data_sufficiency": "QUALITATIVE_ONLY", "relevance": "Functional LC4 pathway, not direct source x calibration", "limitations": "No matched LC4 source-state calcium/ephys dataset located in bounded audit"
+      },
+      {
+        "id": "g1_intracellular", "assay_type": "muscle_ephys", "evidence_sources": ["koenig", "project"], "source_class": "PRIMARY_PHYSIOLOGICAL_MEASUREMENT",
+        "neuron_population": "TTM G1 fiber, not whole TTM or pinned TTMn body", "preparation": "Adult D. melanogaster; detailed protocol held under Phase 8S, not newly fully source-verified", "stimulus": "Evoked and spontaneous protocols must remain separate", "observable": "Intracellular G1 potentials and protocol-specific derived release measures", "units": "biological_mV_with_separate_quantal_measures", "baseline": "Recorded G1 prestimulus voltage; neutral proxy origin is not baseline", "time_reference": "Stimulus trigger and response window unresolved for proposed matched comparison", "temporal_resolution": "UNRESOLVED_FOR_MATCHED_TRACE", "population_aggregation": "One fiber; no whole-muscle averaging equivalence", "reported_result": "G1 intracellular physiology exists", "data_form": "PRIMARY_ABSTRACT_AND_PRIOR_CURATED_RECORDS_FULL_PROTOCOL_NOT_NEWLY_ACCESSED", "data_sufficiency": "QUALITATIVE_ONLY", "relevance": "Possible evoked-deflection operator scaffold only", "limitations": "No raw protocol-matched trace; miniature/recycling not in passive proxy"
+      },
+      {
+        "id": "ttm_composite_latency", "assay_type": "muscle_ephys", "evidence_sources": ["kadas"], "source_class": "PRIMARY_PHYSIOLOGICAL_MEASUREMENT",
+        "neuron_population": "Stimulated thoracic motor region to recorded TTM potential", "preparation": "D. melanogaster both sexes, age-specific 1h/24h post-eclosion controls", "stimulus": "Tungsten electrical stimulation in thorax or eyes", "observable": "Composite latency to muscle AP onset", "units": "ms", "baseline": "Reference electrode; onset detection, not intracellular resting voltage", "time_reference": "Electrical trigger", "temporal_resolution": "300 Hz to 10 kHz amplifier band; digitizer sample rate not assigned here", "population_aggregation": "Preparation-level mean/SEM, not specific fiber or source body", "reported_result": "24h TTMn-TTM latency 0.84 +/- 0.02 ms, n=8", "data_form": "OPEN_METHODS_TABLE_AND_TRACES", "data_sufficiency": "INCOMPATIBLE", "relevance": "Composite pathway context, not token delay calibration", "limitations": "Not isolated NMJ delay or intracellular G1 waveform"
+      },
+      {
+        "id": "loom_behavior", "assay_type": "behavior", "evidence_sources": ["ache"], "source_class": "BEHAVIORAL_OBSERVATION",
+        "neuron_population": "Whole fly behavior under pathway manipulation", "preparation": "Freely behaving D. melanogaster, not fixed soma recording", "stimulus": "Projected looming stimulus", "observable": "Takeoff sequence and trial fractions", "units": "time_and_categorical_behavior", "baseline": "Protocol-defined pre-response behavior", "time_reference": "Video and stimulus reference required", "temporal_resolution": "6000 Hz high-speed recording", "population_aggregation": "Trial/fly outcomes, not source-body summation", "reported_result": "Pathway-dependent behavioral responses", "data_form": "PUBLISHED_VIDEO_ANALYSIS_AND_SUMMARIES", "data_sufficiency": "INCOMPATIBLE", "relevance": "Future downstream qualitative validation only", "limitations": "Current planar plant has no calibrated takeoff/contact mechanics"
+      }
+    ],
+    "mappings": [
+      {"id": "structural_count_lookup", "variable_id": "structural_edge_count", "assay_id": "male_connectome", "operator_form": "lookup(dataset_version, source_body, target_body)", "operator_status": "DIRECTLY_OBSERVABLE", "calibration_status": "NOT_APPLICABLE", "preprocessing": "Pinned confidence/filter/reconstruction and exact IDs", "missing": [], "numerical_biological_comparison_allowed": false},
+      {"id": "exposure_registration", "variable_id": "relative_column_exposure", "assay_id": "lplc2_calcium", "operator_form": "registered_world_to_retina_to_RF_coverage(e_i)", "operator_status": "OBSERVABLE_WITH_UNKNOWN_TRANSFORM", "calibration_status": "UNCALIBRATED", "preprocessing": "Match retinal angular stimulus, side and RF/ROI registration", "missing": ["absolute_visual_registration", "body_RF_crosswalk", "coverage_definition"], "numerical_biological_comparison_allowed": false},
+      {"id": "sensory_calcium", "variable_id": "sensory_state", "assay_id": "lplc2_calcium", "operator_form": "sample(normalize(indicator(calcium(activity_map_type(x_i))))) then declared ROI aggregation", "operator_status": "OBSERVABLE_WITH_UNKNOWN_TRANSFORM", "calibration_status": "UNCALIBRATED", "preprocessing": "Indicator nonlinearity/filter, neuropil/background, bleaching, baseline, ROI and sampling declared", "missing": ["source_activity_map", "calcium_kinetics", "indicator_transfer", "LC4_specific_assay", "raw_ROI_trials"], "numerical_biological_comparison_allowed": false},
+      {"id": "sensory_voltage", "variable_id": "sensory_state", "assay_id": "lc4_functional", "operator_form": "source_voltage_map_type(x_i) followed by electrode/filter/sample operator", "operator_status": "NO_VALID_OBSERVATION_OPERATOR_CURRENTLY_DEFINED", "calibration_status": "NOT_CALIBRATABLE_FROM_CURRENT_ASSAY", "preprocessing": "Must acquire source recording; current assay measures target GF", "missing": ["matched_source_voltage_assay", "source_state_map", "electrode_scale"], "numerical_biological_comparison_allowed": false},
+      {"id": "source_effect", "variable_id": "sensory_contribution", "assay_id": "ache_gf_voltage", "operator_form": "source_activity_and_target_measurement_operator(d_i, circuit_context)", "operator_status": "NO_VALID_OBSERVATION_OPERATOR_CURRENTLY_DEFINED", "calibration_status": "NOT_CALIBRATABLE_FROM_CURRENT_ASSAY", "preprocessing": "Separate controlled source activation from population silencing effects", "missing": ["single_source_activation", "source_state_scale", "target_scale", "circuit_context"], "numerical_biological_comparison_allowed": false},
+      {"id": "population_drive", "variable_id": "aggregate_drive", "assay_id": "lplc2_opto_gf", "operator_form": "source_population_activation_map plus physiological_target_input_map(D_j)", "operator_status": "NO_VALID_OBSERVATION_OPERATOR_CURRENTLY_DEFINED", "calibration_status": "NOT_CALIBRATABLE_FROM_CURRENT_ASSAY", "preprocessing": "Declare driver expression/illumination, activated population and physiological readout", "missing": ["opto_to_per_body_activity", "population_operator", "drive_to_input_transform"], "numerical_biological_comparison_allowed": false},
+      {"id": "gf_relative_voltage", "variable_id": "dnp01_membrane", "assay_id": "ache_gf_voltage", "operator_form": "y(t)=sample(filter(a*(V_eq(aligned_t)-B_eq))) relative to measured biological prestimulus baseline", "operator_status": "OBSERVABLE_WITH_UNKNOWN_TRANSFORM", "calibration_status": "UNCALIBRATED", "preprocessing": "Declare baseline window, stimulus clock, electrode/filter, spike masking and per-trial aggregation", "missing": ["voltage_deflection_scale", "soma_to_point_state_map", "stimulus_registration", "synchronized_trial_traces"], "numerical_biological_comparison_allowed": false},
+      {"id": "gf_absolute_voltage", "variable_id": "dnp01_membrane", "assay_id": "ache_gf_voltage", "operator_form": "y_abs(t)=relative_voltage_operator(V_eq)+b", "operator_status": "OBSERVABLE_WITH_UNKNOWN_TRANSFORM", "calibration_status": "UNCALIBRATED", "preprocessing": "Record resting drift, liquid junction convention and electrode offset; no preset offset", "missing": ["all_relative_operator_requirements", "biological_baseline_offset", "junction_convention"], "numerical_biological_comparison_allowed": false},
+      {"id": "gf_spike_events", "variable_id": "dnp01_spikes", "assay_id": "ache_gf_voltage", "operator_form": "event_count_or_times after shared stimulus_clock and detection operator", "operator_status": "QUALITATIVELY_COMPARABLE_ONLY", "calibration_status": "NOT_CALIBRATABLE_FROM_CURRENT_ASSAY", "preprocessing": "Identify GF, detector/sorting, trial repeats, onset clock and model dt uncertainty", "missing": ["shared_stimulus_reference", "experimental_detection", "trial_distribution"], "numerical_biological_comparison_allowed": false},
+      {"id": "motor_state", "variable_id": "ttmn_state", "assay_id": "ttm_composite_latency", "operator_form": null, "operator_status": "NO_VALID_OBSERVATION_OPERATOR_CURRENTLY_DEFINED", "calibration_status": "NOT_CALIBRATABLE_FROM_CURRENT_ASSAY", "preprocessing": "Reject muscle latency as motor-neuron state", "missing": ["motor_neuron_state_observation_model"], "numerical_biological_comparison_allowed": false},
+      {"id": "abstract_token", "variable_id": "electrical_input_token", "assay_id": null, "operator_form": null, "operator_status": "NOT_A_BIOLOGICAL_OBSERVABLE", "calibration_status": "NOT_APPLICABLE", "preprocessing": "Software ancestry inspection only", "missing": [], "numerical_biological_comparison_allowed": false},
+      {"id": "g1_evoked_deflection", "variable_id": "g1_proxy", "assay_id": "g1_intracellular", "operator_form": "sample(filter(a_g1*(u_eq-B_eq))) in declared evoked window", "operator_status": "OBSERVABLE_WITH_UNKNOWN_TRANSFORM", "calibration_status": "UNCALIBRATED", "preprocessing": "Match G1 fiber, input stimulus, baseline, temperature/genotype and evoked vs miniature protocol", "missing": ["fiber_mapping", "voltage_scale", "stimulus_to_token_mapping", "original_protocol_and_trace"], "numerical_biological_comparison_allowed": false},
+      {"id": "activation", "variable_id": "activation_proxy", "assay_id": null, "operator_form": null, "operator_status": "NO_VALID_OBSERVATION_OPERATOR_CURRENTLY_DEFINED", "calibration_status": "NOT_CALIBRATABLE_FROM_CURRENT_ASSAY", "preprocessing": "Do not reinterpret normalized voltage as measured activation", "missing": ["matched_activation_definition_and_assay"], "numerical_biological_comparison_allowed": false},
+      {"id": "actuator", "variable_id": "actuator_command", "assay_id": null, "operator_form": null, "operator_status": "NOT_A_BIOLOGICAL_OBSERVABLE", "calibration_status": "NOT_APPLICABLE", "preprocessing": "Virtual command semantics only", "missing": [], "numerical_biological_comparison_allowed": false},
+      {"id": "body_tracking", "variable_id": "planar_body", "assay_id": "loom_behavior", "operator_form": "camera_projection(spatial_map(x_world_eq,z_world_eq), orientation_and_reference)", "operator_status": "OBSERVABLE_WITH_UNKNOWN_TRANSFORM", "calibration_status": "UNCALIBRATED", "preprocessing": "Coordinate/length calibration, camera, body landmark, behavior and stimulus match", "missing": ["spatial_scale", "biomechanical_mapping", "matched_tracking_trials"], "numerical_biological_comparison_allowed": false},
+      {"id": "margin", "variable_id": "threshold_margin", "assay_id": null, "operator_form": null, "operator_status": "NO_VALID_OBSERVATION_OPERATOR_CURRENTLY_DEFINED", "calibration_status": "NOT_CALIBRATABLE_FROM_CURRENT_ASSAY", "preprocessing": "Model diagnostic only; no threshold matching", "missing": ["matched_physiological_threshold_and_voltage_operator"], "numerical_biological_comparison_allowed": false},
+      {"id": "presentation", "variable_id": "presentation_position", "assay_id": null, "operator_form": null, "operator_status": "NOT_A_BIOLOGICAL_OBSERVABLE", "calibration_status": "NOT_APPLICABLE", "preprocessing": "Never compare display interpolation or six-second playback as science", "missing": [], "numerical_biological_comparison_allowed": false}
+    ],
+    "compatibility_matrix": {
+      "semantics": "DIRECT means same pinned structural quantity only; TRANSFORM_REQUIRED is conditional and currently NOT numeric-ready; optogenetics is manipulation not measurement; QUALITATIVE_ONLY never enables numerical calibration",
+      "rows": [
+        {"variable_id": "structural_edge_count", "cells": ["DIRECT", "INCOMPATIBLE", "INCOMPATIBLE", "INCOMPATIBLE", "NOT_APPLICABLE", "INCOMPATIBLE", "INCOMPATIBLE"]},
+        {"variable_id": "relative_column_exposure", "cells": ["QUALITATIVE_ONLY", "TRANSFORM_REQUIRED", "INCOMPATIBLE", "INCOMPATIBLE", "QUALITATIVE_ONLY", "INCOMPATIBLE", "INCOMPATIBLE"]},
+        {"variable_id": "sensory_state", "cells": ["INCOMPATIBLE", "TRANSFORM_REQUIRED", "TRANSFORM_REQUIRED", "INCOMPATIBLE", "QUALITATIVE_ONLY", "INCOMPATIBLE", "INCOMPATIBLE"]},
+        {"variable_id": "sensory_contribution", "cells": ["INCOMPATIBLE", "INCOMPATIBLE", "TRANSFORM_REQUIRED", "INCOMPATIBLE", "QUALITATIVE_ONLY", "INCOMPATIBLE", "INCOMPATIBLE"]},
+        {"variable_id": "aggregate_drive", "cells": ["INCOMPATIBLE", "INCOMPATIBLE", "TRANSFORM_REQUIRED", "INCOMPATIBLE", "QUALITATIVE_ONLY", "INCOMPATIBLE", "INCOMPATIBLE"]},
+        {"variable_id": "dnp01_membrane", "cells": ["INCOMPATIBLE", "INCOMPATIBLE", "TRANSFORM_REQUIRED", "INCOMPATIBLE", "QUALITATIVE_ONLY", "INCOMPATIBLE", "INCOMPATIBLE"]},
+        {"variable_id": "dnp01_spikes", "cells": ["INCOMPATIBLE", "INCOMPATIBLE", "QUALITATIVE_ONLY", "QUALITATIVE_ONLY", "QUALITATIVE_ONLY", "INCOMPATIBLE", "INCOMPATIBLE"]},
+        {"variable_id": "ttmn_state", "cells": ["INCOMPATIBLE", "INCOMPATIBLE", "INCOMPATIBLE", "INCOMPATIBLE", "QUALITATIVE_ONLY", "INCOMPATIBLE", "INCOMPATIBLE"]},
+        {"variable_id": "electrical_input_token", "cells": ["NOT_APPLICABLE", "NOT_APPLICABLE", "NOT_APPLICABLE", "NOT_APPLICABLE", "NOT_APPLICABLE", "NOT_APPLICABLE", "NOT_APPLICABLE"]},
+        {"variable_id": "g1_proxy", "cells": ["INCOMPATIBLE", "INCOMPATIBLE", "INCOMPATIBLE", "INCOMPATIBLE", "INCOMPATIBLE", "TRANSFORM_REQUIRED", "INCOMPATIBLE"]},
+        {"variable_id": "activation_proxy", "cells": ["INCOMPATIBLE", "INCOMPATIBLE", "INCOMPATIBLE", "INCOMPATIBLE", "INCOMPATIBLE", "INCOMPATIBLE", "INCOMPATIBLE"]},
+        {"variable_id": "actuator_command", "cells": ["NOT_APPLICABLE", "NOT_APPLICABLE", "NOT_APPLICABLE", "NOT_APPLICABLE", "NOT_APPLICABLE", "NOT_APPLICABLE", "NOT_APPLICABLE"]},
+        {"variable_id": "planar_body", "cells": ["INCOMPATIBLE", "INCOMPATIBLE", "INCOMPATIBLE", "INCOMPATIBLE", "QUALITATIVE_ONLY", "INCOMPATIBLE", "TRANSFORM_REQUIRED"]},
+        {"variable_id": "threshold_margin", "cells": ["INCOMPATIBLE", "INCOMPATIBLE", "TRANSFORM_REQUIRED", "INCOMPATIBLE", "INCOMPATIBLE", "INCOMPATIBLE", "INCOMPATIBLE"]},
+        {"variable_id": "presentation_position", "cells": ["NOT_APPLICABLE", "NOT_APPLICABLE", "NOT_APPLICABLE", "NOT_APPLICABLE", "NOT_APPLICABLE", "NOT_APPLICABLE", "NOT_APPLICABLE"]}
+      ]
+    },
+    "population_operator_candidates": [
+      {"name": "SUM", "meaning": "Add declared compatible assay-space source quantities", "requirement": "Matched scale and source membership; not automatically light intensity sum"},
+      {"name": "MEAN", "meaning": "Mean over a declared complete or sampled population", "requirement": "Denominator/missing-source policy and ROI correspondence fixed"},
+      {"name": "ACTIVE_FRACTION", "meaning": "Fraction meeting an assay-defined activity criterion", "requirement": "Detector threshold and population denominator; not mean amplitude"},
+      {"name": "WEIGHTED_MEAN", "meaning": "Assay-defined ROI/sample weighting", "requirement": "Independent optical/sampling justification; no contact-count weights"},
+      {"name": "PEAK", "meaning": "Peak of a defined trace/aggregation in fixed window", "requirement": "Order of peak and aggregation fixed; peak of mean differs from mean of peaks"},
+      {"name": "POPULATION_INTEGRAL", "meaning": "Time integral of declared population trace", "requirement": "Window and units include time; not per-body efficacy"}
+    ],
+    "identifiability": {
+      "chain": [
+        {"arrow": "model_sensory_state_to_presynaptic_biological_activity", "status": "UNKNOWN_TRANSFORM"},
+        {"arrow": "presynaptic_activity_to_postsynaptic_effect", "status": "QUALITATIVELY_CONSTRAINED"},
+        {"arrow": "identified_source_activity_to_unitary_GF_effect", "status": "NOT_MEASURED"},
+        {"arrow": "physiological_voltage_to_electrode_sample_process", "status": "KNOWN", "limitation": "Protocol process described, raw timestamps/baseline/corrections still needed"},
+        {"arrow": "current_model_drive_to_measured_GF_voltage", "status": "UNKNOWN_TRANSFORM"}
+      ],
+      "absolute_transfer_magnitude": "NOT_NUMERICALLY_IDENTIFIABLE",
+      "relative_LC4_LPLC2_efficacy": "NON_IDENTIFIABLE_FROM_CURRENT_EVIDENCE",
+      "reason": "Population feature differences and perturbation amplitudes do not resolve per-body efficacy or latent state scale",
+      "required_calibration_data": ["source_state_observation_model", "matched_source_population_activity", "synchronized_GF_trials_and_stimulus", "target_measurement_transform", "assay_aggregation_and_noise_metadata"],
+      "future_objective_rule": "ASSAY_BASED_ONLY_NEVER_SPIKE_MOVEMENT_OR_ESCAPE_TARGET",
+      "future_calibration_protocol": null
+    },
+    "evidence_sources": [
+      {"id": "project", "category": "REPOSITORY_MODEL_AUTHORITY", "reference": "Phase 19 review and audited domain kernels/DTOs", "limitations": "Model behavior is not calibration evidence"},
+      {"id": "ache", "category": "PRIMARY_PUBLICATION", "doi": "10.1016/j.cub.2019.01.079", "url": "https://www.researchgate.net/publication/331408732_Neural_Basis_for_Looming_Size_and_Velocity_Encoding_in_the_Drosophila_Giant_Fiber_Escape_Pathway", "access": "AUTHOR_UPLOADED_FULL_PRIMARY_TEXT", "limitations": "Population GF recording; source-state observation operator absent"},
+      {"id": "klapoetke", "category": "PRIMARY_PUBLICATION", "doi": "10.1038/nature24626", "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7457385/", "access": "OPEN_FULL_PRIMARY_TEXT", "limitations": "Calcium ROI and population optogenetic amplitude not per-body efficacy"},
+      {"id": "von_reyn", "category": "PRIMARY_PUBLICATION", "doi": "10.1016/j.neuron.2017.05.036", "url": "https://www.sciencedirect.com/science/article/pii/S0896627317304749", "access": "PRIMARY_PUBLISHER_SUMMARY_WITH_ACHE_REANALYSIS_CONTEXT", "limitations": "No raw source-state recording established"},
+      {"id": "namiki", "category": "PRIMARY_PUBLICATION", "doi": "10.7554/eLife.34272", "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6019073/", "access": "OPEN_FULL_PRIMARY_TEXT", "limitations": "GF equals DNp01 type, not exact experimental-to-MaleCNS body equivalence"},
+      {"id": "koenig", "category": "PRIMARY_PUBLICATION", "doi": "10.1152/jn.01258.2006", "url": "https://pubmed.ncbi.nlm.nih.gov/17392409/", "access": "PRIMARY_ABSTRACT_AND_INDEXED_PASSAGES_PUBLISHER_FULL_RETRIEVAL_FAILED", "limitations": "No new protocol completeness or numerical target claim"},
+      {"id": "kadas", "category": "PRIMARY_PUBLICATION", "doi": "10.1523/ENEURO.0181-19.2019", "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6709211/", "access": "OPEN_FULL_PRIMARY_TEXT", "limitations": "Composite motor-to-muscle latency, not NMJ alone"},
+      {"id": "neuprint", "category": "OFFICIAL_SCHEMA", "url": "https://github.com/connectome-neuprint/neuPrint/blob/master/pgmspecs.md", "access": "OFFICIAL_GRAPH_SPECIFICATION", "limitations": "Counts only, no physiological observation weights"},
+      {"id": "malecns", "category": "OFFICIAL_DATA", "url": "https://male-cns.janelia.org/download/", "access": "PINNED_LOCAL_SOURCE_AND_OFFICIAL_DOCUMENTATION", "limitations": "Reconstruction identities/topology only"}
+    ],
+    "decisions": {
+      "dnp01_voltage": "DNp01_VOLTAGE_RELATIVE_DEFLECTION_POTENTIALLY_COMPARABLE_WITH_CALIBRATION",
+      "sensory_state": "SENSORY_STATE_ONLY_QUALITATIVELY_COMPARABLE",
+      "calibration_readiness": "ADDITIONAL_ASSAY_MAPPING_REQUIRED",
+      "scientific": "OBSERVATION_OPERATOR_SPECIFIED_CALIBRATION_NOT_READY"
+    },
+    "next_bounded_action": "LOCATE_AND_AUDIT_SYNCHRONIZED_GF_VOLTAGE_STIMULUS_AND_SOURCE_POPULATION_METADATA_AGAINST_THIS_CONTRACT_NO_FITTING",
+    "limitations": ["CONCEPTUAL_OPERATOR_FORMS_NOT_EXECUTABLE_CALIBRATION", "NO_ABSOLUTE_RETINAL_REGISTRATION", "NO_SOURCE_TO_MODEL_STATE_SCALE", "NO_MV_EQ_TO_BIOLOGICAL_MV_SCALE", "NO_CALIBRATED_BODY_GEOMETRY", "NO_RAW_TRIAL_DATA_OR_DIGITIZATION_PERFORMED"]
+  }
+}

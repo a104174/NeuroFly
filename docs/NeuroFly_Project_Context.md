@@ -2393,3 +2393,28 @@ or selecting a replacement gain.
 Phase 19 `PASS`: 1,018 Python tests and 53 frontend regression tests passed;
 focused transfer tests (13), canonical review hash/mutation checks, Ruff,
 format/diff checks and frontend lint/typecheck/build passed. No commit/push.
+
+### Phase 20 — observation-operator and assay compatibility specification
+
+Schema `neurofly_observation_operator_contract_v1`; canonical contract ID
+`ae50e1faad223cdde63125a6216ce0993523f9933025fe1f04e9265450dec824`.
+The isolated JSON/documentation specifies 15 variables, 8 assays, 17 mappings
+and a 15×7 compatibility matrix; no production runtime depends on it.
+
+DNp01 voltage: `DNp01_VOLTAGE_RELATIVE_DEFLECTION_POTENTIALLY_COMPARABLE_WITH_CALIBRATION`.
+Sensory state: `SENSORY_STATE_ONLY_QUALITATIVELY_COMPARABLE`.
+Readiness: `ADDITIONAL_ASSAY_MAPPING_REQUIRED`.
+Decision: `OBSERVATION_OPERATOR_SPECIFIED_CALIBRATION_NOT_READY`.
+GF/DNp01 type equivalence does not establish exact-body/preparation identity.
+Source activity→x, calcium/indicator/ROI, mV_eq→GF voltage, population activation,
+and world_eq→tracked body transforms remain unresolved. Relative voltage may
+remove a constant reference offset but is not numerically calibrated.
+
+See [Phase 20 specification](science/observation_operator_assay_compatibility.md).
+No fitting, digitization, model changes, gain selection or frontend work.
+Exactly one next bounded scientific action: locate/audit synchronized GF voltage,
+stimulus and source-population metadata against the compatibility gates.
+
+Phase 20 `PASS`: 1,022 Python tests (one existing deselection), four focused
+contract tests, 53 frontend regression tests, all five historical replays,
+Ruff/format/diff checks and frontend lint/typecheck/build passed. No commit/push.

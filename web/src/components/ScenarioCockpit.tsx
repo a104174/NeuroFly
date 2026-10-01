@@ -64,7 +64,7 @@ export function ScenarioCockpit({ scenario, initialResult = null, initialError =
   }
   return <main className="scenario-route">
     <Link className="back-link" href="/scenarios">← scenarios</Link>
-    <header className="scenario-heading"><div><p className="eyebrow">{scenario.id === "BASELINE_CONTROL" ? "ZERO-STIMULUS SCIENTIFIC CONTROL" : "ACTIVE CIRCUIT VALIDATION / AUTHORITATIVE PLAYBACK"}</p><h1>{scenario.title}</h1><p>{scenario.id === "BASELINE_CONTROL" ? "No external stimulus is active. Observe the intentional stationary control under the current pinned model." : "An approaching model-space object drives LC4/LPLC2 → DNp01 through the exploratory closed-loop sensory projection."}</p></div>
+    <header className="scenario-heading"><div><p className="eyebrow">{scenario.id === "BASELINE_CONTROL" ? "ZERO-STIMULUS SCIENTIFIC CONTROL" : scenario.id === "LOOMING_WORLD_EXPERIMENT" ? "PRE-REGISTERED MODEL-SPACE WORLD EXPERIMENT" : "ACTIVE CIRCUIT VALIDATION / AUTHORITATIVE PLAYBACK"}</p><h1>{scenario.title}</h1><p>{scenario.id === "BASELINE_CONTROL" ? "No external stimulus is active. Observe the intentional stationary control under the current pinned model." : scenario.id === "LOOMING_WORLD_EXPERIMENT" ? scenario.description : "An approaching model-space object drives LC4/LPLC2 → DNp01 through the exploratory closed-loop sensory projection."}</p></div>
       <button className="scenario-run" disabled={running} onClick={() => startTransition(run)}>{running ? "Preparing validated replay…" : result ? "Run again" : "Run canonical preset"}</button>
     </header>
     {running && <p role="status" className="scenario-pending">Recomputing the canonical causal loop and validating source provenance. This can take several seconds.</p>}

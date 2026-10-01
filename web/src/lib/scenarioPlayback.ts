@@ -1,5 +1,5 @@
 /** Transport validation and render-only playback. No scientific equations. */
-export const SCENARIO_KINDS = ["BASELINE_CONTROL", "LOOMING_CIRCUIT_VALIDATION"] as const;
+export const SCENARIO_KINDS = ["BASELINE_CONTROL", "LOOMING_CIRCUIT_VALIDATION", "LOOMING_WORLD_EXPERIMENT"] as const;
 export type ScenarioKind = typeof SCENARIO_KINDS[number];
 export interface ScenarioDefinition {
   id: ScenarioKind; scenario_kind: ScenarioKind; title: string; description: string;
@@ -29,6 +29,9 @@ export interface ScenarioPlaybackResult {
   statuses: ScenarioScientificStatus; dnp01_body_ids: number[]; total_dnp01_spikes: number;
   frames: ScenarioPlaybackFrame[]; scientific_limitations: string[];
   source_operation: "VALIDATED_CANONICAL_REPLAY";
+  termination?: { status: "COMPLETED_VALID_HORIZON" | "TERMINATED_GEOMETRY_DOMAIN"; step: number; time_ms: number; reason: string | null } | null;
+  requested_duration_ms?: number | null;
+  preregistration_id?: string | null;
 }
 function invalid(): never { throw new Error("Malformed authoritative scenario playback payload."); }
 function record(v: unknown): Record<string, unknown> {
@@ -58,7 +61,7 @@ export function parseScenarioDefinition(v: unknown): ScenarioDefinition {
 }
 export function parseScenarioCatalog(v: unknown): ScenarioDefinition[] {
   const a = array(v, parseScenarioDefinition);
-  if (a.length !== 2 || a.some((s, i) => s.id !== SCENARIO_KINDS[i])) return invalid();
+  if (a.length !== SCENARIO_KINDS.length || a.some((s, i) => s.id !== SCENARIO_KINDS[i])) return invalid();
   return a;
 }
 export function parseScenarioPlayback(v: unknown): ScenarioPlaybackResult {
@@ -100,10 +103,22 @@ export function parseScenarioPlayback(v: unknown): ScenarioPlaybackResult {
   const hash = (v: unknown) => { const s = str(v); return /^[0-9a-f]{64}$/.test(s) ? s : invalid(); };
   const identities = array(r.dnp01_body_ids, integer);
   if (identities.length !== 2 || new Set(identities).size !== 2 || frames.some(f => f.dnp01_spike_body_ids.some(id => !identities.includes(id)))) return invalid();
+  const termination = r.termination == null ? null : (() => {
+    const t = record(r.termination);
+    return { status: literal(t.status, ["COMPLETED_VALID_HORIZON", "TERMINATED_GEOMETRY_DOMAIN"]), step: integer(t.step), time_ms: num(t.time_ms), reason: nullable(t.reason, str) };
+  })();
+  const requested = r.requested_duration_ms == null ? null : num(r.requested_duration_ms);
+  const preregistration = r.preregistration_id == null ? null : hash(r.preregistration_id);
+  if (scenario.id === "LOOMING_WORLD_EXPERIMENT") {
+    if (!termination || requested === null || !preregistration || requested < duration) return invalid();
+    if (Math.abs(termination.time_ms - termination.step * dt) > 1e-9) return invalid();
+    if (termination.status === "COMPLETED_VALID_HORIZON" ? !statuses.closed_loop_execution_completed || termination.step !== frames.at(-1)!.step || requested !== duration || termination.reason !== null : statuses.closed_loop_execution_completed || termination.step !== frames.at(-1)!.step + 1 || termination.reason === null) return invalid();
+  }
   return { schema: literal(r.schema, ["scenario_playback_v1"]), artifact_id: hash(r.artifact_id), run_id: hash(r.run_id),
     scenario, statuses, dt_ms: dt, duration_ms: duration, frames,
     dnp01_body_ids: identities, total_dnp01_spikes: integer(r.total_dnp01_spikes),
     scientific_limitations: array(r.scientific_limitations, str), source_operation: literal(r.source_operation, ["VALIDATED_CANONICAL_REPLAY"]),
+    termination, requested_duration_ms: requested, preregistration_id: preregistration,
   };
 }
 

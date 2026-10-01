@@ -1,0 +1,23 @@
+{
+  "schema_version": "looming_world_experiment_preregistration_v1",
+  "scenario_kind": "LOOMING_WORLD_EXPERIMENT",
+  "purpose": "Observe longer pinned-model transients in a separate exploratory closed-loop model-space world experiment",
+  "dt_ms": 0.1,
+  "duration_ms": 40.0,
+  "interval_count": 400,
+  "body_initial": {"x_world_eq": 0.0, "z_world_eq": 0.0, "fixed_heading": "POSITIVE_Z"},
+  "object": {"object_x_world_eq": 0.0, "object_z_world_eq": 4.0, "radius_world_eq": 1.0, "vx_world_eq_per_ms": 0.0, "vz_world_eq_per_ms": -0.05},
+  "trajectory_rule": "PRESCRIBED_CONSTANT_WORLD_VELOCITY_AFTER_EACH_VALID_INTERVAL",
+  "projection": {"side": "R", "centre_q": 23, "centre_r": 9, "angular_to_lattice_scale": 10, "radius_discretization": "FLOOR"},
+  "termination": {"policy": "STOP_BEFORE_EXPOSURE_ON_INVALID_OR_UNSAFE_GEOMETRY", "minimum_forward_separation_radii": 1.0, "completed_status": "COMPLETED_VALID_HORIZON", "invalid_status": "TERMINATED_GEOMETRY_DOMAIN", "record_attempted_boundary_state": true, "no_clamping_or_padding": true},
+  "source_phase13b_artifact_id": "55e2f4d37bc6f8fb81aee67886d8680a76646a0317961bd90cf0e3fbabb2c46b",
+  "source_model_identity_sha256": "b8f641dbb4ad4cd502161c688f05d40e392ed818a7e4645528991ff2539d8f37",
+  "tick_semantics": "BOUNDARY_SPIKES_TO_COMMANDS_N_SENSORY_N_DRIVES_NEURAL_N_PLUS_1_BODY_N_TO_N_PLUS_1",
+  "parameter_classification": "MODEL_ASSUMPTION_EXPLORATORY_EXPERIMENT_DESIGN",
+  "temporal_rationale": "Two existing 20 ms membrane time constants provide an observation window for model transients; no biological horizon or spike requirement is inferred",
+  "trajectory_rationale": "Keep the existing unit object radius and initial four-radius separation; end at two radii after the frozen horizon, yielding velocity (2-4)/40=-0.05 world_eq/ms",
+  "geometry_proof": "For stationary body and 0<=t<=40, forward separation 4-0.05*t lies in [2,4], strictly above the one-radius safety margin; atan2(1,d) is finite and floor(10*angle) is an integer from 2 through 4, accepted by the existing lattice primitive",
+  "freeze_statement": "All parameters selected and serialized before any neural execution of this new scenario; criteria use model time constants and geometry only, never spike count, threshold crossing, actuation or displacement",
+  "zero_output_accepted": true,
+  "non_goals": ["BIOLOGICAL_TIMING_OR_VELOCITY_CALIBRATION", "ABSOLUTE_RETINAL_REGISTRATION", "SPIKE_OR_MOVEMENT_TARGETING", "PARAMETER_RETUNING", "PHYSICAL_ESCAPE_OR_JUMP_PREDICTION", "SCRIPTED_OR_LLM_CONTROL"]
+}

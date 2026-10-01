@@ -460,9 +460,22 @@ class DownstreamRuntime:
         }
 
 
-def run_closed_loop_scenario(config: ScenarioConfig, sources=None):
+def run_closed_loop_scenario(
+    config: ScenarioConfig,
+    sources=None,
+    *,
+    geometry_guard=None,
+    result_schema=RESULT_SCHEMA,
+):
+    """Shared causal runner; optional guard stops before exposure, never pads state.
+
+    Historical configurations retain their strict schema and unguarded behavior.
+    New experiment contracts own their geometry policy and result version.
+    """
     sources = load_scenario_sources() if sources is None else sources
     configuration = {"scenario": config.payload(), "sources": sources["identity"]}
+    enabled = configuration["scenario"]["stimulus_enabled"]
+    termination = None
     execution_id = canonical_sha256(configuration)
     dt, count = config.dt_ms, config.interval_count
     body = (config.body_x_world_eq, config.body_z_world_eq)
@@ -484,6 +497,10 @@ def run_closed_loop_scenario(config: ScenarioConfig, sources=None):
     drives, contributions, speeds = [], [], []
     ids = [r["body_id"] for r in sources["rows"]]
     for n in range(count + 1):
+        if geometry_guard is not None:
+            termination = geometry_guard(config, body, object_position, n)
+            if termination is not None:
+                break
         geometry, active, exposures = exposure_vector(
             config, body, object_position, sources
         )
@@ -493,13 +510,9 @@ def run_closed_loop_scenario(config: ScenarioConfig, sources=None):
             "time_ms": n * dt,
             "x_world_eq": body[0],
             "z_world_eq": body[1],
-            "object_enabled": config.kind == KINDS[1],
-            "object_x_world_eq": object_position[0]
-            if config.kind == KINDS[1]
-            else None,
-            "object_z_world_eq": object_position[1]
-            if config.kind == KINDS[1]
-            else None,
+            "object_enabled": enabled,
+            "object_x_world_eq": object_position[0] if enabled else None,
+            "object_z_world_eq": object_position[1] if enabled else None,
             "geometry": geometry,
             "active_columns": active,
         }
@@ -535,7 +548,7 @@ def run_closed_loop_scenario(config: ScenarioConfig, sources=None):
                     "x_world_eq": object_position[0],
                     "z_world_eq": object_position[1],
                 }
-                if config.kind == KINDS[1]
+                if enabled
                 else None,
                 "relative_distance_world_eq": geometry["relative_distance_world_eq"]
                 if geometry
@@ -598,12 +611,12 @@ def run_closed_loop_scenario(config: ScenarioConfig, sources=None):
             }
         )
         body = body_interval_step(*body, (n + 1) * dt - n * dt, speed)
-        if config.kind == KINDS[1]:
+        if enabled:
             object_position = (
                 object_position[0] + dt * config.vx_world_eq_per_ms,
                 object_position[1] + dt * config.vz_world_eq_per_ms,
             )
-    movement = any(
+    movement = body != (config.body_x_world_eq, config.body_z_world_eq) or any(
         (b["x_world_eq"], b["z_world_eq"])
         != (config.body_x_world_eq, config.body_z_world_eq)
         for b in boundaries
@@ -612,10 +625,10 @@ def run_closed_loop_scenario(config: ScenarioConfig, sources=None):
         e != exposures_by_boundary[0] for e in exposures_by_boundary[1:]
     )
     statuses = {
-        "closed_loop_execution_completed": True,
+        "closed_loop_execution_completed": termination is None,
         "environment_affected_sensory_input": environmental_change,
         "body_state_feedback_wired": True,
-        "body_state_feedback_realized": movement and config.kind == KINDS[1],
+        "body_state_feedback_realized": movement and enabled,
         "genuine_nonzero_actuation_occurred": any(
             any(v > 0 for v in s["actuator_commands"].values())
             for s in downstream_states
@@ -623,11 +636,11 @@ def run_closed_loop_scenario(config: ScenarioConfig, sources=None):
         "body_movement_occurred": movement,
     }
     result = {
-        "schema_version": RESULT_SCHEMA,
+        "schema_version": result_schema,
         "scenario_execution_id": execution_id,
         "scenario_kind": config.kind,
-        "boundary_indices": list(range(count + 1)),
-        "time_ms": [n * dt for n in range(count + 1)],
+        "boundary_indices": [b["step"] for b in boundaries],
+        "time_ms": [b["time_ms"] for b in boundaries],
         "world_body": boundaries,
         "sensory_identities": list(sources["rows"]),
         "sensory_state_by_boundary": sensory_states,
@@ -650,6 +663,14 @@ def run_closed_loop_scenario(config: ScenarioConfig, sources=None):
         "statuses": statuses,
         "provenance_kind": "EXPLORATORY_GENUINE_CLOSED_LOOP_SCENARIO",
     }
+    if geometry_guard is not None:
+        result["termination"] = termination or {
+            "status": "COMPLETED_VALID_HORIZON",
+            "step": count,
+            "time_ms": count * dt,
+            "reason": None,
+            "attempted_boundary_state": None,
+        }
     return {
         "config": configuration,
         "result": result,

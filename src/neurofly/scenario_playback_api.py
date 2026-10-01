@@ -10,12 +10,25 @@ from neurofly.closed_loop_scenario_artifacts import (
     DEFAULT_ARTIFACT_ROOT,
     replay_scenario_artifact,
 )
+from neurofly.looming_world_experiment import KIND as WORLD_KIND
+from neurofly.looming_world_experiment_artifacts import (
+    DEFAULT_ARTIFACT_ROOT as WORLD_ROOT,
+)
+from neurofly.looming_world_experiment_artifacts import (
+    replay_world_artifact,
+)
 
 CANONICAL_SCENARIO_ARTIFACT_ID = (
     "55e2f4d37bc6f8fb81aee67886d8680a76646a0317961bd90cf0e3fbabb2c46b"
 )
 DEFAULT_SCENARIO_PATH = DEFAULT_ARTIFACT_ROOT / CANONICAL_SCENARIO_ARTIFACT_ID
-ScenarioKind = Literal["BASELINE_CONTROL", "LOOMING_CIRCUIT_VALIDATION"]
+ScenarioKind = Literal[
+    "BASELINE_CONTROL", "LOOMING_CIRCUIT_VALIDATION", "LOOMING_WORLD_EXPERIMENT"
+]
+# Derived from the first frozen execution, not a design-selection input.
+CANONICAL_WORLD_ARTIFACT_ID = (
+    "ee781bd8c7e903c5fab78aff02d916fe68d26998a7caf774806778cacd2b616c"
+)
 
 
 class TransportModel(BaseModel):
@@ -38,7 +51,7 @@ def scenario_catalog() -> list[ScenarioDefinition]:
         "not registered retinal geometry or biological escape. Current genuine "
         "model produces no movement. Canonical presets only."
     )
-    return [
+    definitions = [
         ScenarioDefinition(
             id=item["id"],
             scenario_kind=item["id"],
@@ -48,6 +61,23 @@ def scenario_catalog() -> list[ScenarioDefinition]:
         )
         for item in scenario_metadata()
     ]
+    definitions.append(
+        ScenarioDefinition(
+            id=WORLD_KIND,
+            scenario_kind=WORLD_KIND,
+            title="Exploratory Looming World Experiment",
+            description=(
+                "A separately pre-registered 40 ms model-space experiment observes "
+                "longer pinned-model dynamics and authoritative body feedback."
+            ),
+            scientific_caveat=(
+                "Duration and trajectory are modelling assumptions, not biological "
+                "timing or physical velocity. Genuine outputs are shown as produced; "
+                "zero output is valid. No calibrated retinal geometry or escape claim."
+            ),
+        )
+    )
+    return definitions
 
 
 class BodySnapshot(TransportModel):
@@ -97,6 +127,13 @@ class ScenarioScientificStatus(TransportModel):
     body_movement_occurred: bool
 
 
+class ExperimentTermination(TransportModel):
+    status: Literal["COMPLETED_VALID_HORIZON", "TERMINATED_GEOMETRY_DOMAIN"]
+    step: int
+    time_ms: float
+    reason: str | None
+
+
 class ScenarioPlaybackResult(TransportModel):
     schema_version: Literal["scenario_playback_v1"] = Field(
         default="scenario_playback_v1", serialization_alias="schema"
@@ -114,6 +151,9 @@ class ScenarioPlaybackResult(TransportModel):
     source_operation: Literal["VALIDATED_CANONICAL_REPLAY"] = (
         "VALIDATED_CANONICAL_REPLAY"
     )
+    termination: ExperimentTermination | None = None
+    requested_duration_ms: float | None = None
+    preregistration_id: str | None = None
 
 
 def load_scenario_playback(
@@ -124,14 +164,20 @@ def load_scenario_playback(
         raise KeyError("unsupported scenario")
     # Full numerical replay and provenance validation on every request. No cache
     # of unvalidated internal JSON and no presentation-driven scientific changes.
-    payload = replay_scenario_artifact(path)
-    if payload["artifact_id"] != CANONICAL_SCENARIO_ARTIFACT_ID:
-        raise ValueError("unexpected canonical scenario identity")
-    run = next(
-        r
-        for r in payload["result"]["runs"]
-        if r["result"]["scenario_kind"] == scenario_id
-    )
+    if scenario_id == WORLD_KIND:
+        payload = replay_world_artifact(WORLD_ROOT / CANONICAL_WORLD_ARTIFACT_ID)
+        if payload["artifact_id"] != CANONICAL_WORLD_ARTIFACT_ID:
+            raise ValueError("unexpected frozen world experiment identity")
+        run = payload
+    else:
+        payload = replay_scenario_artifact(path)
+        if payload["artifact_id"] != CANONICAL_SCENARIO_ARTIFACT_ID:
+            raise ValueError("unexpected canonical scenario identity")
+        run = next(
+            r
+            for r in payload["result"]["runs"]
+            if r["result"]["scenario_kind"] == scenario_id
+        )
     result = run["result"]
     config = run["config"]["scenario"]
     frames = []
@@ -153,6 +199,18 @@ def load_scenario_playback(
         dnp01_body_ids=result["dnp01_body_ids"],
         total_dnp01_spikes=len(result["dnp01_spikes"]),
         frames=frames,
+        termination=ExperimentTermination.model_validate(
+            {
+                k: result["termination"][k]
+                for k in ("status", "step", "time_ms", "reason")
+            }
+        )
+        if "termination" in result
+        else None,
+        requested_duration_ms=config["preregistration"]["duration_ms"]
+        if "preregistration" in config
+        else None,
+        preregistration_id=config.get("preregistration_id"),
         scientific_limitations=[
             definitions[scenario_id].scientific_caveat,
             "world_eq is not a physical distance. Actuator commands are dimensionless.",

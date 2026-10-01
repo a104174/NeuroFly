@@ -2315,3 +2315,52 @@ Phase 17 `PASS`: Phase 16/13B/7O/8C replay unchanged; 1,004 Python tests passed
 (1 deselected, two existing dependency warnings), 52 frontend tests passed,
 Ruff/diff check and frontend lint/typecheck/build passed. Documentation only;
 no commit/push.
+
+## Phase 18 — pre-registered exploratory looming world experiment
+
+Separate `LOOMING_WORLD_EXPERIMENT`; original Baseline and 1.4 ms circuit
+micro-window configurations, scientific meanings and Phase 13B identity remain
+unchanged. [Frozen design](science/looming_world_experiment_preregistration.json)
+SHA-256 `580e088d89b38f086689c39568bf38bd04f5edf7f0d05065abe2c076a0d16bed`
+was written/hashed before any new-scenario neural execution. No output-driven
+parameter selection or post-result design change occurred.
+
+Criterion: observe two pinned 20 ms membrane time constants, not biological
+latency. Frozen duration 40 ms, dt 0.1 ms, 400 intervals / 401 boundaries.
+Object radius 1, initial z=4, prescribed vz=-0.05 world_eq/ms, stationary-body
+endpoint z=2; fixed R / hex(23,9), scale 10/FLOOR unchanged. Safety policy stops
+before exposure if authoritative forward separation falls to/below one object
+radius or geometry is unsupported; no clamping/padding. All reused scientific
+models/gains/thresholds remain pinned, contact counts remain structural only.
+
+New config/result/artifact schemas are `looming_world_experiment_config_v1`,
+`looming_world_experiment_result_v1`, `looming_world_experiment_artifact_v1`.
+Artifact `ee781bd8c7e903c5fab78aff02d916fe68d26998a7caf774806778cacd2b616c`;
+config `daca5f023b9d31ac445340e0938ecda153439f0463b858c421b71d72bbe4ee12`;
+result `7a7b35431c43f65501e298e187c97f042e90e0e3d3496cf9f44531a9544e3e42`.
+Generated scientific artifact is 11,074,494 bytes and stays ignored.
+
+First frozen run: `COMPLETED_VALID_HORIZON`, radius 2→4, exposed bodies 19→26;
+R DNp01 peak -48.733429620245 mV_eq, L -52; zero spikes, motor events,
+electrical input, activation, actuator commands and displacement. Closed loop,
+environmental sensory change and feedback wiring true; realized body feedback
+and movement false. The zero result was accepted without stronger reruns.
+This is exploratory model-space behavior, not calibrated looming/escape.
+
+Existing `/scenarios` experience now distinguishes three presets, uses compact
+backend playback (283,219 bytes for the new run), displays actual 40 ms scientific
+time and explicit termination, and retains six-second render-only playback.
+First causal execution 3.663 s; full offline replay 23.456 s under concurrent
+regression load. Full 311-identity science remains in the artifact, not the UI.
+
+See [Phase 18 design and results](science/looming_world_experiment.md).
+Exactly one next bounded action: evidence review of the identity-resolved
+sensory→DNp01 transfer magnitude/normalization contract, without selecting a
+new gain or targeting a spike.
+
+Phase 18 `PASS`, decision `EXPLORATORY_LOOMING_WORLD_EXPERIMENT_VALIDATED`:
+1,018 Python tests passed (1 existing deselection, two dependency warnings),
+53 frontend tests passed; Ruff/check-format/diff and frontend lint/typecheck/build
+passed. Historical 16/13B/full-7O/8C replays and all-three-preset real-browser
+smoke passed, including 390 px and playback controls. No commit/push; only
+intended Phase 18 changes remain. No scientific parameter changed after freeze.

@@ -8,6 +8,7 @@ from fastapi.testclient import TestClient
 import neurofly.http_api as http
 from neurofly.scenario_playback_api import (
     CANONICAL_SCENARIO_ARTIFACT_ID,
+    CANONICAL_WORLD_ARTIFACT_ID,
     DEFAULT_SCENARIO_PATH,
     load_scenario_playback,
     scenario_catalog,
@@ -21,8 +22,10 @@ def playbacks():
 
 
 def test_canonical_transport(playbacks):
-    baseline, looming = playbacks.values()
-    for p in playbacks.values():
+    baseline, looming = [
+        playbacks[k] for k in ("BASELINE_CONTROL", "LOOMING_CIRCUIT_VALIDATION")
+    ]
+    for p in (baseline, looming):
         assert p.artifact_id == CANONICAL_SCENARIO_ARTIFACT_ID
         assert len(p.frames) == 15
         assert p.dt_ms == 0.1
@@ -57,6 +60,25 @@ def test_canonical_transport(playbacks):
         looming.frames[-1].dnp01_membrane_mv[0] > looming.frames[0].dnp01_membrane_mv[0]
     )
     assert looming.statuses.environment_affected_sensory_input
+
+
+def test_world_transport_observational_and_compact(playbacks):
+    p = playbacks["LOOMING_WORLD_EXPERIMENT"]
+    assert p.artifact_id == CANONICAL_WORLD_ARTIFACT_ID
+    assert len(p.frames) == 401 and p.duration_ms == 40
+    assert p.requested_duration_ms == 40
+    assert p.termination.status == "COMPLETED_VALID_HORIZON"
+    assert p.preregistration_id
+    assert p.statuses.genuine_nonzero_actuation_occurred == any(
+        f.actuator_commands.RIGHT_TTM_ACTUATOR > 0
+        or f.actuator_commands.LEFT_TTM_ACTUATOR > 0
+        for f in p.frames
+    )
+    payload = p.model_dump(mode="json", by_alias=True)
+    assert len(json.dumps(payload).encode()) < 400000
+    assert "sensory_state_by_boundary" not in payload
+    assert p.frames[0].object.z_world_eq == 4
+    assert p.frames[-1].object.z_world_eq == pytest.approx(2)
 
 
 def test_catalog_and_http(tmp_path, monkeypatch, playbacks):

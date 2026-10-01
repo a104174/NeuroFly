@@ -29,11 +29,30 @@ test("typed payload preserves execution true and movement false independently", 
   assert.equal(r.statuses.body_movement_occurred, false);
   assert.equal(r.frames.length, 3);
 });
-test("exact two supported preset definitions and no phantom worlds", () => {
+test("exact three supported preset definitions and no phantom worlds", () => {
   const s = fixture().scenario;
-  assert.equal(parseScenarioCatalog([{...s,id:"BASELINE_CONTROL",scenario_kind:"BASELINE_CONTROL"},s]).length, 2);
+  assert.equal(parseScenarioCatalog([{...s,id:"BASELINE_CONTROL",scenario_kind:"BASELINE_CONTROL"},s,{...s,id:"LOOMING_WORLD_EXPERIMENT",scenario_kind:"LOOMING_WORLD_EXPERIMENT"}]).length, 3);
   assert.throws(() => parseScenarioCatalog([s]));
   assert.throws(() => parseScenarioCatalog([{...s,id:"LIGHT_DARK"},s]));
+});
+test("world experiment preserves scientific horizon, termination and frozen identity", () => {
+  const r = fixture();
+  r.scenario.id = r.scenario.scenario_kind = "LOOMING_WORLD_EXPERIMENT";
+  r.preregistration_id = "c".repeat(64);
+  r.requested_duration_ms = r.duration_ms;
+  r.termination = {status:"COMPLETED_VALID_HORIZON",step:2,time_ms:0.2,reason:null};
+  assert.equal(parseScenarioPlayback(r).termination?.status,"COMPLETED_VALID_HORIZON");
+  r.termination.status = "TERMINATED_GEOMETRY_DOMAIN";
+  r.termination.step = 3; r.termination.time_ms = 0.3; r.termination.reason = "UNSAFE GEOMETRY";
+  r.requested_duration_ms = 40;
+  r.statuses.closed_loop_execution_completed = false;
+  const parsed = parseScenarioPlayback(r);
+  const html = renderToStaticMarkup(createElement(ScenarioExplanation,{result:parsed,frame:parsed.frames[2]}));
+  assert.match(html,/STOPPED · GEOMETRY DOMAIN/);
+  assert.match(html,/Requested horizon 40 ms/);
+  assert.doesNotMatch(html,/RUN COMPLETE/);
+  r.termination.step = 8;
+  assert.throws(() => parseScenarioPlayback(r));
 });
 test("malformed grid, nonfinite positions, unknown kind and command are rejected", () => {
   for (const mutate of [

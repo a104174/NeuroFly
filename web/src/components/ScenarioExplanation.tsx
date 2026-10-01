@@ -13,9 +13,10 @@ export function ScenarioExplanation({ result, frame }: { result: ScenarioPlaybac
       </li>)}</ol>
     </section>
     <section className="scenario-interpretation" aria-label="Scientific interpretation">
-      <div><p className="eyebrow">{final ? "FINAL BOUNDARY · RUN COMPLETE" : "RUN INTERPRETATION"}</p>
+      <div><p className="eyebrow">{final ? result.termination?.status === "TERMINATED_GEOMETRY_DOMAIN" ? "STOPPED · GEOMETRY DOMAIN" : "FINAL BOUNDARY · RUN COMPLETE" : "RUN INTERPRETATION"}</p>
         <h2>{story.baseline ? "A control, not a broken simulation." : result.statuses.body_movement_occurred ? "Movement recorded in the model." : "The circuit responds. The body stays still."}</h2>
         <p>{story.summary}</p>
+        {result.termination && <p>{result.termination.status.replaceAll("_", " ")} · {result.termination.time_ms.toFixed(1)} ms{result.termination.reason ? ` · ${result.termination.reason.replaceAll("_", " ")}` : ""}. Requested horizon {result.requested_duration_ms} ms. No clamping or padded continuation.</p>}
       </div>
       <div className="result-verdict"><span>GENUINE ACTUATION</span><strong>{result.statuses.genuine_nonzero_actuation_occurred ? "Recorded" : "None"}</strong><span>BODY MOVEMENT</span><strong>{result.statuses.body_movement_occurred ? "Recorded" : "None"}</strong></div>
     </section>
@@ -34,6 +35,7 @@ export function ScenarioExplanation({ result, frame }: { result: ScenarioPlaybac
       <div className="scenario-statuses">{Object.entries(result.statuses).map(([key, value]) => <span key={key}>{key.replaceAll("_", " ")}: <strong>{value ? "yes" : "no"}</strong></span>)}</div>
       <p>Source: {result.source_operation}. Detailed 311-identity records remain in the scientific artifact.</p>
       <p className="scenario-hash">Artifact: {result.artifact_id}<br />Run: {result.run_id}</p>
+      {result.preregistration_id && <p className="scenario-hash">Frozen pre-registration: {result.preregistration_id}. Parameters selected before neural execution; no output-driven tuning.</p>}
       <ul>{result.scientific_limitations.map(s => <li key={s}>{s}</li>)}</ul>
     </details>
   </>;

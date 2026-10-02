@@ -171,5 +171,12 @@ def test_public_evidence_no_output_targeting_no_runtime_dependency(selection):
         assert forbidden not in text
     for path in (ROOT / "src").rglob("*.py"):
         source = path.read_text()
+        # Phase 25 may validate the committed selection as offline structural
+        # authority for the new motif. Existing v1/scenario/API modules must
+        # remain independent; no Phase 24 model parameters exist to inherit.
+        if path.name == "hs_dnp15_neural_validation.py":
+            assert "def load_structural_authority" in source
+            assert SELECTION_ID in source
+            continue
         assert DOCUMENT.name not in source
         assert "second_circuit_selection_gate_v1" not in source

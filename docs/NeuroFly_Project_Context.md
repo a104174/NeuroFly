@@ -2569,3 +2569,45 @@ deselection; two dependency warnings), 53 frontend regressions, both unchanged
 five-artifact replay rounds, Ruff/format/diff and frontend lint/typecheck/build
 passed. Only four intended documentation/evidence/test files change; no
 production implementation, candidate simulation, fitting, commit or push.
+
+## NeuroFly v2 — Phase 25 preregistered HS→DNp15 neural slice
+
+[Scientific specification](science/hs_dnp15_neural_validation.md) and
+[frozen preregistration](science/hs_dnp15_neural_validation_preregistration.json)
+define `BOUNDED_CHEMICAL_FEEDFORWARD_MOTIF`, not complete course control.
+Preregistration schema `hs_dnp15_neural_validation_preregistration_v1`, ID
+`371926570df00d88efb8e40aa8f6c64b757a420364143d42c9fb727722bfe074`, was
+serialized/hash-frozen before neural implementation or execution. Six separate
+HS sources feed bilateral DNp15 continuous model states through the six
+verified routes; all seven omitted induced edges remain documented provenance.
+
+New assumptions: signed `horizontal_motion_eq`, shared 5 ms HS proxy dynamics,
+unit **proxy** transfer with a three-channel mean, 10 ms target smoothing,
+dt 0.1 ms, 50 ms horizon (20 ms pulse plus 30 ms recovery). These are not
+LC4/LPLC2 or DNp01 physiological equivalences; there is no threshold/spike
+model, electrical coupling, motor/body mapping, API or frontend integration.
+All numerical assumptions were accepted unchanged after first execution.
+
+`hs_dnp15_neural_validation_artifact_v1` ID
+`2ae44804fd570e6b64f219ee50b15bed923855e772a07b5cecc9d766ff6f4113`,
+config hash `8ffc6263d1a70948d9a69ffa0ff066c9dcbb894d5766b72520e209ace60b452d`,
+result hash `35b9bf6bb72f2d92522df25de020cc5e3d369ec0d257997d8cd7746a55e54864`.
+Six conditions have 501 boundaries; neutral remains zero, matched readouts
+match, unilateral propagation is ipsilateral, and declared signed reversal
+reverses the proxy. Active targets peak at ±0.761610396111446 `dnp15_state_eq`
+at 21.3 ms. Events are **not defined**, not measured absent spikes. R−L is a
+model diagnostic, never yaw. Artifact: 714,329 ignored bytes; execution about
+0.054 s, replay about 0.114 s. Frozen v1 and Phase 24 authorities are unchanged.
+
+Next bounded action: preregister a neural-only comparison with the seven
+already-verified additional chemical edges, first reviewing signs/dynamics;
+no steering or motor mapping and no response-targeting parameter choice.
+
+Phase 25 `PASS`, decision `HS_DNP15_NEURAL_VALIDATION_COMPLETE`: 23 focused
+neural tests plus five selection tests, 1,063 full Python tests (one existing
+deselection; two dependency warnings), 53 frontend regressions, both unchanged
+five-artifact replay rounds, Ruff/format/diff and frontend lint/typecheck/build
+passed. All preregistered parameters and first result identities remain fixed.
+Only eight intended files change, including the narrow Phase 24 static-test
+allowance for new-module offline authority validation; v1 production and
+frontend source are unchanged. No commit/push.

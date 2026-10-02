@@ -1,0 +1,323 @@
+{
+  "schema": "hs_dnp15_neural_validation_preregistration_v1",
+  "purpose": "Identity-resolved propagation through a bounded chemical feedforward motif; no steering or physiological calibration.",
+  "selection_record_id": "435ee01693ec0b4b1ad5a8547e77f865c43743cfa56d9c3dd2055a6a87b6ed41",
+  "v1_status_id": "1aa1a39710ebc68030834b3a04ea202eb57fb25a0080f444db0ea19af64730a6",
+  "dataset": "male-cns:v1.0",
+  "source_identities": [
+    {
+      "body_id": 10015,
+      "type": "HSN",
+      "instance": "HSN_R",
+      "side": "R"
+    },
+    {
+      "body_id": 10016,
+      "type": "HSE",
+      "instance": "HSE_R",
+      "side": "R"
+    },
+    {
+      "body_id": 10023,
+      "type": "HSS",
+      "instance": "HSS_R",
+      "side": "R"
+    },
+    {
+      "body_id": 10034,
+      "type": "HSE",
+      "instance": "HSE_L",
+      "side": "L"
+    },
+    {
+      "body_id": 10181,
+      "type": "HSN",
+      "instance": "HSN_L",
+      "side": "L"
+    },
+    {
+      "body_id": 10419,
+      "type": "HSS",
+      "instance": "HSS_L",
+      "side": "L"
+    }
+  ],
+  "target_identities": [
+    {
+      "body_id": 11215,
+      "type": "DNp15",
+      "instance": "DNp15_R",
+      "side": "R"
+    },
+    {
+      "body_id": 12069,
+      "type": "DNp15",
+      "instance": "DNp15_L",
+      "side": "L"
+    }
+  ],
+  "selected_routes": [
+    {
+      "source_id": 10015,
+      "target_id": 11215,
+      "source_type": "HSN",
+      "target_type": "DNp15",
+      "structural_count": 138
+    },
+    {
+      "source_id": 10016,
+      "target_id": 11215,
+      "source_type": "HSE",
+      "target_type": "DNp15",
+      "structural_count": 122
+    },
+    {
+      "source_id": 10023,
+      "target_id": 11215,
+      "source_type": "HSS",
+      "target_type": "DNp15",
+      "structural_count": 23
+    },
+    {
+      "source_id": 10034,
+      "target_id": 12069,
+      "source_type": "HSE",
+      "target_type": "DNp15",
+      "structural_count": 78
+    },
+    {
+      "source_id": 10181,
+      "target_id": 12069,
+      "source_type": "HSN",
+      "target_type": "DNp15",
+      "structural_count": 126
+    },
+    {
+      "source_id": 10419,
+      "target_id": 12069,
+      "source_type": "HSS",
+      "target_type": "DNp15",
+      "structural_count": 14
+    }
+  ],
+  "omitted_induced_edges": [
+    {
+      "source_id": 10015,
+      "target_id": 10016,
+      "source_type": "HSN",
+      "target_type": "HSE",
+      "structural_count": 4
+    },
+    {
+      "source_id": 10016,
+      "target_id": 10015,
+      "source_type": "HSE",
+      "target_type": "HSN",
+      "structural_count": 2
+    },
+    {
+      "source_id": 10016,
+      "target_id": 10023,
+      "source_type": "HSE",
+      "target_type": "HSS",
+      "structural_count": 1
+    },
+    {
+      "source_id": 10034,
+      "target_id": 10181,
+      "source_type": "HSE",
+      "target_type": "HSN",
+      "structural_count": 1
+    },
+    {
+      "source_id": 10034,
+      "target_id": 10419,
+      "source_type": "HSE",
+      "target_type": "HSS",
+      "structural_count": 1
+    },
+    {
+      "source_id": 10419,
+      "target_id": 10034,
+      "source_type": "HSS",
+      "target_type": "HSE",
+      "structural_count": 2
+    },
+    {
+      "source_id": 12069,
+      "target_id": 10419,
+      "source_type": "DNp15",
+      "target_type": "HSS",
+      "structural_count": 1
+    }
+  ],
+  "model_class": "BOUNDED_CHEMICAL_FEEDFORWARD_MOTIF",
+  "model_identity": "hs_dnp15_signed_continuous_proxy_v1",
+  "dt_ms": 0.1,
+  "interval_count": 500,
+  "duration_ms": 50,
+  "input": {
+    "units": "horizontal_motion_eq",
+    "range": [
+      -1,
+      1
+    ],
+    "positive": "Declared positive horizontal-motion component, qualitatively motivated by ipsilateral front-to-back sensitivity; not calibrated retinal velocity.",
+    "negative": "Opposite signed descriptor; equal negative response is a model convention, not measured reverse tuning.",
+    "population_rule": "Each identity receives its own side descriptor, shared across HSN/HSE/HSS as an explicit simplification.",
+    "onset_boundary": 0,
+    "offset_boundary": 200,
+    "pulse_semantics": "Input active for interval boundaries 0 <= n < 200; zero thereafter."
+  },
+  "source_model": {
+    "state_units": "dimensionless_signed_proxy",
+    "tau_ms": 5,
+    "initial_state": 0,
+    "gain": 1,
+    "integration": "EXACT_EXPONENTIAL_ZERO_ORDER_HOLD",
+    "equation": "s[n+1] = u[n] + (s[n]-u[n])*exp(-dt/tau_source)",
+    "type_sharing": "All six proxy identities share dynamics; no measured individual equality claimed."
+  },
+  "transfer": {
+    "name": "hs_dnp15_mean_proxy_transfer_v1",
+    "coefficient_name": "hs_to_dnp15_proxy_scale",
+    "coefficient": 1,
+    "units": "dnp15_state_eq/source_state",
+    "aggregation": "MEAN_OF_THREE_ELIGIBLE_IDENTITY_STATES_PER_TARGET",
+    "equation": "c_i[n] = hs_to_dnp15_proxy_scale*s_i[n]/3; D_j[n] = sum eligible c_i[n]",
+    "structural_count_is_efficacy": false,
+    "sign": "Positive effective proxy coupling convention, not a calibrated monosynaptic sign measurement.",
+    "normalization_rationale": "A target reads the mean of the declared three channels, independent of contact multiplicity; this is a new circuit-specific observation-free design choice, not inherited v1 aggregation."
+  },
+  "target_model": {
+    "state_units": "dnp15_state_eq",
+    "tau_ms": 10,
+    "initial_state": 0,
+    "integration": "EXACT_EXPONENTIAL_ZERO_ORDER_HOLD",
+    "equation": "y[n+1] = D[n] + (y[n]-D[n])*exp(-dt/tau_target)",
+    "events": "NOT_DEFINED",
+    "threshold": "NOT_DEFINED",
+    "physiological_voltage_mapping": "NOT_DEFINED"
+  },
+  "tick_semantics": "AT_BOUNDARY_N_ROUTE_S_N; SIMULTANEOUS_SOURCE_AND_TARGET_UPDATES_TO_N_PLUS_1; NO_FINAL_BOUNDARY_INTEGRATION",
+  "conditions": [
+    {
+      "id": "NO_MOTION_CONTROL",
+      "right": 0,
+      "left": 0,
+      "role": "Neutral zero-input control"
+    },
+    {
+      "id": "BILATERAL_MATCHED_MOTION",
+      "right": 1,
+      "left": 1,
+      "role": "Matched bilateral descriptor"
+    },
+    {
+      "id": "RIGHT_SIDE_MOTION",
+      "right": 1,
+      "left": 0,
+      "role": "Unilateral right descriptor"
+    },
+    {
+      "id": "LEFT_SIDE_MOTION",
+      "right": 0,
+      "left": 1,
+      "role": "Unilateral left descriptor"
+    },
+    {
+      "id": "SIDE_SWAPPED_EQUIVALENT",
+      "right": 0,
+      "left": 1,
+      "role": "Explicit swap of RIGHT_SIDE_MOTION; intentionally equivalent to LEFT_SIDE_MOTION",
+      "swap_of": "RIGHT_SIDE_MOTION"
+    },
+    {
+      "id": "DIRECTION_REVERSED",
+      "right": -1,
+      "left": 0,
+      "role": "Signed reversal of RIGHT_SIDE_MOTION",
+      "reverse_of": "RIGHT_SIDE_MOTION"
+    }
+  ],
+  "randomness": "NONE; NO_SEED_REQUIRED",
+  "output_observables": [
+    "six source trajectories",
+    "six selected route contributions",
+    "two target drives",
+    "two continuous DNp15 states",
+    "R-minus-L model diagnostic; not yaw"
+  ],
+  "selection_rationale": {
+    "source_tau": "5 ms is a standalone exploratory round-number proxy timescale; no LC4/LPLC2 physiological equivalence.",
+    "target_tau": "10 ms is a standalone exploratory smoothing timescale, twice source tau; no DNp01 LIF equivalence.",
+    "timing": "50 ms = five target time constants; 20 ms pulse = two target time constants followed by three time constants of recovery. Observe onset and recovery without threshold targets.",
+    "dt": "0.1 ms uses repository numerical grid convention; dt/tau_source=0.02, dt/tau_target=0.01. Exact hold updates do not require Euler stability retuning.",
+    "scale": "Unit coefficient defines target proxy scale, not biological gain or v1 k=1 mV_eq/state.",
+    "amplitude": "Unit signed descriptor fixes model-space input scale, not a response target.",
+    "kernel": "Separate signed leaky proxy model; neither looming sensory model nor DNp01 LIF parameters are inherited."
+  },
+  "assumptions": [
+    {
+      "name": "Qualitative HS horizontal-motion and DNp15 pathway relevance",
+      "classification": "PRIMARY_EVIDENCE_CONSTRAINED"
+    },
+    {
+      "name": "Signed encoder and symmetric opposite-direction response",
+      "classification": "EXPLORATORY_BOUNDED_ASSUMPTION"
+    },
+    {
+      "name": "Shared type/identity source proxy dynamics",
+      "classification": "EXPLORATORY_BOUNDED_ASSUMPTION"
+    },
+    {
+      "name": "Unit proxy transfer and mean aggregation",
+      "classification": "EXPLORATORY_BOUNDED_ASSUMPTION"
+    },
+    {
+      "name": "Continuous DNp15 proxy, no threshold/events",
+      "classification": "EXPLORATORY_BOUNDED_ASSUMPTION"
+    },
+    {
+      "name": "50 ms horizon and pulse/recovery schedule",
+      "classification": "EXPLORATORY_BOUNDED_ASSUMPTION"
+    },
+    {
+      "name": "0.1 ms grid and exact zero-order-hold updates",
+      "classification": "REPOSITORY_NUMERICAL_CONVENTION"
+    }
+  ],
+  "evidence": [
+    {
+      "doi": "10.1038/s41593-025-01948-9",
+      "url": "https://www.nature.com/articles/s41593-025-01948-9",
+      "scope": "Main Results and Fig.1: ipsilateral horizontal motion; DNp15/DNHS1 identity; broader recurrent and electrical context excluded."
+    },
+    {
+      "doi": "10.1523/JNEUROSCI.2277-16.2016",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5125229/",
+      "scope": "Phase24 primary evidence record; qualitative HS/DNHS1 association, not calibrated proxy parameters."
+    }
+  ],
+  "claim_limits": [
+    "NO_COMPLETE_H2_HS_NETWORK_OR_ROTATION_TRANSLATION_DISCRIMINATION_CLAIM",
+    "NO_GAP_JUNCTION_OR_BIOLOGICAL_TRANSFER_CALIBRATION",
+    "NO_MOTOR_ACTUATOR_YAW_OR_BODY_MAPPING",
+    "NO_LIVING_FLY_LEARNING_MEMORY_OR_BEHAVIOR_SUCCESS_CLAIM",
+    "NO_STRUCTURAL_COUNT_AS_EFFICACY",
+    "NO_V1_MODEL_OR_SCENARIO_CHANGES",
+    "NO_AUTHOR_CONTACT_OR_OUTPUT_TARGETING",
+    "NO_CALIBRATED_OPTIC_FLOW_OR_DNP15_PHYSIOLOGY",
+    "NO_MEASURED_TYPE_SPECIFIC_TUNING_CURVES",
+    "NO_SPIKE_SEMANTICS"
+  ],
+  "accepted_results": [
+    "ZERO",
+    "WEAK",
+    "SYMMETRIC",
+    "ASYMMETRIC",
+    "UNEXPECTED_BUT_VALID"
+  ],
+  "freeze_statement": "All parameters selected and serialized before any HS/DNp15 neural execution; no observed response, spikes or movement used. No parameter revisions based on output are permitted.",
+  "frozen_before_neural_execution": true
+}

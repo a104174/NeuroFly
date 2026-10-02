@@ -2450,3 +2450,36 @@ Phase 21 `PASS`: four focused audit tests, 1,026 full Python tests (one existing
 deselection; two dependency warnings), 53 frontend regression tests, all five
 historical replays, Ruff/format/diff and frontend lint/typecheck/build passed.
 Only documentation/metadata and isolated tests changed; no commit/push.
+
+### Phase 22 — GF recording metadata resolution
+
+New schema `gf_voltage_dataset_metadata_resolution_v1`, canonical ID
+`b40c260a4a37ef99853425dfb927aa2729c6f93da8abd6de66d6c7ead2654ee4`.
+References immutable Phase 21 audit
+`219622b71f1fd79caabe83665ddc859699875177883e7810c1b2bea4676e627d`,
+candidate `dombrovski_gf_zenodo_14983850`. Both local MAT hashes match; source
+bytes remain ignored/unmodified. Complete workbook/inventory correspondence:
+44 files, 22 animals, two trials each, four stimulus columns. Published group
+counts corroborate the usable counting interpretation of the ambiguous workbook
+wording; original source wording remains unchanged. The reporting summary
+establishes female 3–7-day electrophysiology animals; panel-specific GF genotypes
+are recorded separately from the undocumented combined array.
+
+Stored voltage scale and file-specific acquisition/offline filtering remain
+`UNKNOWN`; figure-summary mV labels are not a raw-export unit declaration.
+`combined_T` axes/processing and per-trace/version mapping remain unresolved.
+Candidate stays `METADATA_INSUFFICIENT`; decision
+`TARGET_GF_METADATA_REMAINS_INSUFFICIENT`. No previously UNKNOWN target gate
+was upgraded. Source-state observation mapping remains independently unresolved.
+No fitting, gain calculation, source rewrite, scientific/frontend model change
+or author contact. Phase 21/20 identities remain unchanged.
+
+See [Phase 22 resolution](science/gf_voltage_dataset_metadata_resolution.md).
+Exactly one next action: request an author-confirmed export/acquisition dictionary
+for stored units/conversion/filtering and combined-array axes/processing, with
+file-specific protocol/version mapping; no calibration.
+
+Phase 22 `PASS`: four focused tests, 1,030 full Python tests (one existing
+deselection; two dependency warnings), 53 frontend regressions, all five unchanged
+historical replays, Ruff/format/diff and frontend lint/typecheck/build passed.
+Only metadata/documentation and isolated tests changed; no commit/push.

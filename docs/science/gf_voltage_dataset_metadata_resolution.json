@@ -1,0 +1,1014 @@
+{
+  "schema": "gf_voltage_dataset_metadata_resolution_v1",
+  "resolution_id": "b40c260a4a37ef99853425dfb927aa2729c6f93da8abd6de66d6c7ead2654ee4",
+  "resolution": {
+    "schema": "gf_voltage_dataset_metadata_resolution_v1",
+    "source_audit_id": "219622b71f1fd79caabe83665ddc859699875177883e7810c1b2bea4676e627d",
+    "source_operator_contract_id": "ae50e1faad223cdde63125a6216ce0993523f9933025fe1f04e9265450dec824",
+    "candidate_id": "dombrovski_gf_zenodo_14983850",
+    "access_date": "2026-10-02",
+    "sources": [
+      {
+        "id": "zenodo_record",
+        "url": "https://zenodo.org/api/records/14983850",
+        "locator": "metadata.description / metadata.license / files",
+        "finding": "Whole-cell GF dataset; preprint-v2 association to Fig1/Ext1 and Fig3/Ext8; open CC-BY-4.0. Updated 2025-03-11. No README or acquisition dictionary beyond XLSX in 46-file inventory."
+      },
+      {
+        "id": "companion_xlsx",
+        "url": "https://zenodo.org/api/records/14983850/files/ephys%20original%20data%20for%20Fig.3%20and%20Ext%20data%20Fig.8%20.xlsx/content",
+        "locator": "Sheet1 B1:B3 and E4:E176 filename cells in four-row condition blocks",
+        "finding": "20 kHz, 4 s, onset at 2 s; four columns r/v 10/20/40/80 ms; exp/cont labels; 44 filenames exactly match inventory.",
+        "byte_size": 13886,
+        "sha256": "6279df4893cd0cfd25e72d376f35de619831011621dedc4201f1ca4dde7fb6fc",
+        "inspection": "Remote in-memory ZIP/XML metadata labels/cells, no trace values."
+      },
+      {
+        "id": "publication_2025",
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12350164/",
+        "locator": "Electrophysiological experiments; Fig3h/i; Extended Data Fig8a-d; Data availability",
+        "finding": "In vivo whole-cell current-clamp on behaving tethered flies; explicit reference to Jang 2023 methods. Group counts corroborate 22 animals/two recordings each. Published summary units are mV; no explicit MAT stored-scale statement."
+      },
+      {
+        "id": "reporting_summary",
+        "url": "https://media.springernature.com/original/springer-static/esm/art%3A10.1038%2Fs41586-025-09037-4/MediaObjects/41586_2025_9037_MOESM2_ESM.pdf",
+        "locator": "Page4 Laboratory animals / Reporting on sex",
+        "finding": "Electrophysiology flies aged 3–7 days; only females. Visually inspected image-only reporting summary; no OCR or trace digitization.",
+        "byte_size": 1722679
+      },
+      {
+        "id": "genotype_table",
+        "url": "https://media.springernature.com/original/springer-static/esm/art%3A10.1038%2Fs41586-025-09037-4/MediaObjects/41586_2025_9037_MOESM1_ESM.xlsx",
+        "locator": "Supplementary Table1 Sheet1 rows125–136",
+        "finding": "Panel-specific GF control/null/RNAi genotypes; VT042336-GAL4 with membrane GFP markers. Controls are not pooled with experimental groups.",
+        "byte_size": 25377,
+        "sha256": "40ba0d061f4bf6eeae0f49dd69e01984f0a0a18cac121355fdfae96d18e70b2a"
+      },
+      {
+        "id": "source_data_zip",
+        "url": "https://media.springernature.com/original/springer-static/esm/art%3A10.1038%2Fs41586-025-09037-4/MediaObjects/41586_2025_9037_MOESM4_ESM.zip",
+        "locator": "f1.xlsx / f3.xlsx / sf1.xlsx / sf8.xlsx sheet names and string labels",
+        "finding": "Figure summaries and mV-labelled average peaks/areas; no author mapping of raw MAT stored scale, filter or combined_T axes located. No physiological numeric cells analysed.",
+        "byte_size": 1359082,
+        "sha256": "252406a8b7b3f8f3c7811651739c895102d9816f56976cc0949b76c1c31424ca"
+      },
+      {
+        "id": "jang_2023",
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10263144/",
+        "locator": "Electrophysiology / Data analysis",
+        "finding": "Explicitly referenced method targets GF soma using current-clamp/MultiClamp700B and 20 kHz digitization. Its offline Savitzky–Golay processing is not assigned to these MAT files."
+      }
+    ],
+    "source_files": [
+      {
+        "filename": "DipE_Null_cont_fly22_trial01.mat",
+        "local_path": "data/derived/experiments/phase21_dataset_audit/DipE_Null_cont_fly22_trial01.mat",
+        "byte_size": 488398,
+        "sha256": "08035f5f79e94f6a215aae3ca44aa26f1d4edbff63a221eb90af3b5d03d6ae54",
+        "remote_md5": "3c5c43222d8c41346168cbabc7a19445",
+        "header_creation": "2025-03-06 17:23:17",
+        "variables": [
+          {
+            "name": "DipE_Null_cont_fly22_trial01",
+            "shape": [
+              80000,
+              4
+            ],
+            "type": "double"
+          }
+        ],
+        "representation": "TRIAL_LABELLED_INDIVIDUAL_CONDITION_ARRAY",
+        "documented_axes": [
+          "Rows: samples consistent with declared 80,000 samples / 4 s",
+          "Columns: stimulus r/v 10,20,40,80 ms"
+        ],
+        "embedded_metadata_fields": [],
+        "time_vector_present": false,
+        "stored_unit": "UNKNOWN",
+        "processing_status": "UNKNOWN",
+        "source_url": "https://zenodo.org/api/records/14983850/files/DipE_Null_cont_fly22_trial01.mat/content",
+        "format": "MATLAB v5",
+        "platform": "PCWIN64",
+        "integrity_verified": true,
+        "git_ignored": true,
+        "git_tracked": false,
+        "source_modified": false
+      },
+      {
+        "filename": "Fig1_Ext1_combined_GFMembraneP_HorizontalArrayLooming.mat",
+        "local_path": "data/derived/experiments/phase21_dataset_audit/Fig1_Ext1_combined_GFMembraneP_HorizontalArrayLooming.mat",
+        "byte_size": 12487834,
+        "sha256": "042224491f18f68f63cb829141d31fcb136a70e299ca0b64f3bb5c709e832740",
+        "remote_md5": "2820b1dbff2e33cb189825cecfbd33fd",
+        "header_creation": "2025-03-06 12:49:59",
+        "variables": [
+          {
+            "name": "combined_T",
+            "shape": [
+              75,
+              80002
+            ],
+            "type": "double"
+          }
+        ],
+        "representation": "UNDOCUMENTED_COMBINED_ARRAY",
+        "documented_axes": [],
+        "embedded_metadata_fields": [],
+        "time_vector_present": false,
+        "stored_unit": "UNKNOWN",
+        "processing_status": "UNKNOWN",
+        "missing": [
+          "Axis and leading/trailing column semantics",
+          "Row-to-animal/trial/elevation dictionary",
+          "Concatenation/averaging/baseline/offset/scale/filter history",
+          "Specific timebase and source-file/row-to-panel mapping"
+        ],
+        "source_url": "https://zenodo.org/api/records/14983850/files/Fig1_Ext1_combined_GFMembraneP_HorizontalArrayLooming.mat/content",
+        "format": "MATLAB v5",
+        "platform": "PCWIN64",
+        "integrity_verified": true,
+        "git_ignored": true,
+        "git_tracked": false,
+        "source_modified": false
+      }
+    ],
+    "individual_file_dictionary": [
+      {
+        "filename": "DipE_RNAi_exp_fly01_trial01.mat",
+        "animal_id": "fly01",
+        "trial_id": "trial01",
+        "group_id": "RNAi_exp",
+        "stimulus_columns_r_over_v_ms": [
+          10,
+          20,
+          40,
+          80
+        ],
+        "mapping_provenance": "XLSX filename/animal/trial/condition dictionary verified against complete Zenodo inventory; panel/group association from published labels and genotype table, not numerical matching."
+      },
+      {
+        "filename": "DipE_RNAi_exp_fly01_trial02.mat",
+        "animal_id": "fly01",
+        "trial_id": "trial02",
+        "group_id": "RNAi_exp",
+        "stimulus_columns_r_over_v_ms": [
+          10,
+          20,
+          40,
+          80
+        ],
+        "mapping_provenance": "XLSX filename/animal/trial/condition dictionary verified against complete Zenodo inventory; panel/group association from published labels and genotype table, not numerical matching."
+      },
+      {
+        "filename": "DipE_RNAi_exp_fly02_trial01.mat",
+        "animal_id": "fly02",
+        "trial_id": "trial01",
+        "group_id": "RNAi_exp",
+        "stimulus_columns_r_over_v_ms": [
+          10,
+          20,
+          40,
+          80
+        ],
+        "mapping_provenance": "XLSX filename/animal/trial/condition dictionary verified against complete Zenodo inventory; panel/group association from published labels and genotype table, not numerical matching."
+      },
+      {
+        "filename": "DipE_RNAi_exp_fly02_trial02.mat",
+        "animal_id": "fly02",
+        "trial_id": "trial02",
+        "group_id": "RNAi_exp",
+        "stimulus_columns_r_over_v_ms": [
+          10,
+          20,
+          40,
+          80
+        ],
+        "mapping_provenance": "XLSX filename/animal/trial/condition dictionary verified against complete Zenodo inventory; panel/group association from published labels and genotype table, not numerical matching."
+      },
+      {
+        "filename": "DipE_RNAi_exp_fly03_trial01.mat",
+        "animal_id": "fly03",
+        "trial_id": "trial01",
+        "group_id": "RNAi_exp",
+        "stimulus_columns_r_over_v_ms": [
+          10,
+          20,
+          40,
+          80
+        ],
+        "mapping_provenance": "XLSX filename/animal/trial/condition dictionary verified against complete Zenodo inventory; panel/group association from published labels and genotype table, not numerical matching."
+      },
+      {
+        "filename": "DipE_RNAi_exp_fly03_trial02.mat",
+        "animal_id": "fly03",
+        "trial_id": "trial02",
+        "group_id": "RNAi_exp",
+        "stimulus_columns_r_over_v_ms": [
+          10,
+          20,
+          40,
+          80
+        ],
+        "mapping_provenance": "XLSX filename/animal/trial/condition dictionary verified against complete Zenodo inventory; panel/group association from published labels and genotype table, not numerical matching."
+      },
+      {
+        "filename": "DipE_RNAi_exp_fly04_trial01.mat",
+        "animal_id": "fly04",
+        "trial_id": "trial01",
+        "group_id": "RNAi_exp",
+        "stimulus_columns_r_over_v_ms": [
+          10,
+          20,
+          40,
+          80
+        ],
+        "mapping_provenance": "XLSX filename/animal/trial/condition dictionary verified against complete Zenodo inventory; panel/group association from published labels and genotype table, not numerical matching."
+      },
+      {
+        "filename": "DipE_RNAi_exp_fly04_trial02.mat",
+        "animal_id": "fly04",
+        "trial_id": "trial02",
+        "group_id": "RNAi_exp",
+        "stimulus_columns_r_over_v_ms": [
+          10,
+          20,
+          40,
+          80
+        ],
+        "mapping_provenance": "XLSX filename/animal/trial/condition dictionary verified against complete Zenodo inventory; panel/group association from published labels and genotype table, not numerical matching."
+      },
+      {
+        "filename": "DipE_RNAi_exp_fly05_trial01.mat",
+        "animal_id": "fly05",
+        "trial_id": "trial01",
+        "group_id": "RNAi_exp",
+        "stimulus_columns_r_over_v_ms": [
+          10,
+          20,
+          40,
+          80
+        ],
+        "mapping_provenance": "XLSX filename/animal/trial/condition dictionary verified against complete Zenodo inventory; panel/group association from published labels and genotype table, not numerical matching."
+      },
+      {
+        "filename": "DipE_RNAi_exp_fly05_trial02.mat",
+        "animal_id": "fly05",
+        "trial_id": "trial02",
+        "group_id": "RNAi_exp",
+        "stimulus_columns_r_over_v_ms": [
+          10,
+          20,
+          40,
+          80
+        ],
+        "mapping_provenance": "XLSX filename/animal/trial/condition dictionary verified against complete Zenodo inventory; panel/group association from published labels and genotype table, not numerical matching."
+      },
+      {
+        "filename": "DipE_RNAi_cont_fly06_trial01.mat",
+        "animal_id": "fly06",
+        "trial_id": "trial01",
+        "group_id": "RNAi_cont",
+        "stimulus_columns_r_over_v_ms": [
+          10,
+          20,
+          40,
+          80
+        ],
+        "mapping_provenance": "XLSX filename/animal/trial/condition dictionary verified against complete Zenodo inventory; panel/group association from published labels and genotype table, not numerical matching."
+      },
+      {
+        "filename": "DipE_RNAi_cont_fly06_trial02.mat",
+        "animal_id": "fly06",
+        "trial_id": "trial02",
+        "group_id": "RNAi_cont",
+        "stimulus_columns_r_over_v_ms": [
+          10,
+          20,
+          40,
+          80
+        ],
+        "mapping_provenance": "XLSX filename/animal/trial/condition dictionary verified against complete Zenodo inventory; panel/group association from published labels and genotype table, not numerical matching."
+      },
+      {
+        "filename": "DipE_RNAi_cont_fly07_trial01.mat",
+        "animal_id": "fly07",
+        "trial_id": "trial01",
+        "group_id": "RNAi_cont",
+        "stimulus_columns_r_over_v_ms": [
+          10,
+          20,
+          40,
+          80
+        ],
+        "mapping_provenance": "XLSX filename/animal/trial/condition dictionary verified against complete Zenodo inventory; panel/group association from published labels and genotype table, not numerical matching."
+      },
+      {
+        "filename": "DipE_RNAi_cont_fly07_trial02.mat",
+        "animal_id": "fly07",
+        "trial_id": "trial02",
+        "group_id": "RNAi_cont",
+        "stimulus_columns_r_over_v_ms": [
+          10,
+          20,
+          40,
+          80
+        ],
+        "mapping_provenance": "XLSX filename/animal/trial/condition dictionary verified against complete Zenodo inventory; panel/group association from published labels and genotype table, not numerical matching."
+      },
+      {
+        "filename": "DipE_RNAi_cont_fly08_trial01.mat",
+        "animal_id": "fly08",
+        "trial_id": "trial01",
+        "group_id": "RNAi_cont",
+        "stimulus_columns_r_over_v_ms": [
+          10,
+          20,
+          40,
+          80
+        ],
+        "mapping_provenance": "XLSX filename/animal/trial/condition dictionary verified against complete Zenodo inventory; panel/group association from published labels and genotype table, not numerical matching."
+      },
+      {
+        "filename": "DipE_RNAi_cont_fly08_trial02.mat",
+        "animal_id": "fly08",
+        "trial_id": "trial02",
+        "group_id": "RNAi_cont",
+        "stimulus_columns_r_over_v_ms": [
+          10,
+          20,
+          40,
+          80
+        ],
+        "mapping_provenance": "XLSX filename/animal/trial/condition dictionary verified against complete Zenodo inventory; panel/group association from published labels and genotype table, not numerical matching."
+      },
+      {
+        "filename": "DipE_RNAi_cont_fly09_trial01.mat",
+        "animal_id": "fly09",
+        "trial_id": "trial01",
+        "group_id": "RNAi_cont",
+        "stimulus_columns_r_over_v_ms": [
+          10,
+          20,
+          40,
+          80
+        ],
+        "mapping_provenance": "XLSX filename/animal/trial/condition dictionary verified against complete Zenodo inventory; panel/group association from published labels and genotype table, not numerical matching."
+      },
+      {
+        "filename": "DipE_RNAi_cont_fly09_trial02.mat",
+        "animal_id": "fly09",
+        "trial_id": "trial02",
+        "group_id": "RNAi_cont",
+        "stimulus_columns_r_over_v_ms": [
+          10,
+          20,
+          40,
+          80
+        ],
+        "mapping_provenance": "XLSX filename/animal/trial/condition dictionary verified against complete Zenodo inventory; panel/group association from published labels and genotype table, not numerical matching."
+      },
+      {
+        "filename": "DipE_RNAi_cont_fly10_trial01.mat",
+        "animal_id": "fly10",
+        "trial_id": "trial01",
+        "group_id": "RNAi_cont",
+        "stimulus_columns_r_over_v_ms": [
+          10,
+          20,
+          40,
+          80
+        ],
+        "mapping_provenance": "XLSX filename/animal/trial/condition dictionary verified against complete Zenodo inventory; panel/group association from published labels and genotype table, not numerical matching."
+      },
+      {
+        "filename": "DipE_RNAi_cont_fly10_trial02.mat",
+        "animal_id": "fly10",
+        "trial_id": "trial02",
+        "group_id": "RNAi_cont",
+        "stimulus_columns_r_over_v_ms": [
+          10,
+          20,
+          40,
+          80
+        ],
+        "mapping_provenance": "XLSX filename/animal/trial/condition dictionary verified against complete Zenodo inventory; panel/group association from published labels and genotype table, not numerical matching."
+      },
+      {
+        "filename": "DipE_Null_exp_fly11_trial01.mat",
+        "animal_id": "fly11",
+        "trial_id": "trial01",
+        "group_id": "Null_exp",
+        "stimulus_columns_r_over_v_ms": [
+          10,
+          20,
+          40,
+          80
+        ],
+        "mapping_provenance": "XLSX filename/animal/trial/condition dictionary verified against complete Zenodo inventory; panel/group association from published labels and genotype table, not numerical matching."
+      },
+      {
+        "filename": "DipE_Null_exp_fly11_trial02.mat",
+        "animal_id": "fly11",
+        "trial_id": "trial02",
+        "group_id": "Null_exp",
+        "stimulus_columns_r_over_v_ms": [
+          10,
+          20,
+          40,
+          80
+        ],
+        "mapping_provenance": "XLSX filename/animal/trial/condition dictionary verified against complete Zenodo inventory; panel/group association from published labels and genotype table, not numerical matching."
+      },
+      {
+        "filename": "DipE_Null_exp_fly12_trial01.mat",
+        "animal_id": "fly12",
+        "trial_id": "trial01",
+        "group_id": "Null_exp",
+        "stimulus_columns_r_over_v_ms": [
+          10,
+          20,
+          40,
+          80
+        ],
+        "mapping_provenance": "XLSX filename/animal/trial/condition dictionary verified against complete Zenodo inventory; panel/group association from published labels and genotype table, not numerical matching."
+      },
+      {
+        "filename": "DipE_Null_exp_fly12_trial02.mat",
+        "animal_id": "fly12",
+        "trial_id": "trial02",
+        "group_id": "Null_exp",
+        "stimulus_columns_r_over_v_ms": [
+          10,
+          20,
+          40,
+          80
+        ],
+        "mapping_provenance": "XLSX filename/animal/trial/condition dictionary verified against complete Zenodo inventory; panel/group association from published labels and genotype table, not numerical matching."
+      },
+      {
+        "filename": "DipE_Null_exp_fly13_trial01.mat",
+        "animal_id": "fly13",
+        "trial_id": "trial01",
+        "group_id": "Null_exp",
+        "stimulus_columns_r_over_v_ms": [
+          10,
+          20,
+          40,
+          80
+        ],
+        "mapping_provenance": "XLSX filename/animal/trial/condition dictionary verified against complete Zenodo inventory; panel/group association from published labels and genotype table, not numerical matching."
+      },
+      {
+        "filename": "DipE_Null_exp_fly13_trial02.mat",
+        "animal_id": "fly13",
+        "trial_id": "trial02",
+        "group_id": "Null_exp",
+        "stimulus_columns_r_over_v_ms": [
+          10,
+          20,
+          40,
+          80
+        ],
+        "mapping_provenance": "XLSX filename/animal/trial/condition dictionary verified against complete Zenodo inventory; panel/group association from published labels and genotype table, not numerical matching."
+      },
+      {
+        "filename": "DipE_Null_exp_fly14_trial01.mat",
+        "animal_id": "fly14",
+        "trial_id": "trial01",
+        "group_id": "Null_exp",
+        "stimulus_columns_r_over_v_ms": [
+          10,
+          20,
+          40,
+          80
+        ],
+        "mapping_provenance": "XLSX filename/animal/trial/condition dictionary verified against complete Zenodo inventory; panel/group association from published labels and genotype table, not numerical matching."
+      },
+      {
+        "filename": "DipE_Null_exp_fly14_trial02.mat",
+        "animal_id": "fly14",
+        "trial_id": "trial02",
+        "group_id": "Null_exp",
+        "stimulus_columns_r_over_v_ms": [
+          10,
+          20,
+          40,
+          80
+        ],
+        "mapping_provenance": "XLSX filename/animal/trial/condition dictionary verified against complete Zenodo inventory; panel/group association from published labels and genotype table, not numerical matching."
+      },
+      {
+        "filename": "DipE_Null_exp_fly15_trial01.mat",
+        "animal_id": "fly15",
+        "trial_id": "trial01",
+        "group_id": "Null_exp",
+        "stimulus_columns_r_over_v_ms": [
+          10,
+          20,
+          40,
+          80
+        ],
+        "mapping_provenance": "XLSX filename/animal/trial/condition dictionary verified against complete Zenodo inventory; panel/group association from published labels and genotype table, not numerical matching."
+      },
+      {
+        "filename": "DipE_Null_exp_fly15_trial02.mat",
+        "animal_id": "fly15",
+        "trial_id": "trial02",
+        "group_id": "Null_exp",
+        "stimulus_columns_r_over_v_ms": [
+          10,
+          20,
+          40,
+          80
+        ],
+        "mapping_provenance": "XLSX filename/animal/trial/condition dictionary verified against complete Zenodo inventory; panel/group association from published labels and genotype table, not numerical matching."
+      },
+      {
+        "filename": "DipE_Null_exp_fly16_trial01.mat",
+        "animal_id": "fly16",
+        "trial_id": "trial01",
+        "group_id": "Null_exp",
+        "stimulus_columns_r_over_v_ms": [
+          10,
+          20,
+          40,
+          80
+        ],
+        "mapping_provenance": "XLSX filename/animal/trial/condition dictionary verified against complete Zenodo inventory; panel/group association from published labels and genotype table, not numerical matching."
+      },
+      {
+        "filename": "DipE_Null_exp_fly16_trial02.mat",
+        "animal_id": "fly16",
+        "trial_id": "trial02",
+        "group_id": "Null_exp",
+        "stimulus_columns_r_over_v_ms": [
+          10,
+          20,
+          40,
+          80
+        ],
+        "mapping_provenance": "XLSX filename/animal/trial/condition dictionary verified against complete Zenodo inventory; panel/group association from published labels and genotype table, not numerical matching."
+      },
+      {
+        "filename": "DipE_Null_exp_fly17_trial01.mat",
+        "animal_id": "fly17",
+        "trial_id": "trial01",
+        "group_id": "Null_exp",
+        "stimulus_columns_r_over_v_ms": [
+          10,
+          20,
+          40,
+          80
+        ],
+        "mapping_provenance": "XLSX filename/animal/trial/condition dictionary verified against complete Zenodo inventory; panel/group association from published labels and genotype table, not numerical matching."
+      },
+      {
+        "filename": "DipE_Null_exp_fly17_trial02.mat",
+        "animal_id": "fly17",
+        "trial_id": "trial02",
+        "group_id": "Null_exp",
+        "stimulus_columns_r_over_v_ms": [
+          10,
+          20,
+          40,
+          80
+        ],
+        "mapping_provenance": "XLSX filename/animal/trial/condition dictionary verified against complete Zenodo inventory; panel/group association from published labels and genotype table, not numerical matching."
+      },
+      {
+        "filename": "DipE_Null_cont_fly18_trial01.mat",
+        "animal_id": "fly18",
+        "trial_id": "trial01",
+        "group_id": "Null_cont",
+        "stimulus_columns_r_over_v_ms": [
+          10,
+          20,
+          40,
+          80
+        ],
+        "mapping_provenance": "XLSX filename/animal/trial/condition dictionary verified against complete Zenodo inventory; panel/group association from published labels and genotype table, not numerical matching."
+      },
+      {
+        "filename": "DipE_Null_cont_fly18_trial02.mat",
+        "animal_id": "fly18",
+        "trial_id": "trial02",
+        "group_id": "Null_cont",
+        "stimulus_columns_r_over_v_ms": [
+          10,
+          20,
+          40,
+          80
+        ],
+        "mapping_provenance": "XLSX filename/animal/trial/condition dictionary verified against complete Zenodo inventory; panel/group association from published labels and genotype table, not numerical matching."
+      },
+      {
+        "filename": "DipE_Null_cont_fly19_trial01.mat",
+        "animal_id": "fly19",
+        "trial_id": "trial01",
+        "group_id": "Null_cont",
+        "stimulus_columns_r_over_v_ms": [
+          10,
+          20,
+          40,
+          80
+        ],
+        "mapping_provenance": "XLSX filename/animal/trial/condition dictionary verified against complete Zenodo inventory; panel/group association from published labels and genotype table, not numerical matching."
+      },
+      {
+        "filename": "DipE_Null_cont_fly19_trial02.mat",
+        "animal_id": "fly19",
+        "trial_id": "trial02",
+        "group_id": "Null_cont",
+        "stimulus_columns_r_over_v_ms": [
+          10,
+          20,
+          40,
+          80
+        ],
+        "mapping_provenance": "XLSX filename/animal/trial/condition dictionary verified against complete Zenodo inventory; panel/group association from published labels and genotype table, not numerical matching."
+      },
+      {
+        "filename": "DipE_Null_cont_fly20_trial01.mat",
+        "animal_id": "fly20",
+        "trial_id": "trial01",
+        "group_id": "Null_cont",
+        "stimulus_columns_r_over_v_ms": [
+          10,
+          20,
+          40,
+          80
+        ],
+        "mapping_provenance": "XLSX filename/animal/trial/condition dictionary verified against complete Zenodo inventory; panel/group association from published labels and genotype table, not numerical matching."
+      },
+      {
+        "filename": "DipE_Null_cont_fly20_trial02.mat",
+        "animal_id": "fly20",
+        "trial_id": "trial02",
+        "group_id": "Null_cont",
+        "stimulus_columns_r_over_v_ms": [
+          10,
+          20,
+          40,
+          80
+        ],
+        "mapping_provenance": "XLSX filename/animal/trial/condition dictionary verified against complete Zenodo inventory; panel/group association from published labels and genotype table, not numerical matching."
+      },
+      {
+        "filename": "DipE_Null_cont_fly21_trial01.mat",
+        "animal_id": "fly21",
+        "trial_id": "trial01",
+        "group_id": "Null_cont",
+        "stimulus_columns_r_over_v_ms": [
+          10,
+          20,
+          40,
+          80
+        ],
+        "mapping_provenance": "XLSX filename/animal/trial/condition dictionary verified against complete Zenodo inventory; panel/group association from published labels and genotype table, not numerical matching."
+      },
+      {
+        "filename": "DipE_Null_cont_fly21_trial02.mat",
+        "animal_id": "fly21",
+        "trial_id": "trial02",
+        "group_id": "Null_cont",
+        "stimulus_columns_r_over_v_ms": [
+          10,
+          20,
+          40,
+          80
+        ],
+        "mapping_provenance": "XLSX filename/animal/trial/condition dictionary verified against complete Zenodo inventory; panel/group association from published labels and genotype table, not numerical matching."
+      },
+      {
+        "filename": "DipE_Null_cont_fly22_trial01.mat",
+        "animal_id": "fly22",
+        "trial_id": "trial01",
+        "group_id": "Null_cont",
+        "stimulus_columns_r_over_v_ms": [
+          10,
+          20,
+          40,
+          80
+        ],
+        "mapping_provenance": "XLSX filename/animal/trial/condition dictionary verified against complete Zenodo inventory; panel/group association from published labels and genotype table, not numerical matching."
+      },
+      {
+        "filename": "DipE_Null_cont_fly22_trial02.mat",
+        "animal_id": "fly22",
+        "trial_id": "trial02",
+        "group_id": "Null_cont",
+        "stimulus_columns_r_over_v_ms": [
+          10,
+          20,
+          40,
+          80
+        ],
+        "mapping_provenance": "XLSX filename/animal/trial/condition dictionary verified against complete Zenodo inventory; panel/group association from published labels and genotype table, not numerical matching."
+      }
+    ],
+    "groups": [
+      {
+        "id": "RNAi_exp",
+        "animals": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "filename_prefix": "DipE_RNAi_exp",
+        "published_condition": "GF > DIP-epsilon RNAi",
+        "panels": [
+          "Fig3i",
+          "ExtendedData8c",
+          "ExtendedData8d"
+        ],
+        "genotype_rows": [
+          134,
+          135,
+          136
+        ],
+        "genotype_components": [
+          "w+",
+          "UAS-DIP-epsilon RNAi (VDRC #103497)",
+          "VT042336-GAL4, pJFRC28 UAS-myr::GFP"
+        ]
+      },
+      {
+        "id": "RNAi_cont",
+        "animals": [
+          6,
+          7,
+          8,
+          9,
+          10
+        ],
+        "filename_prefix": "DipE_RNAi_cont",
+        "published_condition": "Control RNAi in GF",
+        "panels": [
+          "Fig3i",
+          "ExtendedData8c",
+          "ExtendedData8d"
+        ],
+        "genotype_rows": [
+          131,
+          132,
+          133
+        ],
+        "genotype_components": [
+          "w+",
+          "UAS-mCherry RNAi (BDSC #35787)",
+          "VT042336-GAL4, pJFRC28 UAS-myr::GFP"
+        ]
+      },
+      {
+        "id": "Null_exp",
+        "animals": [
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17
+        ],
+        "filename_prefix": "DipE_Null_exp",
+        "published_condition": "DIP-epsilon null",
+        "panels": [
+          "Fig3h",
+          "ExtendedData8a",
+          "ExtendedData8b"
+        ],
+        "genotype_rows": [
+          128,
+          129,
+          130
+        ],
+        "genotype_components": [
+          "w+",
+          "DIP-epsilon null",
+          "VT042336-GAL4, pJFRC12 UAS-myr::GFP"
+        ]
+      },
+      {
+        "id": "Null_cont",
+        "animals": [
+          18,
+          19,
+          20,
+          21,
+          22
+        ],
+        "filename_prefix": "DipE_Null_cont",
+        "published_condition": "Wild-type control",
+        "panels": [
+          "Fig3h",
+          "ExtendedData8a",
+          "ExtendedData8b"
+        ],
+        "genotype_rows": [
+          125,
+          126,
+          127
+        ],
+        "genotype_components": [
+          "w+",
+          "VT042336-GAL4, pJFRC12 UAS-myrGFP",
+          "+ (CSMH)"
+        ]
+      }
+    ],
+    "inventory_validation": {
+      "individual_file_count": 44,
+      "animal_count": 22,
+      "trials_per_animal": 2,
+      "conditions_per_trial": 4,
+      "workbook_matches_remote_inventory": true,
+      "missing_from_workbook": [],
+      "missing_from_inventory": [],
+      "raw_dictionary_covers_combined_file": false
+    },
+    "workbook_ambiguity": {
+      "classification": "RESOLVED_BY_OTHER_AUTHORITATIVE_METADATA",
+      "locator": "Sheet1 B2",
+      "ambiguity": "Workbook text says 44 flies, then 22 flies and two trials. Do not treat 44 files as 44 independent animals.",
+      "resolution": "22 animal IDs / two filenames each plus paper Fig3h/i and ExtendedData8 counts 5+7+5+5 =22, two recordings each, establish the usable 22-animal/44-recording dictionary.",
+      "original_text_not_corrected": true,
+      "limitation": "No author erratum located; contradictory wording retained, evidence resolves counting interpretation rather than altering the workbook."
+    },
+    "resolved_metadata": {
+      "sampling": {
+        "rate_hz": 20000,
+        "reconstructed_interval_ms": 0.05,
+        "duration_s": 4,
+        "samples_per_condition": 80000,
+        "scope": "Individual Fig3/Ext8 arrays only; no embedded dt/time vector.",
+        "source": "companion_xlsx:Sheet1 B1"
+      },
+      "onset": {
+        "time_from_recording_start_s": 2,
+        "time_zero": "Published stimulus onset, not NeuroFly scientific time zero.",
+        "baseline_available_s": 2,
+        "first_sample_timestamp_convention": "UNKNOWN",
+        "scope": "Individual files only"
+      },
+      "preparation": {
+        "species": "Drosophila melanogaster",
+        "sex": "FEMALE",
+        "age_days": [
+          3,
+          7
+        ],
+        "sex_age_source": "reporting_summary:page4",
+        "mode": "IN_VIVO_WHOLE_CELL_CURRENT_CLAMP",
+        "tethering": "Behaving tethered",
+        "compartment": "GF soma in explicitly referenced acquisition protocol",
+        "compartment_provenance": "publication_2025 Electrophysiological recordings → reference57 Jang2023 Electrophysiology; per-file deviation not documented.",
+        "amplifier": "MultiClamp700B in referenced method; per-file settings UNKNOWN",
+        "temperature": "Recording temperature not explicitly established for these files; rearing 25 C is not recording temperature."
+      },
+      "stimulus": {
+        "class": "NATURAL_VISUAL_LOOMING",
+        "source_tier": "NATURAL_LOOMING_WITH_PATHWAY_CONTEXT",
+        "r_over_v_ms": [
+          10,
+          20,
+          40,
+          80
+        ],
+        "display": "4.5-inch mylar cylindrical display, 180-degree azimuth via two DLP projectors in published Fig3 method.",
+        "full_selected_trial_geometry": "Exact selected azimuth/elevation/initial-final angle and photodiode mapping need file-specific confirmation; do not automatically import previous-protocol stimulus values.",
+        "population_context": "Null mutation or GF-targeted RNAi modifies pathway context; source LC4/LPLC2 activity is not measured or controlled in model-state units."
+      }
+    },
+    "unresolved_metadata": {
+      "stored_voltage_units": "UNKNOWN",
+      "raw_voltage_conversion": "UNKNOWN",
+      "baseline_subtraction_in_stored_file": "UNKNOWN",
+      "offset_or_junction_correction_in_stored_file": "UNKNOWN",
+      "acquisition_filter_cutoff": "UNKNOWN",
+      "amplifier_settings_per_file": "UNKNOWN",
+      "offline_high_low_pass": "UNKNOWN",
+      "offline_smoothing": "UNKNOWN",
+      "raw_file_trial_averaging": "UNKNOWN",
+      "resampling_history": "UNKNOWN",
+      "combined_axes_and_processing": "UNKNOWN",
+      "exact_row_to_final_figure_trace": "UNKNOWN",
+      "source_state_operator": "UNKNOWN_TRANSFORM"
+    },
+    "filter_components": [
+      {
+        "component": "hardware_acquisition_filter",
+        "status": "UNKNOWN",
+        "reason": "No explicit file-specific cutoff located."
+      },
+      {
+        "component": "amplifier_settings",
+        "status": "UNKNOWN",
+        "reason": "Amplifier model in referenced method, no raw-file gain/filter settings."
+      },
+      {
+        "component": "acquisition_sampling",
+        "status": "PASS",
+        "reason": "20 kHz directly declared in dataset workbook."
+      },
+      {
+        "component": "offline_low_high_pass",
+        "status": "UNKNOWN",
+        "reason": "Not specified for stored arrays."
+      },
+      {
+        "component": "offline_smoothing",
+        "status": "UNKNOWN",
+        "reason": "Jang protocol describes analysis smoothing; does not establish that these MAT bytes received it."
+      },
+      {
+        "component": "published_averaging",
+        "status": "PASS",
+        "reason": "Paper states two-recording animal means for Fig3 and five-trial summary context for Fig1; not a statement about stored arrays."
+      },
+      {
+        "component": "resampling",
+        "status": "UNKNOWN",
+        "reason": "No stored-array resampling/conversion history located."
+      }
+    ],
+    "version_bridge": {
+      "zenodo_description": "2024 preprint DOI 10.1101/2024.09.04.610846v2; dataset published 2025-03-06.",
+      "final_publication": "10.1038/s41586-025-09037-4 explicitly links identical Zenodo DOI.",
+      "publication_level_link": "PASS",
+      "file_dictionary_to_groups": "PASS",
+      "per_trace_processing_or_combined_row_bridge": "UNKNOWN",
+      "header_date_is_not_recording_date": true
+    },
+    "target_voltage_gates": {
+      "compatible_target": {
+        "status": "PASS",
+        "reason": "Identified GF at neuron-type level; exact MaleCNS body identity not claimed."
+      },
+      "baseline": {
+        "status": "PASS",
+        "reason": "Individual-file dictionary declares 2 s prestimulus data; stored baseline-subtraction status is still undocumented."
+      },
+      "relative_voltage_deflection": {
+        "status": "UNKNOWN",
+        "reason": "Baseline period exists but stored scale and previous subtraction/offset transformations are not author-defined."
+      },
+      "time_axis": {
+        "status": "PASS",
+        "reason": "20 kHz and 80,000 samples/4 s explicitly documented and structurally consistent; no resampling."
+      },
+      "shared_stimulus_reference": {
+        "status": "PASS",
+        "reason": "Workbook declares onset at 2 s for individual files."
+      },
+      "filtering_metadata": {
+        "status": "UNKNOWN",
+        "reason": "Specific acquisition cutoff and raw-file offline processing not located; previous-protocol smoothing not substituted."
+      },
+      "measurement_units": {
+        "status": "UNKNOWN",
+        "reason": "Published summary uses physiological mV, but no explicit raw-MAT units/conversion statement located."
+      },
+      "preparation": {
+        "status": "PASS",
+        "reason": "Published in vivo behaving tethered whole-cell current-clamp; reporting summary resolves female 3–7 days. Referenced method provides soma protocol, not file-specific deviations."
+      },
+      "cell_identity": {
+        "status": "PASS",
+        "reason": "GF targeting and panel-specific VT042336-GAL4/membrane-marker genotypes documented; neuron-type correspondence only."
+      },
+      "source_condition": {
+        "status": "PASS",
+        "reason": "Natural looming conditions and control/null/RNAi groups known; not matched measured LC4/LPLC2 source activation."
+      }
+    },
+    "gate_scope": "Selected individual Fig3/Ext8 files; combined array is not promoted through these individual-file gates.",
+    "gate_changes_from_phase21": [],
+    "previous_classification": "METADATA_INSUFFICIENT",
+    "new_classification": "METADATA_INSUFFICIENT",
+    "source_state_operator_available": false,
+    "calibration_permitted": false,
+    "decision": "TARGET_GF_METADATA_REMAINS_INSUFFICIENT",
+    "interpretation": "Meaningful trial/group and cohort metadata resolved, but no previously UNKNOWN target-voltage gate becomes PASS. Raw scale/filter/processing remain material blockers; no readiness upgrade justified.",
+    "preferred_future_representation": "Individual trial-labelled MAT arrays, condition dictionary and genotype controls kept separate; not undocumented combined_T.",
+    "limitations": [
+      "Type-level GF compatibility is not exact MaleCNS identity",
+      "Female 3–7-day recordings versus male connectome requires future explicit compatibility limits",
+      "Natural looming is not source-matched presynaptic activation",
+      "Summary mV labels do not certify raw array units",
+      "Observation transforms and biological source-state scale remain absent"
+    ],
+    "next_action": "Request a single author-confirmed export/acquisition dictionary covering stored voltage units/conversion/filtering and combined_T axes/processing, with file-specific protocol/version mapping; no fitting or external contact in this phase.",
+    "prohibitions": {
+      "fitting_performed": false,
+      "trace_values_analysed": false,
+      "model_executed_against_data": false,
+      "required_gain_calculated": false,
+      "source_mat_modified": false,
+      "production_model_changed": false,
+      "phase21_audit_modified": false,
+      "author_contact_sent": false
+    }
+  }
+}

@@ -2533,3 +2533,39 @@ deselection; two dependency deprecation warnings), 53 frontend regressions,
 both unchanged five-artifact replay rounds, Ruff/format/diff and frontend
 lint/typecheck/build passed. Only the four intended Phase 23 files remain;
 no commit/push.
+
+## NeuroFly v2 — Phase 24 second-circuit selection
+
+[Evidence gate](science/second_circuit_selection_gate.md) and its deterministic
+[selection record](science/second_circuit_selection_gate.json) begin v2 without
+altering the frozen v1 implementation or scientific-status identity.
+`second_circuit_selection_gate_v1` ID:
+`435ee01693ec0b4b1ad5a8547e77f865c43743cfa56d9c3dd2055a6a87b6ed41`.
+
+Three candidates were checked against public primary evidence and actual
+`male-cns:v1.0` queries: HS→DNp15 horizontal-motion readout, LC16→MDN backward
+walking, and LPLC3/4→DNp07/DNp10 landing. Only the first is
+`READY_FOR_BOUNDED_VALIDATION_DESIGN`. LC16's relay boundary and the nominated
+landing source identity/state boundary remain unresolved; partial structural
+support is not a complete circuit contract.
+
+Decision: `SECOND_CIRCUIT_SELECTED_FOR_BOUNDED_VALIDATION`.
+Selected capability: `VISUAL_COURSE_CONTROL`, restricted to a neural foundation,
+not demonstrated steering. The selected motif has six HSN/HSE/HSS sources,
+two DNp15 targets (11215/R, 12069/L) and six verified ipsilateral chemical
+edges. The full eight-node induced query has 13 edges; seven links and the
+larger recurrent/electrical network are explicitly excluded, not claimed absent.
+Structural counts remain non-efficacy. HS input and DNp15 dynamics require
+new bounded exploratory assumptions; no values, simulations or outputs were
+selected/generated in Phase 24. Body yaw and complete course-control physiology
+are outside the first neural validation. No author-contact dependency exists.
+
+Exactly one next implementation milestone: a preregistered backend neural-only
+HS→DNp15 feedforward validation slice with explicit controls, frozen assumptions
+before execution, deterministic replay and result-agnostic acceptance.
+
+Phase 24 `PASS`: five focused tests, 1,040 full Python tests (one existing
+deselection; two dependency warnings), 53 frontend regressions, both unchanged
+five-artifact replay rounds, Ruff/format/diff and frontend lint/typecheck/build
+passed. Only four intended documentation/evidence/test files change; no
+production implementation, candidate simulation, fitting, commit or push.

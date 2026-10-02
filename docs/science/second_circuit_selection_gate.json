@@ -1,0 +1,4783 @@
+{
+  "schema": "second_circuit_selection_gate_v1",
+  "selection_id": "435ee01693ec0b4b1ad5a8547e77f865c43743cfa56d9c3dd2055a6a87b6ed41",
+  "selection": {
+    "schema": "second_circuit_selection_gate_v1",
+    "source_v1_status_id": "1aa1a39710ebc68030834b3a04ea202eb57fb25a0080f444db0ea19af64730a6",
+    "baseline_commit": "a6ce8b412bf0cb84a3c46620e3b9c7d391f50ec7",
+    "access_date": "2026-10-02",
+    "purpose": "Select one genuinely new bounded neural capability, not implement or calibrate it.",
+    "structural_provenance": {
+      "endpoint": "https://neuprint.janelia.org",
+      "dataset": "male-cns:v1.0",
+      "client": "neuprint-python 0.6.3",
+      "authenticated_access": true,
+      "laterality_source": "somaSide; never morphology coordinate",
+      "structural_count_source": "ConnectsTo.weight",
+      "structural_count_is_efficacy": false,
+      "query_normalization": "Rows ordered by query ORDER BY; landing collect(source_ids) explicitly sorted before canonical response hashing.",
+      "queries": [
+        {
+          "key": "bounded_nodes",
+          "query": "MATCH (n:Neuron) WHERE n.type IN ['HSE','HSN','HSS','H2','DNp15','LC16','MDN','DNp07','DNp10'] RETURN n.bodyId AS body_id,n.type AS type,n.instance AS instance,n.somaSide AS side ORDER BY n.type,n.bodyId",
+          "response_sha256": "c4a749cf19d25d60b2bbdfbe50b8967227ba7a9e04b7d63ca88d6116f0b20fed",
+          "row_count": 200,
+          "rows": [
+            {
+              "body_id": 11513,
+              "type": "DNp07",
+              "instance": "DNp07_R",
+              "side": "R"
+            },
+            {
+              "body_id": 11704,
+              "type": "DNp07",
+              "instance": "DNp07_L",
+              "side": "L"
+            },
+            {
+              "body_id": 10425,
+              "type": "DNp10",
+              "instance": "DNp10_L",
+              "side": "L"
+            },
+            {
+              "body_id": 10433,
+              "type": "DNp10",
+              "instance": "DNp10_R",
+              "side": "R"
+            },
+            {
+              "body_id": 11215,
+              "type": "DNp15",
+              "instance": "DNp15_R",
+              "side": "R"
+            },
+            {
+              "body_id": 12069,
+              "type": "DNp15",
+              "instance": "DNp15_L",
+              "side": "L"
+            },
+            {
+              "body_id": 10019,
+              "type": "H2",
+              "instance": "H2_L",
+              "side": "L"
+            },
+            {
+              "body_id": 10025,
+              "type": "H2",
+              "instance": "H2_R",
+              "side": "R"
+            },
+            {
+              "body_id": 10016,
+              "type": "HSE",
+              "instance": "HSE_R",
+              "side": "R"
+            },
+            {
+              "body_id": 10034,
+              "type": "HSE",
+              "instance": "HSE_L",
+              "side": "L"
+            },
+            {
+              "body_id": 10015,
+              "type": "HSN",
+              "instance": "HSN_R",
+              "side": "R"
+            },
+            {
+              "body_id": 10181,
+              "type": "HSN",
+              "instance": "HSN_L",
+              "side": "L"
+            },
+            {
+              "body_id": 10023,
+              "type": "HSS",
+              "instance": "HSS_R",
+              "side": "R"
+            },
+            {
+              "body_id": 10419,
+              "type": "HSS",
+              "instance": "HSS_L",
+              "side": "L"
+            },
+            {
+              "body_id": 20297,
+              "type": "LC16",
+              "instance": "LC16_L",
+              "side": "L"
+            },
+            {
+              "body_id": 20499,
+              "type": "LC16",
+              "instance": "LC16_L",
+              "side": "L"
+            },
+            {
+              "body_id": 21172,
+              "type": "LC16",
+              "instance": "LC16_L",
+              "side": "L"
+            },
+            {
+              "body_id": 23588,
+              "type": "LC16",
+              "instance": "LC16_L",
+              "side": "L"
+            },
+            {
+              "body_id": 25211,
+              "type": "LC16",
+              "instance": "LC16_L",
+              "side": "L"
+            },
+            {
+              "body_id": 26053,
+              "type": "LC16",
+              "instance": "LC16_L",
+              "side": "L"
+            },
+            {
+              "body_id": 28655,
+              "type": "LC16",
+              "instance": "LC16_L",
+              "side": "L"
+            },
+            {
+              "body_id": 30663,
+              "type": "LC16",
+              "instance": "LC16_L",
+              "side": "L"
+            },
+            {
+              "body_id": 35230,
+              "type": "LC16",
+              "instance": "LC16_L",
+              "side": "L"
+            },
+            {
+              "body_id": 36432,
+              "type": "LC16",
+              "instance": "LC16_R",
+              "side": "R"
+            },
+            {
+              "body_id": 36931,
+              "type": "LC16",
+              "instance": "LC16_R",
+              "side": "R"
+            },
+            {
+              "body_id": 37205,
+              "type": "LC16",
+              "instance": "LC16_L",
+              "side": "L"
+            },
+            {
+              "body_id": 37383,
+              "type": "LC16",
+              "instance": "LC16_L",
+              "side": "L"
+            },
+            {
+              "body_id": 37638,
+              "type": "LC16",
+              "instance": "LC16_R",
+              "side": "R"
+            },
+            {
+              "body_id": 37805,
+              "type": "LC16",
+              "instance": "LC16_L",
+              "side": "L"
+            },
+            {
+              "body_id": 38083,
+              "type": "LC16",
+              "instance": "LC16_R",
+              "side": "R"
+            },
+            {
+              "body_id": 38101,
+              "type": "LC16",
+              "instance": "LC16_R",
+              "side": "R"
+            },
+            {
+              "body_id": 38298,
+              "type": "LC16",
+              "instance": "LC16_R",
+              "side": "R"
+            },
+            {
+              "body_id": 39027,
+              "type": "LC16",
+              "instance": "LC16_R",
+              "side": "R"
+            },
+            {
+              "body_id": 39210,
+              "type": "LC16",
+              "instance": "LC16_L",
+              "side": "L"
+            },
+            {
+              "body_id": 39417,
+              "type": "LC16",
+              "instance": "LC16_R",
+              "side": "R"
+            },
+            {
+              "body_id": 39713,
+              "type": "LC16",
+              "instance": "LC16_L",
+              "side": "L"
+            },
+            {
+              "body_id": 40005,
+              "type": "LC16",
+              "instance": "LC16_L",
+              "side": "L"
+            },
+            {
+              "body_id": 40208,
+              "type": "LC16",
+              "instance": "LC16_L",
+              "side": "L"
+            },
+            {
+              "body_id": 41166,
+              "type": "LC16",
+              "instance": "LC16_R",
+              "side": "R"
+            },
+            {
+              "body_id": 41203,
+              "type": "LC16",
+              "instance": "LC16_R",
+              "side": "R"
+            },
+            {
+              "body_id": 41262,
+              "type": "LC16",
+              "instance": "LC16_R",
+              "side": "R"
+            },
+            {
+              "body_id": 41389,
+              "type": "LC16",
+              "instance": "LC16_L",
+              "side": "L"
+            },
+            {
+              "body_id": 41491,
+              "type": "LC16",
+              "instance": "LC16_R",
+              "side": "R"
+            },
+            {
+              "body_id": 41751,
+              "type": "LC16",
+              "instance": "LC16_L",
+              "side": "L"
+            },
+            {
+              "body_id": 41902,
+              "type": "LC16",
+              "instance": "LC16_R",
+              "side": "R"
+            },
+            {
+              "body_id": 41918,
+              "type": "LC16",
+              "instance": "LC16_R",
+              "side": "R"
+            },
+            {
+              "body_id": 42232,
+              "type": "LC16",
+              "instance": "LC16_R",
+              "side": "R"
+            },
+            {
+              "body_id": 42752,
+              "type": "LC16",
+              "instance": "LC16_R",
+              "side": "R"
+            },
+            {
+              "body_id": 42756,
+              "type": "LC16",
+              "instance": "LC16_L",
+              "side": "L"
+            },
+            {
+              "body_id": 42993,
+              "type": "LC16",
+              "instance": "LC16_R",
+              "side": "R"
+            },
+            {
+              "body_id": 43013,
+              "type": "LC16",
+              "instance": "LC16_R",
+              "side": "R"
+            },
+            {
+              "body_id": 43048,
+              "type": "LC16",
+              "instance": "LC16_L",
+              "side": "L"
+            },
+            {
+              "body_id": 43253,
+              "type": "LC16",
+              "instance": "LC16_R",
+              "side": "R"
+            },
+            {
+              "body_id": 43289,
+              "type": "LC16",
+              "instance": "LC16_L",
+              "side": "L"
+            },
+            {
+              "body_id": 43370,
+              "type": "LC16",
+              "instance": "LC16_R",
+              "side": "R"
+            },
+            {
+              "body_id": 43440,
+              "type": "LC16",
+              "instance": "LC16_R",
+              "side": "R"
+            },
+            {
+              "body_id": 43545,
+              "type": "LC16",
+              "instance": "LC16_R",
+              "side": "R"
+            },
+            {
+              "body_id": 43600,
+              "type": "LC16",
+              "instance": "LC16_R",
+              "side": "R"
+            },
+            {
+              "body_id": 43861,
+              "type": "LC16",
+              "instance": "LC16_R",
+              "side": "R"
+            },
+            {
+              "body_id": 44006,
+              "type": "LC16",
+              "instance": "LC16_R",
+              "side": "R"
+            },
+            {
+              "body_id": 44032,
+              "type": "LC16",
+              "instance": "LC16_L",
+              "side": "L"
+            },
+            {
+              "body_id": 44434,
+              "type": "LC16",
+              "instance": "LC16_R",
+              "side": "R"
+            },
+            {
+              "body_id": 44448,
+              "type": "LC16",
+              "instance": "LC16_R",
+              "side": "R"
+            },
+            {
+              "body_id": 44711,
+              "type": "LC16",
+              "instance": "LC16_L",
+              "side": "L"
+            },
+            {
+              "body_id": 44751,
+              "type": "LC16",
+              "instance": "LC16_R",
+              "side": "R"
+            },
+            {
+              "body_id": 44805,
+              "type": "LC16",
+              "instance": "LC16_L",
+              "side": "L"
+            },
+            {
+              "body_id": 44897,
+              "type": "LC16",
+              "instance": "LC16_R",
+              "side": "R"
+            },
+            {
+              "body_id": 45007,
+              "type": "LC16",
+              "instance": "LC16_R",
+              "side": "R"
+            },
+            {
+              "body_id": 45188,
+              "type": "LC16",
+              "instance": "LC16_R",
+              "side": "R"
+            },
+            {
+              "body_id": 45211,
+              "type": "LC16",
+              "instance": "LC16_L",
+              "side": "L"
+            },
+            {
+              "body_id": 45482,
+              "type": "LC16",
+              "instance": "LC16_R",
+              "side": "R"
+            },
+            {
+              "body_id": 45642,
+              "type": "LC16",
+              "instance": "LC16_R",
+              "side": "R"
+            },
+            {
+              "body_id": 45735,
+              "type": "LC16",
+              "instance": "LC16_L",
+              "side": "L"
+            },
+            {
+              "body_id": 46055,
+              "type": "LC16",
+              "instance": "LC16_R",
+              "side": "R"
+            },
+            {
+              "body_id": 46761,
+              "type": "LC16",
+              "instance": "LC16_L",
+              "side": "L"
+            },
+            {
+              "body_id": 46932,
+              "type": "LC16",
+              "instance": "LC16_R",
+              "side": "R"
+            },
+            {
+              "body_id": 46962,
+              "type": "LC16",
+              "instance": "LC16_R",
+              "side": "R"
+            },
+            {
+              "body_id": 47016,
+              "type": "LC16",
+              "instance": "LC16_R",
+              "side": "R"
+            },
+            {
+              "body_id": 47047,
+              "type": "LC16",
+              "instance": "LC16_L",
+              "side": "L"
+            },
+            {
+              "body_id": 47082,
+              "type": "LC16",
+              "instance": "LC16_R",
+              "side": "R"
+            },
+            {
+              "body_id": 47222,
+              "type": "LC16",
+              "instance": "LC16_R",
+              "side": "R"
+            },
+            {
+              "body_id": 47533,
+              "type": "LC16",
+              "instance": "LC16_R",
+              "side": "R"
+            },
+            {
+              "body_id": 47668,
+              "type": "LC16",
+              "instance": "LC16_L",
+              "side": "L"
+            },
+            {
+              "body_id": 47715,
+              "type": "LC16",
+              "instance": "LC16_R",
+              "side": "R"
+            },
+            {
+              "body_id": 48008,
+              "type": "LC16",
+              "instance": "LC16_L",
+              "side": "L"
+            },
+            {
+              "body_id": 48086,
+              "type": "LC16",
+              "instance": "LC16_R",
+              "side": "R"
+            },
+            {
+              "body_id": 48123,
+              "type": "LC16",
+              "instance": "LC16_L",
+              "side": "L"
+            },
+            {
+              "body_id": 48216,
+              "type": "LC16",
+              "instance": "LC16_R",
+              "side": "R"
+            },
+            {
+              "body_id": 48315,
+              "type": "LC16",
+              "instance": "LC16_L",
+              "side": "L"
+            },
+            {
+              "body_id": 48393,
+              "type": "LC16",
+              "instance": "LC16_R",
+              "side": "R"
+            },
+            {
+              "body_id": 48674,
+              "type": "LC16",
+              "instance": "LC16_L",
+              "side": "L"
+            },
+            {
+              "body_id": 49184,
+              "type": "LC16",
+              "instance": "LC16_R",
+              "side": "R"
+            },
+            {
+              "body_id": 49314,
+              "type": "LC16",
+              "instance": "LC16_R",
+              "side": "R"
+            },
+            {
+              "body_id": 49334,
+              "type": "LC16",
+              "instance": "LC16_L",
+              "side": "L"
+            },
+            {
+              "body_id": 49389,
+              "type": "LC16",
+              "instance": "LC16_L",
+              "side": "L"
+            },
+            {
+              "body_id": 49445,
+              "type": "LC16",
+              "instance": "LC16_R",
+              "side": "R"
+            },
+            {
+              "body_id": 49728,
+              "type": "LC16",
+              "instance": "LC16_R",
+              "side": "R"
+            },
+            {
+              "body_id": 50508,
+              "type": "LC16",
+              "instance": "LC16_L",
+              "side": "L"
+            },
+            {
+              "body_id": 50531,
+              "type": "LC16",
+              "instance": "LC16_R",
+              "side": "R"
+            },
+            {
+              "body_id": 50758,
+              "type": "LC16",
+              "instance": "LC16_L",
+              "side": "L"
+            },
+            {
+              "body_id": 51143,
+              "type": "LC16",
+              "instance": "LC16_R",
+              "side": "R"
+            },
+            {
+              "body_id": 51453,
+              "type": "LC16",
+              "instance": "LC16_R",
+              "side": "R"
+            },
+            {
+              "body_id": 51478,
+              "type": "LC16",
+              "instance": "LC16_L",
+              "side": "L"
+            },
+            {
+              "body_id": 51772,
+              "type": "LC16",
+              "instance": "LC16_R",
+              "side": "R"
+            },
+            {
+              "body_id": 52322,
+              "type": "LC16",
+              "instance": "LC16_R",
+              "side": "R"
+            },
+            {
+              "body_id": 52456,
+              "type": "LC16",
+              "instance": "LC16_R",
+              "side": "R"
+            },
+            {
+              "body_id": 52463,
+              "type": "LC16",
+              "instance": "LC16_R",
+              "side": "R"
+            },
+            {
+              "body_id": 52495,
+              "type": "LC16",
+              "instance": "LC16_R",
+              "side": "R"
+            },
+            {
+              "body_id": 52526,
+              "type": "LC16",
+              "instance": "LC16_R",
+              "side": "R"
+            },
+            {
+              "body_id": 53087,
+              "type": "LC16",
+              "instance": "LC16_L",
+              "side": "L"
+            },
+            {
+              "body_id": 53180,
+              "type": "LC16",
+              "instance": "LC16_R",
+              "side": "R"
+            },
+            {
+              "body_id": 53482,
+              "type": "LC16",
+              "instance": "LC16_R",
+              "side": "R"
+            },
+            {
+              "body_id": 53550,
+              "type": "LC16",
+              "instance": "LC16_L",
+              "side": "L"
+            },
+            {
+              "body_id": 53795,
+              "type": "LC16",
+              "instance": "LC16_R",
+              "side": "R"
+            },
+            {
+              "body_id": 54063,
+              "type": "LC16",
+              "instance": "LC16_L",
+              "side": "L"
+            },
+            {
+              "body_id": 54154,
+              "type": "LC16",
+              "instance": "LC16_R",
+              "side": "R"
+            },
+            {
+              "body_id": 54372,
+              "type": "LC16",
+              "instance": "LC16_R",
+              "side": "R"
+            },
+            {
+              "body_id": 54467,
+              "type": "LC16",
+              "instance": "LC16_L",
+              "side": "L"
+            },
+            {
+              "body_id": 54626,
+              "type": "LC16",
+              "instance": "LC16_R",
+              "side": "R"
+            },
+            {
+              "body_id": 54700,
+              "type": "LC16",
+              "instance": "LC16_L",
+              "side": "L"
+            },
+            {
+              "body_id": 54871,
+              "type": "LC16",
+              "instance": "LC16_L",
+              "side": "L"
+            },
+            {
+              "body_id": 55045,
+              "type": "LC16",
+              "instance": "LC16_L",
+              "side": "L"
+            },
+            {
+              "body_id": 55313,
+              "type": "LC16",
+              "instance": "LC16_R",
+              "side": "R"
+            },
+            {
+              "body_id": 55739,
+              "type": "LC16",
+              "instance": "LC16_L",
+              "side": "L"
+            },
+            {
+              "body_id": 56225,
+              "type": "LC16",
+              "instance": "LC16_R",
+              "side": "R"
+            },
+            {
+              "body_id": 56258,
+              "type": "LC16",
+              "instance": "LC16_R",
+              "side": "R"
+            },
+            {
+              "body_id": 56267,
+              "type": "LC16",
+              "instance": "LC16_R",
+              "side": "R"
+            },
+            {
+              "body_id": 57192,
+              "type": "LC16",
+              "instance": "LC16_R",
+              "side": "R"
+            },
+            {
+              "body_id": 57503,
+              "type": "LC16",
+              "instance": "LC16_R",
+              "side": "R"
+            },
+            {
+              "body_id": 57526,
+              "type": "LC16",
+              "instance": "LC16_R",
+              "side": "R"
+            },
+            {
+              "body_id": 58546,
+              "type": "LC16",
+              "instance": "LC16_R",
+              "side": "R"
+            },
+            {
+              "body_id": 58700,
+              "type": "LC16",
+              "instance": "LC16_R",
+              "side": "R"
+            },
+            {
+              "body_id": 58816,
+              "type": "LC16",
+              "instance": "LC16_R",
+              "side": "R"
+            },
+            {
+              "body_id": 59069,
+              "type": "LC16",
+              "instance": "LC16_L",
+              "side": "L"
+            },
+            {
+              "body_id": 59070,
+              "type": "LC16",
+              "instance": "LC16_R",
+              "side": "R"
+            },
+            {
+              "body_id": 59515,
+              "type": "LC16",
+              "instance": "LC16_R",
+              "side": "R"
+            },
+            {
+              "body_id": 59681,
+              "type": "LC16",
+              "instance": "LC16_R",
+              "side": "R"
+            },
+            {
+              "body_id": 59928,
+              "type": "LC16",
+              "instance": "LC16_L",
+              "side": "L"
+            },
+            {
+              "body_id": 60108,
+              "type": "LC16",
+              "instance": "LC16_R",
+              "side": "R"
+            },
+            {
+              "body_id": 60187,
+              "type": "LC16",
+              "instance": "LC16_R",
+              "side": "R"
+            },
+            {
+              "body_id": 60293,
+              "type": "LC16",
+              "instance": "LC16_R",
+              "side": "R"
+            },
+            {
+              "body_id": 60356,
+              "type": "LC16",
+              "instance": "LC16_R",
+              "side": "R"
+            },
+            {
+              "body_id": 60416,
+              "type": "LC16",
+              "instance": "LC16_R",
+              "side": "R"
+            },
+            {
+              "body_id": 60635,
+              "type": "LC16",
+              "instance": "LC16_R",
+              "side": "R"
+            },
+            {
+              "body_id": 60920,
+              "type": "LC16",
+              "instance": "LC16_L",
+              "side": "L"
+            },
+            {
+              "body_id": 61630,
+              "type": "LC16",
+              "instance": "LC16_R",
+              "side": "R"
+            },
+            {
+              "body_id": 61937,
+              "type": "LC16",
+              "instance": "LC16_R",
+              "side": "R"
+            },
+            {
+              "body_id": 62499,
+              "type": "LC16",
+              "instance": "LC16_R",
+              "side": "R"
+            },
+            {
+              "body_id": 62698,
+              "type": "LC16",
+              "instance": "LC16_R",
+              "side": "R"
+            },
+            {
+              "body_id": 62890,
+              "type": "LC16",
+              "instance": "LC16_R",
+              "side": "R"
+            },
+            {
+              "body_id": 63084,
+              "type": "LC16",
+              "instance": "LC16_L",
+              "side": "L"
+            },
+            {
+              "body_id": 63110,
+              "type": "LC16",
+              "instance": "LC16_R",
+              "side": "R"
+            },
+            {
+              "body_id": 63710,
+              "type": "LC16",
+              "instance": "LC16_L",
+              "side": "L"
+            },
+            {
+              "body_id": 64055,
+              "type": "LC16",
+              "instance": "LC16_L",
+              "side": "L"
+            },
+            {
+              "body_id": 64770,
+              "type": "LC16",
+              "instance": "LC16_R",
+              "side": "R"
+            },
+            {
+              "body_id": 64905,
+              "type": "LC16",
+              "instance": "LC16_R",
+              "side": "R"
+            },
+            {
+              "body_id": 65651,
+              "type": "LC16",
+              "instance": "LC16_L",
+              "side": "L"
+            },
+            {
+              "body_id": 66614,
+              "type": "LC16",
+              "instance": "LC16_R",
+              "side": "R"
+            },
+            {
+              "body_id": 69580,
+              "type": "LC16",
+              "instance": "LC16_L",
+              "side": "L"
+            },
+            {
+              "body_id": 70535,
+              "type": "LC16",
+              "instance": "LC16_L",
+              "side": "L"
+            },
+            {
+              "body_id": 71176,
+              "type": "LC16",
+              "instance": "LC16_L",
+              "side": "L"
+            },
+            {
+              "body_id": 71290,
+              "type": "LC16",
+              "instance": "LC16_R",
+              "side": "R"
+            },
+            {
+              "body_id": 71311,
+              "type": "LC16",
+              "instance": "LC16_L",
+              "side": "L"
+            },
+            {
+              "body_id": 72354,
+              "type": "LC16",
+              "instance": "LC16_L",
+              "side": "L"
+            },
+            {
+              "body_id": 72386,
+              "type": "LC16",
+              "instance": "LC16_L",
+              "side": "L"
+            },
+            {
+              "body_id": 72918,
+              "type": "LC16",
+              "instance": "LC16_L",
+              "side": "L"
+            },
+            {
+              "body_id": 73419,
+              "type": "LC16",
+              "instance": "LC16_L",
+              "side": "L"
+            },
+            {
+              "body_id": 75487,
+              "type": "LC16",
+              "instance": "LC16_L",
+              "side": "L"
+            },
+            {
+              "body_id": 76249,
+              "type": "LC16",
+              "instance": "LC16_L",
+              "side": "L"
+            },
+            {
+              "body_id": 80540,
+              "type": "LC16",
+              "instance": "LC16_L",
+              "side": "L"
+            },
+            {
+              "body_id": 81848,
+              "type": "LC16",
+              "instance": "LC16_L",
+              "side": "L"
+            },
+            {
+              "body_id": 82522,
+              "type": "LC16",
+              "instance": "LC16_L",
+              "side": "L"
+            },
+            {
+              "body_id": 83404,
+              "type": "LC16",
+              "instance": "LC16_L",
+              "side": "L"
+            },
+            {
+              "body_id": 84595,
+              "type": "LC16",
+              "instance": "LC16_R",
+              "side": "R"
+            },
+            {
+              "body_id": 85681,
+              "type": "LC16",
+              "instance": "LC16_L",
+              "side": "L"
+            },
+            {
+              "body_id": 86896,
+              "type": "LC16",
+              "instance": "LC16_L",
+              "side": "L"
+            },
+            {
+              "body_id": 89334,
+              "type": "LC16",
+              "instance": "LC16_L",
+              "side": "L"
+            },
+            {
+              "body_id": 93102,
+              "type": "LC16",
+              "instance": "LC16_R",
+              "side": "R"
+            },
+            {
+              "body_id": 108949,
+              "type": "LC16",
+              "instance": "LC16_L",
+              "side": "L"
+            },
+            {
+              "body_id": 140524,
+              "type": "LC16",
+              "instance": "LC16_L",
+              "side": "L"
+            },
+            {
+              "body_id": 143928,
+              "type": "LC16",
+              "instance": "LC16_L",
+              "side": "L"
+            },
+            {
+              "body_id": 511803,
+              "type": "LC16",
+              "instance": "LC16_L",
+              "side": "L"
+            },
+            {
+              "body_id": 512475,
+              "type": "LC16",
+              "instance": "LC16_L",
+              "side": "L"
+            },
+            {
+              "body_id": 516925,
+              "type": "LC16",
+              "instance": "LC16_L",
+              "side": "L"
+            },
+            {
+              "body_id": 517074,
+              "type": "LC16",
+              "instance": "LC16_L",
+              "side": "L"
+            },
+            {
+              "body_id": 517448,
+              "type": "LC16",
+              "instance": "LC16_L",
+              "side": "L"
+            },
+            {
+              "body_id": 518476,
+              "type": "LC16",
+              "instance": "LC16_L",
+              "side": "L"
+            },
+            {
+              "body_id": 521631,
+              "type": "LC16",
+              "instance": "LC16_L",
+              "side": "L"
+            },
+            {
+              "body_id": 522372,
+              "type": "LC16",
+              "instance": "LC16_L",
+              "side": "L"
+            },
+            {
+              "body_id": 531003,
+              "type": "LC16",
+              "instance": "LC16_L",
+              "side": "L"
+            },
+            {
+              "body_id": 534612,
+              "type": "LC16",
+              "instance": "LC16_L",
+              "side": "L"
+            },
+            {
+              "body_id": 534785,
+              "type": "LC16",
+              "instance": "LC16_L",
+              "side": "L"
+            },
+            {
+              "body_id": 539720,
+              "type": "LC16",
+              "instance": "LC16_L",
+              "side": "L"
+            },
+            {
+              "body_id": 540247,
+              "type": "LC16",
+              "instance": "LC16_L",
+              "side": "L"
+            },
+            {
+              "body_id": 542313,
+              "type": "LC16",
+              "instance": "LC16_L",
+              "side": "L"
+            },
+            {
+              "body_id": 546731,
+              "type": "LC16",
+              "instance": "LC16_L",
+              "side": "L"
+            },
+            {
+              "body_id": 10763,
+              "type": "MDN",
+              "instance": "MDN_R",
+              "side": "R"
+            },
+            {
+              "body_id": 11288,
+              "type": "MDN",
+              "instance": "MDN_L",
+              "side": "L"
+            },
+            {
+              "body_id": 11332,
+              "type": "MDN",
+              "instance": "MDN_R",
+              "side": "R"
+            },
+            {
+              "body_id": 12348,
+              "type": "MDN",
+              "instance": "MDN_L",
+              "side": "L"
+            }
+          ]
+        },
+        {
+          "key": "hs_induced_edges",
+          "query": "MATCH (s:Neuron)-[e:ConnectsTo]->(t:Neuron) WHERE s.type IN ['HSE','HSN','HSS','DNp15'] AND t.type IN ['HSE','HSN','HSS','DNp15'] RETURN s.bodyId AS source_id,t.bodyId AS target_id,s.type AS source_type,t.type AS target_type,e.weight AS structural_count ORDER BY s.bodyId,t.bodyId",
+          "response_sha256": "e8034056dc8e9e17345fc014358993f7f91d4ad69acc6430004bfd9af62a5056",
+          "row_count": 13,
+          "rows": [
+            {
+              "source_id": 10015,
+              "target_id": 10016,
+              "source_type": "HSN",
+              "target_type": "HSE",
+              "structural_count": 4
+            },
+            {
+              "source_id": 10015,
+              "target_id": 11215,
+              "source_type": "HSN",
+              "target_type": "DNp15",
+              "structural_count": 138
+            },
+            {
+              "source_id": 10016,
+              "target_id": 10015,
+              "source_type": "HSE",
+              "target_type": "HSN",
+              "structural_count": 2
+            },
+            {
+              "source_id": 10016,
+              "target_id": 10023,
+              "source_type": "HSE",
+              "target_type": "HSS",
+              "structural_count": 1
+            },
+            {
+              "source_id": 10016,
+              "target_id": 11215,
+              "source_type": "HSE",
+              "target_type": "DNp15",
+              "structural_count": 122
+            },
+            {
+              "source_id": 10023,
+              "target_id": 11215,
+              "source_type": "HSS",
+              "target_type": "DNp15",
+              "structural_count": 23
+            },
+            {
+              "source_id": 10034,
+              "target_id": 10181,
+              "source_type": "HSE",
+              "target_type": "HSN",
+              "structural_count": 1
+            },
+            {
+              "source_id": 10034,
+              "target_id": 10419,
+              "source_type": "HSE",
+              "target_type": "HSS",
+              "structural_count": 1
+            },
+            {
+              "source_id": 10034,
+              "target_id": 12069,
+              "source_type": "HSE",
+              "target_type": "DNp15",
+              "structural_count": 78
+            },
+            {
+              "source_id": 10181,
+              "target_id": 12069,
+              "source_type": "HSN",
+              "target_type": "DNp15",
+              "structural_count": 126
+            },
+            {
+              "source_id": 10419,
+              "target_id": 10034,
+              "source_type": "HSS",
+              "target_type": "HSE",
+              "structural_count": 2
+            },
+            {
+              "source_id": 10419,
+              "target_id": 12069,
+              "source_type": "HSS",
+              "target_type": "DNp15",
+              "structural_count": 14
+            },
+            {
+              "source_id": 12069,
+              "target_id": 10419,
+              "source_type": "DNp15",
+              "target_type": "HSS",
+              "structural_count": 1
+            }
+          ]
+        },
+        {
+          "key": "lc16_mdn_edges",
+          "query": "MATCH (s:Neuron)-[e:ConnectsTo]->(t:Neuron) WHERE s.type='LC16' AND t.type='MDN' RETURN s.bodyId AS source_id,t.bodyId AS target_id,e.weight AS structural_count ORDER BY s.bodyId,t.bodyId",
+          "response_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "row_count": 0,
+          "rows": []
+        },
+        {
+          "key": "landing_visual_edges",
+          "query": "MATCH (s:Neuron)-[e:ConnectsTo]->(t:Neuron) WHERE s.type IN ['LC4','LPLC2','HSE','HSN','HSS','LC16'] AND t.type IN ['DNp07','DNp10'] RETURN s.type AS source_type,t.type AS target_type,count(e) AS edge_count,sum(e.weight) AS structural_count ORDER BY s.type,t.type",
+          "response_sha256": "2536895966753764ff233c9678abc5c1b152e4804c61be21154e3736549497fe",
+          "row_count": 1,
+          "rows": [
+            {
+              "source_type": "LC4",
+              "target_type": "DNp07",
+              "edge_count": 3,
+              "structural_count": 4
+            }
+          ]
+        },
+        {
+          "key": "landing_nodes",
+          "query": "MATCH (n:Neuron) WHERE n.type IN ['LPLC3','LPLC4','DNp07','DNp10'] RETURN n.bodyId AS body_id,n.type AS type,n.instance AS instance,n.somaSide AS side ORDER BY n.type,n.bodyId",
+          "response_sha256": "2390f29373a0acfc5445db60d8f487821da8dbde5ab7a99fcee76a4f4164ddce",
+          "row_count": 101,
+          "rows": [
+            {
+              "body_id": 11513,
+              "type": "DNp07",
+              "instance": "DNp07_R",
+              "side": "R"
+            },
+            {
+              "body_id": 11704,
+              "type": "DNp07",
+              "instance": "DNp07_L",
+              "side": "L"
+            },
+            {
+              "body_id": 10425,
+              "type": "DNp10",
+              "instance": "DNp10_L",
+              "side": "L"
+            },
+            {
+              "body_id": 10433,
+              "type": "DNp10",
+              "instance": "DNp10_R",
+              "side": "R"
+            },
+            {
+              "body_id": 10801,
+              "type": "LPLC4",
+              "instance": "LPLC4_L",
+              "side": "L"
+            },
+            {
+              "body_id": 12574,
+              "type": "LPLC4",
+              "instance": "LPLC4_L",
+              "side": "L"
+            },
+            {
+              "body_id": 13909,
+              "type": "LPLC4",
+              "instance": "LPLC4_L",
+              "side": "L"
+            },
+            {
+              "body_id": 14132,
+              "type": "LPLC4",
+              "instance": "LPLC4_L",
+              "side": "L"
+            },
+            {
+              "body_id": 14588,
+              "type": "LPLC4",
+              "instance": "LPLC4_L",
+              "side": "L"
+            },
+            {
+              "body_id": 15599,
+              "type": "LPLC4",
+              "instance": "LPLC4_L",
+              "side": "L"
+            },
+            {
+              "body_id": 15664,
+              "type": "LPLC4",
+              "instance": "LPLC4_L",
+              "side": "L"
+            },
+            {
+              "body_id": 15935,
+              "type": "LPLC4",
+              "instance": "LPLC4_L",
+              "side": "L"
+            },
+            {
+              "body_id": 15951,
+              "type": "LPLC4",
+              "instance": "LPLC4_L",
+              "side": "L"
+            },
+            {
+              "body_id": 16304,
+              "type": "LPLC4",
+              "instance": "LPLC4_L",
+              "side": "L"
+            },
+            {
+              "body_id": 16469,
+              "type": "LPLC4",
+              "instance": "LPLC4_R",
+              "side": "R"
+            },
+            {
+              "body_id": 17302,
+              "type": "LPLC4",
+              "instance": "LPLC4_R",
+              "side": "R"
+            },
+            {
+              "body_id": 17307,
+              "type": "LPLC4",
+              "instance": "LPLC4_R",
+              "side": "R"
+            },
+            {
+              "body_id": 17677,
+              "type": "LPLC4",
+              "instance": "LPLC4_R",
+              "side": "R"
+            },
+            {
+              "body_id": 17831,
+              "type": "LPLC4",
+              "instance": "LPLC4_R",
+              "side": "R"
+            },
+            {
+              "body_id": 17993,
+              "type": "LPLC4",
+              "instance": "LPLC4_L",
+              "side": "L"
+            },
+            {
+              "body_id": 18079,
+              "type": "LPLC4",
+              "instance": "LPLC4_R",
+              "side": "R"
+            },
+            {
+              "body_id": 18145,
+              "type": "LPLC4",
+              "instance": "LPLC4_L",
+              "side": "L"
+            },
+            {
+              "body_id": 18155,
+              "type": "LPLC4",
+              "instance": "LPLC4_L",
+              "side": "L"
+            },
+            {
+              "body_id": 18282,
+              "type": "LPLC4",
+              "instance": "LPLC4_R",
+              "side": "R"
+            },
+            {
+              "body_id": 18314,
+              "type": "LPLC4",
+              "instance": "LPLC4_R",
+              "side": "R"
+            },
+            {
+              "body_id": 18365,
+              "type": "LPLC4",
+              "instance": "LPLC4_L",
+              "side": "L"
+            },
+            {
+              "body_id": 18384,
+              "type": "LPLC4",
+              "instance": "LPLC4_R",
+              "side": "R"
+            },
+            {
+              "body_id": 18558,
+              "type": "LPLC4",
+              "instance": "LPLC4_L",
+              "side": "L"
+            },
+            {
+              "body_id": 18605,
+              "type": "LPLC4",
+              "instance": "LPLC4_R",
+              "side": "R"
+            },
+            {
+              "body_id": 18631,
+              "type": "LPLC4",
+              "instance": "LPLC4_R",
+              "side": "R"
+            },
+            {
+              "body_id": 18661,
+              "type": "LPLC4",
+              "instance": "LPLC4_R",
+              "side": "R"
+            },
+            {
+              "body_id": 18718,
+              "type": "LPLC4",
+              "instance": "LPLC4_L",
+              "side": "L"
+            },
+            {
+              "body_id": 18746,
+              "type": "LPLC4",
+              "instance": "LPLC4_R",
+              "side": "R"
+            },
+            {
+              "body_id": 18809,
+              "type": "LPLC4",
+              "instance": "LPLC4_R",
+              "side": "R"
+            },
+            {
+              "body_id": 18895,
+              "type": "LPLC4",
+              "instance": "LPLC4_R",
+              "side": "R"
+            },
+            {
+              "body_id": 18918,
+              "type": "LPLC4",
+              "instance": "LPLC4_L",
+              "side": "L"
+            },
+            {
+              "body_id": 18943,
+              "type": "LPLC4",
+              "instance": "LPLC4_R",
+              "side": "R"
+            },
+            {
+              "body_id": 18970,
+              "type": "LPLC4",
+              "instance": "LPLC4_R",
+              "side": "R"
+            },
+            {
+              "body_id": 18986,
+              "type": "LPLC4",
+              "instance": "LPLC4_L",
+              "side": "L"
+            },
+            {
+              "body_id": 19050,
+              "type": "LPLC4",
+              "instance": "LPLC4_R",
+              "side": "R"
+            },
+            {
+              "body_id": 19202,
+              "type": "LPLC4",
+              "instance": "LPLC4_R",
+              "side": "R"
+            },
+            {
+              "body_id": 19529,
+              "type": "LPLC4",
+              "instance": "LPLC4_R",
+              "side": "R"
+            },
+            {
+              "body_id": 19580,
+              "type": "LPLC4",
+              "instance": "LPLC4_R",
+              "side": "R"
+            },
+            {
+              "body_id": 19599,
+              "type": "LPLC4",
+              "instance": "LPLC4_R",
+              "side": "R"
+            },
+            {
+              "body_id": 19677,
+              "type": "LPLC4",
+              "instance": "LPLC4_L",
+              "side": "L"
+            },
+            {
+              "body_id": 20040,
+              "type": "LPLC4",
+              "instance": "LPLC4_L",
+              "side": "L"
+            },
+            {
+              "body_id": 20175,
+              "type": "LPLC4",
+              "instance": "LPLC4_R",
+              "side": "R"
+            },
+            {
+              "body_id": 20210,
+              "type": "LPLC4",
+              "instance": "LPLC4_R",
+              "side": "R"
+            },
+            {
+              "body_id": 20219,
+              "type": "LPLC4",
+              "instance": "LPLC4_L",
+              "side": "L"
+            },
+            {
+              "body_id": 20481,
+              "type": "LPLC4",
+              "instance": "LPLC4_R",
+              "side": "R"
+            },
+            {
+              "body_id": 20801,
+              "type": "LPLC4",
+              "instance": "LPLC4_R",
+              "side": "R"
+            },
+            {
+              "body_id": 20872,
+              "type": "LPLC4",
+              "instance": "LPLC4_L",
+              "side": "L"
+            },
+            {
+              "body_id": 20914,
+              "type": "LPLC4",
+              "instance": "LPLC4_L",
+              "side": "L"
+            },
+            {
+              "body_id": 21159,
+              "type": "LPLC4",
+              "instance": "LPLC4_R",
+              "side": "R"
+            },
+            {
+              "body_id": 21164,
+              "type": "LPLC4",
+              "instance": "LPLC4_R",
+              "side": "R"
+            },
+            {
+              "body_id": 21216,
+              "type": "LPLC4",
+              "instance": "LPLC4_L",
+              "side": "L"
+            },
+            {
+              "body_id": 21352,
+              "type": "LPLC4",
+              "instance": "LPLC4_R",
+              "side": "R"
+            },
+            {
+              "body_id": 21483,
+              "type": "LPLC4",
+              "instance": "LPLC4_R",
+              "side": "R"
+            },
+            {
+              "body_id": 21738,
+              "type": "LPLC4",
+              "instance": "LPLC4_L",
+              "side": "L"
+            },
+            {
+              "body_id": 22028,
+              "type": "LPLC4",
+              "instance": "LPLC4_R",
+              "side": "R"
+            },
+            {
+              "body_id": 22800,
+              "type": "LPLC4",
+              "instance": "LPLC4_L",
+              "side": "L"
+            },
+            {
+              "body_id": 22883,
+              "type": "LPLC4",
+              "instance": "LPLC4_L",
+              "side": "L"
+            },
+            {
+              "body_id": 22918,
+              "type": "LPLC4",
+              "instance": "LPLC4_L",
+              "side": "L"
+            },
+            {
+              "body_id": 23115,
+              "type": "LPLC4",
+              "instance": "LPLC4_R",
+              "side": "R"
+            },
+            {
+              "body_id": 23237,
+              "type": "LPLC4",
+              "instance": "LPLC4_L",
+              "side": "L"
+            },
+            {
+              "body_id": 23271,
+              "type": "LPLC4",
+              "instance": "LPLC4_R",
+              "side": "R"
+            },
+            {
+              "body_id": 23394,
+              "type": "LPLC4",
+              "instance": "LPLC4_L",
+              "side": "L"
+            },
+            {
+              "body_id": 23664,
+              "type": "LPLC4",
+              "instance": "LPLC4_R",
+              "side": "R"
+            },
+            {
+              "body_id": 24128,
+              "type": "LPLC4",
+              "instance": "LPLC4_L",
+              "side": "L"
+            },
+            {
+              "body_id": 24992,
+              "type": "LPLC4",
+              "instance": "LPLC4_L",
+              "side": "L"
+            },
+            {
+              "body_id": 25840,
+              "type": "LPLC4",
+              "instance": "LPLC4_R",
+              "side": "R"
+            },
+            {
+              "body_id": 26059,
+              "type": "LPLC4",
+              "instance": "LPLC4_R",
+              "side": "R"
+            },
+            {
+              "body_id": 26163,
+              "type": "LPLC4",
+              "instance": "LPLC4_R",
+              "side": "R"
+            },
+            {
+              "body_id": 26167,
+              "type": "LPLC4",
+              "instance": "LPLC4_R",
+              "side": "R"
+            },
+            {
+              "body_id": 27882,
+              "type": "LPLC4",
+              "instance": "LPLC4_R",
+              "side": "R"
+            },
+            {
+              "body_id": 28140,
+              "type": "LPLC4",
+              "instance": "LPLC4_L",
+              "side": "L"
+            },
+            {
+              "body_id": 28191,
+              "type": "LPLC4",
+              "instance": "LPLC4_R",
+              "side": "R"
+            },
+            {
+              "body_id": 28228,
+              "type": "LPLC4",
+              "instance": "LPLC4_R",
+              "side": "R"
+            },
+            {
+              "body_id": 29335,
+              "type": "LPLC4",
+              "instance": "LPLC4_R",
+              "side": "R"
+            },
+            {
+              "body_id": 29386,
+              "type": "LPLC4",
+              "instance": "LPLC4_R",
+              "side": "R"
+            },
+            {
+              "body_id": 30276,
+              "type": "LPLC4",
+              "instance": "LPLC4_L",
+              "side": "L"
+            },
+            {
+              "body_id": 30640,
+              "type": "LPLC4",
+              "instance": "LPLC4_L",
+              "side": "L"
+            },
+            {
+              "body_id": 32341,
+              "type": "LPLC4",
+              "instance": "LPLC4_R",
+              "side": "R"
+            },
+            {
+              "body_id": 32508,
+              "type": "LPLC4",
+              "instance": "LPLC4_R",
+              "side": "R"
+            },
+            {
+              "body_id": 33085,
+              "type": "LPLC4",
+              "instance": "LPLC4_R",
+              "side": "R"
+            },
+            {
+              "body_id": 33539,
+              "type": "LPLC4",
+              "instance": "LPLC4_R",
+              "side": "R"
+            },
+            {
+              "body_id": 35618,
+              "type": "LPLC4",
+              "instance": "LPLC4_R",
+              "side": "R"
+            },
+            {
+              "body_id": 41839,
+              "type": "LPLC4",
+              "instance": "LPLC4_R",
+              "side": "R"
+            },
+            {
+              "body_id": 52652,
+              "type": "LPLC4",
+              "instance": "LPLC4_L",
+              "side": "L"
+            },
+            {
+              "body_id": 91616,
+              "type": "LPLC4",
+              "instance": "LPLC4_L",
+              "side": "L"
+            },
+            {
+              "body_id": 92625,
+              "type": "LPLC4",
+              "instance": "LPLC4_L",
+              "side": "L"
+            },
+            {
+              "body_id": 96253,
+              "type": "LPLC4",
+              "instance": "LPLC4_L",
+              "side": "L"
+            },
+            {
+              "body_id": 141054,
+              "type": "LPLC4",
+              "instance": "LPLC4_L",
+              "side": "L"
+            },
+            {
+              "body_id": 515901,
+              "type": "LPLC4",
+              "instance": "LPLC4_L",
+              "side": "L"
+            },
+            {
+              "body_id": 518588,
+              "type": "LPLC4",
+              "instance": "LPLC4_L",
+              "side": "L"
+            },
+            {
+              "body_id": 519933,
+              "type": "LPLC4",
+              "instance": "LPLC4_L",
+              "side": "L"
+            },
+            {
+              "body_id": 522464,
+              "type": "LPLC4",
+              "instance": "LPLC4_L",
+              "side": "L"
+            },
+            {
+              "body_id": 524089,
+              "type": "LPLC4",
+              "instance": "LPLC4_L",
+              "side": "L"
+            },
+            {
+              "body_id": 531620,
+              "type": "LPLC4",
+              "instance": "LPLC4_L",
+              "side": "L"
+            },
+            {
+              "body_id": 535397,
+              "type": "LPLC4",
+              "instance": "LPLC4_L",
+              "side": "L"
+            },
+            {
+              "body_id": 556556,
+              "type": "LPLC4",
+              "instance": "LPLC4_L",
+              "side": "L"
+            }
+          ]
+        },
+        {
+          "key": "landing_route_summary",
+          "query": "MATCH (s:Neuron)-[e:ConnectsTo]->(t:Neuron) WHERE s.type IN ['LPLC3','LPLC4'] AND t.type IN ['DNp07','DNp10'] RETURN s.type AS source_type,s.somaSide AS source_side,t.bodyId AS target_id,t.type AS target_type,t.somaSide AS target_side,count(e) AS edge_count,sum(e.weight) AS structural_count,collect(s.bodyId) AS source_ids ORDER BY s.type,s.somaSide,t.bodyId",
+          "response_sha256": "5c64521ad37cf1f22f95d01239358483de3b7fdd22e77d4f853947229f351507",
+          "row_count": 4,
+          "rows": [
+            {
+              "source_type": "LPLC4",
+              "source_side": "L",
+              "target_id": 10425,
+              "target_type": "DNp10",
+              "target_side": "L",
+              "edge_count": 16,
+              "structural_count": 37,
+              "source_ids": [
+                12574,
+                13909,
+                14132,
+                15951,
+                17993,
+                18558,
+                18918,
+                20914,
+                22883,
+                23237,
+                24992,
+                92625,
+                96253,
+                518588,
+                535397,
+                556556
+              ]
+            },
+            {
+              "source_type": "LPLC4",
+              "source_side": "L",
+              "target_id": 11704,
+              "target_type": "DNp07",
+              "target_side": "L",
+              "edge_count": 42,
+              "structural_count": 1199,
+              "source_ids": [
+                10801,
+                12574,
+                13909,
+                14132,
+                14588,
+                15599,
+                15664,
+                15935,
+                15951,
+                16304,
+                17993,
+                18145,
+                18155,
+                18365,
+                18558,
+                18718,
+                18918,
+                18986,
+                19677,
+                20040,
+                20219,
+                20872,
+                20914,
+                21216,
+                21738,
+                22800,
+                22883,
+                22918,
+                23237,
+                23394,
+                24992,
+                30276,
+                91616,
+                92625,
+                96253,
+                515901,
+                518588,
+                519933,
+                522464,
+                524089,
+                531620,
+                535397
+              ]
+            },
+            {
+              "source_type": "LPLC4",
+              "source_side": "R",
+              "target_id": 10433,
+              "target_type": "DNp10",
+              "target_side": "R",
+              "edge_count": 19,
+              "structural_count": 60,
+              "source_ids": [
+                16469,
+                17302,
+                17677,
+                17831,
+                18079,
+                18384,
+                18605,
+                18631,
+                18746,
+                18895,
+                18943,
+                18970,
+                19580,
+                19599,
+                20210,
+                20801,
+                23664,
+                26059,
+                27882
+              ]
+            },
+            {
+              "source_type": "LPLC4",
+              "source_side": "R",
+              "target_id": 11513,
+              "target_type": "DNp07",
+              "target_side": "R",
+              "edge_count": 41,
+              "structural_count": 1065,
+              "source_ids": [
+                16469,
+                17302,
+                17307,
+                17677,
+                17831,
+                18079,
+                18282,
+                18314,
+                18384,
+                18605,
+                18631,
+                18661,
+                18746,
+                18809,
+                18895,
+                18943,
+                18970,
+                19050,
+                19202,
+                19529,
+                19580,
+                19599,
+                20175,
+                20210,
+                20481,
+                20801,
+                21159,
+                21164,
+                21352,
+                21483,
+                22028,
+                23271,
+                23664,
+                25840,
+                26059,
+                26163,
+                26167,
+                27882,
+                28191,
+                28228,
+                29335
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "primary_evidence": [
+      {
+        "id": "malecns_official",
+        "url": "https://www.janelia.org/project-team/flyem/male-cns-connectome",
+        "kind": "OFFICIAL_CONNECTOME_SOURCE",
+        "supports": "Dataset scope and public access; candidate identities/edges are established by the separately recorded live v1.0 queries.",
+        "limitations": "Structural evidence is not physiological efficacy or functional proof."
+      },
+      {
+        "id": "suver2016",
+        "doi": "10.1523/JNEUROSCI.2277-16.2016",
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5125229/",
+        "kind": "PRIMARY_FUNCTIONAL_EVIDENCE",
+        "system": "Drosophila melanogaster; tethered flight and quiescence",
+        "assay": "Whole-cell recordings, intracellular fills and motion stimulation",
+        "supports": "Visual descending motion responses; DNHS1/HS association and dye coupling.",
+        "locator": "Abstract; Fig. 2J and Results DNHS1 identification; Discussion",
+        "access": "Primary indexed PMC text and PubMed figure description inspected; direct PMC browser blocked and Europe PMC XML returned 500 twice.",
+        "limitations": "Dye coupling does not quantify chemical efficacy; behavior correlations do not establish causal motor mapping. No coefficient imported."
+      },
+      {
+        "id": "erginkaya2025",
+        "doi": "10.1038/s41593-025-01948-9",
+        "url": "https://www.nature.com/articles/s41593-025-01948-9",
+        "kind": "PRIMARY_FUNCTIONAL_AND_BEHAVIORAL_EVIDENCE",
+        "system": "Drosophila melanogaster; female calcium imaging, male walking behavior; FAFB/hemibrain brain and MANC structural context",
+        "assay": "Optic-flow stimulation, calcium imaging, unilateral perturbations, EM reconstruction",
+        "supports": "DNp15 is DNHS1; horizontal motion pathway and steering relevance.",
+        "locator": "Fig. 1; Fig. 7; Results DNp15 selectivity; Methods EM datasets; Data availability",
+        "access": "Open full publisher text inspected.",
+        "limitations": "Binocular discrimination involves a larger inhibitory network and electrical coupling. Calcium is not model voltage; source specimens are not the queried MaleCNS specimen. Its fitted agent is not adopted."
+      },
+      {
+        "id": "sen2017",
+        "doi": "10.1016/j.cub.2017.02.008",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/28238656/",
+        "kind": "PRIMARY_FUNCTIONAL_AND_BEHAVIORAL_EVIDENCE",
+        "system": "Drosophila melanogaster",
+        "assay": "Functional imaging, behavioral epistasis and unilateral activation",
+        "supports": "LC16/MDN involvement in visually evoked backward walking and directional locomotor output.",
+        "locator": "Primary publication abstract",
+        "access": "Primary PubMed abstract inspected.",
+        "limitations": "Functional association does not specify the missing MaleCNS relay or prove a direct LC16-to-MDN edge."
+      },
+      {
+        "id": "ache2019_landing",
+        "doi": "10.1038/s41593-019-0413-4",
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7444277/",
+        "kind": "PRIMARY_FUNCTIONAL_AND_BEHAVIORAL_EVIDENCE",
+        "system": "Drosophila melanogaster; head-fixed behaving flies",
+        "assay": "Whole-cell recordings, activation/silencing and leg tracking",
+        "supports": "DNp07/DNp10 landing control, progressive-edge responses and flight-state gating; LPLC3/LPLC4 terminal overlap.",
+        "locator": "Results Two identified DN types; Fig. 2; Fig. 3; Fig. 4",
+        "access": "Publisher abstract and full Europe PMC XML inspected.",
+        "limitations": "Terminal overlap is not proof of directed connectivity. Flight gating and leg extension are absent from v1. Raw data availability is author-request based; no author contact planned."
+      },
+      {
+        "id": "erginkaya_public_data",
+        "doi": "10.5281/zenodo.14967806",
+        "url": "https://zenodo.org/records/14967806",
+        "kind": "PUBLIC_DATA_AVAILABILITY",
+        "supports": "Dataset metadata and README explicitly expose public data and analysis code.",
+        "access": "Zenodo API and README inspected in memory; no archive downloaded.",
+        "license": "CC-BY-4.0",
+        "files": [
+          {
+            "name": "data.zip",
+            "bytes": 23534730237
+          },
+          {
+            "name": "README.md",
+            "bytes": 2469
+          }
+        ],
+        "code_url": "https://github.com/ChiappeLab/Erginkaya_et_al_2025",
+        "limitations": "Archive contents and assay compatibility are not audited here. Its existence does not calibrate any NeuroFly parameter."
+      }
+    ],
+    "candidates": [
+      {
+        "id": "hs_dnp15_horizontal_motion",
+        "capability": "VISUAL_COURSE_CONTROL",
+        "capability_scope": "Neural-only horizontal-motion descending readout; no embodied yaw or complete optic-flow discrimination claim.",
+        "sensory_modality": "VISION_HORIZONTAL_MOTION",
+        "source_types": [
+          "HSN",
+          "HSE",
+          "HSS"
+        ],
+        "intermediate_types": [],
+        "output_types": [
+          "DNp15"
+        ],
+        "neurons": [
+          {
+            "body_id": 11215,
+            "type": "DNp15",
+            "instance": "DNp15_R",
+            "side": "R"
+          },
+          {
+            "body_id": 12069,
+            "type": "DNp15",
+            "instance": "DNp15_L",
+            "side": "L"
+          },
+          {
+            "body_id": 10016,
+            "type": "HSE",
+            "instance": "HSE_R",
+            "side": "R"
+          },
+          {
+            "body_id": 10034,
+            "type": "HSE",
+            "instance": "HSE_L",
+            "side": "L"
+          },
+          {
+            "body_id": 10015,
+            "type": "HSN",
+            "instance": "HSN_R",
+            "side": "R"
+          },
+          {
+            "body_id": 10181,
+            "type": "HSN",
+            "instance": "HSN_L",
+            "side": "L"
+          },
+          {
+            "body_id": 10023,
+            "type": "HSS",
+            "instance": "HSS_R",
+            "side": "R"
+          },
+          {
+            "body_id": 10419,
+            "type": "HSS",
+            "instance": "HSS_L",
+            "side": "L"
+          }
+        ],
+        "structural_query_ids": [
+          "bounded_nodes",
+          "hs_induced_edges"
+        ],
+        "bounded_neuron_count": 8,
+        "bounded_edge_count": 6,
+        "full_induced_edge_count": 13,
+        "selected_edges": [
+          {
+            "source_id": 10015,
+            "target_id": 11215,
+            "source_type": "HSN",
+            "target_type": "DNp15",
+            "structural_count": 138
+          },
+          {
+            "source_id": 10016,
+            "target_id": 11215,
+            "source_type": "HSE",
+            "target_type": "DNp15",
+            "structural_count": 122
+          },
+          {
+            "source_id": 10023,
+            "target_id": 11215,
+            "source_type": "HSS",
+            "target_type": "DNp15",
+            "structural_count": 23
+          },
+          {
+            "source_id": 10034,
+            "target_id": 12069,
+            "source_type": "HSE",
+            "target_type": "DNp15",
+            "structural_count": 78
+          },
+          {
+            "source_id": 10181,
+            "target_id": 12069,
+            "source_type": "HSN",
+            "target_type": "DNp15",
+            "structural_count": 126
+          },
+          {
+            "source_id": 10419,
+            "target_id": 12069,
+            "source_type": "HSS",
+            "target_type": "DNp15",
+            "structural_count": 14
+          }
+        ],
+        "functional_evidence": [
+          "suver2016",
+          "erginkaya2025"
+        ],
+        "behavioral_evidence": [
+          "erginkaya2025"
+        ],
+        "laterality": "somaSide metadata: three HS inputs and one DNp15 output on each side; all six selected edges ipsilateral.",
+        "input_readiness": "NEW_EXPLORATORY_INPUT_MODEL_FEASIBLE",
+        "input_semantics": "Prescribed left/right horizontal motion descriptors drive separate identity-resolved HS-linked proxy states. This starts after retinal motion extraction; no visual-field calibration, photoreceptor simulation or looming encoder reuse.",
+        "output_readiness": "IDENTITY_RESOLVED_NEURAL_STATE_AND_EVENT_READOUT_FEASIBLE",
+        "output_semantics": "DNp15/R and DNp15/L model states/events and their derived difference; not a calibrated yaw command.",
+        "body_compatibility": "BODY_OUTPUT_NOT_REQUIRED_FOR_FIRST_VALIDATION",
+        "future_body_requirement": "A separate bounded yaw/output-contract review would be needed for embodied steering; current TTM common-mode plant is not a steering effector.",
+        "assumptions": [
+          {
+            "name": "HS horizontal-motion selectivity and DNp15 pathway relevance",
+            "classification": "EVIDENCE_BACKED",
+            "scope": "Qualitative type-level functional interpretation, not a per-synapse amplitude or sign measurement."
+          },
+          {
+            "name": "Left/right motion descriptor to HS-proxy state encoder",
+            "classification": "EXPLORATORY_BOUNDED_ASSUMPTION",
+            "scope": "First validation; explicit input convention and direction semantics must be preregistered without outputs."
+          },
+          {
+            "name": "Proxy-state dynamics and effective transfer sign/magnitude/normalization/latency",
+            "classification": "EXPLORATORY_BOUNDED_ASSUMPTION",
+            "scope": "First validation; separate new contract, no contact-count efficacy or v1 parameter changes."
+          },
+          {
+            "name": "DNp15 model dynamics",
+            "classification": "EXPLORATORY_BOUNDED_ASSUMPTION",
+            "scope": "First validation; uncalibrated model coordinate and deterministic readout, not physiological waveform."
+          },
+          {
+            "name": "Six-edge feedforward boundary excludes other chemical edges and electrical coupling",
+            "classification": "EXPLORATORY_BOUNDED_ASSUMPTION",
+            "scope": "First validation is a chemical-routing motif probe only, not reproduction of complete DNp15 physiology."
+          },
+          {
+            "name": "Neural readout to calibrated steering biomechanics",
+            "classification": "HIGH_RISK_UNCONSTRAINED_ASSUMPTION",
+            "scope": "Excluded; not required for the first neural validation."
+          }
+        ],
+        "evidence_accessibility": "Public structural queries and open primary functional evidence; public dataset available but not required for model calibration.",
+        "dataset_evidence": [
+          "erginkaya_public_data"
+        ],
+        "author_contact_dependency": false,
+        "unresolved_questions": [
+          "Chemical versus electrical contribution to physiological responses",
+          "Effective transfer and proxy dynamics remain uncalibrated",
+          "Full recurrent-network and behavioral-state mechanisms are excluded",
+          "Future yaw/body mapping requires a separate contract"
+        ],
+        "gates": {
+          "G1": {
+            "status": "PASS",
+            "reason": "Eight identities and six directed feedforward chemical edges verified in male-cns:v1.0."
+          },
+          "G2": {
+            "status": "PASS",
+            "reason": "Explicit 8-node/6-edge path motif; full 13-edge induced graph is retained as evidence, not mislabelled as selected model."
+          },
+          "G3": {
+            "status": "PASS",
+            "reason": "Primary motion recordings and DNp15 functional/behavioral evidence verified."
+          },
+          "G4": {
+            "status": "PASS",
+            "reason": "Explicit exploratory hemifield motion input; full retinal model excluded."
+          },
+          "G5": {
+            "status": "PASS",
+            "reason": "Two identity-resolved descending readouts; no unsupported motor actuator mapping."
+          },
+          "G6": {
+            "status": "PASS",
+            "reason": "Unknown efficacy/dynamics isolated in a preregistered exploratory contract; no body or complete-network mechanism required."
+          },
+          "G7": {
+            "status": "PASS",
+            "reason": "No-stimulus and matched bilateral/side-swapped inputs permit deterministic genuine-path tests."
+          },
+          "G8": {
+            "status": "PASS",
+            "reason": "Directional horizontal-motion neural axis is distinct from v1 looming/GF validation."
+          }
+        },
+        "classification": "READY_FOR_BOUNDED_VALIDATION_DESIGN"
+      },
+      {
+        "id": "lc16_mdn_backward_walking",
+        "capability": "OTHER_EVIDENCE_DEFINED_CAPABILITY",
+        "capability_scope": "Backward walking/directional retreat pathway, not a relabelled GF jump.",
+        "sensory_modality": "VISION_SMALL_FIELD_OR_LOOMING",
+        "source_types": [
+          "LC16"
+        ],
+        "intermediate_types": [
+          "UNRESOLVED_RELAY"
+        ],
+        "output_types": [
+          "MDN"
+        ],
+        "neurons": [
+          {
+            "body_id": 20297,
+            "type": "LC16",
+            "instance": "LC16_L",
+            "side": "L"
+          },
+          {
+            "body_id": 20499,
+            "type": "LC16",
+            "instance": "LC16_L",
+            "side": "L"
+          },
+          {
+            "body_id": 21172,
+            "type": "LC16",
+            "instance": "LC16_L",
+            "side": "L"
+          },
+          {
+            "body_id": 23588,
+            "type": "LC16",
+            "instance": "LC16_L",
+            "side": "L"
+          },
+          {
+            "body_id": 25211,
+            "type": "LC16",
+            "instance": "LC16_L",
+            "side": "L"
+          },
+          {
+            "body_id": 26053,
+            "type": "LC16",
+            "instance": "LC16_L",
+            "side": "L"
+          },
+          {
+            "body_id": 28655,
+            "type": "LC16",
+            "instance": "LC16_L",
+            "side": "L"
+          },
+          {
+            "body_id": 30663,
+            "type": "LC16",
+            "instance": "LC16_L",
+            "side": "L"
+          },
+          {
+            "body_id": 35230,
+            "type": "LC16",
+            "instance": "LC16_L",
+            "side": "L"
+          },
+          {
+            "body_id": 36432,
+            "type": "LC16",
+            "instance": "LC16_R",
+            "side": "R"
+          },
+          {
+            "body_id": 36931,
+            "type": "LC16",
+            "instance": "LC16_R",
+            "side": "R"
+          },
+          {
+            "body_id": 37205,
+            "type": "LC16",
+            "instance": "LC16_L",
+            "side": "L"
+          },
+          {
+            "body_id": 37383,
+            "type": "LC16",
+            "instance": "LC16_L",
+            "side": "L"
+          },
+          {
+            "body_id": 37638,
+            "type": "LC16",
+            "instance": "LC16_R",
+            "side": "R"
+          },
+          {
+            "body_id": 37805,
+            "type": "LC16",
+            "instance": "LC16_L",
+            "side": "L"
+          },
+          {
+            "body_id": 38083,
+            "type": "LC16",
+            "instance": "LC16_R",
+            "side": "R"
+          },
+          {
+            "body_id": 38101,
+            "type": "LC16",
+            "instance": "LC16_R",
+            "side": "R"
+          },
+          {
+            "body_id": 38298,
+            "type": "LC16",
+            "instance": "LC16_R",
+            "side": "R"
+          },
+          {
+            "body_id": 39027,
+            "type": "LC16",
+            "instance": "LC16_R",
+            "side": "R"
+          },
+          {
+            "body_id": 39210,
+            "type": "LC16",
+            "instance": "LC16_L",
+            "side": "L"
+          },
+          {
+            "body_id": 39417,
+            "type": "LC16",
+            "instance": "LC16_R",
+            "side": "R"
+          },
+          {
+            "body_id": 39713,
+            "type": "LC16",
+            "instance": "LC16_L",
+            "side": "L"
+          },
+          {
+            "body_id": 40005,
+            "type": "LC16",
+            "instance": "LC16_L",
+            "side": "L"
+          },
+          {
+            "body_id": 40208,
+            "type": "LC16",
+            "instance": "LC16_L",
+            "side": "L"
+          },
+          {
+            "body_id": 41166,
+            "type": "LC16",
+            "instance": "LC16_R",
+            "side": "R"
+          },
+          {
+            "body_id": 41203,
+            "type": "LC16",
+            "instance": "LC16_R",
+            "side": "R"
+          },
+          {
+            "body_id": 41262,
+            "type": "LC16",
+            "instance": "LC16_R",
+            "side": "R"
+          },
+          {
+            "body_id": 41389,
+            "type": "LC16",
+            "instance": "LC16_L",
+            "side": "L"
+          },
+          {
+            "body_id": 41491,
+            "type": "LC16",
+            "instance": "LC16_R",
+            "side": "R"
+          },
+          {
+            "body_id": 41751,
+            "type": "LC16",
+            "instance": "LC16_L",
+            "side": "L"
+          },
+          {
+            "body_id": 41902,
+            "type": "LC16",
+            "instance": "LC16_R",
+            "side": "R"
+          },
+          {
+            "body_id": 41918,
+            "type": "LC16",
+            "instance": "LC16_R",
+            "side": "R"
+          },
+          {
+            "body_id": 42232,
+            "type": "LC16",
+            "instance": "LC16_R",
+            "side": "R"
+          },
+          {
+            "body_id": 42752,
+            "type": "LC16",
+            "instance": "LC16_R",
+            "side": "R"
+          },
+          {
+            "body_id": 42756,
+            "type": "LC16",
+            "instance": "LC16_L",
+            "side": "L"
+          },
+          {
+            "body_id": 42993,
+            "type": "LC16",
+            "instance": "LC16_R",
+            "side": "R"
+          },
+          {
+            "body_id": 43013,
+            "type": "LC16",
+            "instance": "LC16_R",
+            "side": "R"
+          },
+          {
+            "body_id": 43048,
+            "type": "LC16",
+            "instance": "LC16_L",
+            "side": "L"
+          },
+          {
+            "body_id": 43253,
+            "type": "LC16",
+            "instance": "LC16_R",
+            "side": "R"
+          },
+          {
+            "body_id": 43289,
+            "type": "LC16",
+            "instance": "LC16_L",
+            "side": "L"
+          },
+          {
+            "body_id": 43370,
+            "type": "LC16",
+            "instance": "LC16_R",
+            "side": "R"
+          },
+          {
+            "body_id": 43440,
+            "type": "LC16",
+            "instance": "LC16_R",
+            "side": "R"
+          },
+          {
+            "body_id": 43545,
+            "type": "LC16",
+            "instance": "LC16_R",
+            "side": "R"
+          },
+          {
+            "body_id": 43600,
+            "type": "LC16",
+            "instance": "LC16_R",
+            "side": "R"
+          },
+          {
+            "body_id": 43861,
+            "type": "LC16",
+            "instance": "LC16_R",
+            "side": "R"
+          },
+          {
+            "body_id": 44006,
+            "type": "LC16",
+            "instance": "LC16_R",
+            "side": "R"
+          },
+          {
+            "body_id": 44032,
+            "type": "LC16",
+            "instance": "LC16_L",
+            "side": "L"
+          },
+          {
+            "body_id": 44434,
+            "type": "LC16",
+            "instance": "LC16_R",
+            "side": "R"
+          },
+          {
+            "body_id": 44448,
+            "type": "LC16",
+            "instance": "LC16_R",
+            "side": "R"
+          },
+          {
+            "body_id": 44711,
+            "type": "LC16",
+            "instance": "LC16_L",
+            "side": "L"
+          },
+          {
+            "body_id": 44751,
+            "type": "LC16",
+            "instance": "LC16_R",
+            "side": "R"
+          },
+          {
+            "body_id": 44805,
+            "type": "LC16",
+            "instance": "LC16_L",
+            "side": "L"
+          },
+          {
+            "body_id": 44897,
+            "type": "LC16",
+            "instance": "LC16_R",
+            "side": "R"
+          },
+          {
+            "body_id": 45007,
+            "type": "LC16",
+            "instance": "LC16_R",
+            "side": "R"
+          },
+          {
+            "body_id": 45188,
+            "type": "LC16",
+            "instance": "LC16_R",
+            "side": "R"
+          },
+          {
+            "body_id": 45211,
+            "type": "LC16",
+            "instance": "LC16_L",
+            "side": "L"
+          },
+          {
+            "body_id": 45482,
+            "type": "LC16",
+            "instance": "LC16_R",
+            "side": "R"
+          },
+          {
+            "body_id": 45642,
+            "type": "LC16",
+            "instance": "LC16_R",
+            "side": "R"
+          },
+          {
+            "body_id": 45735,
+            "type": "LC16",
+            "instance": "LC16_L",
+            "side": "L"
+          },
+          {
+            "body_id": 46055,
+            "type": "LC16",
+            "instance": "LC16_R",
+            "side": "R"
+          },
+          {
+            "body_id": 46761,
+            "type": "LC16",
+            "instance": "LC16_L",
+            "side": "L"
+          },
+          {
+            "body_id": 46932,
+            "type": "LC16",
+            "instance": "LC16_R",
+            "side": "R"
+          },
+          {
+            "body_id": 46962,
+            "type": "LC16",
+            "instance": "LC16_R",
+            "side": "R"
+          },
+          {
+            "body_id": 47016,
+            "type": "LC16",
+            "instance": "LC16_R",
+            "side": "R"
+          },
+          {
+            "body_id": 47047,
+            "type": "LC16",
+            "instance": "LC16_L",
+            "side": "L"
+          },
+          {
+            "body_id": 47082,
+            "type": "LC16",
+            "instance": "LC16_R",
+            "side": "R"
+          },
+          {
+            "body_id": 47222,
+            "type": "LC16",
+            "instance": "LC16_R",
+            "side": "R"
+          },
+          {
+            "body_id": 47533,
+            "type": "LC16",
+            "instance": "LC16_R",
+            "side": "R"
+          },
+          {
+            "body_id": 47668,
+            "type": "LC16",
+            "instance": "LC16_L",
+            "side": "L"
+          },
+          {
+            "body_id": 47715,
+            "type": "LC16",
+            "instance": "LC16_R",
+            "side": "R"
+          },
+          {
+            "body_id": 48008,
+            "type": "LC16",
+            "instance": "LC16_L",
+            "side": "L"
+          },
+          {
+            "body_id": 48086,
+            "type": "LC16",
+            "instance": "LC16_R",
+            "side": "R"
+          },
+          {
+            "body_id": 48123,
+            "type": "LC16",
+            "instance": "LC16_L",
+            "side": "L"
+          },
+          {
+            "body_id": 48216,
+            "type": "LC16",
+            "instance": "LC16_R",
+            "side": "R"
+          },
+          {
+            "body_id": 48315,
+            "type": "LC16",
+            "instance": "LC16_L",
+            "side": "L"
+          },
+          {
+            "body_id": 48393,
+            "type": "LC16",
+            "instance": "LC16_R",
+            "side": "R"
+          },
+          {
+            "body_id": 48674,
+            "type": "LC16",
+            "instance": "LC16_L",
+            "side": "L"
+          },
+          {
+            "body_id": 49184,
+            "type": "LC16",
+            "instance": "LC16_R",
+            "side": "R"
+          },
+          {
+            "body_id": 49314,
+            "type": "LC16",
+            "instance": "LC16_R",
+            "side": "R"
+          },
+          {
+            "body_id": 49334,
+            "type": "LC16",
+            "instance": "LC16_L",
+            "side": "L"
+          },
+          {
+            "body_id": 49389,
+            "type": "LC16",
+            "instance": "LC16_L",
+            "side": "L"
+          },
+          {
+            "body_id": 49445,
+            "type": "LC16",
+            "instance": "LC16_R",
+            "side": "R"
+          },
+          {
+            "body_id": 49728,
+            "type": "LC16",
+            "instance": "LC16_R",
+            "side": "R"
+          },
+          {
+            "body_id": 50508,
+            "type": "LC16",
+            "instance": "LC16_L",
+            "side": "L"
+          },
+          {
+            "body_id": 50531,
+            "type": "LC16",
+            "instance": "LC16_R",
+            "side": "R"
+          },
+          {
+            "body_id": 50758,
+            "type": "LC16",
+            "instance": "LC16_L",
+            "side": "L"
+          },
+          {
+            "body_id": 51143,
+            "type": "LC16",
+            "instance": "LC16_R",
+            "side": "R"
+          },
+          {
+            "body_id": 51453,
+            "type": "LC16",
+            "instance": "LC16_R",
+            "side": "R"
+          },
+          {
+            "body_id": 51478,
+            "type": "LC16",
+            "instance": "LC16_L",
+            "side": "L"
+          },
+          {
+            "body_id": 51772,
+            "type": "LC16",
+            "instance": "LC16_R",
+            "side": "R"
+          },
+          {
+            "body_id": 52322,
+            "type": "LC16",
+            "instance": "LC16_R",
+            "side": "R"
+          },
+          {
+            "body_id": 52456,
+            "type": "LC16",
+            "instance": "LC16_R",
+            "side": "R"
+          },
+          {
+            "body_id": 52463,
+            "type": "LC16",
+            "instance": "LC16_R",
+            "side": "R"
+          },
+          {
+            "body_id": 52495,
+            "type": "LC16",
+            "instance": "LC16_R",
+            "side": "R"
+          },
+          {
+            "body_id": 52526,
+            "type": "LC16",
+            "instance": "LC16_R",
+            "side": "R"
+          },
+          {
+            "body_id": 53087,
+            "type": "LC16",
+            "instance": "LC16_L",
+            "side": "L"
+          },
+          {
+            "body_id": 53180,
+            "type": "LC16",
+            "instance": "LC16_R",
+            "side": "R"
+          },
+          {
+            "body_id": 53482,
+            "type": "LC16",
+            "instance": "LC16_R",
+            "side": "R"
+          },
+          {
+            "body_id": 53550,
+            "type": "LC16",
+            "instance": "LC16_L",
+            "side": "L"
+          },
+          {
+            "body_id": 53795,
+            "type": "LC16",
+            "instance": "LC16_R",
+            "side": "R"
+          },
+          {
+            "body_id": 54063,
+            "type": "LC16",
+            "instance": "LC16_L",
+            "side": "L"
+          },
+          {
+            "body_id": 54154,
+            "type": "LC16",
+            "instance": "LC16_R",
+            "side": "R"
+          },
+          {
+            "body_id": 54372,
+            "type": "LC16",
+            "instance": "LC16_R",
+            "side": "R"
+          },
+          {
+            "body_id": 54467,
+            "type": "LC16",
+            "instance": "LC16_L",
+            "side": "L"
+          },
+          {
+            "body_id": 54626,
+            "type": "LC16",
+            "instance": "LC16_R",
+            "side": "R"
+          },
+          {
+            "body_id": 54700,
+            "type": "LC16",
+            "instance": "LC16_L",
+            "side": "L"
+          },
+          {
+            "body_id": 54871,
+            "type": "LC16",
+            "instance": "LC16_L",
+            "side": "L"
+          },
+          {
+            "body_id": 55045,
+            "type": "LC16",
+            "instance": "LC16_L",
+            "side": "L"
+          },
+          {
+            "body_id": 55313,
+            "type": "LC16",
+            "instance": "LC16_R",
+            "side": "R"
+          },
+          {
+            "body_id": 55739,
+            "type": "LC16",
+            "instance": "LC16_L",
+            "side": "L"
+          },
+          {
+            "body_id": 56225,
+            "type": "LC16",
+            "instance": "LC16_R",
+            "side": "R"
+          },
+          {
+            "body_id": 56258,
+            "type": "LC16",
+            "instance": "LC16_R",
+            "side": "R"
+          },
+          {
+            "body_id": 56267,
+            "type": "LC16",
+            "instance": "LC16_R",
+            "side": "R"
+          },
+          {
+            "body_id": 57192,
+            "type": "LC16",
+            "instance": "LC16_R",
+            "side": "R"
+          },
+          {
+            "body_id": 57503,
+            "type": "LC16",
+            "instance": "LC16_R",
+            "side": "R"
+          },
+          {
+            "body_id": 57526,
+            "type": "LC16",
+            "instance": "LC16_R",
+            "side": "R"
+          },
+          {
+            "body_id": 58546,
+            "type": "LC16",
+            "instance": "LC16_R",
+            "side": "R"
+          },
+          {
+            "body_id": 58700,
+            "type": "LC16",
+            "instance": "LC16_R",
+            "side": "R"
+          },
+          {
+            "body_id": 58816,
+            "type": "LC16",
+            "instance": "LC16_R",
+            "side": "R"
+          },
+          {
+            "body_id": 59069,
+            "type": "LC16",
+            "instance": "LC16_L",
+            "side": "L"
+          },
+          {
+            "body_id": 59070,
+            "type": "LC16",
+            "instance": "LC16_R",
+            "side": "R"
+          },
+          {
+            "body_id": 59515,
+            "type": "LC16",
+            "instance": "LC16_R",
+            "side": "R"
+          },
+          {
+            "body_id": 59681,
+            "type": "LC16",
+            "instance": "LC16_R",
+            "side": "R"
+          },
+          {
+            "body_id": 59928,
+            "type": "LC16",
+            "instance": "LC16_L",
+            "side": "L"
+          },
+          {
+            "body_id": 60108,
+            "type": "LC16",
+            "instance": "LC16_R",
+            "side": "R"
+          },
+          {
+            "body_id": 60187,
+            "type": "LC16",
+            "instance": "LC16_R",
+            "side": "R"
+          },
+          {
+            "body_id": 60293,
+            "type": "LC16",
+            "instance": "LC16_R",
+            "side": "R"
+          },
+          {
+            "body_id": 60356,
+            "type": "LC16",
+            "instance": "LC16_R",
+            "side": "R"
+          },
+          {
+            "body_id": 60416,
+            "type": "LC16",
+            "instance": "LC16_R",
+            "side": "R"
+          },
+          {
+            "body_id": 60635,
+            "type": "LC16",
+            "instance": "LC16_R",
+            "side": "R"
+          },
+          {
+            "body_id": 60920,
+            "type": "LC16",
+            "instance": "LC16_L",
+            "side": "L"
+          },
+          {
+            "body_id": 61630,
+            "type": "LC16",
+            "instance": "LC16_R",
+            "side": "R"
+          },
+          {
+            "body_id": 61937,
+            "type": "LC16",
+            "instance": "LC16_R",
+            "side": "R"
+          },
+          {
+            "body_id": 62499,
+            "type": "LC16",
+            "instance": "LC16_R",
+            "side": "R"
+          },
+          {
+            "body_id": 62698,
+            "type": "LC16",
+            "instance": "LC16_R",
+            "side": "R"
+          },
+          {
+            "body_id": 62890,
+            "type": "LC16",
+            "instance": "LC16_R",
+            "side": "R"
+          },
+          {
+            "body_id": 63084,
+            "type": "LC16",
+            "instance": "LC16_L",
+            "side": "L"
+          },
+          {
+            "body_id": 63110,
+            "type": "LC16",
+            "instance": "LC16_R",
+            "side": "R"
+          },
+          {
+            "body_id": 63710,
+            "type": "LC16",
+            "instance": "LC16_L",
+            "side": "L"
+          },
+          {
+            "body_id": 64055,
+            "type": "LC16",
+            "instance": "LC16_L",
+            "side": "L"
+          },
+          {
+            "body_id": 64770,
+            "type": "LC16",
+            "instance": "LC16_R",
+            "side": "R"
+          },
+          {
+            "body_id": 64905,
+            "type": "LC16",
+            "instance": "LC16_R",
+            "side": "R"
+          },
+          {
+            "body_id": 65651,
+            "type": "LC16",
+            "instance": "LC16_L",
+            "side": "L"
+          },
+          {
+            "body_id": 66614,
+            "type": "LC16",
+            "instance": "LC16_R",
+            "side": "R"
+          },
+          {
+            "body_id": 69580,
+            "type": "LC16",
+            "instance": "LC16_L",
+            "side": "L"
+          },
+          {
+            "body_id": 70535,
+            "type": "LC16",
+            "instance": "LC16_L",
+            "side": "L"
+          },
+          {
+            "body_id": 71176,
+            "type": "LC16",
+            "instance": "LC16_L",
+            "side": "L"
+          },
+          {
+            "body_id": 71290,
+            "type": "LC16",
+            "instance": "LC16_R",
+            "side": "R"
+          },
+          {
+            "body_id": 71311,
+            "type": "LC16",
+            "instance": "LC16_L",
+            "side": "L"
+          },
+          {
+            "body_id": 72354,
+            "type": "LC16",
+            "instance": "LC16_L",
+            "side": "L"
+          },
+          {
+            "body_id": 72386,
+            "type": "LC16",
+            "instance": "LC16_L",
+            "side": "L"
+          },
+          {
+            "body_id": 72918,
+            "type": "LC16",
+            "instance": "LC16_L",
+            "side": "L"
+          },
+          {
+            "body_id": 73419,
+            "type": "LC16",
+            "instance": "LC16_L",
+            "side": "L"
+          },
+          {
+            "body_id": 75487,
+            "type": "LC16",
+            "instance": "LC16_L",
+            "side": "L"
+          },
+          {
+            "body_id": 76249,
+            "type": "LC16",
+            "instance": "LC16_L",
+            "side": "L"
+          },
+          {
+            "body_id": 80540,
+            "type": "LC16",
+            "instance": "LC16_L",
+            "side": "L"
+          },
+          {
+            "body_id": 81848,
+            "type": "LC16",
+            "instance": "LC16_L",
+            "side": "L"
+          },
+          {
+            "body_id": 82522,
+            "type": "LC16",
+            "instance": "LC16_L",
+            "side": "L"
+          },
+          {
+            "body_id": 83404,
+            "type": "LC16",
+            "instance": "LC16_L",
+            "side": "L"
+          },
+          {
+            "body_id": 84595,
+            "type": "LC16",
+            "instance": "LC16_R",
+            "side": "R"
+          },
+          {
+            "body_id": 85681,
+            "type": "LC16",
+            "instance": "LC16_L",
+            "side": "L"
+          },
+          {
+            "body_id": 86896,
+            "type": "LC16",
+            "instance": "LC16_L",
+            "side": "L"
+          },
+          {
+            "body_id": 89334,
+            "type": "LC16",
+            "instance": "LC16_L",
+            "side": "L"
+          },
+          {
+            "body_id": 93102,
+            "type": "LC16",
+            "instance": "LC16_R",
+            "side": "R"
+          },
+          {
+            "body_id": 108949,
+            "type": "LC16",
+            "instance": "LC16_L",
+            "side": "L"
+          },
+          {
+            "body_id": 140524,
+            "type": "LC16",
+            "instance": "LC16_L",
+            "side": "L"
+          },
+          {
+            "body_id": 143928,
+            "type": "LC16",
+            "instance": "LC16_L",
+            "side": "L"
+          },
+          {
+            "body_id": 511803,
+            "type": "LC16",
+            "instance": "LC16_L",
+            "side": "L"
+          },
+          {
+            "body_id": 512475,
+            "type": "LC16",
+            "instance": "LC16_L",
+            "side": "L"
+          },
+          {
+            "body_id": 516925,
+            "type": "LC16",
+            "instance": "LC16_L",
+            "side": "L"
+          },
+          {
+            "body_id": 517074,
+            "type": "LC16",
+            "instance": "LC16_L",
+            "side": "L"
+          },
+          {
+            "body_id": 517448,
+            "type": "LC16",
+            "instance": "LC16_L",
+            "side": "L"
+          },
+          {
+            "body_id": 518476,
+            "type": "LC16",
+            "instance": "LC16_L",
+            "side": "L"
+          },
+          {
+            "body_id": 521631,
+            "type": "LC16",
+            "instance": "LC16_L",
+            "side": "L"
+          },
+          {
+            "body_id": 522372,
+            "type": "LC16",
+            "instance": "LC16_L",
+            "side": "L"
+          },
+          {
+            "body_id": 531003,
+            "type": "LC16",
+            "instance": "LC16_L",
+            "side": "L"
+          },
+          {
+            "body_id": 534612,
+            "type": "LC16",
+            "instance": "LC16_L",
+            "side": "L"
+          },
+          {
+            "body_id": 534785,
+            "type": "LC16",
+            "instance": "LC16_L",
+            "side": "L"
+          },
+          {
+            "body_id": 539720,
+            "type": "LC16",
+            "instance": "LC16_L",
+            "side": "L"
+          },
+          {
+            "body_id": 540247,
+            "type": "LC16",
+            "instance": "LC16_L",
+            "side": "L"
+          },
+          {
+            "body_id": 542313,
+            "type": "LC16",
+            "instance": "LC16_L",
+            "side": "L"
+          },
+          {
+            "body_id": 546731,
+            "type": "LC16",
+            "instance": "LC16_L",
+            "side": "L"
+          },
+          {
+            "body_id": 10763,
+            "type": "MDN",
+            "instance": "MDN_R",
+            "side": "R"
+          },
+          {
+            "body_id": 11288,
+            "type": "MDN",
+            "instance": "MDN_L",
+            "side": "L"
+          },
+          {
+            "body_id": 11332,
+            "type": "MDN",
+            "instance": "MDN_R",
+            "side": "R"
+          },
+          {
+            "body_id": 12348,
+            "type": "MDN",
+            "instance": "MDN_L",
+            "side": "L"
+          }
+        ],
+        "structural_query_ids": [
+          "bounded_nodes",
+          "lc16_mdn_edges"
+        ],
+        "bounded_neuron_count": 186,
+        "bounded_edge_count": 0,
+        "size_limit": "182 LC16 plus four MDN identities; relay size and complete connecting edge count unresolved.",
+        "functional_evidence": [
+          "sen2017"
+        ],
+        "behavioral_evidence": [
+          "sen2017"
+        ],
+        "laterality": "Source-derived somaSide exists; relay laterality not established.",
+        "input_readiness": "EXISTING_NEUROFLY_INPUT_REUSABLE",
+        "input_semantics": "Existing exploratory visual expansion primitives may be reusable after LC16-specific source-column/encoder audit; existing LC4/LPLC2 state parameters are not silently transferred.",
+        "output_readiness": "MDN_NEURAL_READOUT_POSSIBLE_BUT_UPSTREAM_ROUTE_UNDEFINED",
+        "output_semantics": "MDN identity-resolved states could be read; connecting sensory relay is not established.",
+        "body_compatibility": "REQUIRES_BOUNDED_BODY_EXTENSION",
+        "future_body_requirement": "Backward propulsion/direction contract would be needed for a proxy; validated leg-gait biomechanics would be a larger separate task.",
+        "assumptions": [
+          {
+            "name": "LC16/MDN directional walking functional relationship",
+            "classification": "EVIDENCE_BACKED",
+            "scope": "Type-level function, not direct edge."
+          },
+          {
+            "name": "Unknown LC16-to-MDN relay and sign",
+            "classification": "HIGH_RISK_UNCONSTRAINED_ASSUMPTION",
+            "scope": "Required before a sensory-to-descending implementation."
+          },
+          {
+            "name": "LC16-specific input-state transform",
+            "classification": "EXPLORATORY_BOUNDED_ASSUMPTION",
+            "scope": "Requires source-specific projection audit."
+          },
+          {
+            "name": "MDN-to-backward locomotion mapping",
+            "classification": "HIGH_RISK_UNCONSTRAINED_ASSUMPTION",
+            "scope": "Excluded until a downstream contract exists."
+          }
+        ],
+        "evidence_accessibility": "Primary abstract and official nodes accessible; no verified bounded relay contract.",
+        "dataset_evidence": [],
+        "author_contact_dependency": false,
+        "unresolved_questions": [
+          "Intermediate identities and directed route",
+          "LC16 column/input representation",
+          "MDN subtype grouping and downstream motor mapping"
+        ],
+        "gates": {
+          "G1": {
+            "status": "FAIL",
+            "reason": "Nodes exist but proposed direct LC16→MDN path query returns zero; complete relay support is not established."
+          },
+          "G2": {
+            "status": "UNKNOWN",
+            "reason": "Relay is undefined; the 186-node source/output set is not a connected validated circuit boundary."
+          },
+          "G3": {
+            "status": "PASS",
+            "reason": "Primary functional imaging and behavioral epistasis support the pathway association."
+          },
+          "G4": {
+            "status": "UNKNOWN",
+            "reason": "Input primitives exist but LC16-specific representation has not been validated."
+          },
+          "G5": {
+            "status": "PASS",
+            "reason": "MDN neural readout can be defined without backward biomechanics."
+          },
+          "G6": {
+            "status": "FAIL",
+            "reason": "Undefined relay and effector assumptions cannot be concealed by injecting MDN activity."
+          },
+          "G7": {
+            "status": "UNKNOWN",
+            "reason": "No sensory-route validation possible before relay definition."
+          },
+          "G8": {
+            "status": "PASS",
+            "reason": "Walking-direction output is distinct from GF jump pathway."
+          }
+        },
+        "classification": "STRUCTURAL_SUPPORT_INSUFFICIENT"
+      },
+      {
+        "id": "lplc_landing_dnp07_dnp10",
+        "capability": "LANDING_CONTROL",
+        "capability_scope": "Progressive visual motion to state-dependent landing descending pathways.",
+        "sensory_modality": "VISION_PROGRESSIVE_EDGE_MOTION",
+        "source_types": [
+          "LPLC3",
+          "LPLC4"
+        ],
+        "intermediate_types": [],
+        "output_types": [
+          "DNp07",
+          "DNp10"
+        ],
+        "neurons": [
+          {
+            "body_id": 11513,
+            "type": "DNp07",
+            "instance": "DNp07_R",
+            "side": "R"
+          },
+          {
+            "body_id": 11704,
+            "type": "DNp07",
+            "instance": "DNp07_L",
+            "side": "L"
+          },
+          {
+            "body_id": 10425,
+            "type": "DNp10",
+            "instance": "DNp10_L",
+            "side": "L"
+          },
+          {
+            "body_id": 10433,
+            "type": "DNp10",
+            "instance": "DNp10_R",
+            "side": "R"
+          },
+          {
+            "body_id": 10801,
+            "type": "LPLC4",
+            "instance": "LPLC4_L",
+            "side": "L"
+          },
+          {
+            "body_id": 12574,
+            "type": "LPLC4",
+            "instance": "LPLC4_L",
+            "side": "L"
+          },
+          {
+            "body_id": 13909,
+            "type": "LPLC4",
+            "instance": "LPLC4_L",
+            "side": "L"
+          },
+          {
+            "body_id": 14132,
+            "type": "LPLC4",
+            "instance": "LPLC4_L",
+            "side": "L"
+          },
+          {
+            "body_id": 14588,
+            "type": "LPLC4",
+            "instance": "LPLC4_L",
+            "side": "L"
+          },
+          {
+            "body_id": 15599,
+            "type": "LPLC4",
+            "instance": "LPLC4_L",
+            "side": "L"
+          },
+          {
+            "body_id": 15664,
+            "type": "LPLC4",
+            "instance": "LPLC4_L",
+            "side": "L"
+          },
+          {
+            "body_id": 15935,
+            "type": "LPLC4",
+            "instance": "LPLC4_L",
+            "side": "L"
+          },
+          {
+            "body_id": 15951,
+            "type": "LPLC4",
+            "instance": "LPLC4_L",
+            "side": "L"
+          },
+          {
+            "body_id": 16304,
+            "type": "LPLC4",
+            "instance": "LPLC4_L",
+            "side": "L"
+          },
+          {
+            "body_id": 16469,
+            "type": "LPLC4",
+            "instance": "LPLC4_R",
+            "side": "R"
+          },
+          {
+            "body_id": 17302,
+            "type": "LPLC4",
+            "instance": "LPLC4_R",
+            "side": "R"
+          },
+          {
+            "body_id": 17307,
+            "type": "LPLC4",
+            "instance": "LPLC4_R",
+            "side": "R"
+          },
+          {
+            "body_id": 17677,
+            "type": "LPLC4",
+            "instance": "LPLC4_R",
+            "side": "R"
+          },
+          {
+            "body_id": 17831,
+            "type": "LPLC4",
+            "instance": "LPLC4_R",
+            "side": "R"
+          },
+          {
+            "body_id": 17993,
+            "type": "LPLC4",
+            "instance": "LPLC4_L",
+            "side": "L"
+          },
+          {
+            "body_id": 18079,
+            "type": "LPLC4",
+            "instance": "LPLC4_R",
+            "side": "R"
+          },
+          {
+            "body_id": 18145,
+            "type": "LPLC4",
+            "instance": "LPLC4_L",
+            "side": "L"
+          },
+          {
+            "body_id": 18155,
+            "type": "LPLC4",
+            "instance": "LPLC4_L",
+            "side": "L"
+          },
+          {
+            "body_id": 18282,
+            "type": "LPLC4",
+            "instance": "LPLC4_R",
+            "side": "R"
+          },
+          {
+            "body_id": 18314,
+            "type": "LPLC4",
+            "instance": "LPLC4_R",
+            "side": "R"
+          },
+          {
+            "body_id": 18365,
+            "type": "LPLC4",
+            "instance": "LPLC4_L",
+            "side": "L"
+          },
+          {
+            "body_id": 18384,
+            "type": "LPLC4",
+            "instance": "LPLC4_R",
+            "side": "R"
+          },
+          {
+            "body_id": 18558,
+            "type": "LPLC4",
+            "instance": "LPLC4_L",
+            "side": "L"
+          },
+          {
+            "body_id": 18605,
+            "type": "LPLC4",
+            "instance": "LPLC4_R",
+            "side": "R"
+          },
+          {
+            "body_id": 18631,
+            "type": "LPLC4",
+            "instance": "LPLC4_R",
+            "side": "R"
+          },
+          {
+            "body_id": 18661,
+            "type": "LPLC4",
+            "instance": "LPLC4_R",
+            "side": "R"
+          },
+          {
+            "body_id": 18718,
+            "type": "LPLC4",
+            "instance": "LPLC4_L",
+            "side": "L"
+          },
+          {
+            "body_id": 18746,
+            "type": "LPLC4",
+            "instance": "LPLC4_R",
+            "side": "R"
+          },
+          {
+            "body_id": 18809,
+            "type": "LPLC4",
+            "instance": "LPLC4_R",
+            "side": "R"
+          },
+          {
+            "body_id": 18895,
+            "type": "LPLC4",
+            "instance": "LPLC4_R",
+            "side": "R"
+          },
+          {
+            "body_id": 18918,
+            "type": "LPLC4",
+            "instance": "LPLC4_L",
+            "side": "L"
+          },
+          {
+            "body_id": 18943,
+            "type": "LPLC4",
+            "instance": "LPLC4_R",
+            "side": "R"
+          },
+          {
+            "body_id": 18970,
+            "type": "LPLC4",
+            "instance": "LPLC4_R",
+            "side": "R"
+          },
+          {
+            "body_id": 18986,
+            "type": "LPLC4",
+            "instance": "LPLC4_L",
+            "side": "L"
+          },
+          {
+            "body_id": 19050,
+            "type": "LPLC4",
+            "instance": "LPLC4_R",
+            "side": "R"
+          },
+          {
+            "body_id": 19202,
+            "type": "LPLC4",
+            "instance": "LPLC4_R",
+            "side": "R"
+          },
+          {
+            "body_id": 19529,
+            "type": "LPLC4",
+            "instance": "LPLC4_R",
+            "side": "R"
+          },
+          {
+            "body_id": 19580,
+            "type": "LPLC4",
+            "instance": "LPLC4_R",
+            "side": "R"
+          },
+          {
+            "body_id": 19599,
+            "type": "LPLC4",
+            "instance": "LPLC4_R",
+            "side": "R"
+          },
+          {
+            "body_id": 19677,
+            "type": "LPLC4",
+            "instance": "LPLC4_L",
+            "side": "L"
+          },
+          {
+            "body_id": 20040,
+            "type": "LPLC4",
+            "instance": "LPLC4_L",
+            "side": "L"
+          },
+          {
+            "body_id": 20175,
+            "type": "LPLC4",
+            "instance": "LPLC4_R",
+            "side": "R"
+          },
+          {
+            "body_id": 20210,
+            "type": "LPLC4",
+            "instance": "LPLC4_R",
+            "side": "R"
+          },
+          {
+            "body_id": 20219,
+            "type": "LPLC4",
+            "instance": "LPLC4_L",
+            "side": "L"
+          },
+          {
+            "body_id": 20481,
+            "type": "LPLC4",
+            "instance": "LPLC4_R",
+            "side": "R"
+          },
+          {
+            "body_id": 20801,
+            "type": "LPLC4",
+            "instance": "LPLC4_R",
+            "side": "R"
+          },
+          {
+            "body_id": 20872,
+            "type": "LPLC4",
+            "instance": "LPLC4_L",
+            "side": "L"
+          },
+          {
+            "body_id": 20914,
+            "type": "LPLC4",
+            "instance": "LPLC4_L",
+            "side": "L"
+          },
+          {
+            "body_id": 21159,
+            "type": "LPLC4",
+            "instance": "LPLC4_R",
+            "side": "R"
+          },
+          {
+            "body_id": 21164,
+            "type": "LPLC4",
+            "instance": "LPLC4_R",
+            "side": "R"
+          },
+          {
+            "body_id": 21216,
+            "type": "LPLC4",
+            "instance": "LPLC4_L",
+            "side": "L"
+          },
+          {
+            "body_id": 21352,
+            "type": "LPLC4",
+            "instance": "LPLC4_R",
+            "side": "R"
+          },
+          {
+            "body_id": 21483,
+            "type": "LPLC4",
+            "instance": "LPLC4_R",
+            "side": "R"
+          },
+          {
+            "body_id": 21738,
+            "type": "LPLC4",
+            "instance": "LPLC4_L",
+            "side": "L"
+          },
+          {
+            "body_id": 22028,
+            "type": "LPLC4",
+            "instance": "LPLC4_R",
+            "side": "R"
+          },
+          {
+            "body_id": 22800,
+            "type": "LPLC4",
+            "instance": "LPLC4_L",
+            "side": "L"
+          },
+          {
+            "body_id": 22883,
+            "type": "LPLC4",
+            "instance": "LPLC4_L",
+            "side": "L"
+          },
+          {
+            "body_id": 22918,
+            "type": "LPLC4",
+            "instance": "LPLC4_L",
+            "side": "L"
+          },
+          {
+            "body_id": 23115,
+            "type": "LPLC4",
+            "instance": "LPLC4_R",
+            "side": "R"
+          },
+          {
+            "body_id": 23237,
+            "type": "LPLC4",
+            "instance": "LPLC4_L",
+            "side": "L"
+          },
+          {
+            "body_id": 23271,
+            "type": "LPLC4",
+            "instance": "LPLC4_R",
+            "side": "R"
+          },
+          {
+            "body_id": 23394,
+            "type": "LPLC4",
+            "instance": "LPLC4_L",
+            "side": "L"
+          },
+          {
+            "body_id": 23664,
+            "type": "LPLC4",
+            "instance": "LPLC4_R",
+            "side": "R"
+          },
+          {
+            "body_id": 24128,
+            "type": "LPLC4",
+            "instance": "LPLC4_L",
+            "side": "L"
+          },
+          {
+            "body_id": 24992,
+            "type": "LPLC4",
+            "instance": "LPLC4_L",
+            "side": "L"
+          },
+          {
+            "body_id": 25840,
+            "type": "LPLC4",
+            "instance": "LPLC4_R",
+            "side": "R"
+          },
+          {
+            "body_id": 26059,
+            "type": "LPLC4",
+            "instance": "LPLC4_R",
+            "side": "R"
+          },
+          {
+            "body_id": 26163,
+            "type": "LPLC4",
+            "instance": "LPLC4_R",
+            "side": "R"
+          },
+          {
+            "body_id": 26167,
+            "type": "LPLC4",
+            "instance": "LPLC4_R",
+            "side": "R"
+          },
+          {
+            "body_id": 27882,
+            "type": "LPLC4",
+            "instance": "LPLC4_R",
+            "side": "R"
+          },
+          {
+            "body_id": 28140,
+            "type": "LPLC4",
+            "instance": "LPLC4_L",
+            "side": "L"
+          },
+          {
+            "body_id": 28191,
+            "type": "LPLC4",
+            "instance": "LPLC4_R",
+            "side": "R"
+          },
+          {
+            "body_id": 28228,
+            "type": "LPLC4",
+            "instance": "LPLC4_R",
+            "side": "R"
+          },
+          {
+            "body_id": 29335,
+            "type": "LPLC4",
+            "instance": "LPLC4_R",
+            "side": "R"
+          },
+          {
+            "body_id": 29386,
+            "type": "LPLC4",
+            "instance": "LPLC4_R",
+            "side": "R"
+          },
+          {
+            "body_id": 30276,
+            "type": "LPLC4",
+            "instance": "LPLC4_L",
+            "side": "L"
+          },
+          {
+            "body_id": 30640,
+            "type": "LPLC4",
+            "instance": "LPLC4_L",
+            "side": "L"
+          },
+          {
+            "body_id": 32341,
+            "type": "LPLC4",
+            "instance": "LPLC4_R",
+            "side": "R"
+          },
+          {
+            "body_id": 32508,
+            "type": "LPLC4",
+            "instance": "LPLC4_R",
+            "side": "R"
+          },
+          {
+            "body_id": 33085,
+            "type": "LPLC4",
+            "instance": "LPLC4_R",
+            "side": "R"
+          },
+          {
+            "body_id": 33539,
+            "type": "LPLC4",
+            "instance": "LPLC4_R",
+            "side": "R"
+          },
+          {
+            "body_id": 35618,
+            "type": "LPLC4",
+            "instance": "LPLC4_R",
+            "side": "R"
+          },
+          {
+            "body_id": 41839,
+            "type": "LPLC4",
+            "instance": "LPLC4_R",
+            "side": "R"
+          },
+          {
+            "body_id": 52652,
+            "type": "LPLC4",
+            "instance": "LPLC4_L",
+            "side": "L"
+          },
+          {
+            "body_id": 91616,
+            "type": "LPLC4",
+            "instance": "LPLC4_L",
+            "side": "L"
+          },
+          {
+            "body_id": 92625,
+            "type": "LPLC4",
+            "instance": "LPLC4_L",
+            "side": "L"
+          },
+          {
+            "body_id": 96253,
+            "type": "LPLC4",
+            "instance": "LPLC4_L",
+            "side": "L"
+          },
+          {
+            "body_id": 141054,
+            "type": "LPLC4",
+            "instance": "LPLC4_L",
+            "side": "L"
+          },
+          {
+            "body_id": 515901,
+            "type": "LPLC4",
+            "instance": "LPLC4_L",
+            "side": "L"
+          },
+          {
+            "body_id": 518588,
+            "type": "LPLC4",
+            "instance": "LPLC4_L",
+            "side": "L"
+          },
+          {
+            "body_id": 519933,
+            "type": "LPLC4",
+            "instance": "LPLC4_L",
+            "side": "L"
+          },
+          {
+            "body_id": 522464,
+            "type": "LPLC4",
+            "instance": "LPLC4_L",
+            "side": "L"
+          },
+          {
+            "body_id": 524089,
+            "type": "LPLC4",
+            "instance": "LPLC4_L",
+            "side": "L"
+          },
+          {
+            "body_id": 531620,
+            "type": "LPLC4",
+            "instance": "LPLC4_L",
+            "side": "L"
+          },
+          {
+            "body_id": 535397,
+            "type": "LPLC4",
+            "instance": "LPLC4_L",
+            "side": "L"
+          },
+          {
+            "body_id": 556556,
+            "type": "LPLC4",
+            "instance": "LPLC4_L",
+            "side": "L"
+          }
+        ],
+        "structural_query_ids": [
+          "landing_nodes",
+          "landing_route_summary"
+        ],
+        "bounded_neuron_count": 101,
+        "bounded_edge_count": 118,
+        "size_limit": "97 LPLC4 and four descending identities returned; exact LPLC3 label absent, with no independently verified alias.",
+        "route_summary": [
+          {
+            "source_type": "LPLC4",
+            "source_side": "L",
+            "target_id": 10425,
+            "target_type": "DNp10",
+            "target_side": "L",
+            "edge_count": 16,
+            "structural_count": 37,
+            "source_ids": [
+              12574,
+              13909,
+              14132,
+              15951,
+              17993,
+              18558,
+              18918,
+              20914,
+              22883,
+              23237,
+              24992,
+              92625,
+              96253,
+              518588,
+              535397,
+              556556
+            ]
+          },
+          {
+            "source_type": "LPLC4",
+            "source_side": "L",
+            "target_id": 11704,
+            "target_type": "DNp07",
+            "target_side": "L",
+            "edge_count": 42,
+            "structural_count": 1199,
+            "source_ids": [
+              10801,
+              12574,
+              13909,
+              14132,
+              14588,
+              15599,
+              15664,
+              15935,
+              15951,
+              16304,
+              17993,
+              18145,
+              18155,
+              18365,
+              18558,
+              18718,
+              18918,
+              18986,
+              19677,
+              20040,
+              20219,
+              20872,
+              20914,
+              21216,
+              21738,
+              22800,
+              22883,
+              22918,
+              23237,
+              23394,
+              24992,
+              30276,
+              91616,
+              92625,
+              96253,
+              515901,
+              518588,
+              519933,
+              522464,
+              524089,
+              531620,
+              535397
+            ]
+          },
+          {
+            "source_type": "LPLC4",
+            "source_side": "R",
+            "target_id": 10433,
+            "target_type": "DNp10",
+            "target_side": "R",
+            "edge_count": 19,
+            "structural_count": 60,
+            "source_ids": [
+              16469,
+              17302,
+              17677,
+              17831,
+              18079,
+              18384,
+              18605,
+              18631,
+              18746,
+              18895,
+              18943,
+              18970,
+              19580,
+              19599,
+              20210,
+              20801,
+              23664,
+              26059,
+              27882
+            ]
+          },
+          {
+            "source_type": "LPLC4",
+            "source_side": "R",
+            "target_id": 11513,
+            "target_type": "DNp07",
+            "target_side": "R",
+            "edge_count": 41,
+            "structural_count": 1065,
+            "source_ids": [
+              16469,
+              17302,
+              17307,
+              17677,
+              17831,
+              18079,
+              18282,
+              18314,
+              18384,
+              18605,
+              18631,
+              18661,
+              18746,
+              18809,
+              18895,
+              18943,
+              18970,
+              19050,
+              19202,
+              19529,
+              19580,
+              19599,
+              20175,
+              20210,
+              20481,
+              20801,
+              21159,
+              21164,
+              21352,
+              21483,
+              22028,
+              23271,
+              23664,
+              25840,
+              26059,
+              26163,
+              26167,
+              27882,
+              28191,
+              28228,
+              29335
+            ]
+          }
+        ],
+        "functional_evidence": [
+          "ache2019_landing"
+        ],
+        "behavioral_evidence": [
+          "ache2019_landing"
+        ],
+        "laterality": "Queried LPLC4 routes are ipsilateral by somaSide; unknown LPLC3 mapping is not inferred from morphology.",
+        "input_readiness": "NEW_EXPLORATORY_INPUT_MODEL_FEASIBLE",
+        "input_semantics": "Progressive dark-edge descriptors, not merely another looming speed; source and flight-state gating require explicit contracts.",
+        "output_readiness": "LANDING_DESCENDING_NEURAL_READOUT_REQUIRES_STATE_CONTRACT",
+        "output_semantics": "DNp07/DNp10 states/events; no validated six-leg extension or contact output.",
+        "body_compatibility": "REQUIRES_MAJOR_BIOMECHANICAL_MODEL",
+        "future_body_requirement": "Landing behavior requires flight/context and articulated leg extension/contact absent from the fixed-heading plant; neural-only study could precede embodiment after structural/state gates.",
+        "assumptions": [
+          {
+            "name": "DNp07/DNp10 landing and flight gating",
+            "classification": "EVIDENCE_BACKED",
+            "scope": "Primary recordings and manipulations."
+          },
+          {
+            "name": "LPLC3 identity/alias correspondence",
+            "classification": "HIGH_RISK_UNCONSTRAINED_ASSUMPTION",
+            "scope": "Required for the nominated full source boundary; not guessed."
+          },
+          {
+            "name": "Progressive-edge source proxy encoder",
+            "classification": "EXPLORATORY_BOUNDED_ASSUMPTION",
+            "scope": "Source-selective mapping not calibrated."
+          },
+          {
+            "name": "Flight-state/neuromodulatory feedback gate",
+            "classification": "HIGH_RISK_UNCONSTRAINED_ASSUMPTION",
+            "scope": "Current world/body model does not provide that state."
+          },
+          {
+            "name": "Landing effector mechanics",
+            "classification": "HIGH_RISK_UNCONSTRAINED_ASSUMPTION",
+            "scope": "Excluded; not implemented."
+          }
+        ],
+        "evidence_accessibility": "Primary full text available via Europe PMC XML; raw data stated available on request, which is not an allowed dependency.",
+        "dataset_evidence": [],
+        "author_contact_dependency": false,
+        "unresolved_questions": [
+          "LPLC3 nomenclature in pinned MaleCNS",
+          "Source-specific functional response",
+          "Flight-state gate boundary",
+          "Landing motor effector mapping"
+        ],
+        "gates": {
+          "G1": {
+            "status": "FAIL",
+            "reason": "LPLC4 and four outputs/routes verified, but required exact LPLC3 identity label not found; no verified alias."
+          },
+          "G2": {
+            "status": "UNKNOWN",
+            "reason": "The nominated source/context boundary is incomplete."
+          },
+          "G3": {
+            "status": "PASS",
+            "reason": "Primary activation/silencing, voltage recordings and state gating verified."
+          },
+          "G4": {
+            "status": "UNKNOWN",
+            "reason": "Progressive-edge input is feasible, but contextual source gating unresolved."
+          },
+          "G5": {
+            "status": "UNKNOWN",
+            "reason": "Neural readout alone possible; state-dependent output semantics need a separate gate."
+          },
+          "G6": {
+            "status": "FAIL",
+            "reason": "Missing source nomenclature and flight-state mechanism precede useful landing interpretation."
+          },
+          "G7": {
+            "status": "UNKNOWN",
+            "reason": "Meaningful state-matched controls require a context contract."
+          },
+          "G8": {
+            "status": "PASS",
+            "reason": "Landing-specific output differs from GF escape-pathway validation."
+          }
+        },
+        "classification": "STRUCTURAL_SUPPORT_INSUFFICIENT"
+      }
+    ],
+    "selected_candidate_id": "hs_dnp15_horizontal_motion",
+    "selected_capability": "VISUAL_COURSE_CONTROL",
+    "selected_contract": {
+      "schema": "second_circuit_candidate_contract_v1",
+      "candidate_id": "hs_dnp15_horizontal_motion",
+      "capability": "VISUAL_COURSE_CONTROL",
+      "validation_scope": "NEURAL_ONLY_HORIZONTAL_MOTION_FEEDFORWARD_CHEMICAL_ROUTE_PROBE",
+      "dataset": "male-cns:v1.0",
+      "source_identities": [
+        {
+          "body_id": 10016,
+          "type": "HSE",
+          "instance": "HSE_R",
+          "side": "R"
+        },
+        {
+          "body_id": 10034,
+          "type": "HSE",
+          "instance": "HSE_L",
+          "side": "L"
+        },
+        {
+          "body_id": 10015,
+          "type": "HSN",
+          "instance": "HSN_R",
+          "side": "R"
+        },
+        {
+          "body_id": 10181,
+          "type": "HSN",
+          "instance": "HSN_L",
+          "side": "L"
+        },
+        {
+          "body_id": 10023,
+          "type": "HSS",
+          "instance": "HSS_R",
+          "side": "R"
+        },
+        {
+          "body_id": 10419,
+          "type": "HSS",
+          "instance": "HSS_L",
+          "side": "L"
+        }
+      ],
+      "target_identities": [
+        {
+          "body_id": 11215,
+          "type": "DNp15",
+          "instance": "DNp15_R",
+          "side": "R"
+        },
+        {
+          "body_id": 12069,
+          "type": "DNp15",
+          "instance": "DNp15_L",
+          "side": "L"
+        }
+      ],
+      "structural_edges": [
+        {
+          "source_id": 10015,
+          "target_id": 11215,
+          "source_type": "HSN",
+          "target_type": "DNp15",
+          "structural_count": 138
+        },
+        {
+          "source_id": 10016,
+          "target_id": 11215,
+          "source_type": "HSE",
+          "target_type": "DNp15",
+          "structural_count": 122
+        },
+        {
+          "source_id": 10023,
+          "target_id": 11215,
+          "source_type": "HSS",
+          "target_type": "DNp15",
+          "structural_count": 23
+        },
+        {
+          "source_id": 10034,
+          "target_id": 12069,
+          "source_type": "HSE",
+          "target_type": "DNp15",
+          "structural_count": 78
+        },
+        {
+          "source_id": 10181,
+          "target_id": 12069,
+          "source_type": "HSN",
+          "target_type": "DNp15",
+          "structural_count": 126
+        },
+        {
+          "source_id": 10419,
+          "target_id": 12069,
+          "source_type": "HSS",
+          "target_type": "DNp15",
+          "structural_count": 14
+        }
+      ],
+      "source_query_ids": [
+        "bounded_nodes",
+        "hs_induced_edges"
+      ],
+      "full_induced_edges_not_selected": [
+        {
+          "source_id": 10015,
+          "target_id": 10016,
+          "source_type": "HSN",
+          "target_type": "HSE",
+          "structural_count": 4
+        },
+        {
+          "source_id": 10016,
+          "target_id": 10015,
+          "source_type": "HSE",
+          "target_type": "HSN",
+          "structural_count": 2
+        },
+        {
+          "source_id": 10016,
+          "target_id": 10023,
+          "source_type": "HSE",
+          "target_type": "HSS",
+          "structural_count": 1
+        },
+        {
+          "source_id": 10034,
+          "target_id": 10181,
+          "source_type": "HSE",
+          "target_type": "HSN",
+          "structural_count": 1
+        },
+        {
+          "source_id": 10034,
+          "target_id": 10419,
+          "source_type": "HSE",
+          "target_type": "HSS",
+          "structural_count": 1
+        },
+        {
+          "source_id": 10419,
+          "target_id": 10034,
+          "source_type": "HSS",
+          "target_type": "HSE",
+          "structural_count": 2
+        },
+        {
+          "source_id": 12069,
+          "target_id": 10419,
+          "source_type": "DNp15",
+          "target_type": "HSS",
+          "structural_count": 1
+        }
+      ],
+      "functional_evidence_ids": [
+        "suver2016",
+        "erginkaya2025"
+      ],
+      "input_semantics": "Prescribed left/right horizontal motion descriptors drive separate identity-resolved HS-linked proxy states. This starts after retinal motion extraction; no visual-field calibration, photoreceptor simulation or looming encoder reuse.",
+      "output_semantics": "DNp15/R and DNp15/L model states/events and their derived difference; not a calibrated yaw command.",
+      "model_assumptions": [
+        {
+          "name": "Left/right motion descriptor to HS-proxy state encoder",
+          "classification": "EXPLORATORY_BOUNDED_ASSUMPTION",
+          "scope": "First validation; explicit input convention and direction semantics must be preregistered without outputs."
+        },
+        {
+          "name": "Proxy-state dynamics and effective transfer sign/magnitude/normalization/latency",
+          "classification": "EXPLORATORY_BOUNDED_ASSUMPTION",
+          "scope": "First validation; separate new contract, no contact-count efficacy or v1 parameter changes."
+        },
+        {
+          "name": "DNp15 model dynamics",
+          "classification": "EXPLORATORY_BOUNDED_ASSUMPTION",
+          "scope": "First validation; uncalibrated model coordinate and deterministic readout, not physiological waveform."
+        },
+        {
+          "name": "Six-edge feedforward boundary excludes other chemical edges and electrical coupling",
+          "classification": "EXPLORATORY_BOUNDED_ASSUMPTION",
+          "scope": "First validation is a chemical-routing motif probe only, not reproduction of complete DNp15 physiology."
+        }
+      ],
+      "validation_question": "How do explicit left/right horizontal-motion inputs propagate through the verified HS→DNp15 chemical-routing motif under preregistered exploratory dynamics?",
+      "exclusions": [
+        "NO_COMPLETE_H2_HS_NETWORK_OR_ROTATION_TRANSLATION_DISCRIMINATION_CLAIM",
+        "NO_GAP_JUNCTION_OR_BIOLOGICAL_TRANSFER_CALIBRATION",
+        "NO_MOTOR_ACTUATOR_YAW_OR_BODY_MAPPING",
+        "NO_LIVING_FLY_LEARNING_MEMORY_OR_BEHAVIOR_SUCCESS_CLAIM",
+        "NO_STRUCTURAL_COUNT_AS_EFFICACY",
+        "NO_V1_MODEL_OR_SCENARIO_CHANGES",
+        "NO_AUTHOR_CONTACT_OR_OUTPUT_TARGETING"
+      ],
+      "unresolved_risks": [
+        "Chemical versus electrical contribution to physiological responses",
+        "Effective transfer and proxy dynamics remain uncalibrated",
+        "Full recurrent-network and behavioral-state mechanisms are excluded",
+        "Future yaw/body mapping requires a separate contract"
+      ]
+    },
+    "selection_rationale": "Only the narrowly scoped HS→DNp15 neural feedforward probe passes G1–G8. Selection rests on verified directed routing, explicit bilateral motion inputs and public type-level functional evidence, not body movement or product appeal. Missing electrical/recurrent physiology limits its claims, not concealed by a full course-control promise. Other nominated boundaries lack a verified relay or source identity/context.",
+    "first_validation_design": {
+      "question": "How do explicit left/right horizontal-motion inputs propagate through the verified HS→DNp15 chemical-routing motif under preregistered exploratory dynamics?",
+      "input": "Prescribed hemifield horizontal-motion descriptors to six identity-resolved HS-linked proxy states; no rendered-world geometry or biological angular calibration.",
+      "subgraph": "Eight verified identities and six selected directed feedforward chemical edges. Retain all 13 induced edges as provenance; exclude seven explicitly.",
+      "output": "Both DNp15 model states/events, per-source contributions and derived bilateral difference, with uncalibrated units declared. No body output required.",
+      "conditions": [
+        "NO_MOTION_CONTROL",
+        "BILATERAL_MATCHED_PROGRESSIVE_MOTION",
+        "RIGHT_ONLY_PROGRESSIVE_MOTION",
+        "LEFT_ONLY_PROGRESSIVE_MOTION",
+        "DIRECTION_REVERSED_CONTROL"
+      ],
+      "pre_execution_freeze": "Future phase must preregister encoder/state/target dynamics, effective sign/magnitude/normalization/latency, dt/horizon and control schedules before any new neural execution. No values selected in Phase 24.",
+      "model_independent_invariants": [
+        "Verified identities and somaSide retained",
+        "Structural counts never multiply drive",
+        "Only structurally selected ipsilateral source routes eligible",
+        "No stimulus fallback or injected output",
+        "All states and events have causal provenance",
+        "Controls and results replay deterministically"
+      ],
+      "model_dependent_expectation": "Side-swapped readout equivariance is testable only if future dynamics and input conventions are explicitly side-matched; not assumed biological bilateral equality.",
+      "acceptance": "Accept zero, weak, asymmetric or unexpected-but-valid genuine results. Validate causal composition/identity/provenance, not spikes or visibly correct steering.",
+      "embodiment": "Neural validation only. No TTM actuator shortcut; yaw/body embodiment remains out of this first slice."
+    },
+    "infrastructure_reuse": [
+      "Identity/body/type/side conventions",
+      "Generic deterministic stepping and provenance patterns",
+      "Content-addressed artifact/replay and tamper tests",
+      "Compact neural telemetry conventions"
+    ],
+    "reuse_limits": [
+      "Existing LC4/LPLC2 projection and fixed DNp01 identity loaders are not HS input APIs",
+      "Existing canonical scenarios/artifacts remain immutable",
+      "Current body plant cannot steer; no frontend scenario added"
+    ],
+    "roadmap_context": {
+      "taxonomy_preserved": [
+        "Baseline",
+        "Light / Dark",
+        "Obstacle Course",
+        "Resource Search",
+        "Adversity / Avoidance",
+        "Changing World"
+      ],
+      "potential_fit": "Course-control neural foundation may eventually support Obstacle Course or Changing World. This is roadmap context, not demonstrated navigation or a new executable world."
+    },
+    "prohibitions": {
+      "candidate_simulation": false,
+      "fitting": false,
+      "sensitivity_sweep": false,
+      "parameter_selection": false,
+      "author_contact": false,
+      "production_changes": false,
+      "frontend_changes": false,
+      "raw_archive_download": false
+    },
+    "decision": "SECOND_CIRCUIT_SELECTED_FOR_BOUNDED_VALIDATION",
+    "next_step": "One preregistered backend neural-only HS→DNp15 feedforward validation slice; freeze its explicit exploratory assumptions before execution, preserve v1, and accept null results."
+  }
+}

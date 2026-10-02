@@ -2418,3 +2418,35 @@ stimulus and source-population metadata against the compatibility gates.
 Phase 20 `PASS`: 1,022 Python tests (one existing deselection), four focused
 contract tests, 53 frontend regression tests, all five historical replays,
 Ruff/format/diff checks and frontend lint/typecheck/build passed. No commit/push.
+
+### Phase 21 — GF voltage dataset compatibility/acquisition audit
+
+Schema `gf_voltage_dataset_compatibility_audit_v1`; canonical audit ID
+`219622b71f1fd79caabe83665ddc859699875177883e7810c1b2bea4676e627d`.
+Phase 20 authority hash remains unchanged. Twelve candidate/source records;
+zero calibration-ready datasets. Best available numerical GF candidate:
+Zenodo `10.5281/zenodo.14983850` (Dombrovski), classified
+`METADATA_INSUFFICIENT`. Two unmodified MAT files were inspected in the existing
+Git-ignored audit cache, not committed. Array dimensions do not establish channel
+identities, units, sampling or stimulus timestamps. The companion XLSX explicitly
+supplies individual-file 20 kHz sampling, two-second onset, stimulus-column and
+animal/trial mapping; voltage scale/filter/protocol and combined-array metadata
+remain unresolved. A linked OSF LPLC2 processed
+calcium dataset supports operator design but is not synchronized source/GF data.
+
+Availability: `OPERATOR_DESIGN_DATA_ONLY`.
+Readiness: `DATA_AVAILABLE_BUT_METADATA_INSUFFICIENT`.
+Both file-level GF metadata and the sensory-state→biological source-activity
+operator remain missing; obtaining a voltage dictionary alone cannot identify k.
+No fitting, digitization, gain calculation, scientific/frontend model change or
+author contact occurred. Historical 18/corrected-16/13B/full-7O/8C replay passed.
+
+See [Phase 21 audit](science/gf_voltage_dataset_compatibility_audit.md).
+Exactly one next action: obtain the authoritative stored-voltage scale/filtering,
+recording metadata and combined-array/version dictionary for Zenodo 14983850,
+confirming the known individual-file clock/trial mapping before ingestion or fitting.
+
+Phase 21 `PASS`: four focused audit tests, 1,026 full Python tests (one existing
+deselection; two dependency warnings), 53 frontend regression tests, all five
+historical replays, Ruff/format/diff and frontend lint/typecheck/build passed.
+Only documentation/metadata and isolated tests changed; no commit/push.

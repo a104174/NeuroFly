@@ -1,0 +1,1633 @@
+{
+  "schema": "gf_voltage_dataset_compatibility_audit_v1",
+  "audit_id": "219622b71f1fd79caabe83665ddc859699875177883e7810c1b2bea4676e627d",
+  "audit": {
+    "schema": "gf_voltage_dataset_compatibility_audit_v1",
+    "access_date": "2026-10-02",
+    "phase20_contract_id": "ae50e1faad223cdde63125a6216ce0993523f9933025fe1f04e9265450dec824",
+    "required_gates": [
+      "CELL_TYPE_AND_PREPARATION_MATCH",
+      "SOURCE_POPULATION_AND_ROI_MAPPING",
+      "STIMULUS_REFERENCE_MATCH",
+      "BASELINE_AND_UNITS_EXPLICIT",
+      "OBSERVATION_TRANSFORM_ESTABLISHED",
+      "TEMPORAL_FILTER_AND_ALIGNMENT_DECLARED",
+      "AGGREGATION_AND_UNCERTAINTY_DECLARED",
+      "DATA_SUFFICIENCY_AND_IDENTIFIABILITY_ASSESSED"
+    ],
+    "scope": "Bounded dataset discovery and metadata audit, not a systematic exhaustive literature review.",
+    "unknown_policy": "Unknown means not verified in accessible files/protocol. Publication statements are not silently promoted to file-level metadata; FAIL does not establish biological incompatibility.",
+    "candidates": [
+      {
+        "id": "dombrovski_gf_zenodo_14983850",
+        "publication": "10.1038/s41586-025-09037-4",
+        "repository": "Zenodo",
+        "persistent_identifier": "10.5281/zenodo.14983850",
+        "access_url": "https://zenodo.org/records/14983850",
+        "access_date": "2026-10-02",
+        "file_formats": [
+          "MATLAB v5 MAT",
+          "XLSX"
+        ],
+        "total_size_bytes": 32794129,
+        "license_reuse": "CC-BY-4.0, verified Zenodo record.",
+        "neuron_identity": "Historical GF; no exact MaleCNS body correspondence claimed.",
+        "assay": "In vivo GF whole-cell current-clamp",
+        "stimulus": "Fig1/Ext1: column of three expanding disks, 0–30 degrees at 500 degrees/s; Fig3/Ext8: looming r/v conditions 10,20,40,80 ms. These conditions must not be pooled.",
+        "source_manipulation": "Natural visual input; controls and DIP-epsilon mutant/RNAi conditions changing pathway context. Not selective activation of measured individual LC4/LPLC2 cells.",
+        "source_condition": "NATURAL_LOOMING_WITH_PATHWAY_CONTEXT",
+        "target_compatibility": "TARGET_COMPATIBLE_WITH_LIMITATIONS",
+        "time_reference": "Companion XLSX declares Fig3/Ext8 stimulus onset 2 s after recording start. Reconstructable sample clock from 20 kHz; no numerical alignment executed.",
+        "sampling_rate": "20 kHz explicitly stated in companion XLSX for Fig3/Ext8 individual MAT files; 4 s / 80,000 samples. Combined Fig1 array metadata not independently established.",
+        "voltage_units": "mV in publication; no numerical file mapping verified.",
+        "baseline_semantics": "Fig3 individual files include 2 s prestimulus data; baseline statistic requires protocol confirmation. Fig1 paper specifies 2 s baseline/150 ms response window.",
+        "filtering": "Acquisition filter not explicitly verified for these MAT files; do not copy analysis smoothing from a referenced protocol without a file/version bridge.",
+        "trial_count": "44 individual files from 22 animal IDs, two trials/animal in workbook; source note confusingly says 44 flies then 22 flies.",
+        "trial_structure": "XLSX explicitly maps file names, animal/trial, exp/cont, and columns 1–4 to r/v 10,20,40,80 ms. Contradictory flies-versus-recordings wording retained as metadata ambiguity.",
+        "preparation": "Behaving tethered fly, in vivo whole-cell current-clamp",
+        "species": "Drosophila melanogaster",
+        "sex": "UNKNOWN",
+        "recording_compartment": "UNKNOWN",
+        "raw_data_availability": "NUMERICAL_MAT_ARRAYS_LOCATED_AND_TWO_FILES_ACQUIRED",
+        "metadata_completeness": "Companion XLSX establishes individual-file sampling/onset/stimulus columns and trial dictionary. Stored voltage unit/scale, acquisition filtering and exact protocol/sex/compartment version bridge remain unverified.",
+        "synchronization": "RECONSTRUCTABLE_FROM_METADATA",
+        "compatibility": "METADATA_INSUFFICIENT",
+        "missing_requirements": [
+          "Stored voltage units/scale and acquisition filtering",
+          "Recording-compartment/sex and file-specific protocol metadata",
+          "Combined Fig1 array schema and 2024-preprint/2025-publication version bridge",
+          "Resolution of workbook animal-versus-recording wording",
+          "Source x_i observation operator and model mV_eq voltage transform"
+        ],
+        "acquisition_feasibility": "Open 32.8 MB record; inspected only two files totaling 12,976,232 bytes in existing Git-ignored audit cache.",
+        "figure_requirement": "No digitization needed to locate numerical arrays; unresolved array semantics prevent calibration.",
+        "inspected_variables": [
+          {
+            "file": "DipE_Null_cont_fly22_trial01.mat",
+            "variables": [
+              {
+                "name": "DipE_Null_cont_fly22_trial01",
+                "shape": [
+                  80000,
+                  4
+                ],
+                "type": "double"
+              }
+            ]
+          },
+          {
+            "file": "Fig1_Ext1_combined_GFMembraneP_HorizontalArrayLooming.mat",
+            "variables": [
+              {
+                "name": "combined_T",
+                "shape": [
+                  75,
+                  80002
+                ],
+                "type": "double"
+              }
+            ]
+          }
+        ],
+        "relative_voltage_gates": {
+          "compatible_target": {
+            "status": "PASS",
+            "reason": "GF neuron-type assay, not exact MaleCNS body matching."
+          },
+          "baseline": {
+            "status": "PASS",
+            "reason": "2 s prestimulus data available in individual files; subtraction statistic must be declared in any later protocol."
+          },
+          "relative_voltage_deflection": {
+            "status": "UNKNOWN",
+            "reason": "Baseline period known; stored amplitude units/scale and conditioning not explicitly documented in workbook."
+          },
+          "time_axis": {
+            "status": "PASS",
+            "reason": "Companion workbook explicitly gives 20 kHz sampling and 4 s for individual Fig3/Ext8 files; sample time reconstructable without fitting."
+          },
+          "shared_stimulus_reference": {
+            "status": "PASS",
+            "reason": "Workbook explicitly states onset at 2 s for individual files; no numerical best-fit alignment needed."
+          },
+          "filtering_metadata": {
+            "status": "UNKNOWN",
+            "reason": "No trace-level metadata verified for this requirement."
+          },
+          "measurement_units": {
+            "status": "UNKNOWN",
+            "reason": "Paper uses mV; MAT column/unit mapping unannotated."
+          },
+          "preparation": {
+            "status": "PASS",
+            "reason": "In vivo tethered GF current-clamp documented."
+          },
+          "cell_identity": {
+            "status": "PASS",
+            "reason": "Identified GF in the publication."
+          },
+          "source_condition": {
+            "status": "PASS",
+            "reason": "Natural looming with pathway context, not calibrated presynaptic activity."
+          }
+        },
+        "contract_gates": {
+          "CELL_TYPE_AND_PREPARATION_MATCH": {
+            "status": "UNKNOWN",
+            "reason": "Unresolved source/target transforms or file-level metadata prevent a full Phase 20 comparison."
+          },
+          "SOURCE_POPULATION_AND_ROI_MAPPING": {
+            "status": "UNKNOWN",
+            "reason": "Unresolved source/target transforms or file-level metadata prevent a full Phase 20 comparison."
+          },
+          "STIMULUS_REFERENCE_MATCH": {
+            "status": "UNKNOWN",
+            "reason": "Unresolved source/target transforms or file-level metadata prevent a full Phase 20 comparison."
+          },
+          "BASELINE_AND_UNITS_EXPLICIT": {
+            "status": "UNKNOWN",
+            "reason": "Unresolved source/target transforms or file-level metadata prevent a full Phase 20 comparison."
+          },
+          "OBSERVATION_TRANSFORM_ESTABLISHED": {
+            "status": "FAIL",
+            "reason": "Neither sensory x_i→biological source activity nor mV_eq→measured GF voltage is calibrated."
+          },
+          "TEMPORAL_FILTER_AND_ALIGNMENT_DECLARED": {
+            "status": "UNKNOWN",
+            "reason": "Unresolved source/target transforms or file-level metadata prevent a full Phase 20 comparison."
+          },
+          "AGGREGATION_AND_UNCERTAINTY_DECLARED": {
+            "status": "UNKNOWN",
+            "reason": "Unresolved source/target transforms or file-level metadata prevent a full Phase 20 comparison."
+          },
+          "DATA_SUFFICIENCY_AND_IDENTIFIABILITY_ASSESSED": {
+            "status": "FAIL",
+            "reason": "Candidate is not sufficient for current numerical calibration; see missing_requirements."
+          }
+        },
+        "inspected_companion": {
+          "filename": "ephys original data for Fig.3 and Ext data Fig.8 .xlsx",
+          "byte_size": 13886,
+          "inspection": "Remote in-memory ZIP/XML labels and metadata rows only; no numeric physiological response analysis, no local source file retained.",
+          "facts": [
+            "20 kHz acquisition; 4 s recordings; onset at 2 s",
+            "Columns map to r/v 10,20,40,80 ms",
+            "File/animal/trial/exp/cont dictionary"
+          ],
+          "ambiguities": [
+            "Note calls files 44 flies then says 22 flies with two trials each",
+            "Stored voltage scaling and acquisition filtering not explicitly stated"
+          ]
+        }
+      },
+      {
+        "id": "dombrovski_lplc2_osf_z7xfk",
+        "publication": "10.1038/s41586-025-09037-4",
+        "repository": "OSF",
+        "persistent_identifier": "10.17605/OSF.IO/Z7XFK",
+        "access_url": "https://osf.io/z7xfk/",
+        "access_date": "2026-10-02",
+        "file_formats": [
+          "Rda",
+          "Rmd"
+        ],
+        "total_size_bytes": 35957968,
+        "license_reuse": "CC-BY-4.0 verified OSF license API.",
+        "neuron_identity": "LPLC2 dendritic calcium ROIs; not GF.",
+        "assay": "GCaMP7f calcium imaging",
+        "stimulus": "Right visual-field looming/expansion conditions.",
+        "source_manipulation": "LPLC2 calcium responses under visual stimulation.",
+        "source_condition": "SOURCE_MATCHED_LPLC2",
+        "target_compatibility": "TARGET_INCOMPATIBLE",
+        "time_reference": "Publication stimulus reference; file-level clock not located.",
+        "sampling_rate": "Published imaging approximately 9 Hz; stimulus markers acquired at 10 kHz (different clocks).",
+        "voltage_units": "Not voltage: processed deltaF fluorescence values.",
+        "baseline_semantics": "Published prestimulus fluorescence baseline; processed table normalization needs dictionary.",
+        "filtering": "Indicator dynamics and image processing are not a voltage filter.",
+        "trial_count": "UNKNOWN",
+        "trial_structure": "Rmd references id, rep, rec, pos, angle, cond and group fields; counts not audited from Rda.",
+        "preparation": "Head-fixed fly with right optic window.",
+        "species": "Drosophila melanogaster",
+        "sex": "UNKNOWN",
+        "recording_compartment": "LPLC2 dendritic imaging ROIs.",
+        "raw_data_availability": "PROCESSED_NUMERICAL_DATAFRAME_AND_ANALYSIS_CODE_LOCATED; raw imaging movies not located in two-file root inventory.",
+        "metadata_completeness": "Public Rmd describes processed fluorescence time series; 35.9 MB Rda not downloaded or parsed.",
+        "synchronization": "PARTIAL",
+        "compatibility": "SUFFICIENT_FOR_OPERATOR_DESIGN_ONLY",
+        "missing_requirements": [
+          "Indicator and ROI-to-model-body operator",
+          "Processed dataframe schema/normalization dictionary",
+          "Source activation scale matched to GF experiments",
+          "Shared trial/clock across source and target"
+        ],
+        "acquisition_feasibility": "Public index and 43,469-byte Rmd inspected remotely; no R parser/dependency installed.",
+        "figure_requirement": "No digitization; dataframe availability does not establish raw-image availability.",
+        "relative_voltage_gates": {
+          "compatible_target": {
+            "status": "FAIL",
+            "reason": "This record does not measure intracellular GF voltage."
+          },
+          "baseline": {
+            "status": "UNKNOWN",
+            "reason": "No trace-level metadata verified for this requirement."
+          },
+          "relative_voltage_deflection": {
+            "status": "UNKNOWN",
+            "reason": "No trace-level metadata verified for this requirement."
+          },
+          "time_axis": {
+            "status": "UNKNOWN",
+            "reason": "No trace-level metadata verified for this requirement."
+          },
+          "shared_stimulus_reference": {
+            "status": "UNKNOWN",
+            "reason": "No trace-level metadata verified for this requirement."
+          },
+          "filtering_metadata": {
+            "status": "UNKNOWN",
+            "reason": "No trace-level metadata verified for this requirement."
+          },
+          "measurement_units": {
+            "status": "UNKNOWN",
+            "reason": "No trace-level metadata verified for this requirement."
+          },
+          "preparation": {
+            "status": "UNKNOWN",
+            "reason": "No trace-level metadata verified for this requirement."
+          },
+          "cell_identity": {
+            "status": "UNKNOWN",
+            "reason": "No trace-level metadata verified for this requirement."
+          },
+          "source_condition": {
+            "status": "UNKNOWN",
+            "reason": "No trace-level metadata verified for this requirement."
+          }
+        },
+        "contract_gates": {
+          "CELL_TYPE_AND_PREPARATION_MATCH": {
+            "status": "FAIL",
+            "reason": "Assay target/modality does not match the GF voltage operator."
+          },
+          "SOURCE_POPULATION_AND_ROI_MAPPING": {
+            "status": "UNKNOWN",
+            "reason": "Unresolved source/target transforms or file-level metadata prevent a full Phase 20 comparison."
+          },
+          "STIMULUS_REFERENCE_MATCH": {
+            "status": "UNKNOWN",
+            "reason": "Unresolved source/target transforms or file-level metadata prevent a full Phase 20 comparison."
+          },
+          "BASELINE_AND_UNITS_EXPLICIT": {
+            "status": "UNKNOWN",
+            "reason": "Unresolved source/target transforms or file-level metadata prevent a full Phase 20 comparison."
+          },
+          "OBSERVATION_TRANSFORM_ESTABLISHED": {
+            "status": "FAIL",
+            "reason": "Neither sensory x_i→biological source activity nor mV_eq→measured GF voltage is calibrated."
+          },
+          "TEMPORAL_FILTER_AND_ALIGNMENT_DECLARED": {
+            "status": "UNKNOWN",
+            "reason": "Unresolved source/target transforms or file-level metadata prevent a full Phase 20 comparison."
+          },
+          "AGGREGATION_AND_UNCERTAINTY_DECLARED": {
+            "status": "UNKNOWN",
+            "reason": "Unresolved source/target transforms or file-level metadata prevent a full Phase 20 comparison."
+          },
+          "DATA_SUFFICIENCY_AND_IDENTIFIABILITY_ASSESSED": {
+            "status": "FAIL",
+            "reason": "Candidate is not sufficient for current numerical calibration; see missing_requirements."
+          }
+        }
+      },
+      {
+        "id": "ache_2019_gf",
+        "publication": "10.1016/j.cub.2019.01.079",
+        "repository": "Publisher supplements and author-uploaded complete paper",
+        "persistent_identifier": "10.1016/j.cub.2019.01.079",
+        "access_url": "https://doi.org/10.1016/j.cub.2019.01.079",
+        "access_date": "2026-10-02",
+        "file_formats": [],
+        "total_size_bytes": null,
+        "license_reuse": "Raw-data reuse terms not located; article access is not a raw-data license.",
+        "neuron_identity": "Historical GF; no exact MaleCNS body correspondence claimed.",
+        "assay": "Identified GF somatic whole-cell current-clamp",
+        "stimulus": "Natural looming disks, angular expansion 10–90 degrees; r/v 10–80 ms conditions.",
+        "source_manipulation": "Controls and LC4/LPLC2 silencing; LC11 control. Population manipulations not per-body activity measurements.",
+        "source_condition": "NATURAL_LOOMING_WITH_PATHWAY_CONTEXT",
+        "target_compatibility": "TARGET_COMPATIBLE_WITH_LIMITATIONS",
+        "time_reference": "Publication stimulus reference; file-level clock not located.",
+        "sampling_rate": "20 kHz",
+        "voltage_units": "mV in publication; no numerical file mapping verified.",
+        "baseline_semantics": "Baseline-relative GF depolarization shown; numerical baseline sample mapping unavailable.",
+        "filtering": "10 kHz acquisition low-pass; publication reports uncorrected 13 mV junction potential.",
+        "trial_count": "UNKNOWN",
+        "trial_structure": "Published fly-group N not interchangeable with raw trial count; individual-trial manifest unavailable.",
+        "preparation": "Tethered in vivo",
+        "species": "Drosophila melanogaster",
+        "sex": "Female, 3–5 days",
+        "recording_compartment": "Right GF soma",
+        "raw_data_availability": "Author-request availability; no public trial-level voltage download located.",
+        "metadata_completeness": "Insufficient for numerical comparison.",
+        "synchronization": "UNKNOWN",
+        "compatibility": "SUFFICIENT_FOR_OPERATOR_DESIGN_ONLY",
+        "missing_requirements": [
+          "Numerical trace and acquisition dictionary",
+          "Source activity observation transform",
+          "Model mV_eq observation transform"
+        ],
+        "acquisition_feasibility": "Future author request; paper supplements are figures/methods, not located numerical raw traces.",
+        "figure_requirement": "TRACE_DIGITIZATION_REQUIRED if figures alone were used; no digitization performed.",
+        "relative_voltage_gates": {
+          "compatible_target": {
+            "status": "PASS",
+            "reason": "GF neuron-type assay, not exact MaleCNS body matching."
+          },
+          "baseline": {
+            "status": "UNKNOWN",
+            "reason": "No trace-level metadata verified for this requirement."
+          },
+          "relative_voltage_deflection": {
+            "status": "UNKNOWN",
+            "reason": "No trace-level metadata verified for this requirement."
+          },
+          "time_axis": {
+            "status": "UNKNOWN",
+            "reason": "No trace-level metadata verified for this requirement."
+          },
+          "shared_stimulus_reference": {
+            "status": "UNKNOWN",
+            "reason": "No trace-level metadata verified for this requirement."
+          },
+          "filtering_metadata": {
+            "status": "PASS",
+            "reason": "20 kHz sampling and 10 kHz low-pass declared."
+          },
+          "measurement_units": {
+            "status": "PASS",
+            "reason": "Paper voltage traces in mV; not a model-space calibration."
+          },
+          "preparation": {
+            "status": "PASS",
+            "reason": "Whole-cell tethered in vivo preparation documented."
+          },
+          "cell_identity": {
+            "status": "PASS",
+            "reason": "Identified GF in the publication."
+          },
+          "source_condition": {
+            "status": "PASS",
+            "reason": "Looming with LC4/LPLC2 silencing context documented."
+          }
+        },
+        "contract_gates": {
+          "CELL_TYPE_AND_PREPARATION_MATCH": {
+            "status": "UNKNOWN",
+            "reason": "Unresolved source/target transforms or file-level metadata prevent a full Phase 20 comparison."
+          },
+          "SOURCE_POPULATION_AND_ROI_MAPPING": {
+            "status": "UNKNOWN",
+            "reason": "Unresolved source/target transforms or file-level metadata prevent a full Phase 20 comparison."
+          },
+          "STIMULUS_REFERENCE_MATCH": {
+            "status": "UNKNOWN",
+            "reason": "Unresolved source/target transforms or file-level metadata prevent a full Phase 20 comparison."
+          },
+          "BASELINE_AND_UNITS_EXPLICIT": {
+            "status": "UNKNOWN",
+            "reason": "Unresolved source/target transforms or file-level metadata prevent a full Phase 20 comparison."
+          },
+          "OBSERVATION_TRANSFORM_ESTABLISHED": {
+            "status": "FAIL",
+            "reason": "Neither sensory x_i→biological source activity nor mV_eq→measured GF voltage is calibrated."
+          },
+          "TEMPORAL_FILTER_AND_ALIGNMENT_DECLARED": {
+            "status": "UNKNOWN",
+            "reason": "Unresolved source/target transforms or file-level metadata prevent a full Phase 20 comparison."
+          },
+          "AGGREGATION_AND_UNCERTAINTY_DECLARED": {
+            "status": "UNKNOWN",
+            "reason": "Unresolved source/target transforms or file-level metadata prevent a full Phase 20 comparison."
+          },
+          "DATA_SUFFICIENCY_AND_IDENTIFIABILITY_ASSESSED": {
+            "status": "FAIL",
+            "reason": "Candidate is not sufficient for current numerical calibration; see missing_requirements."
+          }
+        }
+      },
+      {
+        "id": "klapoetke_2017_gf_opto",
+        "publication": "10.1038/nature24626",
+        "repository": "Publication/supplementary index",
+        "persistent_identifier": "10.1038/nature24626",
+        "access_url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7457385/",
+        "access_date": "2026-10-02",
+        "file_formats": [],
+        "total_size_bytes": null,
+        "license_reuse": "Raw-data reuse terms not located; article access is not a raw-data license.",
+        "neuron_identity": "Historical GF; no exact MaleCNS body correspondence claimed.",
+        "assay": "GF whole-cell current-clamp during LPLC2 population optogenetic activation",
+        "stimulus": "595 nm, 50 ms optical pulses, 30 s intertrial.",
+        "source_manipulation": "LPLC2-selective population activation versus controls.",
+        "source_condition": "SOURCE_MATCHED_LPLC2",
+        "target_compatibility": "TARGET_COMPATIBLE_WITH_LIMITATIONS",
+        "time_reference": "Publication stimulus reference; file-level clock not located.",
+        "sampling_rate": "40 kHz",
+        "voltage_units": "mV in publication; no numerical file mapping verified.",
+        "baseline_semantics": "No holding current; pre-pulse voltage plotted, raw baseline samples not located.",
+        "filtering": "10 kHz low-pass",
+        "trial_count": "UNKNOWN",
+        "trial_structure": "Figure reports four flies/group; actual repeated-trial file count unavailable.",
+        "preparation": "Tethered in vivo",
+        "species": "Drosophila melanogaster",
+        "sex": "Female, 3–5 days",
+        "recording_compartment": "Right GF soma",
+        "raw_data_availability": "No public numeric GF traces located. Data-availability statement offers imaging data/code on reasonable request; not proof that GF traces are deposited.",
+        "metadata_completeness": "Insufficient for numerical comparison.",
+        "synchronization": "UNKNOWN",
+        "compatibility": "SUFFICIENT_FOR_OPERATOR_DESIGN_ONLY",
+        "missing_requirements": [
+          "Numerical trace and acquisition dictionary",
+          "Source activity observation transform",
+          "Model mV_eq observation transform"
+        ],
+        "acquisition_feasibility": "Supplement inventory contains PDF/tables/video, not located numeric voltage files; GF request required.",
+        "figure_requirement": "TRACE_DIGITIZATION_REQUIRED if figures alone were used; no digitization performed.",
+        "relative_voltage_gates": {
+          "compatible_target": {
+            "status": "PASS",
+            "reason": "GF neuron-type assay, not exact MaleCNS body matching."
+          },
+          "baseline": {
+            "status": "UNKNOWN",
+            "reason": "No trace-level metadata verified for this requirement."
+          },
+          "relative_voltage_deflection": {
+            "status": "UNKNOWN",
+            "reason": "No trace-level metadata verified for this requirement."
+          },
+          "time_axis": {
+            "status": "UNKNOWN",
+            "reason": "No trace-level metadata verified for this requirement."
+          },
+          "shared_stimulus_reference": {
+            "status": "UNKNOWN",
+            "reason": "No trace-level metadata verified for this requirement."
+          },
+          "filtering_metadata": {
+            "status": "PASS",
+            "reason": "40 kHz sampling and 10 kHz low-pass documented."
+          },
+          "measurement_units": {
+            "status": "PASS",
+            "reason": "Physiological voltage in publication, not mV_eq."
+          },
+          "preparation": {
+            "status": "PASS",
+            "reason": "In vivo somatic whole-cell documented."
+          },
+          "cell_identity": {
+            "status": "PASS",
+            "reason": "Identified GF in the publication."
+          },
+          "source_condition": {
+            "status": "PASS",
+            "reason": "LPLC2 population activation identified; activation-to-x_i mapping unknown."
+          }
+        },
+        "contract_gates": {
+          "CELL_TYPE_AND_PREPARATION_MATCH": {
+            "status": "UNKNOWN",
+            "reason": "Unresolved source/target transforms or file-level metadata prevent a full Phase 20 comparison."
+          },
+          "SOURCE_POPULATION_AND_ROI_MAPPING": {
+            "status": "UNKNOWN",
+            "reason": "Unresolved source/target transforms or file-level metadata prevent a full Phase 20 comparison."
+          },
+          "STIMULUS_REFERENCE_MATCH": {
+            "status": "UNKNOWN",
+            "reason": "Unresolved source/target transforms or file-level metadata prevent a full Phase 20 comparison."
+          },
+          "BASELINE_AND_UNITS_EXPLICIT": {
+            "status": "UNKNOWN",
+            "reason": "Unresolved source/target transforms or file-level metadata prevent a full Phase 20 comparison."
+          },
+          "OBSERVATION_TRANSFORM_ESTABLISHED": {
+            "status": "FAIL",
+            "reason": "Neither sensory x_i→biological source activity nor mV_eq→measured GF voltage is calibrated."
+          },
+          "TEMPORAL_FILTER_AND_ALIGNMENT_DECLARED": {
+            "status": "UNKNOWN",
+            "reason": "Unresolved source/target transforms or file-level metadata prevent a full Phase 20 comparison."
+          },
+          "AGGREGATION_AND_UNCERTAINTY_DECLARED": {
+            "status": "UNKNOWN",
+            "reason": "Unresolved source/target transforms or file-level metadata prevent a full Phase 20 comparison."
+          },
+          "DATA_SUFFICIENCY_AND_IDENTIFIABILITY_ASSESSED": {
+            "status": "FAIL",
+            "reason": "Candidate is not sufficient for current numerical calibration; see missing_requirements."
+          }
+        }
+      },
+      {
+        "id": "von_reyn_2017_gf_lc4",
+        "publication": "10.1016/j.neuron.2017.05.036",
+        "repository": "Publication/supplementary index",
+        "persistent_identifier": "10.1016/j.neuron.2017.05.036",
+        "access_url": "https://pubmed.ncbi.nlm.nih.gov/28641115/",
+        "access_date": "2026-10-02",
+        "file_formats": [],
+        "total_size_bytes": null,
+        "license_reuse": "Raw-data reuse terms not located; article access is not a raw-data license.",
+        "neuron_identity": "Historical GF; no exact MaleCNS body correspondence claimed.",
+        "assay": "Intracellular GF voltage",
+        "stimulus": "Looming",
+        "source_manipulation": "LC4/visual pathway manipulations; GF looming-size/velocity pathway.",
+        "source_condition": "NATURAL_LOOMING_WITH_PATHWAY_CONTEXT",
+        "target_compatibility": "TARGET_COMPATIBLE_WITH_LIMITATIONS",
+        "time_reference": "Publication stimulus reference; file-level clock not located.",
+        "sampling_rate": "UNKNOWN",
+        "voltage_units": "mV in publication; no numerical file mapping verified.",
+        "baseline_semantics": "UNKNOWN",
+        "filtering": "UNKNOWN",
+        "trial_count": "UNKNOWN",
+        "trial_structure": "Published group summaries are not a trial-level file manifest.",
+        "preparation": "UNKNOWN",
+        "species": "Drosophila melanogaster",
+        "sex": "UNKNOWN",
+        "recording_compartment": "UNKNOWN",
+        "raw_data_availability": "No public trial-level voltage files located; related ModelDB deposit contains simulation code.",
+        "metadata_completeness": "Insufficient for numerical comparison.",
+        "synchronization": "UNKNOWN",
+        "compatibility": "QUALITATIVE_ONLY",
+        "missing_requirements": [
+          "Accessible complete assay/trial dictionary and voltage data",
+          "Shared source and target measurement scale",
+          "Phase 20 observation transforms"
+        ],
+        "acquisition_feasibility": "Primary abstract accessible; publisher full-text access unreliable. Do not infer unpublished acquisition details.",
+        "figure_requirement": "TRACE_DIGITIZATION_REQUIRED if figures alone were used; no digitization performed.",
+        "relative_voltage_gates": {
+          "compatible_target": {
+            "status": "PASS",
+            "reason": "GF neuron-type assay, not exact MaleCNS body matching."
+          },
+          "baseline": {
+            "status": "UNKNOWN",
+            "reason": "No trace-level metadata verified for this requirement."
+          },
+          "relative_voltage_deflection": {
+            "status": "UNKNOWN",
+            "reason": "No trace-level metadata verified for this requirement."
+          },
+          "time_axis": {
+            "status": "UNKNOWN",
+            "reason": "No trace-level metadata verified for this requirement."
+          },
+          "shared_stimulus_reference": {
+            "status": "UNKNOWN",
+            "reason": "No trace-level metadata verified for this requirement."
+          },
+          "filtering_metadata": {
+            "status": "UNKNOWN",
+            "reason": "No trace-level metadata verified for this requirement."
+          },
+          "measurement_units": {
+            "status": "UNKNOWN",
+            "reason": "No trace-level metadata verified for this requirement."
+          },
+          "preparation": {
+            "status": "UNKNOWN",
+            "reason": "No trace-level metadata verified for this requirement."
+          },
+          "cell_identity": {
+            "status": "PASS",
+            "reason": "Identified GF in the publication."
+          },
+          "source_condition": {
+            "status": "UNKNOWN",
+            "reason": "No trace-level metadata verified for this requirement."
+          }
+        },
+        "contract_gates": {
+          "CELL_TYPE_AND_PREPARATION_MATCH": {
+            "status": "UNKNOWN",
+            "reason": "Unresolved source/target transforms or file-level metadata prevent a full Phase 20 comparison."
+          },
+          "SOURCE_POPULATION_AND_ROI_MAPPING": {
+            "status": "UNKNOWN",
+            "reason": "Unresolved source/target transforms or file-level metadata prevent a full Phase 20 comparison."
+          },
+          "STIMULUS_REFERENCE_MATCH": {
+            "status": "UNKNOWN",
+            "reason": "Unresolved source/target transforms or file-level metadata prevent a full Phase 20 comparison."
+          },
+          "BASELINE_AND_UNITS_EXPLICIT": {
+            "status": "UNKNOWN",
+            "reason": "Unresolved source/target transforms or file-level metadata prevent a full Phase 20 comparison."
+          },
+          "OBSERVATION_TRANSFORM_ESTABLISHED": {
+            "status": "FAIL",
+            "reason": "Neither sensory x_i→biological source activity nor mV_eq→measured GF voltage is calibrated."
+          },
+          "TEMPORAL_FILTER_AND_ALIGNMENT_DECLARED": {
+            "status": "UNKNOWN",
+            "reason": "Unresolved source/target transforms or file-level metadata prevent a full Phase 20 comparison."
+          },
+          "AGGREGATION_AND_UNCERTAINTY_DECLARED": {
+            "status": "UNKNOWN",
+            "reason": "Unresolved source/target transforms or file-level metadata prevent a full Phase 20 comparison."
+          },
+          "DATA_SUFFICIENCY_AND_IDENTIFIABILITY_ASSESSED": {
+            "status": "FAIL",
+            "reason": "Candidate is not sufficient for current numerical calibration; see missing_requirements."
+          }
+        }
+      },
+      {
+        "id": "von_reyn_2014_gf",
+        "publication": "10.1038/nn.3741",
+        "repository": "Publication/supplementary index",
+        "persistent_identifier": "10.1038/nn.3741",
+        "access_url": "https://doi.org/10.1038/nn.3741",
+        "access_date": "2026-10-02",
+        "file_formats": [],
+        "total_size_bytes": null,
+        "license_reuse": "Raw-data reuse terms not located; article access is not a raw-data license.",
+        "neuron_identity": "Historical GF; no exact MaleCNS body correspondence claimed.",
+        "assay": "Intracellular GF voltage",
+        "stimulus": "Looming",
+        "source_manipulation": "Natural visually evoked GF response; LC4/LPLC2 source identity not established by this record.",
+        "source_condition": "UNRESOLVED_SOURCE_POPULATION",
+        "target_compatibility": "TARGET_COMPATIBLE_WITH_LIMITATIONS",
+        "time_reference": "Publication stimulus reference; file-level clock not located.",
+        "sampling_rate": "UNKNOWN",
+        "voltage_units": "mV in publication; no numerical file mapping verified.",
+        "baseline_semantics": "UNKNOWN",
+        "filtering": "UNKNOWN",
+        "trial_count": "UNKNOWN",
+        "trial_structure": "Published group summaries are not a trial-level file manifest.",
+        "preparation": "UNKNOWN",
+        "species": "Drosophila melanogaster",
+        "sex": "UNKNOWN",
+        "recording_compartment": "UNKNOWN",
+        "raw_data_availability": "Article/supplement figure evidence, no numeric voltage series located.",
+        "metadata_completeness": "Insufficient for numerical comparison.",
+        "synchronization": "UNKNOWN",
+        "compatibility": "QUALITATIVE_ONLY",
+        "missing_requirements": [
+          "Trial-level voltage and acquisition metadata",
+          "Source population correspondence",
+          "Observation transforms"
+        ],
+        "acquisition_feasibility": "Public abstract and supplement index; complete numerical traces require request.",
+        "figure_requirement": "TRACE_DIGITIZATION_REQUIRED if figures alone were used; no digitization performed.",
+        "relative_voltage_gates": {
+          "compatible_target": {
+            "status": "PASS",
+            "reason": "GF neuron-type assay, not exact MaleCNS body matching."
+          },
+          "baseline": {
+            "status": "UNKNOWN",
+            "reason": "No trace-level metadata verified for this requirement."
+          },
+          "relative_voltage_deflection": {
+            "status": "UNKNOWN",
+            "reason": "No trace-level metadata verified for this requirement."
+          },
+          "time_axis": {
+            "status": "UNKNOWN",
+            "reason": "No trace-level metadata verified for this requirement."
+          },
+          "shared_stimulus_reference": {
+            "status": "UNKNOWN",
+            "reason": "No trace-level metadata verified for this requirement."
+          },
+          "filtering_metadata": {
+            "status": "UNKNOWN",
+            "reason": "No trace-level metadata verified for this requirement."
+          },
+          "measurement_units": {
+            "status": "UNKNOWN",
+            "reason": "No trace-level metadata verified for this requirement."
+          },
+          "preparation": {
+            "status": "UNKNOWN",
+            "reason": "No trace-level metadata verified for this requirement."
+          },
+          "cell_identity": {
+            "status": "PASS",
+            "reason": "Identified GF in the publication."
+          },
+          "source_condition": {
+            "status": "UNKNOWN",
+            "reason": "No trace-level metadata verified for this requirement."
+          }
+        },
+        "contract_gates": {
+          "CELL_TYPE_AND_PREPARATION_MATCH": {
+            "status": "UNKNOWN",
+            "reason": "Unresolved source/target transforms or file-level metadata prevent a full Phase 20 comparison."
+          },
+          "SOURCE_POPULATION_AND_ROI_MAPPING": {
+            "status": "UNKNOWN",
+            "reason": "Unresolved source/target transforms or file-level metadata prevent a full Phase 20 comparison."
+          },
+          "STIMULUS_REFERENCE_MATCH": {
+            "status": "UNKNOWN",
+            "reason": "Unresolved source/target transforms or file-level metadata prevent a full Phase 20 comparison."
+          },
+          "BASELINE_AND_UNITS_EXPLICIT": {
+            "status": "UNKNOWN",
+            "reason": "Unresolved source/target transforms or file-level metadata prevent a full Phase 20 comparison."
+          },
+          "OBSERVATION_TRANSFORM_ESTABLISHED": {
+            "status": "FAIL",
+            "reason": "Neither sensory x_i→biological source activity nor mV_eq→measured GF voltage is calibrated."
+          },
+          "TEMPORAL_FILTER_AND_ALIGNMENT_DECLARED": {
+            "status": "UNKNOWN",
+            "reason": "Unresolved source/target transforms or file-level metadata prevent a full Phase 20 comparison."
+          },
+          "AGGREGATION_AND_UNCERTAINTY_DECLARED": {
+            "status": "UNKNOWN",
+            "reason": "Unresolved source/target transforms or file-level metadata prevent a full Phase 20 comparison."
+          },
+          "DATA_SUFFICIENCY_AND_IDENTIFIABILITY_ASSESSED": {
+            "status": "FAIL",
+            "reason": "Candidate is not sufficient for current numerical calibration; see missing_requirements."
+          }
+        }
+      },
+      {
+        "id": "modeldb_230400",
+        "publication": "10.1016/j.neuron.2017.05.036",
+        "repository": "ModelDB / ModelDBRepository GitHub",
+        "persistent_identifier": "ModelDB:230400",
+        "access_url": "https://modeldb.science/230400",
+        "access_date": "2026-10-02",
+        "file_formats": [
+          "MATLAB code",
+          "HTML",
+          "PNG"
+        ],
+        "total_size_bytes": null,
+        "license_reuse": "Raw-data reuse terms not located; article access is not a raw-data license.",
+        "neuron_identity": "Computational GF model, not recording.",
+        "assay": "Simulation source code",
+        "stimulus": "Looming",
+        "source_manipulation": "See publication; not mapped to identity-resolved x_i.",
+        "source_condition": "INCOMPATIBLE_SOURCE_CONDITION",
+        "target_compatibility": "TARGET_INCOMPATIBLE",
+        "time_reference": "Publication stimulus reference; file-level clock not located.",
+        "sampling_rate": "UNKNOWN",
+        "voltage_units": "Simulation quantities, not experimental voltage.",
+        "baseline_semantics": "UNKNOWN",
+        "filtering": "UNKNOWN",
+        "trial_count": "UNKNOWN",
+        "trial_structure": "Published group summaries are not a trial-level file manifest.",
+        "preparation": "UNKNOWN",
+        "species": "Drosophila melanogaster",
+        "sex": "UNKNOWN",
+        "recording_compartment": "UNKNOWN",
+        "raw_data_availability": "Four-file inventory: GF_loom_model.m, readme.html, two PNG screenshots; no experimental trace file.",
+        "metadata_completeness": "Insufficient for numerical comparison.",
+        "synchronization": "UNKNOWN",
+        "compatibility": "INCOMPATIBLE",
+        "missing_requirements": [
+          "Measured biological time series"
+        ],
+        "acquisition_feasibility": "Directory and source inspected remotely; simulation not executed.",
+        "figure_requirement": "Model plots are not raw physiology.",
+        "relative_voltage_gates": {
+          "compatible_target": {
+            "status": "FAIL",
+            "reason": "This record does not measure intracellular GF voltage."
+          },
+          "baseline": {
+            "status": "UNKNOWN",
+            "reason": "No trace-level metadata verified for this requirement."
+          },
+          "relative_voltage_deflection": {
+            "status": "UNKNOWN",
+            "reason": "No trace-level metadata verified for this requirement."
+          },
+          "time_axis": {
+            "status": "UNKNOWN",
+            "reason": "No trace-level metadata verified for this requirement."
+          },
+          "shared_stimulus_reference": {
+            "status": "UNKNOWN",
+            "reason": "No trace-level metadata verified for this requirement."
+          },
+          "filtering_metadata": {
+            "status": "UNKNOWN",
+            "reason": "No trace-level metadata verified for this requirement."
+          },
+          "measurement_units": {
+            "status": "UNKNOWN",
+            "reason": "No trace-level metadata verified for this requirement."
+          },
+          "preparation": {
+            "status": "UNKNOWN",
+            "reason": "No trace-level metadata verified for this requirement."
+          },
+          "cell_identity": {
+            "status": "UNKNOWN",
+            "reason": "No trace-level metadata verified for this requirement."
+          },
+          "source_condition": {
+            "status": "UNKNOWN",
+            "reason": "No trace-level metadata verified for this requirement."
+          }
+        },
+        "contract_gates": {
+          "CELL_TYPE_AND_PREPARATION_MATCH": {
+            "status": "FAIL",
+            "reason": "Assay target/modality does not match the GF voltage operator."
+          },
+          "SOURCE_POPULATION_AND_ROI_MAPPING": {
+            "status": "UNKNOWN",
+            "reason": "Unresolved source/target transforms or file-level metadata prevent a full Phase 20 comparison."
+          },
+          "STIMULUS_REFERENCE_MATCH": {
+            "status": "UNKNOWN",
+            "reason": "Unresolved source/target transforms or file-level metadata prevent a full Phase 20 comparison."
+          },
+          "BASELINE_AND_UNITS_EXPLICIT": {
+            "status": "UNKNOWN",
+            "reason": "Unresolved source/target transforms or file-level metadata prevent a full Phase 20 comparison."
+          },
+          "OBSERVATION_TRANSFORM_ESTABLISHED": {
+            "status": "FAIL",
+            "reason": "Neither sensory x_i→biological source activity nor mV_eq→measured GF voltage is calibrated."
+          },
+          "TEMPORAL_FILTER_AND_ALIGNMENT_DECLARED": {
+            "status": "UNKNOWN",
+            "reason": "Unresolved source/target transforms or file-level metadata prevent a full Phase 20 comparison."
+          },
+          "AGGREGATION_AND_UNCERTAINTY_DECLARED": {
+            "status": "UNKNOWN",
+            "reason": "Unresolved source/target transforms or file-level metadata prevent a full Phase 20 comparison."
+          },
+          "DATA_SUFFICIENCY_AND_IDENTIFIABILITY_ASSESSED": {
+            "status": "FAIL",
+            "reason": "Candidate is not sufficient for current numerical calibration; see missing_requirements."
+          }
+        }
+      },
+      {
+        "id": "namiki_2018_identity",
+        "publication": "10.7554/eLife.34272",
+        "repository": "Publication/supplementary index",
+        "persistent_identifier": "10.7554/eLife.34272",
+        "access_url": "https://elifesciences.org/articles/34272",
+        "access_date": "2026-10-02",
+        "file_formats": [
+          "XLSX",
+          "Confocal images"
+        ],
+        "total_size_bytes": null,
+        "license_reuse": "Raw-data reuse terms not located; article access is not a raw-data license.",
+        "neuron_identity": "Anatomically identified DNp01/Giant Fiber; neuron-type evidence only.",
+        "assay": "Anatomy and split-GAL4 characterization",
+        "stimulus": "Looming",
+        "source_manipulation": "See publication; not mapped to identity-resolved x_i.",
+        "source_condition": "INCOMPATIBLE_SOURCE_CONDITION",
+        "target_compatibility": "TARGET_INCOMPATIBLE",
+        "time_reference": "Publication stimulus reference; file-level clock not located.",
+        "sampling_rate": "UNKNOWN",
+        "voltage_units": "Not applicable",
+        "baseline_semantics": "UNKNOWN",
+        "filtering": "UNKNOWN",
+        "trial_count": "UNKNOWN",
+        "trial_structure": "Published group summaries are not a trial-level file manifest.",
+        "preparation": "UNKNOWN",
+        "species": "Drosophila melanogaster",
+        "sex": "UNKNOWN",
+        "recording_compartment": "UNKNOWN",
+        "raw_data_availability": "Morphology/driver tables and image resources, not GF voltage.",
+        "metadata_completeness": "Insufficient for numerical comparison.",
+        "synchronization": "UNKNOWN",
+        "compatibility": "INCOMPATIBLE",
+        "missing_requirements": [
+          "Intracellular GF time series"
+        ],
+        "acquisition_feasibility": "Supplement/source tables inspected for modality; no voltage acquisition needed.",
+        "figure_requirement": "Anatomy supports type compatibility, not voltage calibration.",
+        "relative_voltage_gates": {
+          "compatible_target": {
+            "status": "FAIL",
+            "reason": "This record does not measure intracellular GF voltage."
+          },
+          "baseline": {
+            "status": "UNKNOWN",
+            "reason": "No trace-level metadata verified for this requirement."
+          },
+          "relative_voltage_deflection": {
+            "status": "UNKNOWN",
+            "reason": "No trace-level metadata verified for this requirement."
+          },
+          "time_axis": {
+            "status": "UNKNOWN",
+            "reason": "No trace-level metadata verified for this requirement."
+          },
+          "shared_stimulus_reference": {
+            "status": "UNKNOWN",
+            "reason": "No trace-level metadata verified for this requirement."
+          },
+          "filtering_metadata": {
+            "status": "UNKNOWN",
+            "reason": "No trace-level metadata verified for this requirement."
+          },
+          "measurement_units": {
+            "status": "UNKNOWN",
+            "reason": "No trace-level metadata verified for this requirement."
+          },
+          "preparation": {
+            "status": "UNKNOWN",
+            "reason": "No trace-level metadata verified for this requirement."
+          },
+          "cell_identity": {
+            "status": "UNKNOWN",
+            "reason": "No trace-level metadata verified for this requirement."
+          },
+          "source_condition": {
+            "status": "UNKNOWN",
+            "reason": "No trace-level metadata verified for this requirement."
+          }
+        },
+        "contract_gates": {
+          "CELL_TYPE_AND_PREPARATION_MATCH": {
+            "status": "FAIL",
+            "reason": "Assay target/modality does not match the GF voltage operator."
+          },
+          "SOURCE_POPULATION_AND_ROI_MAPPING": {
+            "status": "UNKNOWN",
+            "reason": "Unresolved source/target transforms or file-level metadata prevent a full Phase 20 comparison."
+          },
+          "STIMULUS_REFERENCE_MATCH": {
+            "status": "UNKNOWN",
+            "reason": "Unresolved source/target transforms or file-level metadata prevent a full Phase 20 comparison."
+          },
+          "BASELINE_AND_UNITS_EXPLICIT": {
+            "status": "UNKNOWN",
+            "reason": "Unresolved source/target transforms or file-level metadata prevent a full Phase 20 comparison."
+          },
+          "OBSERVATION_TRANSFORM_ESTABLISHED": {
+            "status": "FAIL",
+            "reason": "Neither sensory x_i→biological source activity nor mV_eq→measured GF voltage is calibrated."
+          },
+          "TEMPORAL_FILTER_AND_ALIGNMENT_DECLARED": {
+            "status": "UNKNOWN",
+            "reason": "Unresolved source/target transforms or file-level metadata prevent a full Phase 20 comparison."
+          },
+          "AGGREGATION_AND_UNCERTAINTY_DECLARED": {
+            "status": "UNKNOWN",
+            "reason": "Unresolved source/target transforms or file-level metadata prevent a full Phase 20 comparison."
+          },
+          "DATA_SUFFICIENCY_AND_IDENTIFIABILITY_ASSESSED": {
+            "status": "FAIL",
+            "reason": "Candidate is not sufficient for current numerical calibration; see missing_requirements."
+          }
+        }
+      },
+      {
+        "id": "koenig_ikeda_2007_g1",
+        "publication": "10.1152/jn.01258.2006",
+        "repository": "Publication/supplementary index",
+        "persistent_identifier": "10.1152/jn.01258.2006",
+        "access_url": "https://pubmed.ncbi.nlm.nih.gov/17392409/",
+        "access_date": "2026-10-02",
+        "file_formats": [],
+        "total_size_bytes": null,
+        "license_reuse": "Raw-data reuse terms not located; article access is not a raw-data license.",
+        "neuron_identity": "G1/TTM muscle response, not intracellular GF.",
+        "assay": "Muscle electrophysiology",
+        "stimulus": "Motor pathway/electrical stimulation preparation.",
+        "source_manipulation": "See publication; not mapped to identity-resolved x_i.",
+        "source_condition": "INCOMPATIBLE_SOURCE_CONDITION",
+        "target_compatibility": "TARGET_INCOMPATIBLE",
+        "time_reference": "Publication stimulus reference; file-level clock not located.",
+        "sampling_rate": "UNKNOWN",
+        "voltage_units": "Muscle physiological voltage; not GF membrane voltage.",
+        "baseline_semantics": "UNKNOWN",
+        "filtering": "UNKNOWN",
+        "trial_count": "UNKNOWN",
+        "trial_structure": "Published group summaries are not a trial-level file manifest.",
+        "preparation": "UNKNOWN",
+        "species": "Drosophila melanogaster",
+        "sex": "UNKNOWN",
+        "recording_compartment": "UNKNOWN",
+        "raw_data_availability": "No compatible GF voltage data located; muscle recordings cannot substitute.",
+        "metadata_completeness": "Insufficient for numerical comparison.",
+        "synchronization": "UNKNOWN",
+        "compatibility": "INCOMPATIBLE",
+        "missing_requirements": [
+          "Compatible GF recording"
+        ],
+        "acquisition_feasibility": "Exclude by assay/target before requesting raw data.",
+        "figure_requirement": "No digitization: target mismatch.",
+        "relative_voltage_gates": {
+          "compatible_target": {
+            "status": "FAIL",
+            "reason": "This record does not measure intracellular GF voltage."
+          },
+          "baseline": {
+            "status": "UNKNOWN",
+            "reason": "No trace-level metadata verified for this requirement."
+          },
+          "relative_voltage_deflection": {
+            "status": "UNKNOWN",
+            "reason": "No trace-level metadata verified for this requirement."
+          },
+          "time_axis": {
+            "status": "UNKNOWN",
+            "reason": "No trace-level metadata verified for this requirement."
+          },
+          "shared_stimulus_reference": {
+            "status": "UNKNOWN",
+            "reason": "No trace-level metadata verified for this requirement."
+          },
+          "filtering_metadata": {
+            "status": "UNKNOWN",
+            "reason": "No trace-level metadata verified for this requirement."
+          },
+          "measurement_units": {
+            "status": "UNKNOWN",
+            "reason": "No trace-level metadata verified for this requirement."
+          },
+          "preparation": {
+            "status": "UNKNOWN",
+            "reason": "No trace-level metadata verified for this requirement."
+          },
+          "cell_identity": {
+            "status": "UNKNOWN",
+            "reason": "No trace-level metadata verified for this requirement."
+          },
+          "source_condition": {
+            "status": "UNKNOWN",
+            "reason": "No trace-level metadata verified for this requirement."
+          }
+        },
+        "contract_gates": {
+          "CELL_TYPE_AND_PREPARATION_MATCH": {
+            "status": "FAIL",
+            "reason": "Assay target/modality does not match the GF voltage operator."
+          },
+          "SOURCE_POPULATION_AND_ROI_MAPPING": {
+            "status": "UNKNOWN",
+            "reason": "Unresolved source/target transforms or file-level metadata prevent a full Phase 20 comparison."
+          },
+          "STIMULUS_REFERENCE_MATCH": {
+            "status": "UNKNOWN",
+            "reason": "Unresolved source/target transforms or file-level metadata prevent a full Phase 20 comparison."
+          },
+          "BASELINE_AND_UNITS_EXPLICIT": {
+            "status": "UNKNOWN",
+            "reason": "Unresolved source/target transforms or file-level metadata prevent a full Phase 20 comparison."
+          },
+          "OBSERVATION_TRANSFORM_ESTABLISHED": {
+            "status": "FAIL",
+            "reason": "Neither sensory x_i→biological source activity nor mV_eq→measured GF voltage is calibrated."
+          },
+          "TEMPORAL_FILTER_AND_ALIGNMENT_DECLARED": {
+            "status": "UNKNOWN",
+            "reason": "Unresolved source/target transforms or file-level metadata prevent a full Phase 20 comparison."
+          },
+          "AGGREGATION_AND_UNCERTAINTY_DECLARED": {
+            "status": "UNKNOWN",
+            "reason": "Unresolved source/target transforms or file-level metadata prevent a full Phase 20 comparison."
+          },
+          "DATA_SUFFICIENCY_AND_IDENTIFIABILITY_ASSESSED": {
+            "status": "FAIL",
+            "reason": "Candidate is not sufficient for current numerical calibration; see missing_requirements."
+          }
+        }
+      },
+      {
+        "id": "kadas_2019_muscle",
+        "publication": "10.1523/ENEURO.0181-19.2019",
+        "repository": "Publication/supplementary index",
+        "persistent_identifier": "10.1523/ENEURO.0181-19.2019",
+        "access_url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6709211/",
+        "access_date": "2026-10-02",
+        "file_formats": [],
+        "total_size_bytes": null,
+        "license_reuse": "Raw-data reuse terms not located; article access is not a raw-data license.",
+        "neuron_identity": "GF-driven muscle output, not intracellular GF.",
+        "assay": "Muscle action potentials",
+        "stimulus": "Brain/motor-region electrical stimulation.",
+        "source_manipulation": "See publication; not mapped to identity-resolved x_i.",
+        "source_condition": "GF_ONLY_STIMULATION",
+        "target_compatibility": "TARGET_INCOMPATIBLE",
+        "time_reference": "Publication stimulus reference; file-level clock not located.",
+        "sampling_rate": "Digitizer sampling not verified; 10 kHz filter bound is not sampling rate.",
+        "voltage_units": "Muscle response voltage, not GF.",
+        "baseline_semantics": "UNKNOWN",
+        "filtering": "300 Hz–10 kHz acquisition bandwidth.",
+        "trial_count": "UNKNOWN",
+        "trial_structure": "Published group summaries are not a trial-level file manifest.",
+        "preparation": "Acute fly muscle recording",
+        "species": "Drosophila melanogaster",
+        "sex": "Both sexes reported",
+        "recording_compartment": "UNKNOWN",
+        "raw_data_availability": "No compatible intracellular GF dataset located.",
+        "metadata_completeness": "Insufficient for numerical comparison.",
+        "synchronization": "UNKNOWN",
+        "compatibility": "INCOMPATIBLE",
+        "missing_requirements": [
+          "GF target voltage and relevant upstream source condition"
+        ],
+        "acquisition_feasibility": "Exclude by target/source mismatch; raw muscle files not needed.",
+        "figure_requirement": "No digitization: target mismatch.",
+        "relative_voltage_gates": {
+          "compatible_target": {
+            "status": "FAIL",
+            "reason": "This record does not measure intracellular GF voltage."
+          },
+          "baseline": {
+            "status": "UNKNOWN",
+            "reason": "No trace-level metadata verified for this requirement."
+          },
+          "relative_voltage_deflection": {
+            "status": "UNKNOWN",
+            "reason": "No trace-level metadata verified for this requirement."
+          },
+          "time_axis": {
+            "status": "UNKNOWN",
+            "reason": "No trace-level metadata verified for this requirement."
+          },
+          "shared_stimulus_reference": {
+            "status": "UNKNOWN",
+            "reason": "No trace-level metadata verified for this requirement."
+          },
+          "filtering_metadata": {
+            "status": "UNKNOWN",
+            "reason": "No trace-level metadata verified for this requirement."
+          },
+          "measurement_units": {
+            "status": "UNKNOWN",
+            "reason": "No trace-level metadata verified for this requirement."
+          },
+          "preparation": {
+            "status": "UNKNOWN",
+            "reason": "No trace-level metadata verified for this requirement."
+          },
+          "cell_identity": {
+            "status": "UNKNOWN",
+            "reason": "No trace-level metadata verified for this requirement."
+          },
+          "source_condition": {
+            "status": "UNKNOWN",
+            "reason": "No trace-level metadata verified for this requirement."
+          }
+        },
+        "contract_gates": {
+          "CELL_TYPE_AND_PREPARATION_MATCH": {
+            "status": "FAIL",
+            "reason": "Assay target/modality does not match the GF voltage operator."
+          },
+          "SOURCE_POPULATION_AND_ROI_MAPPING": {
+            "status": "UNKNOWN",
+            "reason": "Unresolved source/target transforms or file-level metadata prevent a full Phase 20 comparison."
+          },
+          "STIMULUS_REFERENCE_MATCH": {
+            "status": "UNKNOWN",
+            "reason": "Unresolved source/target transforms or file-level metadata prevent a full Phase 20 comparison."
+          },
+          "BASELINE_AND_UNITS_EXPLICIT": {
+            "status": "UNKNOWN",
+            "reason": "Unresolved source/target transforms or file-level metadata prevent a full Phase 20 comparison."
+          },
+          "OBSERVATION_TRANSFORM_ESTABLISHED": {
+            "status": "FAIL",
+            "reason": "Neither sensory x_i→biological source activity nor mV_eq→measured GF voltage is calibrated."
+          },
+          "TEMPORAL_FILTER_AND_ALIGNMENT_DECLARED": {
+            "status": "UNKNOWN",
+            "reason": "Unresolved source/target transforms or file-level metadata prevent a full Phase 20 comparison."
+          },
+          "AGGREGATION_AND_UNCERTAINTY_DECLARED": {
+            "status": "UNKNOWN",
+            "reason": "Unresolved source/target transforms or file-level metadata prevent a full Phase 20 comparison."
+          },
+          "DATA_SUFFICIENCY_AND_IDENTIFIABILITY_ASSESSED": {
+            "status": "FAIL",
+            "reason": "Candidate is not sufficient for current numerical calibration; see missing_requirements."
+          }
+        }
+      },
+      {
+        "id": "dombrovski_2023_gf",
+        "publication": "10.1038/s41586-022-05562-8",
+        "repository": "Primary publication/Europe PMC; Mendeley image deposits",
+        "persistent_identifier": "10.1038/s41586-022-05562-8",
+        "access_url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9849133/",
+        "access_date": "2026-10-02",
+        "file_formats": [],
+        "total_size_bytes": null,
+        "license_reuse": "Raw-data reuse terms not located; article access is not a raw-data license.",
+        "neuron_identity": "Historical GF; no exact MaleCNS body correspondence claimed.",
+        "assay": "Identified descending neuron GF current-clamp",
+        "stimulus": "Three-disk looming arrays at varied azimuth; constant angular velocity.",
+        "source_manipulation": "Natural looming with LC4 receptive-field/pathway context; not per-body presynaptic activity measurement.",
+        "source_condition": "NATURAL_LOOMING_WITH_PATHWAY_CONTEXT",
+        "target_compatibility": "TARGET_COMPATIBLE_WITH_LIMITATIONS",
+        "time_reference": "Publication stimulus reference; file-level clock not located.",
+        "sampling_rate": "40 kHz",
+        "voltage_units": "mV in publication; no numerical file mapping verified.",
+        "baseline_semantics": "2 s prestimulus baseline; response window 150 ms.",
+        "filtering": "10 kHz low-pass",
+        "trial_count": "Published 4–8 trials per neuron; no raw trial manifest inspected.",
+        "trial_structure": "4–8 trials per neuron averaged for depolarization analysis; raw trial manifest unavailable.",
+        "preparation": "Tethered, posterior head window, brain perfusion.",
+        "species": "Drosophila melanogaster",
+        "sex": "Female, 2–4 days",
+        "recording_compartment": "Visually targeted DN soma",
+        "raw_data_availability": "Other data by reasonable request; public Mendeley repositories explicitly contain confocal stacks. Source-data summary is not proof of trial-level voltage deposit.",
+        "metadata_completeness": "Insufficient for numerical comparison.",
+        "synchronization": "EXPLICIT_SHARED_CLOCK",
+        "compatibility": "SUFFICIENT_FOR_OPERATOR_DESIGN_ONLY",
+        "missing_requirements": [
+          "Raw GF trial traces with synchronized photodiode and channel dictionary",
+          "Identity/genotype and acquisition metadata per recording",
+          "Source activity and model observation transforms"
+        ],
+        "acquisition_feasibility": "Primary full text/protocol accessible; no qualified numerical voltage deposit located.",
+        "figure_requirement": "TRACE_DIGITIZATION_REQUIRED if figures alone were used; no digitization performed.",
+        "relative_voltage_gates": {
+          "compatible_target": {
+            "status": "PASS",
+            "reason": "GF neuron-type assay, not exact MaleCNS body matching."
+          },
+          "baseline": {
+            "status": "PASS",
+            "reason": "2 s prestimulus baseline explicitly specified in primary protocol; raw sample mapping unavailable."
+          },
+          "relative_voltage_deflection": {
+            "status": "UNKNOWN",
+            "reason": "No trace-level metadata verified for this requirement."
+          },
+          "time_axis": {
+            "status": "UNKNOWN",
+            "reason": "No trace-level metadata verified for this requirement."
+          },
+          "shared_stimulus_reference": {
+            "status": "UNKNOWN",
+            "reason": "Simultaneously recorded photodiode declared; synchronized numerical channels not available for inspection."
+          },
+          "filtering_metadata": {
+            "status": "PASS",
+            "reason": "20 kHz sampling and 10 kHz low-pass declared."
+          },
+          "measurement_units": {
+            "status": "PASS",
+            "reason": "Paper voltage traces in mV; not a model-space calibration."
+          },
+          "preparation": {
+            "status": "PASS",
+            "reason": "Whole-cell tethered in vivo preparation documented."
+          },
+          "cell_identity": {
+            "status": "PASS",
+            "reason": "Identified GF in the publication."
+          },
+          "source_condition": {
+            "status": "PASS",
+            "reason": "Looming with LC4/LPLC2 silencing context documented."
+          }
+        },
+        "contract_gates": {
+          "CELL_TYPE_AND_PREPARATION_MATCH": {
+            "status": "UNKNOWN",
+            "reason": "Unresolved source/target transforms or file-level metadata prevent a full Phase 20 comparison."
+          },
+          "SOURCE_POPULATION_AND_ROI_MAPPING": {
+            "status": "UNKNOWN",
+            "reason": "Unresolved source/target transforms or file-level metadata prevent a full Phase 20 comparison."
+          },
+          "STIMULUS_REFERENCE_MATCH": {
+            "status": "UNKNOWN",
+            "reason": "Unresolved source/target transforms or file-level metadata prevent a full Phase 20 comparison."
+          },
+          "BASELINE_AND_UNITS_EXPLICIT": {
+            "status": "UNKNOWN",
+            "reason": "Unresolved source/target transforms or file-level metadata prevent a full Phase 20 comparison."
+          },
+          "OBSERVATION_TRANSFORM_ESTABLISHED": {
+            "status": "FAIL",
+            "reason": "Neither sensory x_i→biological source activity nor mV_eq→measured GF voltage is calibrated."
+          },
+          "TEMPORAL_FILTER_AND_ALIGNMENT_DECLARED": {
+            "status": "UNKNOWN",
+            "reason": "Unresolved source/target transforms or file-level metadata prevent a full Phase 20 comparison."
+          },
+          "AGGREGATION_AND_UNCERTAINTY_DECLARED": {
+            "status": "UNKNOWN",
+            "reason": "Unresolved source/target transforms or file-level metadata prevent a full Phase 20 comparison."
+          },
+          "DATA_SUFFICIENCY_AND_IDENTIFIABILITY_ASSESSED": {
+            "status": "FAIL",
+            "reason": "Candidate is not sufficient for current numerical calibration; see missing_requirements."
+          }
+        }
+      },
+      {
+        "id": "jang_2023_gf",
+        "publication": "10.1242/jeb.244790",
+        "repository": "Primary publication/PMC; data on author request",
+        "persistent_identifier": "10.1242/jeb.244790",
+        "access_url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10263144/",
+        "access_date": "2026-10-02",
+        "file_formats": [],
+        "total_size_bytes": null,
+        "license_reuse": "Raw-data reuse terms not located; article access is not a raw-data license.",
+        "neuron_identity": "Historical GF; no exact MaleCNS body correspondence claimed.",
+        "assay": "Identified descending neuron GF current-clamp",
+        "stimulus": "Single/dual looming disks at defined azimuths; r/v 10,20,40,80 ms; other stimulus classes not interchangeable.",
+        "source_manipulation": "Natural looming with eye painting/bilateral integration; no LC4/LPLC2-specific activity measurement.",
+        "source_condition": "UNRESOLVED_SOURCE_POPULATION",
+        "target_compatibility": "TARGET_COMPATIBLE_WITH_LIMITATIONS",
+        "time_reference": "Explicit stimulus onset and experimental stimulus schedule; raw marker channels unavailable.",
+        "sampling_rate": "20 kHz, NI-DAQ/Wavesurfer",
+        "voltage_units": "mV in publication; no numerical file mapping verified.",
+        "baseline_semantics": "Mean voltage during 1 s before stimulus onset.",
+        "filtering": "Analysis Savitzky–Golay order 4, window one tenth stimulus length; acquisition filter not explicitly located.",
+        "trial_count": "Two successive trials averaged per stimulus/fly; animal counts separate.",
+        "trial_structure": "Randomized stimuli, 30 s interstimulus; two successive trials averaged.",
+        "preparation": "Tethered, posterior head window, brain perfusion.",
+        "species": "Drosophila melanogaster",
+        "sex": "Female, 2–5 days",
+        "recording_compartment": "GFP-targeted GF soma",
+        "raw_data_availability": "All data and software by corresponding-author request; no public numeric trace deposit located.",
+        "metadata_completeness": "Insufficient for numerical comparison.",
+        "synchronization": "PARTIAL",
+        "compatibility": "SUFFICIENT_FOR_OPERATOR_DESIGN_ONLY",
+        "missing_requirements": [
+          "Trial-level voltage plus stimulus marker/acquisition dictionary",
+          "Source activity/ROI operator and model voltage transform"
+        ],
+        "acquisition_feasibility": "Primary full protocol accessible; no source data acquired.",
+        "figure_requirement": "TRACE_DIGITIZATION_REQUIRED if figures alone were used; no digitization performed.",
+        "relative_voltage_gates": {
+          "compatible_target": {
+            "status": "PASS",
+            "reason": "GF neuron-type assay, not exact MaleCNS body matching."
+          },
+          "baseline": {
+            "status": "PASS",
+            "reason": "2 s prestimulus baseline explicitly specified in primary protocol; raw sample mapping unavailable."
+          },
+          "relative_voltage_deflection": {
+            "status": "UNKNOWN",
+            "reason": "No trace-level metadata verified for this requirement."
+          },
+          "time_axis": {
+            "status": "UNKNOWN",
+            "reason": "No trace-level metadata verified for this requirement."
+          },
+          "shared_stimulus_reference": {
+            "status": "UNKNOWN",
+            "reason": "Stimulus onset declared, raw synchronization markers not inspected."
+          },
+          "filtering_metadata": {
+            "status": "UNKNOWN",
+            "reason": "Analysis smoothing explicit; acquisition filtering not located."
+          },
+          "measurement_units": {
+            "status": "PASS",
+            "reason": "Paper voltage traces in mV; not a model-space calibration."
+          },
+          "preparation": {
+            "status": "PASS",
+            "reason": "Whole-cell tethered in vivo preparation documented."
+          },
+          "cell_identity": {
+            "status": "PASS",
+            "reason": "Identified GF in the publication."
+          },
+          "source_condition": {
+            "status": "UNKNOWN",
+            "reason": "Natural looming known but LC4/LPLC2 source activation not measured or selectively isolated."
+          }
+        },
+        "contract_gates": {
+          "CELL_TYPE_AND_PREPARATION_MATCH": {
+            "status": "UNKNOWN",
+            "reason": "Unresolved source/target transforms or file-level metadata prevent a full Phase 20 comparison."
+          },
+          "SOURCE_POPULATION_AND_ROI_MAPPING": {
+            "status": "UNKNOWN",
+            "reason": "Unresolved source/target transforms or file-level metadata prevent a full Phase 20 comparison."
+          },
+          "STIMULUS_REFERENCE_MATCH": {
+            "status": "UNKNOWN",
+            "reason": "Unresolved source/target transforms or file-level metadata prevent a full Phase 20 comparison."
+          },
+          "BASELINE_AND_UNITS_EXPLICIT": {
+            "status": "UNKNOWN",
+            "reason": "Unresolved source/target transforms or file-level metadata prevent a full Phase 20 comparison."
+          },
+          "OBSERVATION_TRANSFORM_ESTABLISHED": {
+            "status": "FAIL",
+            "reason": "Neither sensory x_i→biological source activity nor mV_eq→measured GF voltage is calibrated."
+          },
+          "TEMPORAL_FILTER_AND_ALIGNMENT_DECLARED": {
+            "status": "UNKNOWN",
+            "reason": "Unresolved source/target transforms or file-level metadata prevent a full Phase 20 comparison."
+          },
+          "AGGREGATION_AND_UNCERTAINTY_DECLARED": {
+            "status": "UNKNOWN",
+            "reason": "Unresolved source/target transforms or file-level metadata prevent a full Phase 20 comparison."
+          },
+          "DATA_SUFFICIENCY_AND_IDENTIFIABILITY_ASSESSED": {
+            "status": "FAIL",
+            "reason": "Candidate is not sufficient for current numerical calibration; see missing_requirements."
+          }
+        }
+      }
+    ],
+    "search_log": [
+      {
+        "query": "Starting papers/supplements",
+        "publication": "Ache 2019; Klapoetke 2017; von Reyn 2014/2017; Namiki; Koenig/Ikeda; Kadas",
+        "source": "Primary paper/PMC/Europe PMC/publisher indexes",
+        "result": "GF plotted traces and published protocols; most raw GF numerical files not located. Muscle/anatomy excluded.",
+        "date_checked": "2026-10-02"
+      },
+      {
+        "query": "DataCite GF",
+        "publication": "query giant fiber; LC4 AND Drosophila; LPLC2; exact Ache/Klapoetke/von Reyn titles",
+        "source": "https://api.datacite.org/dois",
+        "result": "GF query 27 metadata records; LPLC2 9; LC4 7; exact-title searches zero dataset hits. Found Zenodo GF and linked OSF source record; not exhaustive absence proof.",
+        "date_checked": "2026-10-02"
+      },
+      {
+        "query": "Zenodo",
+        "publication": "giant fiber electrophysiology and Dombrovski record",
+        "source": "https://zenodo.org/api/records/14983850",
+        "result": "46 files; CC-BY-4.0; two MAT acquired after byte/ignore checks.",
+        "date_checked": "2026-10-02"
+      },
+      {
+        "query": "OSF",
+        "publication": "linked LPLC2 archive",
+        "source": "https://api.osf.io/v2/nodes/z7xfk/files/osfstorage/",
+        "result": "Processed Rda plus Rmd; not verified raw movies. License API confirms CC-BY-4.0.",
+        "date_checked": "2026-10-02"
+      },
+      {
+        "query": "Dryad",
+        "publication": "giant fiber electrophysiology; nc763",
+        "source": "https://datadryad.org/",
+        "result": "nc763 spreadsheet describes different seizure/muscle/behavior context, not qualified LC4/LPLC2→GF intracellular data; no download.",
+        "date_checked": "2026-10-02"
+      },
+      {
+        "query": "Figshare",
+        "publication": "giant fiber LC4 LPLC2 voltage dataset",
+        "source": "https://figshare.com/",
+        "result": "No qualifying numeric GF voltage dataset located in bounded indexed queries.",
+        "date_checked": "2026-10-02"
+      },
+      {
+        "query": "DANDI",
+        "publication": "giant fiber Drosophila electrophysiology",
+        "source": "https://dandiarchive.org/",
+        "result": "No qualifying record located in bounded indexed query; not archive-wide assertion.",
+        "date_checked": "2026-10-02"
+      },
+      {
+        "query": "Janelia and lab repositories",
+        "publication": "GF LC4 LPLC2 raw data; Card publications; Drexel NCE",
+        "source": "https://biomed.drexel.edu/labs/nce/",
+        "result": "Publication/image resources; no additional qualified voltage trace deposit located.",
+        "date_checked": "2026-10-02"
+      },
+      {
+        "query": "GitHub/ModelDB",
+        "publication": "ModelDBRepository/230400; ClarkLabCode/LoomDetectionANN",
+        "source": "https://github.com/ModelDBRepository/230400",
+        "result": "Code/figure inventory, not measured GF trace files; no code executed.",
+        "date_checked": "2026-10-02"
+      },
+      {
+        "query": "GEO relevance check",
+        "publication": "Dombrovski linked GSE291561",
+        "source": "https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE291561",
+        "result": "Transcriptomics, not electrophysiology; exclude without broad GEO scan.",
+        "date_checked": "2026-10-02"
+      },
+      {
+        "query": "Derivative behavior archive",
+        "publication": "Chai et al. 2025",
+        "source": "https://zenodo.org/records/15137407",
+        "result": "39.9 MB behavior/code archive, not GF intracellular voltage; metadata only.",
+        "date_checked": "2026-10-02"
+      },
+      {
+        "query": "Recent connected physiology",
+        "publication": "Dombrovski 2023 synaptic gradients",
+        "source": "https://doi.org/10.1038/s41586-022-05562-8",
+        "result": "Primary full text PMC9849133: linked Mendeley datasets pnbmx825wv, 84kh3ncbf8, th99hk824v explicitly cover confocal stacks, not electrophysiology; other data by reasonable request. Source-data statement alone does not establish trial-level raw voltage.",
+        "date_checked": "2026-10-02"
+      },
+      {
+        "query": "Mendeley linked repositories",
+        "publication": "Dombrovski 2023 data-availability section",
+        "source": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9849133/",
+        "result": "pnbmx825wv / 84kh3ncbf8 / th99hk824v identified as confocal stacks by primary paper; exclude as GF voltage sources, no download.",
+        "date_checked": "2026-10-02"
+      },
+      {
+        "query": "Explicit GF acquisition protocol reference 57 in Dombrovski 2025",
+        "publication": "Jang et al. 2023 DOI 10.1242/jeb.244790",
+        "source": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10263144/",
+        "result": "20 kHz in vivo GF whole-cell protocol, 1 s baseline and analysis smoothing; all data/software by author request. Inherited protocol does not prove acquired MAT channel/clock metadata.",
+        "date_checked": "2026-10-02"
+      },
+      {
+        "query": "Zenodo companion XLSX metadata labels/header rows",
+        "publication": "Dombrovski GF dataset 14983850",
+        "source": "https://zenodo.org/api/records/14983850",
+        "result": "13,886-byte workbook inspected remotely in memory. Explicit rate/onset/columns/trial map located; stored voltage scale/filter and combined-file schema unresolved.",
+        "date_checked": "2026-10-02"
+      }
+    ],
+    "local_acquisitions": [
+      {
+        "filename": "DipE_Null_cont_fly22_trial01.mat",
+        "local_path": "data/derived/experiments/phase21_dataset_audit/DipE_Null_cont_fly22_trial01.mat",
+        "source_url": "https://zenodo.org/api/records/14983850/files/DipE_Null_cont_fly22_trial01.mat/content",
+        "sha256": "08035f5f79e94f6a215aae3ca44aa26f1d4edbff63a221eb90af3b5d03d6ae54",
+        "byte_size": 488398,
+        "remote_md5": "3c5c43222d8c41346168cbabc7a19445",
+        "remote_md5_verified": true,
+        "license": "CC-BY-4.0",
+        "acquisition_date": "2026-10-02",
+        "git_ignore_rule": "data/derived/experiments/",
+        "inspection": "Unmodified MATLAB header, variable names, shapes and data types only; no trace alignment, fitting or model comparison."
+      },
+      {
+        "filename": "Fig1_Ext1_combined_GFMembraneP_HorizontalArrayLooming.mat",
+        "local_path": "data/derived/experiments/phase21_dataset_audit/Fig1_Ext1_combined_GFMembraneP_HorizontalArrayLooming.mat",
+        "source_url": "https://zenodo.org/api/records/14983850/files/Fig1_Ext1_combined_GFMembraneP_HorizontalArrayLooming.mat/content",
+        "sha256": "042224491f18f68f63cb829141d31fcb136a70e299ca0b64f3bb5c709e832740",
+        "byte_size": 12487834,
+        "remote_md5": "2820b1dbff2e33cb189825cecfbd33fd",
+        "remote_md5_verified": true,
+        "license": "CC-BY-4.0",
+        "acquisition_date": "2026-10-02",
+        "git_ignore_rule": "data/derived/experiments/",
+        "inspection": "Unmodified MATLAB header, variable names, shapes and data types only; no trace alignment, fitting or model comparison."
+      }
+    ],
+    "best_available_candidate": "dombrovski_gf_zenodo_14983850",
+    "best_candidate_reason": "Open trial-labelled numerical GF MAT records with lawful reuse and a linked primary whole-cell protocol; channel/clock metadata still insufficient. Best availability does not imply calibration readiness.",
+    "calibration_ready_count": 0,
+    "identifiability_chain": [
+      {
+        "arrow": "sensory_state_to_presynaptic_biological_activity",
+        "status": "SUPPORTED_FOR_OPERATOR_DESIGN_ONLY",
+        "reason": "LPLC2 processed calcium time series exist; x_i→activity/indicator/ROI operator unknown. No compatible LC4 activity scale dataset located."
+      },
+      {
+        "arrow": "presynaptic_activity_to_postsynaptic_effect",
+        "status": "QUALITATIVELY_SUPPORTED",
+        "reason": "LPLC2 population optogenetics and pathway manipulations support relationship; synchronized measured source activity and GF per-trial voltage scale not located."
+      },
+      {
+        "arrow": "postsynaptic_effect_to_measured_GF_voltage",
+        "status": "SUPPORTED_FOR_OPERATOR_DESIGN_ONLY",
+        "reason": "Whole-cell GF numerical arrays exist but units/channel/time/filter bridge and model observation transform remain unresolved."
+      }
+    ],
+    "pairing": "OSF LPLC2 calcium and Zenodo GF voltage are complementary, not synchronized trial-level source/target measurements. Separate indicators, interventions, clocks and population scales do not jointly identify k.",
+    "future_minimal_dataset": {
+      "source": "Identified LC4 and/or LPLC2 population; explicit identities/ROI coverage and controlled source activation plus measured activity, not activation inferred from neuron count.",
+      "target": "Identified GF/DNp01 at neuron-type level, recording compartment and sex/preparation documented.",
+      "assay": "Synchronized presynaptic activity and intracellular GF voltage; explicit source observation process.",
+      "stimulus": "Defined natural visual stimulus and/or source-selective manipulation, controls and genotype stated.",
+      "baseline": "Explicit prestimulus sample range and baseline statistic for each trial.",
+      "sampling": "Declared sampling clock, units, hardware/software filtering and resampling; adequate bandwidth documented, no new numeric rate chosen here.",
+      "trials": "Repeated trial-level traces with animal/trial identifiers, uncertainty and a prospective held-out structure.",
+      "format": "Open numerical trace files with column dictionary, stimulus event markers, acquisition metadata, provenance, checksum and reuse terms.",
+      "missing_now": "Stored GF voltage scale/filtering and protocol/version bridge plus source activity→model-state measurement transform; neither is supplied by a population voltage/count ratio."
+    },
+    "decisions": {
+      "data_availability": "OPERATOR_DESIGN_DATA_ONLY",
+      "calibration_readiness": "DATA_AVAILABLE_BUT_METADATA_INSUFFICIENT"
+    },
+    "next_action": "Obtain authoritative stored-voltage units/filtering, file-specific recording/protocol metadata and combined-array/version dictionary for Zenodo 14983850; confirm known individual-file clock/trial mapping, no fitting.",
+    "prohibitions": {
+      "fitting_performed": false,
+      "figure_digitization_performed": false,
+      "ocr_trace_extraction_performed": false,
+      "model_against_candidate_data_executed": false,
+      "required_gain_calculated": false,
+      "model_changed": false,
+      "source_bytes_tracked": false
+    }
+  }
+}

@@ -2483,3 +2483,53 @@ Phase 22 `PASS`: four focused tests, 1,030 full Python tests (one existing
 deselection; two dependency warnings), 53 frontend regressions, all five unchanged
 historical replays, Ruff/format/diff and frontend lint/typecheck/build passed.
 Only metadata/documentation and isolated tests changed; no commit/push.
+
+### Phase 23 — NeuroFly v1 scientific freeze and milestone closure
+
+**NeuroFly v1 — Initial Connectome-Based Circuit Validation** freezes the
+selected MaleCNS-derived LC4/LPLC2→DNp01 closed-loop circuit, not a whole-fly
+emulation or calibrated escape model. Authoritative scope, canonical IDs,
+empirical/model distinctions, allowed/forbidden claims and unknowns are in
+[the v1 scientific-status document](science/neurofly_v1_initial_circuit_validation.md)
+and [manifest](science/neurofly_v1_scientific_status.json), schema
+`neurofly_v1_scientific_status_v1`, canonical ID
+`1aa1a39710ebc68030834b3a04ea202eb57fb25a0080f444db0ea19af64730a6`.
+Freeze means reproducibility, not biological validation. Shared k=1 mV_eq/state
+and unnormalized identity-resolved additive transfer remain unchanged;
+structural contact counts never scale efficacy. mV_eq and world_eq remain
+uncalibrated model-space coordinates. The visual specimen is neither MaleCNS
+morphology nor validated biomechanics; the frontend presents authoritative
+backend state without behavior decisions.
+
+The 1.4 ms micro-window and preregistered 40 ms world experiment retain their
+separate roles. R DNp01 peaks are respectively −51.933657842035174 and
+approximately −48.733429620245 mV_eq, below −45 mV_eq. Both have zero genuine
+spikes, motor output, actuation and movement; Baseline is an explicit empty
+stimulus control. Closed-loop execution and feedback wiring pass, while
+movement-dependent feedback realization is absent. Coupled limitations are
+not independent causes; extending the horizon was not sufficient to spike.
+
+`PHYSIOLOGICAL_TRANSFER_CALIBRATION_NOT_ESTABLISHED`: source observation
+transform, target stored-voltage scale and filtering/export provenance remain
+unresolved. Public GF data informed operator design but pass no full calibration
+gate set. The Phase 21/22 dataset branch is **closed for v1**; their historical
+author-contact/acquisition recommendations above are superseded, without
+rewriting those records. No further contact, unpublished metadata request or
+acquisition is planned. Reopening requires new public compatible evidence.
+
+Completion decision: `NEUROFLY_V1_INITIAL_CIRCUIT_VALIDATION_COMPLETE`.
+Exactly one next major milestone: evidence-gated selection and validation of
+a second bounded MaleCNS circuit adding a genuinely new circuit capability.
+No candidate is selected casually; primary functional evidence, identities,
+directed routing, state/observable semantics and downstream compatibility must
+be audited before one bounded implementation. No gain tuning is recommended.
+
+All five required canonical replays passed unchanged; Phase 19–22 evidence
+hashes were independently verified. Only governance documentation/manifest and
+isolated tests change; no production model, scenario or frontend change.
+
+Phase 23 `PASS`: five focused tests, 1,035 full Python tests (one existing
+deselection; two dependency deprecation warnings), 53 frontend regressions,
+both unchanged five-artifact replay rounds, Ruff/format/diff and frontend
+lint/typecheck/build passed. Only the four intended Phase 23 files remain;
+no commit/push.

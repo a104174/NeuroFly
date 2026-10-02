@@ -1,0 +1,443 @@
+{
+  "schema": "neurofly_v1_scientific_status_v1",
+  "status_id": "1aa1a39710ebc68030834b3a04ea202eb57fb25a0080f444db0ea19af64730a6",
+  "status": {
+    "schema": "neurofly_v1_scientific_status_v1",
+    "milestone_name": "NeuroFly v1 — Initial Connectome-Based Circuit Validation",
+    "baseline_commit": "e233b8f447f64d9c4040266dc812a959d0691ad4",
+    "freeze_meaning": "Stable for reproducibility; not biologically validated. No runtime dependency.",
+    "authorities": [
+      {
+        "key": "phase7o",
+        "id": "99eeea47542abd5f9af2c1918e6e0514fa2c4b8f04d9a3f14a75ac1f8dbbcaa5",
+        "document": "docs/science/all_311_sensory_population_execution.md",
+        "evidence_class": "CONNECTOME_DERIVED_MODEL_EXECUTION"
+      },
+      {
+        "key": "phase8c",
+        "id": "5f57cbc6c0ac770d65582ffe97c0c690e539bab33fef549da15d5273912279bf",
+        "document": "docs/science/sensory_dnp01_ttmn_end_to_end_adapter.md",
+        "evidence_class": "GENUINE_MODEL_EVENT_COMPOSITION"
+      },
+      {
+        "key": "motor_pathway",
+        "id": "a12b0115c7e50fac3df92bf66d151b3a145aa630f472277226a7d05dc915b22c",
+        "document": "docs/science/motor_neural_pathway_contract.md",
+        "evidence_class": "STRUCTURAL_CONTRACT"
+      },
+      {
+        "key": "target",
+        "id": "5f02960bb5bdd81bcd622334a93199bc6973749f233dbc7aa5fd15481a5eddf0",
+        "document": "docs/science/motor_neuron_muscle_target_contract.md",
+        "evidence_class": "QUALIFIED_TARGET_ASSOCIATION"
+      },
+      {
+        "key": "abstract_electrical_input",
+        "id": "1a4a0e80a86945f10126ae5316b39332c55e7d2280fd0bda98c19544d69ec6fa",
+        "document": "docs/science/ttm_abstract_electrical_input_contract.md",
+        "evidence_class": "SYNTHETIC_FIXTURE_SEMANTICS"
+      },
+      {
+        "key": "g1_mapping",
+        "id": "030a9d22a27e4017f38d6bda166ba41515ea654c59d571f44bed2d37c7d3e3d8",
+        "document": "docs/science/ttm_g1_proxy_mapping_contract.md",
+        "evidence_class": "EXPLORATORY_PROXY_CONTRACT"
+      },
+      {
+        "key": "electrical",
+        "id": "72636cc94c1508c074950b1d5b3847a9e0283ecb0cde04f3f85a36b2c62d2e0f",
+        "document": "docs/science/g1_proxy_passive_electrical_response.md",
+        "evidence_class": "SYNTHETIC_FIXTURE_MODEL_VALIDATION"
+      },
+      {
+        "key": "activation",
+        "id": "4e4a3e0528500cd87c49a272f01891e8cf24c5232e5c11588d6f1c25887e06fb",
+        "document": "docs/science/ttm_g1_static_muscle_activation.md",
+        "evidence_class": "SYNTHETIC_FIXTURE_MODEL_VALIDATION"
+      },
+      {
+        "key": "actuator",
+        "id": "478b4a9d4b089dc0a0fffdb699f8bbab1c7483eddf2eed0a8b06185b48b04d40",
+        "document": "docs/science/ttm_exploratory_actuator_commands.md",
+        "evidence_class": "SYNTHETIC_FIXTURE_MODEL_VALIDATION"
+      },
+      {
+        "key": "body",
+        "id": "bb3696faae558778555601991de3fd36081d5853c889fcb7aac5ffd79593eba3",
+        "document": "docs/science/exploratory_planar_body_plant.md",
+        "evidence_class": "SYNTHETIC_FIXTURE_MECHANICS_VALIDATION"
+      },
+      {
+        "key": "phase13b",
+        "id": "55e2f4d37bc6f8fb81aee67886d8680a76646a0317961bd90cf0e3fbabb2c46b",
+        "document": "docs/science/closed_loop_looming_scenario.md",
+        "evidence_class": "GENUINE_CLOSED_LOOP_MODEL_EXECUTION"
+      },
+      {
+        "key": "phase16_corrected",
+        "id": "bb1d227dd3dc56d74939c37e231ca0f8aa02f8d0140964eef7f1fb31e00b101b",
+        "document": "docs/science/dnp01_subthreshold_looming_diagnosis.md",
+        "evidence_class": "DERIVED_MODEL_DIAGNOSTIC"
+      },
+      {
+        "key": "phase18",
+        "id": "ee781bd8c7e903c5fab78aff02d916fe68d26998a7caf774806778cacd2b616c",
+        "document": "docs/science/looming_world_experiment.md",
+        "evidence_class": "PREREGISTERED_GENUINE_CLOSED_LOOP_MODEL_EXECUTION"
+      },
+      {
+        "key": "phase18_preregistration",
+        "id": "580e088d89b38f086689c39568bf38bd04f5edf7f0d05065abe2c076a0d16bed",
+        "document": "docs/science/looming_world_experiment.md",
+        "evidence_class": "FROZEN_EXPLORATORY_DESIGN"
+      },
+      {
+        "key": "phase19",
+        "id": "f7d278372f3527393bb041e4db3b45126668a5ec904ce65cb1f9f3546b28d267",
+        "document": "docs/science/sensory_dnp01_transfer_evidence_review.md",
+        "evidence_class": "EVIDENCE_REVIEW"
+      },
+      {
+        "key": "phase20",
+        "id": "ae50e1faad223cdde63125a6216ce0993523f9933025fe1f04e9265450dec824",
+        "document": "docs/science/observation_operator_assay_compatibility.md",
+        "evidence_class": "OBSERVATION_SPECIFICATION"
+      },
+      {
+        "key": "phase21",
+        "id": "219622b71f1fd79caabe83665ddc859699875177883e7810c1b2bea4676e627d",
+        "document": "docs/science/gf_voltage_dataset_compatibility_audit.md",
+        "evidence_class": "DATASET_AUDIT"
+      },
+      {
+        "key": "phase22",
+        "id": "b40c260a4a37ef99853425dfb927aa2729c6f93da8abd6de66d6c7ead2654ee4",
+        "document": "docs/science/gf_voltage_dataset_metadata_resolution.md",
+        "evidence_class": "METADATA_RESOLUTION"
+      }
+    ],
+    "demonstrated": [
+      "MaleCNS-derived identities, sides and structural routing for a selected circuit",
+      "All 311 identity-resolved LC4/LPLC2 sensory states and two DNp01 point-neuron states execute deterministically",
+      "Genuine model spikes alone feed the composed motor/electrical/activation/actuator/body chain",
+      "Updated authoritative body state feeds the next world-relative sensory geometry",
+      "Canonical deterministic content-addressed results reproduce offline",
+      "Honest null outcomes are represented separately from successful closed-loop execution"
+    ],
+    "empirical_structure": {
+      "dataset": "male-cns:v1.0",
+      "sensory_population": {
+        "LC4": 126,
+        "LPLC2": 185,
+        "total": 311
+      },
+      "dnp01": [
+        {
+          "body_id": 10001,
+          "side": "R"
+        },
+        {
+          "body_id": 10010,
+          "side": "L"
+        }
+      ],
+      "ttmn": [
+        {
+          "body_id": 800146,
+          "side": "R"
+        },
+        {
+          "body_id": 804642,
+          "side": "L"
+        }
+      ],
+      "structural_count_semantics": "STRUCTURAL_COUNT_ROUTING_METADATA_ONLY",
+      "structural_count_used_as_efficacy": false,
+      "target_limit": "TTMn-to-TTM-class association is qualified evidence, not exact traced peripheral fiber or G1 identity."
+    },
+    "frozen_contracts": {
+      "transfer": {
+        "classification": "EXPLORATORY_UNCALIBRATED_MODEL_ASSUMPTION",
+        "per_body_equation": "d_i[n] = active_i * k * x_i[n]",
+        "aggregate_equation": "D_j[n] = sum(d_i[n] for identities routed to j)",
+        "k": 1,
+        "k_units": "mV_eq/state",
+        "sensory_state_units": "dimensionless",
+        "routing": "Canonical ordered structurally permitted ipsilateral routes; active_i is the source-selection mask, not a contact-count multiplier.",
+        "lc4_lplc2_shared_magnitude": true,
+        "normalization": "UNNORMALIZED_ADDITIVE_SUM",
+        "population_cardinality_affects_drive": true,
+        "expansion_requires_contract_review": true
+      },
+      "sensory": {
+        "gain": 1,
+        "tau_ms": 1,
+        "exposure": "Existing relative-column overlap fraction",
+        "initial_state": 0,
+        "dynamics": "Existing exact exponential held-exposure update; no physiological activity operator established."
+      },
+      "dnp01": {
+        "rest_mV_eq": -52,
+        "threshold_mV_eq": -45,
+        "tau_m_ms": 20,
+        "dynamics": "Existing pinned LIF integration/reset/refractory contract; no physiological voltage conversion."
+      },
+      "projection": {
+        "side": "R",
+        "centre_q": 23,
+        "centre_r": 9,
+        "scale": 10,
+        "formula": "floor(10 * atan2(object_radius_world_eq, relative_distance_world_eq))",
+        "retinal_registration": "NOT_ESTABLISHED"
+      },
+      "tick": "Boundary-n spikes propagate downstream at n; sensory s[n] drives DNp01 n→n+1; exposure e[n] updates s[n+1]; actuator[n] drives body n→n+1; object updates; next geometry reads updated authoritative body/object. No outgoing final interval.",
+      "body": {
+        "schema": "exploratory_planar_body_plant_v1",
+        "dimension": "PLANAR_2D",
+        "heading": "POSITIVE_Z",
+        "motion_gain_world_eq_per_ms": 1,
+        "common_mode": "(right_command + left_command) / 2",
+        "speed": "motion_gain * common_mode",
+        "update": "x[n+1] = x[n]; z[n+1] = z[n] + dt_ms * speed[n]",
+        "initial_x_world_eq": 0,
+        "initial_z_world_eq": 0,
+        "missing": [
+          "articulated joint mechanics",
+          "contact mechanics",
+          "gravity and inertia",
+          "calibrated force",
+          "moment arms",
+          "steering",
+          "validated physical scale"
+        ]
+      },
+      "units": {
+        "mV_eq": {
+          "status": "UNCALIBRATED_MODEL_SPACE_VOLTAGE_EQUIVALENT",
+          "biological_mV_equivalence": false
+        },
+        "world_eq": {
+          "status": "EXPLORATORY_MODEL_SPACE_SPATIAL_COORDINATE",
+          "physical_length_equivalence": false
+        }
+      },
+      "downstream": "Pinned TTMn integrator → threshold output → target dispatch → attempted NMJ receipt → abstract electrical input → distinct passive G1 proxies → static activation → side-preserving actuator. No physiological release/force/biomechanical calibration.",
+      "visual_asset": "Visual specimen asset is neither the biomechanical body model nor MaleCNS morphology."
+    },
+    "evidence_classifications": {
+      "transfer_magnitude": "QUALITATIVELY_CONSTRAINED_BUT_NOT_NUMERICALLY_IDENTIFIABLE",
+      "normalization": "CURRENT_NORMALIZATION_ACCEPTABLE_EXPLORATORY_ASSUMPTION",
+      "lc4_lplc2_equality": "EQUAL_TRANSFER_MAGNITUDE_ACCEPTABLE_SIMPLIFICATION",
+      "phase19_decision": "CURRENT_TRANSFER_CONTRACT_RETAIN_AS_EXPLORATORY_UNCALIBRATED_MODEL",
+      "dnp01_voltage": "DNp01_VOLTAGE_RELATIVE_DEFLECTION_POTENTIALLY_COMPARABLE_WITH_CALIBRATION",
+      "sensory_state": "SENSORY_STATE_ONLY_QUALITATIVELY_COMPARABLE",
+      "calibration_readiness": "ADDITIONAL_ASSAY_MAPPING_REQUIRED",
+      "observation_decision": "OBSERVATION_OPERATOR_SPECIFIED_CALIBRATION_NOT_READY",
+      "corrected_projection_limiter": "MATERIAL_MODEL_LIMITER",
+      "coupled_limitations": [
+        "spatial exposure/projection",
+        "sensory-state dynamics",
+        "DNp01 membrane integration",
+        "short observation horizon",
+        "discrete causal latency"
+      ],
+      "limitations_independent": false
+    },
+    "calibration_branch": {
+      "status": "PHYSIOLOGICAL_TRANSFER_CALIBRATION_NOT_ESTABLISHED",
+      "reasons": [
+        "Source-state to biological activity transform unresolved",
+        "Target stored-voltage scale unresolved",
+        "Filtering/export provenance incomplete",
+        "No dataset passes full calibration gates"
+      ],
+      "candidate": "dombrovski_gf_zenodo_14983850",
+      "candidate_classification": "METADATA_INSUFFICIENT",
+      "open_numerical_gf_data_located": true,
+      "operator_design_informed": true,
+      "v1_branch": "CLOSED_FOR_V1",
+      "author_contact_planned": false,
+      "additional_acquisition_planned": false,
+      "reopen_condition": "New public compatible data become available; reopen only through explicit compatibility/evidence review.",
+      "historical_next_actions": "Phase 21/22 acquisition/contact recommendations are superseded for v1 by this closure; historical records remain immutable."
+    },
+    "canonical_scenarios": [
+      {
+        "kind": "BASELINE_CONTROL",
+        "source": "phase13b",
+        "execution_id": "8dfa323215cb69e0e0d602918ef9fe4f4f556252c232618aa351cb868104f0cd",
+        "role": "Explicit empty-stimulus control, not established baseline locomotion",
+        "dt_ms": 0.1,
+        "duration_ms": 1.4,
+        "intervals": 14,
+        "boundaries": 15,
+        "stimulus_enabled": false,
+        "exposed_bodies_range": [
+          0,
+          0
+        ],
+        "dnp01_peak_R_mV_eq": -52,
+        "dnp01_peak_L_mV_eq": -52,
+        "sensory_body_count": 311,
+        "dnp01_spike_count": 0,
+        "motor_output_event_count": 0,
+        "nonzero_actuator_command_count": 0,
+        "body_displacement_world_eq": 0,
+        "statuses": {
+          "closed_loop_execution_completed": true,
+          "environment_affected_sensory_input": false,
+          "body_state_feedback_wired": true,
+          "body_state_feedback_realized": false,
+          "genuine_nonzero_actuation_occurred": false,
+          "body_movement_occurred": false
+        }
+      },
+      {
+        "kind": "LOOMING_CIRCUIT_VALIDATION",
+        "source": "phase13b",
+        "execution_id": "301914cf422d208c4b3371fe70ab5110af0e64c0e745d2a822ddcdcfe95abd9c",
+        "role": "Bounded causal micro-window circuit execution test",
+        "dt_ms": 0.1,
+        "duration_ms": 1.4,
+        "intervals": 14,
+        "boundaries": 15,
+        "stimulus_enabled": true,
+        "object": {
+          "initial_z_world_eq": 4,
+          "radius_world_eq": 1,
+          "vz_world_eq_per_ms": -1,
+          "final_z_world_eq_nominal": 2.6
+        },
+        "projection_radius_range": [
+          2,
+          3
+        ],
+        "exposed_bodies_range": [
+          19,
+          22
+        ],
+        "dnp01_peak_R_mV_eq": -51.933657842035174,
+        "dnp01_peak_L_mV_eq": -52,
+        "sensory_body_count": 311,
+        "dnp01_spike_count": 0,
+        "motor_output_event_count": 0,
+        "nonzero_actuator_command_count": 0,
+        "body_displacement_world_eq": 0,
+        "statuses": {
+          "closed_loop_execution_completed": true,
+          "environment_affected_sensory_input": true,
+          "body_state_feedback_wired": true,
+          "body_state_feedback_realized": false,
+          "genuine_nonzero_actuation_occurred": false,
+          "body_movement_occurred": false
+        }
+      },
+      {
+        "kind": "LOOMING_WORLD_EXPERIMENT",
+        "source": "phase18",
+        "role": "Preregistered exploratory model-space world experiment, not complete biological looming/escape experiment",
+        "dt_ms": 0.1,
+        "duration_ms": 40,
+        "intervals": 400,
+        "boundaries": 401,
+        "stimulus_enabled": true,
+        "object": {
+          "initial_z_world_eq": 4,
+          "radius_world_eq": 1,
+          "vz_world_eq_per_ms": -0.05,
+          "final_z_world_eq_nominal": 2
+        },
+        "projection_radius_range": [
+          2,
+          4
+        ],
+        "exposed_bodies_range": [
+          19,
+          26
+        ],
+      "dnp01_peak_R_mV_eq": -48.733429620244685,
+        "dnp01_peak_L_mV_eq": -52,
+        "termination": "COMPLETED_VALID_HORIZON",
+        "sensory_body_count": 311,
+        "dnp01_spike_count": 0,
+        "motor_output_event_count": 0,
+        "nonzero_actuator_command_count": 0,
+        "body_displacement_world_eq": 0,
+        "statuses": {
+          "closed_loop_execution_completed": true,
+          "environment_affected_sensory_input": true,
+          "body_state_feedback_wired": true,
+          "body_state_feedback_realized": false,
+          "genuine_nonzero_actuation_occurred": false,
+          "body_movement_occurred": false
+        }
+      }
+    ],
+    "frontend": {
+      "role": "Scientific playback/presentation of backend-authoritative state",
+      "scientific_state_authority": "BACKEND",
+      "interpolation": "Render-only between adjacent snapshots; exact boundary telemetry",
+      "display_time": "Slowed presentation time is distinct from scientific timestamps",
+      "behavior_decisions": false,
+      "scientific_integration": false
+    },
+    "useful_negative_findings": [
+      "The 1.4 ms horizon alone is not a sufficient sole explanation: the separately preregistered 40 ms design also remains subthreshold. This is not an isolated causal-duration comparison.",
+      "No missing-drive or composition bug was found in the audited canonical path; this is not proof all implementations are bug-free.",
+      "Full exposure of all 311 bodies on both sides over the existing 14 intervals also remained subthreshold; sparse projection is material, not independently dominant.",
+      "Structural contact counts cannot be justified as physiological efficacy.",
+      "Existing evidence does not numerically identify k; current public GF data do not pass full calibration gates.",
+      "Zero model output is not evidence of biological failure to respond."
+    ],
+    "unresolved_questions": [
+      "Sensory-state observation transform",
+      "Physiological sensory-to-DNp01 transfer magnitude",
+      "LC4:LPLC2 relative per-body efficacy",
+      "Calibrated DNp01 electrophysiology",
+      "Absolute retinal registration",
+      "Physical world scale",
+      "Validated biomechanics",
+      "Broader behavioral circuits"
+    ],
+    "claims": {
+      "allowed": [
+        "Connectome-based selected-circuit simulation",
+        "MaleCNS-derived structural routing",
+        "Biologically inspired, explicitly uncalibrated neural dynamics",
+        "Identity-resolved sensory population",
+        "Exploratory closed-loop model",
+        "Deterministic content-addressed replay",
+        "Model-derived subthreshold response",
+        "Exploratory model-space world experiment"
+      ],
+      "forbidden": [
+        "Complete fly emulation",
+        "Whole-fly simulation",
+        "Whole-connectome neural simulation",
+        "Living fly or digital organism",
+        "Biologically calibrated DNp01 voltage",
+        "Calibrated retinal geometry",
+        "Calibrated physical world",
+        "Calibrated jump or escape behavior",
+        "Predicted biological escape probability",
+        "Validated biological escape model",
+        "Consciousness or sentience",
+        "Genuine memory",
+        "Genuine learning"
+      ]
+    },
+    "next_development": {
+      "decision": "EVIDENCE_GATED_SECOND_BOUNDED_CONNECTOME_CIRCUIT_MILESTONE",
+      "purpose": "Add a genuinely new circuit capability without tuning the frozen looming slice.",
+      "circuit_selected": null,
+      "prerequisite": "Bounded selection audit must establish MaleCNS identities/sides/directed routing, primary functional evidence, observable/state semantics, compatible downstream embodiment and deterministic acceptance tests before implementation.",
+      "acceptance": "One evidence-supported new circuit vertical slice, genuine outputs and explicit assumptions; no required spike, movement or desired behavior target.",
+      "deferred": [
+        "Gain calibration without new compatible public evidence",
+        "Broader scenario richness without a new circuit capability",
+        "Biomechanics claims based on visual assets"
+      ]
+    },
+    "completion_decision": "NEUROFLY_V1_INITIAL_CIRCUIT_VALIDATION_COMPLETE"
+  }
+}

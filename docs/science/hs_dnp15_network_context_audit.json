@@ -1,0 +1,942 @@
+{
+  "schema": "hs_dnp15_network_context_audit_v1",
+  "audit_id": "04116360164262de5a2572f33e12cc90351869567c3202811807be576f1d03be",
+  "audit": {
+    "schema": "hs_dnp15_network_context_audit_v1",
+    "scope": "READ_ONLY_EVIDENCE_GATE_NO_RECURRENT_NEURAL_EXECUTION",
+    "checked_date": "2026-10-02",
+    "source_repository_head": "c7a42427e4a3e9e97c14f9153b0c17d32c79d53c",
+    "authorities": {
+      "v1_status_id": "1aa1a39710ebc68030834b3a04ea202eb57fb25a0080f444db0ea19af64730a6",
+      "phase24_selection_id": "435ee01693ec0b4b1ad5a8547e77f865c43743cfa56d9c3dd2055a6a87b6ed41",
+      "phase25_preregistration_id": "371926570df00d88efb8e40aa8f6c64b757a420364143d42c9fb727722bfe074",
+      "phase25_artifact_id": "2ae44804fd570e6b64f219ee50b15bed923855e772a07b5cecc9d766ff6f4113",
+      "phase25_config_sha256": "8ffc6263d1a70948d9a69ffa0ff066c9dcbb894d5766b72520e209ace60b452d",
+      "phase25_result_sha256": "35b9bf6bb72f2d92522df25de020cc5e3d369ec0d257997d8cd7746a55e54864",
+      "structural_authority_path": "docs/science/second_circuit_selection_gate.json",
+      "preregistration_path": "docs/science/hs_dnp15_neural_validation_preregistration.json"
+    },
+    "structural_provenance": {
+      "endpoint": "https://neuprint.janelia.org",
+      "dataset": "male-cns:v1.0",
+      "mode": "OFFLINE_REVALIDATED_COMMITTED_QUERY",
+      "query": {
+        "key": "hs_induced_edges",
+        "query": "MATCH (s:Neuron)-[e:ConnectsTo]->(t:Neuron) WHERE s.type IN ['HSE','HSN','HSS','DNp15'] AND t.type IN ['HSE','HSN','HSS','DNp15'] RETURN s.bodyId AS source_id,t.bodyId AS target_id,s.type AS source_type,t.type AS target_type,e.weight AS structural_count ORDER BY s.bodyId,t.bodyId",
+        "response_sha256": "e8034056dc8e9e17345fc014358993f7f91d4ad69acc6430004bfd9af62a5056",
+        "row_count": 13,
+        "rows": [
+          {
+            "source_id": 10015,
+            "target_id": 10016,
+            "source_type": "HSN",
+            "target_type": "HSE",
+            "structural_count": 4
+          },
+          {
+            "source_id": 10015,
+            "target_id": 11215,
+            "source_type": "HSN",
+            "target_type": "DNp15",
+            "structural_count": 138
+          },
+          {
+            "source_id": 10016,
+            "target_id": 10015,
+            "source_type": "HSE",
+            "target_type": "HSN",
+            "structural_count": 2
+          },
+          {
+            "source_id": 10016,
+            "target_id": 10023,
+            "source_type": "HSE",
+            "target_type": "HSS",
+            "structural_count": 1
+          },
+          {
+            "source_id": 10016,
+            "target_id": 11215,
+            "source_type": "HSE",
+            "target_type": "DNp15",
+            "structural_count": 122
+          },
+          {
+            "source_id": 10023,
+            "target_id": 11215,
+            "source_type": "HSS",
+            "target_type": "DNp15",
+            "structural_count": 23
+          },
+          {
+            "source_id": 10034,
+            "target_id": 10181,
+            "source_type": "HSE",
+            "target_type": "HSN",
+            "structural_count": 1
+          },
+          {
+            "source_id": 10034,
+            "target_id": 10419,
+            "source_type": "HSE",
+            "target_type": "HSS",
+            "structural_count": 1
+          },
+          {
+            "source_id": 10034,
+            "target_id": 12069,
+            "source_type": "HSE",
+            "target_type": "DNp15",
+            "structural_count": 78
+          },
+          {
+            "source_id": 10181,
+            "target_id": 12069,
+            "source_type": "HSN",
+            "target_type": "DNp15",
+            "structural_count": 126
+          },
+          {
+            "source_id": 10419,
+            "target_id": 10034,
+            "source_type": "HSS",
+            "target_type": "HSE",
+            "structural_count": 2
+          },
+          {
+            "source_id": 10419,
+            "target_id": 12069,
+            "source_type": "HSS",
+            "target_type": "DNp15",
+            "structural_count": 14
+          },
+          {
+            "source_id": 12069,
+            "target_id": 10419,
+            "source_type": "DNp15",
+            "target_type": "HSS",
+            "structural_count": 1
+          }
+        ]
+      },
+      "identities": [
+        {
+          "body_id": 10015,
+          "type": "HSN",
+          "instance": "HSN_R",
+          "side": "R"
+        },
+        {
+          "body_id": 10016,
+          "type": "HSE",
+          "instance": "HSE_R",
+          "side": "R"
+        },
+        {
+          "body_id": 10023,
+          "type": "HSS",
+          "instance": "HSS_R",
+          "side": "R"
+        },
+        {
+          "body_id": 10034,
+          "type": "HSE",
+          "instance": "HSE_L",
+          "side": "L"
+        },
+        {
+          "body_id": 10181,
+          "type": "HSN",
+          "instance": "HSN_L",
+          "side": "L"
+        },
+        {
+          "body_id": 10419,
+          "type": "HSS",
+          "instance": "HSS_L",
+          "side": "L"
+        },
+        {
+          "body_id": 11215,
+          "type": "DNp15",
+          "instance": "DNp15_R",
+          "side": "R"
+        },
+        {
+          "body_id": 12069,
+          "type": "DNp15",
+          "instance": "DNp15_L",
+          "side": "L"
+        }
+      ],
+      "laterality_field": "somaSide",
+      "structural_count_is_efficacy": false,
+      "structural_count_is_sign": false,
+      "missing_mirror_edges_synthesized": false,
+      "complete_biological_network_claim": false
+    },
+    "neurotransmitter_provenance": {
+      "id": "malecns_nt_snapshot",
+      "endpoint": "https://neuprint.janelia.org",
+      "dataset": "male-cns:v1.0",
+      "mode": "LIVE_READ_ONLY_OFFICIAL_ANNOTATIONS",
+      "query": "MATCH (n:Neuron) WHERE n.bodyId IN [10015,10016,10023,10034,10181,10419,11215,12069] RETURN n.bodyId AS body_id,n.type AS type,n.somaSide AS side,n.predictedNt AS predicted_nt,n.predictedNtConfidence AS prediction_confidence,n.celltypePredictedNt AS type_predicted_nt,n.celltypePredictedNtConfidence AS type_prediction_confidence,n.consensusNt AS consensus_nt ORDER BY n.bodyId",
+      "row_count": 8,
+      "rows": [
+        {
+          "body_id": 10015,
+          "type": "HSN",
+          "side": "R",
+          "predicted_nt": "acetylcholine",
+          "prediction_confidence": 0.768647193908691,
+          "type_predicted_nt": "acetylcholine",
+          "type_prediction_confidence": 0.797176122665405,
+          "consensus_nt": "acetylcholine"
+        },
+        {
+          "body_id": 10016,
+          "type": "HSE",
+          "side": "R",
+          "predicted_nt": "acetylcholine",
+          "prediction_confidence": 0.906730949878693,
+          "type_predicted_nt": "acetylcholine",
+          "type_prediction_confidence": 0.90705281496048,
+          "consensus_nt": "acetylcholine"
+        },
+        {
+          "body_id": 10023,
+          "type": "HSS",
+          "side": "R",
+          "predicted_nt": "acetylcholine",
+          "prediction_confidence": 0.878377258777618,
+          "type_predicted_nt": "acetylcholine",
+          "type_prediction_confidence": 0.875593721866608,
+          "consensus_nt": "acetylcholine"
+        },
+        {
+          "body_id": 10034,
+          "type": "HSE",
+          "side": "L",
+          "predicted_nt": "acetylcholine",
+          "prediction_confidence": 0.907382071018219,
+          "type_predicted_nt": "acetylcholine",
+          "type_prediction_confidence": 0.90705281496048,
+          "consensus_nt": "acetylcholine"
+        },
+        {
+          "body_id": 10181,
+          "type": "HSN",
+          "side": "L",
+          "predicted_nt": "acetylcholine",
+          "prediction_confidence": 0.831965744495392,
+          "type_predicted_nt": "acetylcholine",
+          "type_prediction_confidence": 0.797176122665405,
+          "consensus_nt": "acetylcholine"
+        },
+        {
+          "body_id": 10419,
+          "type": "HSS",
+          "side": "L",
+          "predicted_nt": "acetylcholine",
+          "prediction_confidence": 0.872556328773498,
+          "type_predicted_nt": "acetylcholine",
+          "type_prediction_confidence": 0.875593721866608,
+          "consensus_nt": "acetylcholine"
+        },
+        {
+          "body_id": 11215,
+          "type": "DNp15",
+          "side": "R",
+          "predicted_nt": "acetylcholine",
+          "prediction_confidence": 0.956043839454651,
+          "type_predicted_nt": "acetylcholine",
+          "type_prediction_confidence": 0.954748153686524,
+          "consensus_nt": "acetylcholine"
+        },
+        {
+          "body_id": 12069,
+          "type": "DNp15",
+          "side": "L",
+          "predicted_nt": "acetylcholine",
+          "prediction_confidence": 0.953534841537476,
+          "type_predicted_nt": "acetylcholine",
+          "type_prediction_confidence": 0.954748153686524,
+          "consensus_nt": "acetylcholine"
+        }
+      ],
+      "response_sha256": "5441908babbc10e4e657805e51624ae11eabb0dfd63e9096c4cee883ab7c24da",
+      "prediction_is_direct_physiology": false,
+      "confidence_is_synaptic_efficacy": false,
+      "target_receptor_measurements_located": false,
+      "limitations": [
+        "Snapshot of public annotations, not immutable physiological measurements.",
+        "Prediction confidence is not release probability or sign confidence.",
+        "Consensus and type agreement do not establish exact receptor subtype, compartment, delay or unitary chemical effect."
+      ]
+    },
+    "induced_topology": [
+      {
+        "source_id": 10015,
+        "target_id": 10016,
+        "source_type": "HSN",
+        "target_type": "HSE",
+        "structural_count": 4,
+        "source_side": "R",
+        "target_side": "R",
+        "direction": "SOURCE_TO_TARGET",
+        "edge_class": "PHASE26_CANDIDATE_CONTEXT",
+        "structural_verification": "PASS"
+      },
+      {
+        "source_id": 10015,
+        "target_id": 11215,
+        "source_type": "HSN",
+        "target_type": "DNp15",
+        "structural_count": 138,
+        "source_side": "R",
+        "target_side": "R",
+        "direction": "SOURCE_TO_TARGET",
+        "edge_class": "PHASE25_ACTIVE_FEEDFORWARD",
+        "structural_verification": "PASS"
+      },
+      {
+        "source_id": 10016,
+        "target_id": 10015,
+        "source_type": "HSE",
+        "target_type": "HSN",
+        "structural_count": 2,
+        "source_side": "R",
+        "target_side": "R",
+        "direction": "SOURCE_TO_TARGET",
+        "edge_class": "PHASE26_CANDIDATE_CONTEXT",
+        "structural_verification": "PASS"
+      },
+      {
+        "source_id": 10016,
+        "target_id": 10023,
+        "source_type": "HSE",
+        "target_type": "HSS",
+        "structural_count": 1,
+        "source_side": "R",
+        "target_side": "R",
+        "direction": "SOURCE_TO_TARGET",
+        "edge_class": "PHASE26_CANDIDATE_CONTEXT",
+        "structural_verification": "PASS"
+      },
+      {
+        "source_id": 10016,
+        "target_id": 11215,
+        "source_type": "HSE",
+        "target_type": "DNp15",
+        "structural_count": 122,
+        "source_side": "R",
+        "target_side": "R",
+        "direction": "SOURCE_TO_TARGET",
+        "edge_class": "PHASE25_ACTIVE_FEEDFORWARD",
+        "structural_verification": "PASS"
+      },
+      {
+        "source_id": 10023,
+        "target_id": 11215,
+        "source_type": "HSS",
+        "target_type": "DNp15",
+        "structural_count": 23,
+        "source_side": "R",
+        "target_side": "R",
+        "direction": "SOURCE_TO_TARGET",
+        "edge_class": "PHASE25_ACTIVE_FEEDFORWARD",
+        "structural_verification": "PASS"
+      },
+      {
+        "source_id": 10034,
+        "target_id": 10181,
+        "source_type": "HSE",
+        "target_type": "HSN",
+        "structural_count": 1,
+        "source_side": "L",
+        "target_side": "L",
+        "direction": "SOURCE_TO_TARGET",
+        "edge_class": "PHASE26_CANDIDATE_CONTEXT",
+        "structural_verification": "PASS"
+      },
+      {
+        "source_id": 10034,
+        "target_id": 10419,
+        "source_type": "HSE",
+        "target_type": "HSS",
+        "structural_count": 1,
+        "source_side": "L",
+        "target_side": "L",
+        "direction": "SOURCE_TO_TARGET",
+        "edge_class": "PHASE26_CANDIDATE_CONTEXT",
+        "structural_verification": "PASS"
+      },
+      {
+        "source_id": 10034,
+        "target_id": 12069,
+        "source_type": "HSE",
+        "target_type": "DNp15",
+        "structural_count": 78,
+        "source_side": "L",
+        "target_side": "L",
+        "direction": "SOURCE_TO_TARGET",
+        "edge_class": "PHASE25_ACTIVE_FEEDFORWARD",
+        "structural_verification": "PASS"
+      },
+      {
+        "source_id": 10181,
+        "target_id": 12069,
+        "source_type": "HSN",
+        "target_type": "DNp15",
+        "structural_count": 126,
+        "source_side": "L",
+        "target_side": "L",
+        "direction": "SOURCE_TO_TARGET",
+        "edge_class": "PHASE25_ACTIVE_FEEDFORWARD",
+        "structural_verification": "PASS"
+      },
+      {
+        "source_id": 10419,
+        "target_id": 10034,
+        "source_type": "HSS",
+        "target_type": "HSE",
+        "structural_count": 2,
+        "source_side": "L",
+        "target_side": "L",
+        "direction": "SOURCE_TO_TARGET",
+        "edge_class": "PHASE26_CANDIDATE_CONTEXT",
+        "structural_verification": "PASS"
+      },
+      {
+        "source_id": 10419,
+        "target_id": 12069,
+        "source_type": "HSS",
+        "target_type": "DNp15",
+        "structural_count": 14,
+        "source_side": "L",
+        "target_side": "L",
+        "direction": "SOURCE_TO_TARGET",
+        "edge_class": "PHASE25_ACTIVE_FEEDFORWARD",
+        "structural_verification": "PASS"
+      },
+      {
+        "source_id": 12069,
+        "target_id": 10419,
+        "source_type": "DNp15",
+        "target_type": "HSS",
+        "structural_count": 1,
+        "source_side": "L",
+        "target_side": "L",
+        "direction": "SOURCE_TO_TARGET",
+        "edge_class": "PHASE26_CANDIDATE_CONTEXT",
+        "structural_verification": "PASS"
+      }
+    ],
+    "phase25_active_routes": [
+      {
+        "source_id": 10015,
+        "target_id": 11215,
+        "source_type": "HSN",
+        "target_type": "DNp15",
+        "structural_count": 138
+      },
+      {
+        "source_id": 10016,
+        "target_id": 11215,
+        "source_type": "HSE",
+        "target_type": "DNp15",
+        "structural_count": 122
+      },
+      {
+        "source_id": 10023,
+        "target_id": 11215,
+        "source_type": "HSS",
+        "target_type": "DNp15",
+        "structural_count": 23
+      },
+      {
+        "source_id": 10034,
+        "target_id": 12069,
+        "source_type": "HSE",
+        "target_type": "DNp15",
+        "structural_count": 78
+      },
+      {
+        "source_id": 10181,
+        "target_id": 12069,
+        "source_type": "HSN",
+        "target_type": "DNp15",
+        "structural_count": 126
+      },
+      {
+        "source_id": 10419,
+        "target_id": 12069,
+        "source_type": "HSS",
+        "target_type": "DNp15",
+        "structural_count": 14
+      }
+    ],
+    "candidate_edges": [
+      {
+        "source_id": 10015,
+        "target_id": 10016,
+        "source_type": "HSN",
+        "target_type": "HSE",
+        "structural_count": 4,
+        "source_side": "R",
+        "target_side": "R",
+        "direction": "SOURCE_TO_TARGET",
+        "edge_class": "PHASE26_CANDIDATE_CONTEXT",
+        "structural_verification": "PASS",
+        "structural_role": "SOURCE_SOURCE_RECURRENCE",
+        "functional_role_evidence": "NOT_LOCATED_FOR_THIS_CHEMICAL_EDGE",
+        "sign_status": "NEUROTRANSMITTER_INFERRED_WITH_SUPPORT",
+        "putative_sign": "EXCITATORY",
+        "implemented_sign": null,
+        "sign_evidence": [
+          "malecns_nt_snapshot",
+          "zhao_2024",
+          "raghu_2011_caution"
+        ],
+        "sign_limitation": "Source cholinergic phenotype supports a putative excitatory sign, not a measured unitary effect or an identified transform from signed proxy state to chemical release and postsynaptic response.",
+        "target_receptor_evidence": "NOT_LOCATED_FOR_THIS_CONTACT",
+        "timing_status": "UNKNOWN",
+        "timing_evidence": "No isolated chemical latency/kernel located for these pinned identities; motion response and calcium kinetics do not identify chemical-edge delay.",
+        "magnitude_status": "NOT_IDENTIFIABLE",
+        "magnitude_evidence": "No compatible per-edge physiological magnitude located. Counts, NT confidence and dye intensity are not efficacy.",
+        "electrical_context": [
+          "pokusaeva_2024",
+          "erginkaya_2025"
+        ],
+        "implementation_eligible": false,
+        "exclusion_reason": "RECURRENT_OPERATOR_NOT_IDENTIFIABLE",
+        "limitation": "Chemical structure and putative sign are supported; isolated recurrence in the existing proxy coordinate is not. Electrical coupling and other partners remain unresolved context."
+      },
+      {
+        "source_id": 10016,
+        "target_id": 10015,
+        "source_type": "HSE",
+        "target_type": "HSN",
+        "structural_count": 2,
+        "source_side": "R",
+        "target_side": "R",
+        "direction": "SOURCE_TO_TARGET",
+        "edge_class": "PHASE26_CANDIDATE_CONTEXT",
+        "structural_verification": "PASS",
+        "structural_role": "SOURCE_SOURCE_RECURRENCE",
+        "functional_role_evidence": "NOT_LOCATED_FOR_THIS_CHEMICAL_EDGE",
+        "sign_status": "NEUROTRANSMITTER_INFERRED_WITH_SUPPORT",
+        "putative_sign": "EXCITATORY",
+        "implemented_sign": null,
+        "sign_evidence": [
+          "malecns_nt_snapshot",
+          "zhao_2024",
+          "raghu_2011_caution"
+        ],
+        "sign_limitation": "Source cholinergic phenotype supports a putative excitatory sign, not a measured unitary effect or an identified transform from signed proxy state to chemical release and postsynaptic response.",
+        "target_receptor_evidence": "NOT_LOCATED_FOR_THIS_CONTACT",
+        "timing_status": "UNKNOWN",
+        "timing_evidence": "No isolated chemical latency/kernel located for these pinned identities; motion response and calcium kinetics do not identify chemical-edge delay.",
+        "magnitude_status": "NOT_IDENTIFIABLE",
+        "magnitude_evidence": "No compatible per-edge physiological magnitude located. Counts, NT confidence and dye intensity are not efficacy.",
+        "electrical_context": [
+          "pokusaeva_2024",
+          "erginkaya_2025"
+        ],
+        "implementation_eligible": false,
+        "exclusion_reason": "RECURRENT_OPERATOR_NOT_IDENTIFIABLE",
+        "limitation": "Chemical structure and putative sign are supported; isolated recurrence in the existing proxy coordinate is not. Electrical coupling and other partners remain unresolved context."
+      },
+      {
+        "source_id": 10016,
+        "target_id": 10023,
+        "source_type": "HSE",
+        "target_type": "HSS",
+        "structural_count": 1,
+        "source_side": "R",
+        "target_side": "R",
+        "direction": "SOURCE_TO_TARGET",
+        "edge_class": "PHASE26_CANDIDATE_CONTEXT",
+        "structural_verification": "PASS",
+        "structural_role": "SOURCE_SOURCE_FEEDFORWARD",
+        "functional_role_evidence": "NOT_LOCATED_FOR_THIS_CHEMICAL_EDGE",
+        "sign_status": "NEUROTRANSMITTER_INFERRED_WITH_SUPPORT",
+        "putative_sign": "EXCITATORY",
+        "implemented_sign": null,
+        "sign_evidence": [
+          "malecns_nt_snapshot",
+          "zhao_2024",
+          "raghu_2011_caution"
+        ],
+        "sign_limitation": "Source cholinergic phenotype supports a putative excitatory sign, not a measured unitary effect or an identified transform from signed proxy state to chemical release and postsynaptic response.",
+        "target_receptor_evidence": "NOT_LOCATED_FOR_THIS_CONTACT",
+        "timing_status": "UNKNOWN",
+        "timing_evidence": "No isolated chemical latency/kernel located for these pinned identities; motion response and calcium kinetics do not identify chemical-edge delay.",
+        "magnitude_status": "NOT_IDENTIFIABLE",
+        "magnitude_evidence": "No compatible per-edge physiological magnitude located. Counts, NT confidence and dye intensity are not efficacy.",
+        "electrical_context": [
+          "pokusaeva_2024",
+          "erginkaya_2025"
+        ],
+        "implementation_eligible": false,
+        "exclusion_reason": "RECURRENT_OPERATOR_NOT_IDENTIFIABLE",
+        "limitation": "Chemical structure and putative sign are supported; isolated recurrence in the existing proxy coordinate is not. Electrical coupling and other partners remain unresolved context."
+      },
+      {
+        "source_id": 10034,
+        "target_id": 10181,
+        "source_type": "HSE",
+        "target_type": "HSN",
+        "structural_count": 1,
+        "source_side": "L",
+        "target_side": "L",
+        "direction": "SOURCE_TO_TARGET",
+        "edge_class": "PHASE26_CANDIDATE_CONTEXT",
+        "structural_verification": "PASS",
+        "structural_role": "SOURCE_SOURCE_FEEDFORWARD",
+        "functional_role_evidence": "NOT_LOCATED_FOR_THIS_CHEMICAL_EDGE",
+        "sign_status": "NEUROTRANSMITTER_INFERRED_WITH_SUPPORT",
+        "putative_sign": "EXCITATORY",
+        "implemented_sign": null,
+        "sign_evidence": [
+          "malecns_nt_snapshot",
+          "zhao_2024",
+          "raghu_2011_caution"
+        ],
+        "sign_limitation": "Source cholinergic phenotype supports a putative excitatory sign, not a measured unitary effect or an identified transform from signed proxy state to chemical release and postsynaptic response.",
+        "target_receptor_evidence": "NOT_LOCATED_FOR_THIS_CONTACT",
+        "timing_status": "UNKNOWN",
+        "timing_evidence": "No isolated chemical latency/kernel located for these pinned identities; motion response and calcium kinetics do not identify chemical-edge delay.",
+        "magnitude_status": "NOT_IDENTIFIABLE",
+        "magnitude_evidence": "No compatible per-edge physiological magnitude located. Counts, NT confidence and dye intensity are not efficacy.",
+        "electrical_context": [
+          "pokusaeva_2024",
+          "erginkaya_2025"
+        ],
+        "implementation_eligible": false,
+        "exclusion_reason": "RECURRENT_OPERATOR_NOT_IDENTIFIABLE",
+        "limitation": "Chemical structure and putative sign are supported; isolated recurrence in the existing proxy coordinate is not. Electrical coupling and other partners remain unresolved context."
+      },
+      {
+        "source_id": 10034,
+        "target_id": 10419,
+        "source_type": "HSE",
+        "target_type": "HSS",
+        "structural_count": 1,
+        "source_side": "L",
+        "target_side": "L",
+        "direction": "SOURCE_TO_TARGET",
+        "edge_class": "PHASE26_CANDIDATE_CONTEXT",
+        "structural_verification": "PASS",
+        "structural_role": "SOURCE_SOURCE_RECURRENCE",
+        "functional_role_evidence": "NOT_LOCATED_FOR_THIS_CHEMICAL_EDGE",
+        "sign_status": "NEUROTRANSMITTER_INFERRED_WITH_SUPPORT",
+        "putative_sign": "EXCITATORY",
+        "implemented_sign": null,
+        "sign_evidence": [
+          "malecns_nt_snapshot",
+          "zhao_2024",
+          "raghu_2011_caution"
+        ],
+        "sign_limitation": "Source cholinergic phenotype supports a putative excitatory sign, not a measured unitary effect or an identified transform from signed proxy state to chemical release and postsynaptic response.",
+        "target_receptor_evidence": "NOT_LOCATED_FOR_THIS_CONTACT",
+        "timing_status": "UNKNOWN",
+        "timing_evidence": "No isolated chemical latency/kernel located for these pinned identities; motion response and calcium kinetics do not identify chemical-edge delay.",
+        "magnitude_status": "NOT_IDENTIFIABLE",
+        "magnitude_evidence": "No compatible per-edge physiological magnitude located. Counts, NT confidence and dye intensity are not efficacy.",
+        "electrical_context": [
+          "pokusaeva_2024",
+          "erginkaya_2025"
+        ],
+        "implementation_eligible": false,
+        "exclusion_reason": "RECURRENT_OPERATOR_NOT_IDENTIFIABLE",
+        "limitation": "Chemical structure and putative sign are supported; isolated recurrence in the existing proxy coordinate is not. Electrical coupling and other partners remain unresolved context."
+      },
+      {
+        "source_id": 10419,
+        "target_id": 10034,
+        "source_type": "HSS",
+        "target_type": "HSE",
+        "structural_count": 2,
+        "source_side": "L",
+        "target_side": "L",
+        "direction": "SOURCE_TO_TARGET",
+        "edge_class": "PHASE26_CANDIDATE_CONTEXT",
+        "structural_verification": "PASS",
+        "structural_role": "SOURCE_SOURCE_RECURRENCE",
+        "functional_role_evidence": "NOT_LOCATED_FOR_THIS_CHEMICAL_EDGE",
+        "sign_status": "NEUROTRANSMITTER_INFERRED_WITH_SUPPORT",
+        "putative_sign": "EXCITATORY",
+        "implemented_sign": null,
+        "sign_evidence": [
+          "malecns_nt_snapshot",
+          "zhao_2024",
+          "raghu_2011_caution"
+        ],
+        "sign_limitation": "Source cholinergic phenotype supports a putative excitatory sign, not a measured unitary effect or an identified transform from signed proxy state to chemical release and postsynaptic response.",
+        "target_receptor_evidence": "NOT_LOCATED_FOR_THIS_CONTACT",
+        "timing_status": "UNKNOWN",
+        "timing_evidence": "No isolated chemical latency/kernel located for these pinned identities; motion response and calcium kinetics do not identify chemical-edge delay.",
+        "magnitude_status": "NOT_IDENTIFIABLE",
+        "magnitude_evidence": "No compatible per-edge physiological magnitude located. Counts, NT confidence and dye intensity are not efficacy.",
+        "electrical_context": [
+          "pokusaeva_2024",
+          "erginkaya_2025"
+        ],
+        "implementation_eligible": false,
+        "exclusion_reason": "RECURRENT_OPERATOR_NOT_IDENTIFIABLE",
+        "limitation": "Chemical structure and putative sign are supported; isolated recurrence in the existing proxy coordinate is not. Electrical coupling and other partners remain unresolved context."
+      },
+      {
+        "source_id": 12069,
+        "target_id": 10419,
+        "source_type": "DNp15",
+        "target_type": "HSS",
+        "structural_count": 1,
+        "source_side": "L",
+        "target_side": "L",
+        "direction": "SOURCE_TO_TARGET",
+        "edge_class": "PHASE26_CANDIDATE_CONTEXT",
+        "structural_verification": "PASS",
+        "structural_role": "TARGET_TO_SOURCE_FEEDBACK",
+        "functional_role_evidence": "NOT_LOCATED_FOR_THIS_CHEMICAL_EDGE",
+        "sign_status": "NEUROTRANSMITTER_INFERRED_WITH_SUPPORT",
+        "putative_sign": "EXCITATORY",
+        "implemented_sign": null,
+        "sign_evidence": [
+          "malecns_nt_snapshot"
+        ],
+        "sign_limitation": "Source cholinergic phenotype supports a putative excitatory sign, not a measured unitary effect or an identified transform from signed proxy state to chemical release and postsynaptic response.",
+        "target_receptor_evidence": "NOT_LOCATED_FOR_THIS_CONTACT",
+        "timing_status": "UNKNOWN",
+        "timing_evidence": "No isolated chemical latency/kernel located for these pinned identities; motion response and calcium kinetics do not identify chemical-edge delay.",
+        "magnitude_status": "NOT_IDENTIFIABLE",
+        "magnitude_evidence": "No compatible per-edge physiological magnitude located. Counts, NT confidence and dye intensity are not efficacy.",
+        "electrical_context": [
+          "pokusaeva_2024",
+          "erginkaya_2025"
+        ],
+        "implementation_eligible": false,
+        "exclusion_reason": "FEEDBACK_NOT_IDENTIFIABLE",
+        "limitation": "One verified left chemical return edge; cholinergic prediction does not establish a functional feedback law. No right mirror synthesized."
+      }
+    ],
+    "primary_evidence": [
+      {
+        "id": "schnell_2010",
+        "kind": "PRIMARY_PHYSIOLOGY",
+        "doi": "10.1152/jn.00950.2009",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/20089816/",
+        "locator": "Abstract and Results; whole-cell identified HSN/HSE/HSS recordings",
+        "supports": "Drosophila HS direction-selective graded responses to ipsilateral horizontal motion.",
+        "limitations": "Sensory response is not a paired recording of the seven candidate contacts; exact proxy tuning, magnitude and delay are not imported."
+      },
+      {
+        "id": "suver_2016",
+        "kind": "PRIMARY_PHYSIOLOGY_CONTEXT",
+        "doi": "10.1523/JNEUROSCI.2277-16.2016",
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5125229/",
+        "locator": "Phase24 committed evidence, Fig.2J DNHS1 identification; primary indexed text and 2025 paper reference32",
+        "access": "PMC full-text browser challenge in this audit; not used to establish any new edge-specific sign/gain.",
+        "supports": "HS/DNHS1 association and visual descending response context.",
+        "limitations": "Dye coupling is not isolated chemical efficacy or exact MaleCNS body-ID equivalence."
+      },
+      {
+        "id": "zhao_2024",
+        "kind": "PRIMARY_CONNECTOMICS_AND_TRANSMITTER_INFERENCE",
+        "doi": "10.7554/eLife.93659.1",
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10614863/",
+        "publication_version": "2023 original preprint full text verified; 2024 eLife reviewed-preprint v1 identified, publisher page challenged.",
+        "locator": "Using neurotransmitter predictions to assign functional signs; EASI-FISH; Fig.5 threshold",
+        "supports": "HS/VS cholinergic predictions, regional ChAT corroboration and qualified expectation of excitatory outputs.",
+        "limitations": "Regional FISH is not exact-body ground truth; receptor/contact sign not measured; Fig.5 displays connections at least10 synapses, unlike these 1-4-count edges; electrical effects excluded by EM."
+      },
+      {
+        "id": "raghu_2011_caution",
+        "kind": "PRIMARY_GENETIC_LABELING",
+        "doi": "10.1371/journal.pone.0019472",
+        "url": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0019472",
+        "locator": "HSS glutamatergic candidate and Discussion on ectopic dvGlut driver labeling",
+        "supports": "Historical tentative HSS glutamatergic driver labeling with explicit uncertainty.",
+        "limitations": "Driver label is not transmitter release or postsynaptic sign. Do not override current predictions with a definitive inhibitory label or erase this caveat."
+      },
+      {
+        "id": "pokusaeva_2024",
+        "kind": "PRIMARY_ELECTROPHYSIOLOGY_GENETICS_DYE_COUPLING",
+        "doi": "10.1038/s41467-024-53173-w",
+        "url": "https://research-explorer.ista.ac.at/download/18444/18459/2024_NatureComm_Pokusaeva.pdf",
+        "locator": "Loss of gap junctions; Fig.7 dye-coupling results and Discussion",
+        "supports": "HS-HS and HS-descending electrical context, including HSN-DNp15/DNHS1; perturbation changes HS passive/response properties.",
+        "limitations": "Dye intensity is a coupling proxy, not conductance; chemical/electrical contributions and the seven selected chemical interactions are not isolated; no exact MaleCNS junction identities/strengths imported."
+      },
+      {
+        "id": "erginkaya_2025",
+        "kind": "PRIMARY_CONNECTOMICS_FUNCTIONAL_MANIPULATION",
+        "doi": "10.1038/s41593-025-01948-9",
+        "url": "https://www.nature.com/articles/s41593-025-01948-9",
+        "locator": "Fig.1; central LPT recurrent networks; Electron microscopy datasets; Rdl manipulations",
+        "supports": "DNp15/DNHS1 terminology, HS motion response, broader inhibitory recurrent networks and chemical/electrical context.",
+        "limitations": "GABAergic LPTCrn results do not assign signs to HS-HS or DNp15-HSS contacts; brain datasets are FAFB/FlyWire/Hemibrain, not these exact MaleCNS contacts. EM does not resolve gap junctions."
+      },
+      {
+        "id": "synister_malecns",
+        "kind": "OFFICIAL_PREDICTION_PIPELINE",
+        "url": "https://github.com/funkelab/synister_malecns",
+        "locator": "README, ground-truth and prediction workflow",
+        "supports": "MaleCNS neurotransmitter labels are prediction-pipeline annotations.",
+        "limitations": "No target receptor, edge gain, release probability or recurrent physiological kernel inferred."
+      }
+    ],
+    "electrical_context": {
+      "status": "MATERIAL_BIOLOGICAL_CONTEXT_EXCLUDED",
+      "implicated_types": [
+        "HSN",
+        "HSE",
+        "HSS",
+        "DNp15/DNHS1",
+        "H2",
+        "bIPS",
+        "neck motor partners"
+      ],
+      "identity_level_mapping": "TYPE_LEVEL_EVIDENCE_NOT_EXACT_MALECNS_JUNCTION_IDENTITIES",
+      "directionality": "DYE_COUPLING_DOES_NOT_ESTABLISH_RECTIFICATION_OR_PAIRWISE_CONDUCTANCE",
+      "coupling_magnitude": "NOT_IDENTIFIABLE_FOR_SELECTED_EIGHT_NODE_MODEL",
+      "chemical_edges_represent_gap_junctions": false,
+      "implemented": false,
+      "indispensable_for_any_partial_chemical_model": "NOT_ESTABLISHED",
+      "evidence": [
+        "pokusaeva_2024",
+        "erginkaya_2025"
+      ],
+      "limitation": "Cannot import perturbation-induced network dynamics as a kernel for one chemical contact. This audit does not prove that all partial chemical models require a calibrated electrical model."
+    },
+    "feedback_gate": {
+      "edge": [
+        12069,
+        10419
+      ],
+      "structural_direction": "PASS",
+      "source_transmitter": "acetylcholine",
+      "putative_sign_status": "NEUROTRANSMITTER_INFERRED_WITH_SUPPORT",
+      "functional_feedback_interpretation": "UNKNOWN",
+      "compatible_feedback_operator": "NOT_IDENTIFIABLE",
+      "implementation_eligible": false,
+      "reason": "Structural return direction and transmitter annotation do not identify feedback law, chemical contribution, compartment or isolation from surrounding circuitry."
+    },
+    "assumption_assessment": [
+      {
+        "choice": "Identities, laterality and selected topology",
+        "classification": "CONNECTOME_CONSTRAINED",
+        "status": "VERIFIED"
+      },
+      {
+        "choice": "HS direction-selective sensory context",
+        "classification": "PRIMARY_EVIDENCE_CONSTRAINED",
+        "status": "QUALITATIVE"
+      },
+      {
+        "choice": "Putative cholinergic excitatory output",
+        "classification": "PRIMARY_EVIDENCE_CONSTRAINED",
+        "status": "INFERRED_NOT_DIRECT"
+      },
+      {
+        "choice": "Existing signed Phase25 source proxy as presynaptic chemical activity",
+        "classification": "NOT_IDENTIFIABLE_AND_EXCLUDED",
+        "status": "NO_RECURRENT_OBSERVATION_OR_TRANSFER_OPERATOR"
+      },
+      {
+        "choice": "Chemical delay, normalization and recurrent transfer magnitude",
+        "classification": "NOT_IDENTIFIABLE_AND_EXCLUDED",
+        "status": "NOT_ASSIGNED"
+      },
+      {
+        "choice": "DNp15-HSS feedback law",
+        "classification": "NOT_IDENTIFIABLE_AND_EXCLUDED",
+        "status": "NOT_ASSIGNED"
+      },
+      {
+        "choice": "Electrical coupling terms",
+        "classification": "NOT_IDENTIFIABLE_AND_EXCLUDED",
+        "status": "NOT_ASSIGNED"
+      }
+    ],
+    "stage_a": {
+      "decision": "RECURRENT_SIGN_OR_DYNAMICS_NOT_IDENTIFIABLE",
+      "decisive_gap": "An effective recurrent chemical operator on the frozen signed proxy coordinate is not identified; source transmitter inference is not that operator.",
+      "reasoning": [
+        "Putative excitatory signs are supported and not relabeled UNKNOWN merely because they are inferred.",
+        "No edge-specific recurrent transformation or isolated chemical timing/functional role was located. The signed source proxy is not biological transmitter release or membrane voltage.",
+        "Unknown gain alone would not prohibit an explicit exploratory scale; the blocker is the unresolved chemical-versus-electrical interaction and proxy-to-synaptic-effect semantics, especially feedback.",
+        "A mathematically stable positive recurrence could be invented, but would answer a new assumption-only toy-system question, not resolve this evidence-gated network extension.",
+        "Electrical context is material, but indispensability for every possible isolated model is not demonstrated; therefore do not choose the stronger electrical-required gate."
+      ],
+      "stage_b_permitted": false,
+      "stage_b_executed": false,
+      "parameters_selected": false,
+      "neural_candidate_execution_count": 0,
+      "output_targeting": false
+    },
+    "active_extended_topology": [],
+    "excluded_verified_topology": [
+      {
+        "source_id": 10015,
+        "target_id": 10016,
+        "reason": "RECURRENT_OPERATOR_NOT_IDENTIFIABLE"
+      },
+      {
+        "source_id": 10016,
+        "target_id": 10015,
+        "reason": "RECURRENT_OPERATOR_NOT_IDENTIFIABLE"
+      },
+      {
+        "source_id": 10016,
+        "target_id": 10023,
+        "reason": "RECURRENT_OPERATOR_NOT_IDENTIFIABLE"
+      },
+      {
+        "source_id": 10034,
+        "target_id": 10181,
+        "reason": "RECURRENT_OPERATOR_NOT_IDENTIFIABLE"
+      },
+      {
+        "source_id": 10034,
+        "target_id": 10419,
+        "reason": "RECURRENT_OPERATOR_NOT_IDENTIFIABLE"
+      },
+      {
+        "source_id": 10419,
+        "target_id": 10034,
+        "reason": "RECURRENT_OPERATOR_NOT_IDENTIFIABLE"
+      },
+      {
+        "source_id": 12069,
+        "target_id": 10419,
+        "reason": "FEEDBACK_NOT_IDENTIFIABLE"
+      }
+    ],
+    "extended_preregistration_id": null,
+    "extended_artifact_id": null,
+    "phase26_decision": "FEEDFORWARD_MOTIF_REMAINS_CURRENT_VALIDATED_BOUNDARY",
+    "allowed_claims": [
+      "All13 induced chemical routes revalidated from committed male-cns:v1.0 authority.",
+      "Source transmitter evidence supports qualified excitatory-sign inference.",
+      "Phase25 remains the current validated neural-only feedforward boundary.",
+      "Non-identifiability of the proposed extension is an evidence-gate outcome, not a simulation failure."
+    ],
+    "forbidden_claims": [
+      "Complete HS/DNp15 or optomotor network",
+      "Validated recurrent physiology",
+      "Calibrated electrical coupling",
+      "Chemical efficacy from structural count",
+      "Steering, yaw command or navigation",
+      "Proven absence of chemical recurrence or functional feedback in biology"
+    ],
+    "next_bounded_action": "Audit public edge-resolved or chemical-isolating HS-HS physiological evidence for one verified reciprocal pair, 10015/10016 at neuron-type level, to define a chemical observation/transfer operator distinct from electrical coupling; no simulation or author contact.",
+    "limitations": [
+      "Bounded public search, not proof that missing physiological evidence does not exist.",
+      "No author-contact requirement.",
+      "Neither source count nor transmitter annotation identifies a physiological gain.",
+      "No v1 or Phase25 authority/result/production code changes."
+    ]
+  }
+}

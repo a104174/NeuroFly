@@ -2611,3 +2611,35 @@ passed. All preregistered parameters and first result identities remain fixed.
 Only eight intended files change, including the narrow Phase 24 static-test
 allowance for new-module offline authority validation; v1 production and
 frontend source are unchanged. No commit/push.
+
+## NeuroFly v2 — Phase 26 HS–DNp15 network-context gate
+
+[Network-context audit](science/hs_dnp15_network_context_audit.md) and
+[deterministic evidence record](science/hs_dnp15_network_context_audit.json),
+schema `hs_dnp15_network_context_audit_v1`, ID
+`04116360164262de5a2572f33e12cc90351869567c3202811807be576f1d03be`.
+All eight identities and thirteen chemical edges are revalidated from the
+committed male-cns:v1.0 authority. All seven additional edges remain excluded.
+Official transmitter annotations and primary evidence support **putative
+excitatory** signs, not measured per-contact recurrent effects. Chemical
+timing/magnitude and the signed-proxy→chemical-effect operator remain
+unidentified; HS electrical-network context is material and unmodelled.
+The left DNp15→HSS return has a separate unresolved functional feedback gate.
+No symmetric mirror edges or electrical substitutes are invented.
+
+Stage A: `RECURRENT_SIGN_OR_DYNAMICS_NOT_IDENTIFIABLE`.
+Phase 26 decision: `FEEDFORWARD_MOTIF_REMAINS_CURRENT_VALIDATED_BOUNDARY`.
+No Stage B preregistration, recurrent parameter selection, execution, artifact,
+spikes or motor/body/frontend mapping. This evidence-gate result does not
+disprove biological chemical recurrence. V1, Phase 24 and Phase 25 authorities,
+preregistration and canonical results remain frozen.
+
+Next bounded action: public chemical-isolating/edge-resolved HS–HS physiology
+audit for the verified HSN/HSE reciprocal pair, to specify a chemical
+observation/transfer operator distinct from electrical coupling; no author
+contact or simulation dependency.
+
+Phase 26 evidence-only `PASS`: 14 focused audit tests (42 with frozen motif/
+selection regressions), 1,077 full Python tests, 53 frontend tests, both six-
+artifact replay rounds, Ruff/format/diff and frontend lint/typecheck/build pass.
+Only four intended evidence/documentation/test files change; no commit/push.

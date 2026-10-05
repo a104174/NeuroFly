@@ -2643,3 +2643,32 @@ Phase 26 evidence-only `PASS`: 14 focused audit tests (42 with frozen motif/
 selection regressions), 1,077 full Python tests, 53 frontend tests, both six-
 artifact replay rounds, Ruff/format/diff and frontend lint/typecheck/build pass.
 Only four intended evidence/documentation/test files change; no commit/push.
+
+## NeuroFly v2 — Phase 27 horizontal-motion neural playback
+
+[Integration specification](science/horizontal_motion_neural_scenario_integration.md):
+`HORIZONTAL_MOTION_NEURAL_VALIDATION` is the fourth product scenario,
+`NEURAL_ONLY_VALIDATION`, exposing Phase 25's frozen `RIGHT_SIDE_MOTION`
+condition (50 ms, 501 boundaries). Source artifact
+`2ae44804fd570e6b64f219ee50b15bed923855e772a07b5cecc9d766ff6f4113`
+and Phase 26's feedforward-boundary decision remain unchanged.
+
+The existing catalog/playback API serves a typed additive `scenario_playback_v1`
+neural variant. Six HS identities, both DNp15 identities and persisted R−L
+diagnostics come from backend-validated replay. Signed continuous model-space
+states, six active chemical routes and excluded recurrent/electrical context
+are visible. Play/pause/reset/scrub change presentation time only. No events,
+motor/body mapping, yaw, steering or scientific recalculation is added; the
+motion-panel view contains no simulated body. V1's three scenarios remain frozen.
+
+Next bounded evidence action: chemical-isolating/edge-resolved public physiology
+audit for the verified HSN/HSE reciprocal pair, without author contact or
+recurrent numerical execution.
+
+Phase 27 integration `PASS`: 1,081 Python tests, 59 frontend tests, both six-
+artifact replay rounds, Ruff/format/diff and frontend lint/typecheck/build pass.
+Desktop/mobile and backend-unavailable/retry browser smoke pass. The original
+three catalog entries and playback payloads remain byte-identical. Phase 26's
+static dependency test permits only the read-only product provenance adapter,
+not scientific model consumers. No canonical artifacts are regenerated; no
+commit/push.

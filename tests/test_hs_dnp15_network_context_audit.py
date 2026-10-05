@@ -225,7 +225,7 @@ def test_context_tampering_changes_canonical_identity(audit, mutation):
     assert canonical_sha256(altered) != AUDIT_ID
 
 
-def test_no_raw_paths_or_production_dependency(audit):
+def test_no_raw_paths_or_scientific_model_dependency(audit):
     def visit(value):
         if isinstance(value, str):
             assert not value.startswith(("/", "data/", "file://"))
@@ -238,4 +238,9 @@ def test_no_raw_paths_or_production_dependency(audit):
 
     visit(audit)
     for source in (ROOT / "src/neurofly").rglob("*.py"):
+        # Phase27 explicitly validates/displays the frozen interpretation in
+        # playback. Only this read-only product adapter may consume the audit;
+        # no scientific model/operator gains a runtime dependency on it.
+        if source == ROOT / "src/neurofly/scenario_playback_api.py":
+            continue
         assert DOCUMENT.name not in source.read_text()

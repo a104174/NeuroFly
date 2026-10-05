@@ -1,4 +1,4 @@
-"""Phase 14 compact transport tests; scientific authority remains Phase 13B."""
+"""World and neural playback adapters preserve their frozen scientific sources."""
 
 import json
 
@@ -6,10 +6,13 @@ import pytest
 from fastapi.testclient import TestClient
 
 import neurofly.http_api as http
+import neurofly.scenario_playback_api as transport
 from neurofly.scenario_playback_api import (
+    CANONICAL_NEURAL_ARTIFACT_ID,
     CANONICAL_SCENARIO_ARTIFACT_ID,
     CANONICAL_WORLD_ARTIFACT_ID,
     DEFAULT_SCENARIO_PATH,
+    load_neural_playback,
     load_scenario_playback,
     scenario_catalog,
 )
@@ -112,3 +115,85 @@ def test_unavailable_replay_is_not_animation(tmp_path):
 def test_unknown_id_rejected_before_source_access():
     with pytest.raises(KeyError):
         load_scenario_playback("ESCAPE", DEFAULT_SCENARIO_PATH)
+
+
+def test_neural_transport_exact_frozen_condition(playbacks):
+    from neurofly.hs_dnp15_neural_validation_artifacts import (
+        DEFAULT_ARTIFACT_ROOT,
+        replay_neural_artifact,
+    )
+
+    p = playbacks[transport.NEURAL_KIND]
+    source = replay_neural_artifact(
+        DEFAULT_ARTIFACT_ROOT / CANONICAL_NEURAL_ARTIFACT_ID
+    )
+    run = next(
+        r for r in source["result"]["runs"] if r["condition_id"] == p.condition_id
+    )
+    assert p.presentation_kind == "NEURAL_ONLY_VALIDATION"
+    assert p.artifact_id == CANONICAL_NEURAL_ARTIFACT_ID
+    assert (p.condition_id, p.duration_ms, p.dt_ms) == ("RIGHT_SIDE_MOTION", 50, 0.1)
+    assert len(p.frames) == 501
+    assert [n.body_id for n in p.sources] == [10015, 10016, 10023, 10034, 10181, 10419]
+    assert [(n.body_id, n.side) for n in p.targets] == [(11215, "R"), (12069, "L")]
+    assert p.input_units == "horizontal_motion_eq"
+    assert p.source_units == "dimensionless_signed_proxy"
+    assert p.target_units == "dnp15_state_eq"
+    assert p.statuses.event_semantics == p.statuses.body_mapping == "NOT_DEFINED"
+    assert (
+        not p.statuses.recurrence_active and not p.statuses.electrical_coupling_active
+    )
+    assert {(e.source_id, e.target_id) for e in p.provenance.active_routes} == {
+        (10015, 11215),
+        (10016, 11215),
+        (10023, 11215),
+        (10034, 12069),
+        (10181, 12069),
+        (10419, 12069),
+    }
+    assert len(p.provenance.excluded_routes) == 7
+    for i, frame in enumerate(p.frames):
+        assert frame.time_ms == source["result"]["time_ms"][i]
+        assert frame.hs_states == run["source_states"][i]
+        assert frame.dnp15_states == run["target_states"][i]
+        assert frame.input_descriptor.model_dump() == run["input_descriptors"][i]
+        assert frame.bilateral_differential == run["right_minus_left_diagnostic"][i]
+        assert (
+            not {"body", "object", "actuator_commands", "spikes"}
+            & frame.model_dump().keys()
+        )
+    assert load_neural_playback().model_dump_json() == p.model_dump_json()
+    assert (
+        not {"dnp01_body_ids", "total_dnp01_spikes", "termination"}
+        & p.model_dump().keys()
+    )
+
+
+@pytest.mark.parametrize("failure", ["missing", "corrupt", "authority"])
+def test_neural_scientific_failure_is_typed_not_fallback(
+    tmp_path, monkeypatch, failure
+):
+    from neurofly.hs_dnp15_neural_validation_artifacts import DEFAULT_ARTIFACT_ROOT
+
+    original = load_neural_playback
+    if failure == "authority":
+        monkeypatch.setattr(transport, "CONTEXT_AUDIT_ID", "0" * 64)
+    else:
+        target = tmp_path / "absent"
+        if failure == "corrupt":
+            import shutil
+
+            target = tmp_path / CANONICAL_NEURAL_ARTIFACT_ID
+            shutil.copytree(
+                DEFAULT_ARTIFACT_ROOT / CANONICAL_NEURAL_ARTIFACT_ID, target
+            )
+            artifact_file = next(target.glob("*.json"))
+            artifact_file.write_text("{}")  # TEST_ONLY corrupted copy, never source.
+        monkeypatch.setattr(transport, "load_neural_playback", lambda: original(target))
+    response = TestClient(http.create_app(tmp_path)).get(
+        f"/api/v1/scenarios/{transport.NEURAL_KIND}/playback"
+    )
+    assert response.status_code == 503
+    assert response.json()["schema"] == "experiment_http_error_v1"
+    assert response.json()["code"] == "scenario_unavailable"
+    assert "frames" not in response.json()

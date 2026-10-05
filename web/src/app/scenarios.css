@@ -46,6 +46,18 @@
 @media(max-width:600px) { .app-header { height: auto; min-height: 68px; flex-wrap: wrap; gap: 16px; padding: 16px 20px; } .header-nav { flex-wrap: wrap; gap: 18px; } }
 
 /* Phase 15: specimen-led presentation and a readable causal narrative. */
+.neural-world { height: clamp(350px,38vw,480px); }
+.neural-panel-labels { position:absolute; left:7%; right:7%; top:73%; display:grid; grid-template-columns:1fr 1fr; gap:20px; text-align:center; color:#d4e6e0; font-size:13px; }
+.neural-world-note { position:absolute; bottom:20px; left:20px; right:20px; color:#adc4c9; font-size:12px; }
+.neural-state strong { display:block; font-family:monospace; margin:10px 0; overflow-wrap:anywhere; }
+.neural-state small { font-size:11px; color:#abc0c4; }
+.neural-ruler { position:relative; height:8px; background:#29424a; margin:10px 0; }
+.neural-ruler i { display:block; position:absolute; height:8px; background:#bcceb3; }
+.neural-ruler b { position:absolute; left:50%; height:14px; top:-3px; width:1px; background:#eef5ed; }
+.neural-sources { margin:24px 0; }
+.neural-sources > div { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; }
+.neural-sources .neural-state { padding:18px; border:1px solid #36505a; border-radius:6px; background:#11252d; }
+@media(max-width:600px) { .neural-sources > div { grid-template-columns:1fr; } .neural-panel-labels { font-size:11px; } }
 .scenario-route { max-width: 1560px; }
 .scenario-catalog { grid-template-columns: 1.25fr 1fr; }
 .primary-scenario { border-color: #9d825e; background: linear-gradient(135deg,#28312d,#18252b); }

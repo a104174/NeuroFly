@@ -1,4 +1,11 @@
-import type { ScenarioPlaybackFrame, ScenarioPlaybackResult } from "./scenarioPlayback";
+import type { ScenarioKind, ScenarioPlaybackFrame, ScenarioPlaybackResult } from "./scenarioPlayback";
+
+export const scenarioCopy: Record<ScenarioKind,{role:string;preview:string;observation:string}> = {
+  BASELINE_CONTROL:{role:"CONTROL · ZERO STIMULUS",preview:"NO STIMULUS · NO COMMAND · STATIONARY",observation:"A prominent stationary fly with no object or sensory projection. Silence is the intentional scientific control."},
+  LOOMING_CIRCUIT_VALIDATION:{role:"1.4 MS CIRCUIT MICRO-WINDOW · START HERE",preview:"OBJECT → VISUAL CIRCUIT → DNp01 → BODY",observation:"One object approaches. Sensory activity changes, but DNp01 remains subthreshold. No genuine motor command occurs; the fly stays still."},
+  LOOMING_WORLD_EXPERIMENT:{role:"40 MS EXPLORATORY WORLD EXPERIMENT",preview:"OBJECT → VISUAL CIRCUIT → DNp01 → BODY",observation:"A separately frozen model-space approach. Inspect genuine neural, motor and body outputs as produced, including zero output. Not a biological escape experiment."},
+  HORIZONTAL_MOTION_NEURAL_VALIDATION:{role:"HS→DNp15 · NEURAL-ONLY VALIDATION",preview:"MOTION INPUT → HS → DNp15 R/L → DIAGNOSTIC ONLY",observation:"A right-side horizontal-motion descriptor drives three right HS source proxies and a bilateral DNp15 readout. Inspect the neural-state differential; no body movement is simulated."},
+};
 
 /** Human-readable labels over authoritative data, never scientific updates. */
 export function scenarioNarrative(result: ScenarioPlaybackResult, frame: ScenarioPlaybackFrame) {

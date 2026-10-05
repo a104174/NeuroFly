@@ -29,9 +29,9 @@ test("typed payload preserves execution true and movement false independently", 
   assert.equal(r.statuses.body_movement_occurred, false);
   assert.equal(r.frames.length, 3);
 });
-test("exact three supported preset definitions and no phantom worlds", () => {
+test("exact four supported preset definitions and no phantom worlds", () => {
   const s = fixture().scenario;
-  assert.equal(parseScenarioCatalog([{...s,id:"BASELINE_CONTROL",scenario_kind:"BASELINE_CONTROL"},s,{...s,id:"LOOMING_WORLD_EXPERIMENT",scenario_kind:"LOOMING_WORLD_EXPERIMENT"}]).length, 3);
+  assert.equal(parseScenarioCatalog([{...s,id:"BASELINE_CONTROL",scenario_kind:"BASELINE_CONTROL"},s,{...s,id:"LOOMING_WORLD_EXPERIMENT",scenario_kind:"LOOMING_WORLD_EXPERIMENT"},{...s,id:"HORIZONTAL_MOTION_NEURAL_VALIDATION",scenario_kind:"HORIZONTAL_MOTION_NEURAL_VALIDATION"}]).length, 4);
   assert.throws(() => parseScenarioCatalog([s]));
   assert.throws(() => parseScenarioCatalog([{...s,id:"LIGHT_DARK"},s]));
 });
@@ -178,5 +178,5 @@ test("scenario-only material clone preserves historical asset and avoids idle mo
   assert.match(asset,/opacity: 0.22/);
   assert.doesNotMatch(asset,/useFrame|rotation\.set|position\.add|random|sin\(/);
   const ui = readFileSync(new URL("../src/components/ScenarioCockpit.tsx",import.meta.url),"utf8");
-  assert.match(ui,/<ScenarioExplanation result=\{result\} frame=\{frame\}/);
+  assert.match(ui,/<ScenarioExplanation result=\{result\} frame=\{result.frames\[frame.step\]\}/);
 });

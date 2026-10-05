@@ -64,6 +64,7 @@ from neurofly.motor_pathway_artifacts import (
 )
 from neurofly.scenario_playback_api import (
     DEFAULT_SCENARIO_PATH,
+    NeuralPlaybackResult,
     ScenarioDefinition,
     ScenarioPlaybackResult,
     load_scenario_playback,
@@ -530,7 +531,7 @@ def create_app(
 
     @app.get(
         "/api/v1/scenarios/{scenario_id}/playback",
-        response_model=ScenarioPlaybackResult,
+        response_model=ScenarioPlaybackResult | NeuralPlaybackResult,
         tags=["scenarios"],
     )
     def scenario_playback(scenario_id: str):

@@ -5,11 +5,14 @@ import Link from "next/link";
 import { useEffect, useState, useTransition } from "react";
 import { loadScenarioPlayback } from "@/app/scenarios/actions";
 import { ScenarioExplanation } from "./ScenarioExplanation";
-import { advanceScenarioCursor, scenarioScene, type ScenarioDefinition, type ScenarioPlaybackResult } from "@/lib/scenarioPlayback";
+import { HorizontalMotionExplanation } from "./HorizontalMotionExplanation";
+import { scenarioCopy } from "@/lib/scenarioPresentation";
+import { advanceScenarioCursor, scenarioScene, neuralScene, isNeuralPlayback, type ScenarioDefinition, type ScenarioPlayback } from "@/lib/scenarioPlayback";
 
 const ScenarioWorld = dynamic(() => import("@/components/ScenarioWorld"), { ssr: false, loading: () => <div className="scenario-world" role="status">Preparing 3D view…</div> });
+const HorizontalMotionWorld = dynamic(() => import("@/components/HorizontalMotionWorld"), {ssr:false,loading:()=><div className="scenario-world" role="status">Preparing motion presentation…</div>});
 
-function Playback({ result }: { result: ScenarioPlaybackResult }) {
+function Playback({ result }: { result: ScenarioPlayback }) {
   const [cursor, setCursor] = useState(0);
   const [playing, setPlaying] = useState(false);
   const last = result.frames.length - 1;
@@ -28,9 +31,9 @@ function Playback({ result }: { result: ScenarioPlaybackResult }) {
     frame = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(frame);
   }, [isPlaying, last]);
-  const { frame } = scenarioScene(result, cursor);
+  const { frame } = isNeuralPlayback(result) ? neuralScene(result,cursor) : scenarioScene(result, cursor);
   return <>
-    <ScenarioWorld result={result} cursor={cursor} />
+    {isNeuralPlayback(result) ? <HorizontalMotionWorld result={result} cursor={cursor}/> : <ScenarioWorld result={result} cursor={cursor} />}
     <section className="scenario-transport" aria-label="Playback controls">
       <div className="scenario-control-row">
         <button onClick={() => { if (cursor >= last) setCursor(0); setPlaying(!isPlaying); }} aria-label={isPlaying ? "Pause playback" : "Play playback"}>{isPlaying ? "Pause" : "Play"}</button>
@@ -41,12 +44,13 @@ function Playback({ result }: { result: ScenarioPlaybackResult }) {
       <input id="scenario-timeline" type="range" min={0} max={last} step={1} value={Math.floor(cursor)} onChange={e => { setPlaying(false); setCursor(Number(e.target.value)); }} />
       <small>{result.duration_ms.toFixed(1)} ms simulation shown over 6 s playback · rendering only, scientific time unchanged</small>
     </section>
-    <ScenarioExplanation result={result} frame={frame} />
+    {isNeuralPlayback(result) ? <HorizontalMotionExplanation result={result} frame={result.frames[frame.step]}/> : <ScenarioExplanation result={result} frame={result.frames[frame.step]} />}
   </>;
 }
 
-export function ScenarioCockpit({ scenario, initialResult = null, initialError = null }: { scenario: ScenarioDefinition; initialResult?: ScenarioPlaybackResult | null; initialError?: string | null }) {
-  const [result, setResult] = useState<ScenarioPlaybackResult | null>(initialResult);
+export function ScenarioCockpit({ scenario, initialResult = null, initialError = null }: { scenario: ScenarioDefinition; initialResult?: ScenarioPlayback | null; initialError?: string | null }) {
+  const [result, setResult] = useState<ScenarioPlayback | null>(initialResult);
+  const copy = scenarioCopy[scenario.id];
   const [running, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(initialError);
   const [revision, setRevision] = useState(0);
@@ -64,10 +68,10 @@ export function ScenarioCockpit({ scenario, initialResult = null, initialError =
   }
   return <main className="scenario-route">
     <Link className="back-link" href="/scenarios">← scenarios</Link>
-    <header className="scenario-heading"><div><p className="eyebrow">{scenario.id === "BASELINE_CONTROL" ? "ZERO-STIMULUS SCIENTIFIC CONTROL" : scenario.id === "LOOMING_WORLD_EXPERIMENT" ? "PRE-REGISTERED MODEL-SPACE WORLD EXPERIMENT" : "ACTIVE CIRCUIT VALIDATION / AUTHORITATIVE PLAYBACK"}</p><h1>{scenario.title}</h1><p>{scenario.id === "BASELINE_CONTROL" ? "No external stimulus is active. Observe the intentional stationary control under the current pinned model." : scenario.id === "LOOMING_WORLD_EXPERIMENT" ? scenario.description : "An approaching model-space object drives LC4/LPLC2 → DNp01 through the exploratory closed-loop sensory projection."}</p></div>
+    <header className="scenario-heading"><div><p className="eyebrow">{copy.role}</p><h1>{scenario.title}</h1><p>{scenario.description}</p></div>
       <button className="scenario-run" disabled={running} onClick={() => startTransition(run)}>{running ? "Preparing validated replay…" : result ? "Run again" : "Run canonical preset"}</button>
     </header>
-    {running && <p role="status" className="scenario-pending">Recomputing the canonical causal loop and validating source provenance. This can take several seconds.</p>}
+    {running && <p role="status" className="scenario-pending">Replaying the frozen scientific model and validating source provenance. This can take several seconds.</p>}
     {error && <p role="alert" className="scenario-error">{error} Retry Run when the scientific backend is available.</p>}
     {!result && !running && !error && <section className="scenario-ready"><p className="eyebrow">READY TO OBSERVE</p><h2>Backend state. Honest outcomes.</h2><p>{scenario.scientific_caveat}</p><p>Run loads the numerically replay-validated canonical result. No local physics or fallback animation.</p></section>}
     {result && <Playback key={`${result.run_id}-${revision}`} result={result} />}

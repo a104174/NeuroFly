@@ -1,0 +1,188 @@
+{
+  "schema": "dnp15_yaw_mapping_evidence_gate_v1",
+  "gate_id": "42d46ef3e5deed0c36da518cc1523cfe3d0978e5cbed2aac85a9738fcdeadf2f",
+  "gate": {
+    "schema": "dnp15_yaw_mapping_evidence_gate_v1",
+    "scope": "QUALITATIVE_WALKING_COURSE_ORIENTATION_ONLY",
+    "checked_on": "2026-10-05",
+    "authorities": {
+      "v1_status_id": "1aa1a39710ebc68030834b3a04ea202eb57fb25a0080f444db0ea19af64730a6",
+      "phase24_selection_id": "435ee01693ec0b4b1ad5a8547e77f865c43743cfa56d9c3dd2055a6a87b6ed41",
+      "phase25_preregistration_id": "371926570df00d88efb8e40aa8f6c64b757a420364143d42c9fb727722bfe074",
+      "phase25_artifact_id": "2ae44804fd570e6b64f219ee50b15bed923855e772a07b5cecc9d766ff6f4113",
+      "phase26_audit_id": "04116360164262de5a2572f33e12cc90351869567c3202811807be576f1d03be",
+      "phase26_decision": "FEEDFORWARD_MOTIF_REMAINS_CURRENT_VALIDATED_BOUNDARY",
+      "phase27_commit": "8ee08874f276b6ab85e195a46dfd37b7e8d49905",
+      "phase27_document": "docs/science/horizontal_motion_neural_scenario_integration.md",
+      "phase27_document_byte_sha256": "67612c85713d731929c466b4c8adb0eb0ad59786a97341289e006a26c277320d",
+      "phase27_playback_sha256": "52554962f3e9c85c6866b5e3ec56f8a12d24340db2236ec52c7809c6ece8d404"
+    },
+    "search_scope": {
+      "bounded_sources": [
+        "Erginkaya et al. 2025 Results Fig.1/Fig.7/Extended Data Fig.10 and Methods",
+        "Suver et al. 2016 original publication via Caltech/PubMed",
+        "Pokusaeva et al. 2024 original institutional PDF Fig.7 and Discussion"
+      ],
+      "excluded": [
+        "Author contact",
+        "New raw-data acquisition",
+        "Figure digitization",
+        "Fitting",
+        "New neural or yaw candidate execution"
+      ],
+      "access_limitations": [
+        "Suver PMC challenged; publisher 403; Caltech PDF download failed; primary PubMed abstract/figure captions and Caltech publication metadata verified",
+        "Erginkaya Zenodo browser fetch failed; published methods sufficient for qualitative gate; archive not needed"
+      ]
+    },
+    "evidence_sources": [
+      {
+        "id": "erginkaya_2025",
+        "citation": "Erginkaya et al. (2025), A competitive disinhibitory network for robust optic flow processing in Drosophila",
+        "doi": "10.1038/s41593-025-01948-9",
+        "url": "https://www.nature.com/articles/s41593-025-01948-9",
+        "access": "OPEN_PRIMARY_FULL_TEXT",
+        "locators": [
+          "Results: DNp15 is less sensitive to translational motion than HS; Fig.1",
+          "Results: DNp15's and bIPS' asymmetric activity drive steering; Fig.7b-d; Extended Data Fig.10a-d",
+          "Methods: Drosophila husbandry; exploratory walking arena; classification of walking paths"
+        ],
+        "target": "DNp15 / DNHS1 neuron type, not exact MaleCNS specimen IDs",
+        "species": "Drosophila melanogaster",
+        "sex": {
+          "behavior": "MALE",
+          "calcium_imaging": "FEMALE"
+        },
+        "preparation": "Freely walking wing-clipped adults; circular heated-wall arena; tracked random-dot stimulus co-translates with fly; separate immobilized calcium imaging.",
+        "behavioral_observable": "Angular path deviation per forward distance during forward runs; saccade bias separately assessed.",
+        "interventions": [
+          "Stochastic unilateral/bilateral Kir2.1 silencing",
+          "Stochastic ricin A ablation replication"
+        ],
+        "causal_status": "DIRECT_CAUSAL_MANIPULATION",
+        "directional_result": "Unilateral silencing/ablation biases paths contralaterally to the perturbed DNp15; bilateral/intact conditions show no systematic bias; saccades unaffected.",
+        "applicability": "Supports qualitative remaining-side course bias, not an identified transient bilateral activity-to-yaw transfer function.",
+        "limitations": [
+          "No matched simultaneous bilateral activity/yaw transfer measurement",
+          "Chronic perturbation in a complete biological network",
+          "No physical gain, time constant or phase25 proxy calibration",
+          "Agent equations/fit are not biological measurements and are not adopted"
+        ]
+      },
+      {
+        "id": "suver_2016",
+        "citation": "Suver et al. (2016), An Array of Descending Visual Interneurons Encoding Self-Motion in Drosophila",
+        "doi": "10.1523/JNEUROSCI.2277-16.2016",
+        "url": "https://authors.library.caltech.edu/records/mqzzc-va989",
+        "access": "PRIMARY_PUBMED_ABSTRACT_FIGURES_AND_INSTITUTIONAL_PUBLICATION_METADATA",
+        "locators": [
+          "Fig.2B,C,E,J",
+          "Fig.3E-H; Fig.4; motor correlations"
+        ],
+        "target": "DNHS1",
+        "species": "Drosophila melanogaster",
+        "sex": "UNKNOWN_FROM_ACCESSED_PRIMARY_EXCERPTS; NOT_USED_FOR_WALKING_SIGN",
+        "preparation": "Tethered flight/quiescence; whole-cell recordings with motion stimuli and motor tracking",
+        "causal_status": "CORRELATIONAL_RECORDING",
+        "applicability": "Historical DNHS1 identity/visual response context; not the walking sign authority.",
+        "limitations": [
+          "Flight readouts not free walking yaw",
+          "Correlation is not causal motor mapping",
+          "Spikes/voltage in biology do not add events/voltage semantics to Phase25 proxies"
+        ]
+      },
+      {
+        "id": "pokusaeva_2024",
+        "citation": "Pokusaeva et al. (2024), Bilateral interactions of optic-flow sensitive neurons coordinate course control in flies",
+        "doi": "10.1038/s41467-024-53173-w",
+        "url": "https://research-explorer.ista.ac.at/download/18444/18459/2024_NatureComm_Pokusaeva.pdf",
+        "access": "AUTHENTIC_PRIMARY_INSTITUTIONAL_PDF",
+        "locators": [
+          "Fig.7 HS-descending coupling",
+          "Results: unilateral optic-flow responses; Discussion"
+        ],
+        "target": "HS/H2 network; DNp15 (DNHS1) coupling context",
+        "species": "Drosophila melanogaster",
+        "preparation": "Free walking closed-loop visual stimulation; separate electrophysiology/dye coupling",
+        "causal_status": "MIXED_CAUSAL_AND_CORRELATIONAL",
+        "applicability": "Electrical and stimulus/preparation context; not DNp15-specific yaw gain.",
+        "limitations": [
+          "Nonlinear and stimulus-dependent behavior prevents treating HS motion descriptor as a measured body command",
+          "Dye coupling is not conductance",
+          "No electrical operator imported"
+        ]
+      }
+    ],
+    "identity_compatibility": {
+      "classification": "TARGET_IDENTITY_COMPATIBLE_WITH_LIMITATIONS",
+      "evidence_ids": [
+        "erginkaya_2025",
+        "suver_2016",
+        "pokusaeva_2024"
+      ],
+      "basis": "Published DNp15/DNHS1 correspondence and bilateral type; pinned right 11215/left 12069 metadata.",
+      "exact_experimental_cell_to_body_id_equivalence": false
+    },
+    "directional_evidence": {
+      "classification": "BILATERAL_DIRECTIONAL_RELATION_QUALITATIVELY_SUPPORTED",
+      "causal_evidence_status": "MIXED_CAUSAL_AND_CORRELATIONAL",
+      "decisive_evidence_id": "erginkaya_2025",
+      "silenced_left_observed_bias": "RIGHTWARD_CONTRALATERAL_PATH_DRIFT",
+      "silenced_right_observed_bias": "LEFTWARD_CONTRALATERAL_PATH_DRIFT",
+      "proposed_model_relation": "Higher right proxy relative to left maps to positive rightward model orientation; reverse imbalance maps leftward.",
+      "relation_status": "QUALITATIVE_INFERENCE_FROM_PERTURBATION_NOT_MEASURED_GRADED_TRANSFER",
+      "signed_proxy_to_biological_activity_transform": "UNIDENTIFIED",
+      "negative_proxy_interpretation": "Exploratory model extension only; not negative firing rate or measured reverse-direction motor physiology.",
+      "physical_gain_identified": false,
+      "linearity_or_bilateral_subtraction_measured": false
+    },
+    "preparation_compatibility": {
+      "classification": "WALKING_COURSE_BIAS_COMPATIBLE_WITH_EXPLORATORY_ORIENTATION_ABSTRACTION",
+      "target_observable_not": "Tethered wing steering, head yaw alone, rapid saccade command, or calibrated free-flight yaw",
+      "limits": [
+        "Walking trajectory curvature is not a time-resolved instantaneous yaw law",
+        "Phase25 50 ms is not the biological assay horizon",
+        "No freely moving biological yaw predicted",
+        "No complete network isolation claimed"
+      ]
+    },
+    "body_mapping_readiness": "QUALITATIVE_YAW_MAPPING_JUSTIFIED",
+    "stage_a": {
+      "decision": "EXPLORATORY_YAW_MAPPING_IDENTIFIABLE",
+      "stage_b_permitted": true,
+      "new_yaw_or_candidate_neural_execution_before_decision": false,
+      "reason": "Type-compatible causal directional perturbations justify an explicitly assumed signed orientation abstraction; magnitude and dynamics remain uncalibrated."
+    },
+    "exclusions": {
+      "structural_count_is_body_efficacy": false,
+      "phase26_context_edges_active": false,
+      "electrical_coupling_active": false,
+      "translation_planned": false,
+      "sensory_feedback_planned": false,
+      "frontend_change_planned": false,
+      "physical_units_or_biomechanics": false
+    },
+    "assumption_classes": {
+      "identity_correspondence": "PRIMARY_EVIDENCE_CONSTRAINED",
+      "qualitative_direction": "QUALITATIVELY_EVIDENCE_CONSTRAINED",
+      "signed_proxy_linear_orientation_mapping": "EXPLORATORY_BOUNDED_ASSUMPTION",
+      "physical_gain_or_inertia": "NOT_IDENTIFIABLE_AND_EXCLUDED",
+      "recurrence_electrical_and_sensorimotor_feedback": "NOT_IDENTIFIABLE_AND_EXCLUDED"
+    },
+    "allowed_claims": [
+      "Qualitative DNp15-linked walking course bias",
+      "Evidence-gated exploratory model-space orientation design",
+      "No biological amplitude or timing calibration"
+    ],
+    "forbidden_claims": [
+      "Biological yaw prediction",
+      "Calibrated turn rate",
+      "Torque",
+      "Aerodynamic steering",
+      "Measured DNp15 motor command",
+      "Navigation",
+      "Full optomotor behavior",
+      "Closed-loop course stabilization"
+    ]
+  }
+}

@@ -1,0 +1,135 @@
+{
+  "schema": "dnp15_exploratory_yaw_preregistration_v1",
+  "purpose": "Downstream open-loop exploratory model-space orientation from frozen Phase25 proxies; no predicted biological yaw.",
+  "evidence_gate_id": "42d46ef3e5deed0c36da518cc1523cfe3d0978e5cbed2aac85a9738fcdeadf2f",
+  "source_artifact_id": "2ae44804fd570e6b64f219ee50b15bed923855e772a07b5cecc9d766ff6f4113",
+  "source_preregistration_id": "371926570df00d88efb8e40aa8f6c64b757a420364143d42c9fb727722bfe074",
+  "source_config_sha256": "8ffc6263d1a70948d9a69ffa0ff066c9dcbb894d5766b72520e209ace60b452d",
+  "source_result_sha256": "35b9bf6bb72f2d92522df25de020cc5e3d369ec0d257997d8cd7746a55e54864",
+  "target_identities": [
+    {
+      "body_id": 11215,
+      "type": "DNp15",
+      "side": "R"
+    },
+    {
+      "body_id": 12069,
+      "type": "DNp15",
+      "side": "L"
+    }
+  ],
+  "model_identity": "exploratory_yaw_orientation_plant_v1",
+  "model_role": "EXPLORATORY_NEURAL_TO_ORIENTATION_MODEL",
+  "source_units": "dnp15_state_eq",
+  "differential_definition": "delta_dnp15[n] = DNp15_R[n] - DNp15_L[n]",
+  "yaw_mapping": {
+    "formula": "yaw_drive_eq[n] = directional_sign * dnp15_to_yaw_proxy_scale * delta_dnp15[n]",
+    "directional_sign": 1,
+    "positive_orientation": "RIGHTWARD_MODEL_COURSE_ORIENTATION",
+    "negative_orientation": "LEFTWARD_MODEL_COURSE_ORIENTATION",
+    "sign_status": "QUALITATIVELY_EVIDENCE_CONSTRAINED",
+    "sign_evidence": "Erginkaya2025 Fig7: left perturbation produces rightward drift; right perturbation produces leftward drift. Remaining-side dominance is a qualitative inference, not an isolated graded motor law.",
+    "dnp15_to_yaw_proxy_scale": 1,
+    "scale_units": "yaw_drive_eq_per_dnp15_state_eq",
+    "scale_status": "EXPLORATORY_BOUNDED_ASSUMPTION",
+    "scale_rationale": "Unit model-space coordinate normalization; selected without inspecting yaw output or source peak; no physiological magnitude.",
+    "permitted_design_scale_bound": [
+      0,
+      1
+    ],
+    "units": "yaw_drive_eq"
+  },
+  "orientation_model": {
+    "formula": "orientation[n+1] = orientation[n] + ((time[n+1]-time[n])/normalization_horizon_ms) * yaw_drive_eq[n]",
+    "initial_orientation_eq": 0,
+    "normalization_horizon_ms": 50,
+    "normalization": "GLOBAL_FIXED_SOURCE_HORIZON; NOT_PER_CONDITION",
+    "normalization_rationale": "One unit held yaw-drive over the entire frozen 50ms horizon contributes one orientation_eq; no biological temporal claim.",
+    "units": "yaw_orientation_eq",
+    "state": "UNWRAPPED_SIGNED_MODEL_COORDINATE_NOT_RADIANS",
+    "leak": "NONE",
+    "inertia": "NONE",
+    "rate_state": "NOT_DEFINED",
+    "saturation": "NONE"
+  },
+  "dt_ms": 0.1,
+  "duration_ms": 50,
+  "interval_count": 500,
+  "conditions": [
+    "NO_MOTION_CONTROL",
+    "BILATERAL_MATCHED_MOTION",
+    "RIGHT_SIDE_MOTION",
+    "LEFT_SIDE_MOTION",
+    "SIDE_SWAPPED_EQUIVALENT",
+    "DIRECTION_REVERSED"
+  ],
+  "update_semantics": "LEFT_BOUNDARY_HELD_DRIVE; FINAL_BOUNDARY_HAS_NO_OUTGOING_INTERVAL",
+  "body_policy": {
+    "translation": "NOT_MODELLED; NO_X_Z_STATE",
+    "sensory_feedback": "NONE",
+    "motor_actuator_mapping": "NONE",
+    "recurrence": "NONE",
+    "electrical_coupling": "NONE",
+    "structural_count_is_efficacy": false
+  },
+  "outputs": [
+    "scientific_time_ms",
+    "DNp15_R",
+    "DNp15_L",
+    "delta_dnp15",
+    "yaw_drive_eq",
+    "yaw_orientation_eq"
+  ],
+  "analytical_bounds": {
+    "source_state_range": [
+      -1,
+      1
+    ],
+    "target_state_range": [
+      -1,
+      1
+    ],
+    "absolute_differential_bound": 2,
+    "absolute_yaw_drive_bound": 2,
+    "absolute_orientation_horizon_bound": 2,
+    "proof": "Bounded signed descriptors, neutral initial states and exact exponential convex updates keep HS and DNp15 within [-1,1]. Hence |R-L|<=2, |drive|<=2, and sum(dt/H)=1 implies |orientation-initial|<=2 for the finite horizon.",
+    "stability": "FINITE_HORIZON_BOUNDED_INTEGRATOR; NOT_ASYMPTOTICALLY_STABLE; NO_HORIZON_EXTENSION_CLAIM",
+    "neutral_behavior": "Equal bilateral target states give zero drive and unchanged neutral orientation."
+  },
+  "assumptions": [
+    {
+      "name": "Qualitative directional relationship",
+      "classification": "QUALITATIVELY_EVIDENCE_CONSTRAINED"
+    },
+    {
+      "name": "Proxy activity -> odd linear orientation drive and bilateral symmetry",
+      "classification": "EXPLORATORY_BOUNDED_ASSUMPTION"
+    },
+    {
+      "name": "Unit proxy scale and global horizon-normalized integration",
+      "classification": "EXPLORATORY_BOUNDED_ASSUMPTION"
+    },
+    {
+      "name": "Source time grid and left-boundary/final-boundary convention",
+      "classification": "REPOSITORY_NUMERICAL_CONVENTION"
+    },
+    {
+      "name": "Physical gain/inertia/force/torque",
+      "classification": "NOT_IDENTIFIABLE_AND_EXCLUDED"
+    },
+    {
+      "name": "Electrical/chemical recurrence and sensory feedback",
+      "classification": "NOT_IDENTIFIABLE_AND_EXCLUDED"
+    }
+  ],
+  "randomness": "NONE; NO_SEED_REQUIRED",
+  "frozen_before_yaw_execution": true,
+  "output_based_parameter_selection": false,
+  "acceptance": "Accept zero, small, opposite-signed or unexpected internally valid outcomes. No retuning after first frozen execution.",
+  "claim_limits": [
+    "Exploratory DNp15-linked model-space orientation, not a measured DNp15 motor command",
+    "Not biological yaw, calibrated turn rate, torque or biomechanics",
+    "Not navigation, full optomotor behavior or closed-loop course stabilization",
+    "Negative proxy/reversal symmetry is a model extension, not measured negative activity"
+  ]
+}

@@ -2672,3 +2672,37 @@ three catalog entries and playback payloads remain byte-identical. Phase 26's
 static dependency test permits only the read-only product provenance adapter,
 not scientific model consumers. No canonical artifacts are regenerated; no
 commit/push.
+
+## NeuroFly v2 — Phase 28 exploratory downstream orientation
+
+[Science specification](science/dnp15_exploratory_yaw_embodiment.md) and
+[evidence gate](science/dnp15_yaw_mapping_evidence_gate.json):
+`dnp15_yaw_mapping_evidence_gate_v1`, ID
+`42d46ef3e5deed0c36da518cc1523cfe3d0978e5cbed2aac85a9738fcdeadf2f`.
+Stage A: `EXPLORATORY_YAW_MAPPING_IDENTIFIABLE`, with type-level identity
+compatibility limitations and **qualitative**, not measured graded, directional
+transfer. Primary DNp15 perturbations support contralateral walking path drift
+after unilateral silencing; remaining-side dominance motivates the explicitly
+assumed orientation sign. Physical gain and instantaneous yaw dynamics are not
+identified.
+
+New preregistration ID
+`1be0f6364070a5a5536f4c772bd47abb3be2f08357b439a51e03f034f8b2a654`
+was frozen before yaw execution. Model `exploratory_yaw_orientation_plant_v1`
+consumes unchanged Phase 25 outputs: unit signed differential drive,
+global 50 ms horizon-normalized integration and initial orientation zero.
+Units `yaw_drive_eq` / `yaw_orientation_eq` are uncalibrated model coordinates,
+not radians, physical velocity or torque. There is no translation, inertia,
+recurrence, electrical coupling, actuator mapping or sensory feedback.
+
+First frozen artifact
+`243914905c17ceb1285c645aa9e9700b602a9e22c8703c9f9ce4c7fe4f7e935d`:
+neutral/matched orientation zero; right-only final +0.382855392953294 eq,
+left-only/side-swapped/reversed negative counterpart. Parameters were not
+changed after observing these results. Phase 27 remains neural-only; no API,
+frontend or v1 plant changes. These are deterministic downstream proxy
+responses, not biological steering predictions.
+
+Next bounded action: specify and analytically audit an exploratory
+orientation→horizontal-motion world observation contract before any closed-
+loop course-control experiment; no physical optic-flow calibration claim.

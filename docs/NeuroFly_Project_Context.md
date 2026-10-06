@@ -2706,3 +2706,39 @@ responses, not biological steering predictions.
 Next bounded action: specify and analytically audit an exploratory
 orientation→horizontal-motion world observation contract before any closed-
 loop course-control experiment; no physical optic-flow calibration claim.
+
+## NeuroFly v2 — Phase 29 geometric observation boundary
+
+[Observation specification](science/orientation_to_horizontal_motion_observation.md)
+and [frozen contract/preregistration](science/orientation_to_horizontal_motion_contract.json):
+`orientation_to_horizontal_motion_contract_v1`, canonical ID
+`9e58649144a4cf3ca7cd913a6cf91dde116524906b0c600dd09f5e66ec5ffaad`.
+Stage A: `ORIENTATION_TO_MOTION_OBSERVATION_IDENTIFIABLE`, classified
+`GEOMETRIC_OBSERVATION_REQUIRES_BOUNDED_EXPLORATORY_ASSUMPTIONS`.
+
+An independent world-fixed panoramic heading and unwrapped orientation
+endpoints define relative-view geometry. Completed-interval change, not
+absolute orientation, yields a rate-like descriptor. One orientation_eq per
+abstract cycle, global 50 ms reference normalization, clipping to [-1,1] and
+opposite R/L descriptor bases are explicitly exploratory assumptions. Wrapped
+view seams retain continuous winding; ambiguous body jumps are rejected.
+Observation at boundary n describes [n-1,n] and is available only for the next
+neural interval, avoiding a same-boundary algebraic loop.
+
+Units remain model-space (`yaw_orientation_eq`, `relative_view_eq`,
+`horizontal_motion_eq`); no retinal, biological angular-velocity or HS
+transduction calibration is established. Phase 25/28 equations/artifacts and
+Phase 27 neural-only product remain unchanged. Operator tests use synthetic
+geometry; stored Phase 28 traces are checked only for API/domain compatibility.
+No descriptor is propagated to neurons, no feedback run occurs and no API,
+frontend, translation or body-mechanics change is made.
+
+Phase 29 decision: `OBSERVATION_OPERATOR_SPECIFIED_WITH_EXPLORATORY_NORMALIZATION`.
+Next bounded action: preregister a backend-only course-control experiment with
+this completed-interval observation and frozen Phase 25/28 equations, including
+controls and analytical stability assessment before any closed-loop execution.
+
+Phase 29 `PASS`: 51 focused tests, 1,165 full Python tests (one integration
+test deselected), 59 frontend regression tests and all lint/format/typecheck/
+build/diff gates pass. Required historical replay identities and all four
+existing playback payload hashes remain unchanged. No commit/push.

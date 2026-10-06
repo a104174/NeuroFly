@@ -1,0 +1,134 @@
+{
+  "schema": "orientation_to_horizontal_motion_contract_v1",
+  "preregistration_schema": "orientation_to_horizontal_motion_preregistration_v1",
+  "source_repository_head": "bd440b5e35bedbf820f12ed71f9120507c980a79",
+  "checked_date": "2026-10-06",
+  "purpose": "Geometric observation only: completed orientation interval to exploratory signed horizontal-motion descriptors. No neural feedback execution or biological visual transduction.",
+  "authorities": {
+    "v1_status_id": "1aa1a39710ebc68030834b3a04ea202eb57fb25a0080f444db0ea19af64730a6",
+    "phase24_selection_id": "435ee01693ec0b4b1ad5a8547e77f865c43743cfa56d9c3dd2055a6a87b6ed41",
+    "phase25_preregistration_id": "371926570df00d88efb8e40aa8f6c64b757a420364143d42c9fb727722bfe074",
+    "phase25_artifact_id": "2ae44804fd570e6b64f219ee50b15bed923855e772a07b5cecc9d766ff6f4113",
+    "phase25_config_sha256": "8ffc6263d1a70948d9a69ffa0ff066c9dcbb894d5766b72520e209ace60b452d",
+    "phase25_result_sha256": "35b9bf6bb72f2d92522df25de020cc5e3d369ec0d257997d8cd7746a55e54864",
+    "phase26_audit_id": "04116360164262de5a2572f33e12cc90351869567c3202811807be576f1d03be",
+    "phase27_document_sha256": "67612c85713d731929c466b4c8adb0eb0ad59786a97341289e006a26c277320d",
+    "phase28_evidence_gate_id": "42d46ef3e5deed0c36da518cc1523cfe3d0978e5cbed2aac85a9738fcdeadf2f",
+    "phase28_preregistration_id": "1be0f6364070a5a5536f4c772bd47abb3be2f08357b439a51e03f034f8b2a654",
+    "phase28_artifact_id": "243914905c17ceb1285c645aa9e9700b602a9e22c8703c9f9ce4c7fe4f7e935d",
+    "phase28_config_sha256": "450f885f09450242351f90f9c5e923711d36a4db4a513debd2b075a95ba78758",
+    "phase28_result_sha256": "ac0bd5bf36b5f1c60c96a212f7b5f28d5a30f49c470902d543ec15174af394f0"
+  },
+  "stage_a": {
+    "classification": "GEOMETRIC_OBSERVATION_REQUIRES_BOUNDED_EXPLORATORY_ASSUMPTIONS",
+    "decision": "ORIENTATION_TO_MOTION_OBSERVATION_IDENTIFIABLE",
+    "stage_b_permitted": true,
+    "method": "Audit frozen repository semantics and derive coordinate transformations symbolically. No new biological claims or literature calibration are required.",
+    "geometry_not_transduction": true,
+    "justification": "World-to-view frame subtraction and interval change are coherent mathematical geometry. Interpreting the unwrapped Phase28 proxy periodically, rate normalization and side-basis projection are new bounded exploratory assumptions, not retinal/HS physiology."
+  },
+  "layers": [
+    {"id": "WORLD_GEOMETRY", "quantity": "world_heading_eq", "semantics": "A fixed world-coordinate heading marker on an abstract periodic panorama; independent of body state."},
+    {"id": "BODY_VIEW_ORIENTATION", "quantity": "yaw_orientation_eq", "semantics": "Unwrapped Phase28 model coordinate; zero is aligned with world heading zero, positive is rightward. No physical yaw."},
+    {"id": "RELATIVE_VIEW_GEOMETRY", "quantity": "relative_view_eq", "semantics": "Wrapped world-minus-body coordinate, with unwrapped lift retained for interval differences."},
+    {"id": "HORIZONTAL_MOTION_OBSERVATION", "quantity": "raw_view_motion_eq_per_ms", "semantics": "Interval-mean change of relative view, not absolute positional error or biological velocity."},
+    {"id": "PHASE25_DESCRIPTOR", "quantity": "horizontal_motion_eq", "semantics": "Globally bounded signed model-space descriptor projected into declared R/L bases; no neural execution."}
+  ],
+  "world": {
+    "schema": "orientation_observation_world_state_v1",
+    "representation": "WORLD_FIXED_PANORAMIC_HEADING_REFERENCE",
+    "default_reference_id": "WORLD_FIXED_HEADING_ZERO",
+    "default_heading_eq": 0,
+    "world_heading_held_constant_over_interval": true,
+    "translation": "EXCLUDED; FIXED_POSITION_NO_X_Z_FIELDS",
+    "no_texture_or_hemifield_geometry": true
+  },
+  "coordinates": {
+    "body_zero": "Aligned with the zero world heading; conceptual +Z reference, no mutation of v1 fixed-heading geometry.",
+    "positive_body": "RIGHTWARD_MODEL_COURSE_ORIENTATION",
+    "positive_view": "Increasing rightward panorama coordinate",
+    "period_eq": 1,
+    "period_status": "EXPLORATORY_BOUNDED_ASSUMPTION",
+    "period_rationale": "Declare one orientation_eq per abstract geometric cycle solely in this observation model. Phase28 coordinates remain unwrapped proxies, not radians; this does not calibrate biological angle.",
+    "input_representation": "UNWRAPPED_COORDINATES_WITH_WINDING_RETAINED",
+    "wrap": "q - P*floor(q/P + 1/2); range [-P/2,P/2)",
+    "maximum_interval_increment": "abs(body_end-body_start) < P/2; equality or larger is rejected, not guessed or clipped.",
+    "wrapped_body_inputs": "Do not submit wrapped endpoints without winding; reconstruct a continuous unwrapped coordinate externally. Ambiguous half-cycle/multi-cycle jumps fail.",
+    "reference_invariance": "Adding the same constant to world and both body endpoints leaves relative geometry unchanged."
+  },
+  "operator": {
+    "equation_version": "WORLD_FIXED_INTERVAL_RATE_V1",
+    "relative_lift": "r_before = world_heading_eq - body_before_eq; r_after = world_heading_eq - body_after_eq",
+    "relative_view": "v_before = wrap(r_before); v_after = wrap(r_after)",
+    "displacement": "d = -(body_after_eq-body_before_eq); this is the winding-aware change of the relative lift, not naive v_after-v_before",
+    "raw_motion": "raw_view_motion_eq_per_ms = d / (end_time_ms-start_time_ms)",
+    "normalization": "normalized_unclipped = reference_window_ms * raw_view_motion_eq_per_ms / period_eq",
+    "reference_window_ms": 50,
+    "reference_status": "EXPLORATORY_BOUNDED_ASSUMPTION",
+    "reference_rationale": "One abstract cycle per shared frozen 50ms horizon is the unit reference rate. Chosen from declared model-space coordinates and horizon, not neural/orientation peaks or desired feedback stability.",
+    "bounding": "clip normalized_unclipped to [-1,+1]; report whether clipping actually changed the value",
+    "saturation_status": "EXPLORATORY_BOUNDED_ASSUMPTION; NOT_BIOLOGICAL_SATURATION",
+    "sign": "Fixed world and positive body change imply negative relative-view displacement, negative raw motion and negative global descriptor.",
+    "condition_specific_normalization": false
+  },
+  "side_projection": {
+    "global_to_right": "right = global_descriptor",
+    "global_to_left": "left = -global_descriptor",
+    "status": "EXPLORATORY_BOUNDED_ASSUMPTION",
+    "semantics": "Oppositely oriented side descriptor bases on the same abstract panorama: right positive is increasing view coordinate, left positive is decreasing. No separate hemifield coverage, weights or receptive fields.",
+    "not_phase25_unilateral_condition": true,
+    "limitation": "This is an explicit proxy-basis convention compatible with the frozen signed side-input range, not experimentally measured HS tuning or calibrated retinal projection. Both sides can be negative."
+  },
+  "temporal": {
+    "dt": "Measured from finite consecutive endpoint times; strictly positive, not independently supplied or fixed to 0.1ms by the operator.",
+    "signal": "INTERVAL_MEAN_RATE_LIKE_GEOMETRIC_DESCRIPTOR",
+    "input_interval": "At boundary n>=1, consume completed interval [n-1,n] with authoritative body endpoints and a held world reference.",
+    "output_boundary": "n; available after the interval completes, held as input over the next neural interval [n,n+1].",
+    "initial_boundary": "No completed interval at boundary zero: neutral R=L=0. Do not synthesize motion from an absolute offset.",
+    "update_order": "Observe prior completed interval; latch descriptors; update sources/targets simultaneously from old states using Phase25 equations; update orientation from old bilateral target states using frozen Phase28 equation; next observation awaits the resulting endpoint.",
+    "no_same_boundary_algebraic_loop": true,
+    "final_boundary": "Observation of the last completed interval exists, but is not consumed unless another interval is explicitly preregistered.",
+    "sample_rate_invariance": "Equal constant model-space rotation rate yields the same normalized descriptor for different dt while interval-domain validity holds. Displacement alone intentionally scales with dt."
+  },
+  "schemas": {
+    "input": "Typed immutable WorldReference, OrientationBoundary and ObservationInterval; no neural identities, counts, motor/body mechanics or opaque telemetry blob.",
+    "output": "horizontal_motion_observation_v1: reference ID, interval indices/times, body endpoints, relative lifts/wrapped views, displacement, raw rate, unclipped/global/R/L descriptors, clipping flag, units/status, contract ID."
+  },
+  "invariants": [
+    "Zero change gives exactly zero global/R/L motion even at a static nonzero body offset.",
+    "Sign reversal of increments reverses descriptor unless both are zero; symmetric clipping preserves oddness.",
+    "Wrapped relative-view seam crossing uses the continuous lift and does not emit a spurious full-cycle impulse.",
+    "Neutral initial descriptor is independent of absolute heading.",
+    "Output lies in [-1,+1] for each side; invalid NaN/Inf or alias-domain jumps are errors, not saturation.",
+    "The operator has no neural simulation, orientation integration, structural contact weights or rendering dependency."
+  ],
+  "synthetic_cases": [
+    {"id": "ZERO_MOTION", "time_ms": [0,1], "body_eq": [0,0], "world_eq": 0},
+    {"id": "STATIC_OFFSET", "time_ms": [0,1], "body_eq": [0.25,0.25], "world_eq": 0},
+    {"id": "POSITIVE_STEP", "time_ms": [0,1], "body_eq": [0,0.01], "world_eq": 0},
+    {"id": "NEGATIVE_STEP", "time_ms": [0,1], "body_eq": [0,-0.01], "world_eq": 0},
+    {"id": "CONSTANT_RATE", "time_ms": [0,1,2], "body_eq": [0,0.01,0.02], "world_eq": 0},
+    {"id": "REVERSAL", "time_ms": [0,1,2], "body_eq": [0,0.01,0], "world_eq": 0},
+    {"id": "VIEW_WRAP_CROSSING", "time_ms": [0,1], "body_eq": [0.49,0.51], "world_eq": 0},
+    {"id": "SATURATION", "time_ms": [0,1], "body_eq": [0,0.1], "world_eq": 0}
+  ],
+  "errors": ["INVALID_COORDINATE", "INVALID_TIME_INTERVAL", "INVALID_BOUNDARY_ORDER", "INVALID_WORLD_REFERENCE", "AMBIGUOUS_OR_DISCONTINUOUS_INTERVAL", "CONTRACT_AUTHORITY_MISMATCH"],
+  "phase28_compatibility_check": "Read validated stored orientation/time arrays only; check every interval API/schema domain. Never feed generated descriptors into Phase25 or recompute embodiment from them.",
+  "future_phase30_interface": "A NEW preregistered experiment may connect completed orientation interval -> observation descriptor at next boundary -> frozen Phase25 equations -> frozen Phase28 orientation equation. It must declare initialization/exogenous perturbation, latched inputs, world independence, runtime invalid-state policy and acceptance of null results. Existing Phase25/28 canonical artifacts/conditions and Phase27 neural-only scenario are not changed or relabelled.",
+  "assumptions": [
+    {"name": "World-minus-body frame transform and interval derivative", "classification": "MATHEMATICALLY_DERIVED_GEOMETRY"},
+    {"name": "Fixed panorama and one orientation_eq per abstract cycle", "classification": "EXPLORATORY_BOUNDED_ASSUMPTION"},
+    {"name": "Global 50ms reference rate and clipping", "classification": "EXPLORATORY_BOUNDED_ASSUMPTION"},
+    {"name": "Opposite R/L descriptor bases", "classification": "EXPLORATORY_BOUNDED_ASSUMPTION"},
+    {"name": "Prior-interval observation and old-state integration", "classification": "REPOSITORY_NUMERICAL_CONVENTION"},
+    {"name": "Retinal, motion-detector, biological velocity and physical yaw calibration", "classification": "NOT_IDENTIFIABLE_AND_EXCLUDED"}
+  ],
+  "units": {"body": "yaw_orientation_eq", "world": "world_heading_eq", "view": "relative_view_eq", "displacement": "horizontal_view_shift_eq", "raw_motion": "relative_view_eq_per_ms", "normalized": "horizontal_motion_eq"},
+  "allowed_claims": ["Deterministic bounded model-space geometric observation", "Explicit signed side-input compatibility", "Analytical geometry, wrap and causal-order invariants"],
+  "forbidden_claims": ["Calibrated optic flow or biological visual velocity", "Retinal/ommatidial or HS motion-detector physiology", "Biological yaw or steering prediction", "Demonstrated closed-loop stabilization", "Neural or body execution from observation outputs", "Structural-count sensory magnitude"],
+  "frozen_before_numerical_validation": true,
+  "output_driven_design": false,
+  "closed_loop_executed": false,
+  "randomness": "NONE",
+  "final_decision": "OBSERVATION_OPERATOR_SPECIFIED_WITH_EXPLORATORY_NORMALIZATION"
+}

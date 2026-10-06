@@ -2742,3 +2742,39 @@ Phase 29 `PASS`: 51 focused tests, 1,165 full Python tests (one integration
 test deselected), 59 frontend regression tests and all lint/format/typecheck/
 build/diff gates pass. Required historical replay identities and all four
 existing playback payload hashes remain unchanged. No commit/push.
+
+## NeuroFly v2 — Phase 30 exploratory course-control composition
+
+[Science specification](science/exploratory_course_control_closed_loop.md) and
+[preregistration](science/exploratory_course_control_closed_loop_preregistration.json).
+Stage A: `CLOSED_LOOP_COMPOSITION_MARGINAL_BUT_BOUNDED_FOR_FINITE_HORIZON_TEST`.
+Motion spectral radius .985517664092702; full system has one simple unit
+orientation-offset mode. Motion-only observation cannot restore absolute
+heading. Clipping is not needed to stabilize the local motion poles.
+
+Preregistration ID
+`efc27a18e1d19119b8eebc5d0f8b91e61a47337dbb9f60e2518fabc42672cd0f`
+was frozen before executing the new loop. It composes unchanged Phase 25,
+28 and 29 public kernels for 50 ms / dt .1 ms, with a single external ±.001 eq
+increment, neutral/open/closed/sign-reversed controls and old-state updates.
+No individual scientific parameter, artifact, scenario or frontend changed.
+
+First frozen artifact
+`f6ad13b9ba57d1ddb5e95cf91440c5b67f503a407f7330d4423ce7ab4340e581`:
+neutral exactly zero; open-loop final +.001; closed-loop final
++.00033277101655776 with decaying sign reversals, negative condition its exact
+counterpart. All four complete valid horizons; clipping 0/500 each. Feedback
+introduces counter-motion after the imposed step and retains an offset; this
+is not biological steering or zero-heading restoration. No translation,
+physical mechanics, chemical recurrence or electrical coupling exists.
+
+Scientific decision: `CLOSED_LOOP_VALIDATED_WITH_MARGINAL_DYNAMICS`.
+Next bounded action: specify a separate backend-authoritative course-control
+playback contract for this frozen artifact, keeping Phase 27 neural-only and
+the motion-versus-heading limitations explicit.
+
+Phase 30 `PASS`: 32 focused composition tests; 1,197 full Python tests
+(one integration test deselected); 59 frontend regression tests; all lint,
+format, typecheck, build and diff gates passed. Historical replay identities,
+frozen Phase 24–29 records and all four existing playback payload hashes are
+unchanged. Generated experiment data remain ignored; no commit/push.

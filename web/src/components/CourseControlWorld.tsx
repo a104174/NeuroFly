@@ -17,9 +17,9 @@ export default function CourseControlWorld({result,cursor}:{result:CoursePlaybac
   const {frame,renderRotation,relativeView}=courseScene(result,cursor);
   return <div className="scenario-world course-world" aria-label="Exploratory model-space orientation presentation">
     <PresentationBoundary><Canvas frameloop="demand" dpr={[1,1.5]} camera={{position:[0,8,7],fov:48}} fallback={<p>WebGL unavailable; authoritative orientation and neural telemetry remain below.</p>}>
-      <color attach="background" args={["#101e28"]}/>
+      <color attach="background" args={["#161d20"]}/>
       <ambientLight intensity={1.4}/><directionalLight position={[3,8,4]} intensity={3}/>
-      <gridHelper args={[12,12,"#4e6e6d","#253b43"]}/>
+      <gridHelper args={[12,8,"#3a4545","#272f32"]}/>
       {/* World-fixed +Z reference. Not a target or heading-error signal. */}
       <group rotation={[0,result.world_reference.heading_eq*2*Math.PI,0]}>
         <mesh position={[0,.025,2.5]}><boxGeometry args={[.025,.025,5]}/><meshBasicMaterial color="#a4c3ba"/></mesh>

@@ -2829,3 +2829,22 @@ integration test deselected), 65 unchanged frontend tests, all quality gates and
 historical/five-payload identity checks pass. No commit/push.
 Next bounded action: specify the Phase 33 visual system for the five scenario
 screens while preserving frozen science, typed playback and claim limits.
+
+## NeuroFly v2 — Phase 33 visual system / scientific cockpit
+
+[Implementation and audit-resolution record](science/visual_system_scientific_cockpit_redesign.md).
+The frontend now uses a restrained graphite instrument frame, compact five-class
+Scenario Library, adjacent current-result summaries, shared causal/telemetry/unit
+grammar, grouped provenance and persistent scientific loading/no-fallback errors.
+The neural viewport combines input with the eight-identity/six-route motif;
+course control adds an authoritative orientation trace without specimen gain.
+Mobile prioritizes viewport/result/transport and collapses secondary details.
+
+All UX01–UX17 findings are addressed as RESOLVED or IMPROVED. Fly asset work and
+backend replay performance remain explicitly deferred. Phase 32 audit, all five
+scientific payloads and scientific kernels/artifacts remain unchanged. No new
+dependencies or backend transport changes; no commit/push.
+
+Decision: `REDESIGN_COMPLETE_WITH_DEFERRED_ASSET_LIMITATIONS`.
+Next bounded action: validate newcomer readability/usability across the redesigned
+five canonical scenarios without changing scientific models.

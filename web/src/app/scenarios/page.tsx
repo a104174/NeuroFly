@@ -1,9 +1,8 @@
-import Link from "next/link";
 import { AppHeader } from "@/components/AppHeader";
 import { StateMessage } from "@/components/StateMessage";
 import { requestJson } from "@/lib/neuroflyClient";
 import { parseScenarioCatalog } from "@/lib/scenarioPlayback";
-import { scenarioCopy } from "@/lib/scenarioPresentation";
+import { ScenarioCard } from "@/components/ScenarioCard";
 
 export const dynamic = "force-dynamic";
 export default async function ScenariosPage() {
@@ -14,17 +13,8 @@ export default async function ScenariosPage() {
   </main></div>; }
   return <div className="app-shell"><AppHeader /><main className="scenario-route">
     <p className="eyebrow">NEUROFLY / SCIENTIFIC SCENARIOS</p>
-    <h1>See the stimulus.<br />Understand the response.</h1>
-    <p className="scenario-intro">Explore looming experiments, horizontal-motion neural validation and exploratory course-control feedback. Backend state, explicit assumptions and honest outcomes.</p>
-    <div className="scenario-catalog">{[...scenarios].sort((a,b) => Number(b.id === "LOOMING_CIRCUIT_VALIDATION") - Number(a.id === "LOOMING_CIRCUIT_VALIDATION")).map(s => <Link key={s.id} href={`/scenarios/${s.id}`} className={`scenario-card ${s.id !== "BASELINE_CONTROL" ? "primary-scenario" : "baseline-scenario"}`}>
-      <span className="eyebrow">{scenarioCopy[s.id].role}</span><h2>{s.title}</h2>
-      <p>{s.description}</p>
-      {scenarioCopy[s.id].badge && <p className="course-mode">{scenarioCopy[s.id].badge}</p>}
-      <div className="card-preview" aria-hidden="true">{scenarioCopy[s.id].preview}</div>
-      <h3>What you will see</h3><p>{scenarioCopy[s.id].observation}</p>
-      <p className="scenario-caveat">{s.scientific_caveat}</p>
-      <span className="scenario-card-action">Open scientific playback →</span>
-    </Link>)}</div>
+    <div className="library-heading"><div><h1>Experiments, not predictions.</h1><p className="scenario-intro">Five bounded windows into connectome-based models.<br/>Explicit inputs. Frozen scientific results. Deterministic replay.</p></div><span className="library-count">05 <small>CANONICAL EXPERIMENTS</small></span></div>
+    <div className="scenario-catalog">{scenarios.map((scenario,index)=><ScenarioCard key={scenario.id} scenario={scenario} index={index}/>)}</div>
     <p className="subtle-note">Five executable presets: control, circuit micro-window, exploratory world experiment, neural-only horizontal motion and exploratory course control. Broader strategic worlds remain future work.</p>
   </main></div>;
 }

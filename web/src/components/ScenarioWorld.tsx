@@ -1,7 +1,7 @@
 "use client";
 
 import { Canvas, useThree } from "@react-three/fiber";
-import { Component, useCallback, useEffect, useMemo, useState, type ReactNode } from "react";
+import { Component, useCallback, useEffect, useMemo, useState, useRef, type RefObject, type ReactNode } from "react";
 import { BufferGeometry, Line, LineDashedMaterial, PCFShadowMap, PerspectiveCamera, Vector3 } from "three";
 import { ScenarioFlyVisual } from "./ScenarioFlyVisual";
 import type { FlyAssetLoadStatus } from "@/lib/flyVisualAsset";
@@ -43,23 +43,38 @@ function ApproachGuide({ result }: { result: ScenarioPlaybackResult }) {
   return path ? <primitive object={path} /> : null;
 }
 
+function ProjectedObjectLabel({position,label}:{position:[number,number,number]|null;label:RefObject<HTMLDivElement|null>}) {
+  const {camera,size}=useThree();
+  useEffect(()=>{
+    if(!position || !label.current) return;
+    const point=new Vector3(...position).project(camera);
+    // This ref owns a DOM presentation label, not a scientific or React prop.
+    // eslint-disable-next-line react-hooks/immutability
+    label.current.style.left=`${(point.x+1)*size.width/2}px`;
+    label.current.style.top=`${(1-point.y)*size.height/2}px`;
+  },[camera,size.width,size.height,position,label]);
+  return null;
+}
+
 export default function ScenarioWorld({ result, cursor }: { result: ScenarioPlaybackResult; cursor: number }) {
   const scene = scenarioScene(result, cursor);
   const baseline = result.scenario.id === "BASELINE_CONTROL";
   const [assetStatus, setAssetStatus] = useState<FlyAssetLoadStatus>("loading");
   const reportAsset = useCallback((status: FlyAssetLoadStatus) => setAssetStatus(status), []);
+  const objectLabel=useRef<HTMLDivElement>(null);
   return <div className={`scenario-world ${baseline ? "control-world" : "looming-world"}`} aria-label="Authoritative scenario 3D playback">
     <SceneBoundary><Canvas shadows={{ type: PCFShadowMap }} frameloop="demand" dpr={[1, 1.5]}
       camera={{ position: baseline ? [4.8, 2.8, -3] : [9, 4.6, -2.5], fov: baseline ? 34 : 36 }}
       onCreated={({ camera }) => { camera.lookAt(0, 0.6, baseline ? 0 : 2.6); camera.updateMatrixWorld(); }}
       fallback={<p>WebGL unavailable; use the scientific telemetry.</p>}>
       <PresentationCamera baseline={baseline} />
+      <ProjectedObjectLabel position={scene.objectPosition} label={objectLabel}/>
       <color attach="background" args={["#161d20"]} />
       <fog attach="fog" args={["#161d20", 14, 30]} />
       <hemisphereLight args={["#e4dfce", "#554a3e", 1.25]} />
       <directionalLight castShadow position={[2, 7, -3]} intensity={2.1} color="#ffe7bf" shadow-mapSize={[1024, 1024]} shadow-camera-left={-6} shadow-camera-right={6} shadow-camera-top={8} shadow-camera-bottom={-5} shadow-bias={-0.001} />
       <directionalLight position={[-4, 3, 5]} intensity={1.3} color="#bbced1" />
-      <gridHelper args={[30, 30, "#303b3e", "#242d30"]} position={[0, -0.015, 0]} />
+      <gridHelper args={[30, 15, "#292f31", "#202629"]} position={[0, -0.015, 0]} />
       <mesh receiveShadow rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.03, 0]}><planeGeometry args={[60, 60]} /><meshStandardMaterial color="#1c2427" roughness={0.95} /></mesh>
       <group name="authoritative-fly" position={scene.bodyPosition}><ScenarioFlyVisual onStatusChange={reportAsset} /></group>
       {!baseline && <ApproachGuide result={result} />}
@@ -70,7 +85,7 @@ export default function ScenarioWorld({ result, cursor }: { result: ScenarioPlay
     <div className="scene-title"><span className="eyebrow">{baseline ? "BASELINE CONTROL" : "WORLD / MODEL-SPACE PRESENTATION"}</span><p>{baseline ? "No external stimulus. Stationary by design." : "One approaching object. No scripted fly response."}</p></div>
     <div className="scene-fly-label">Fly <small>Authoritative body state · {assetStatus === "ready" ? "project visual asset" : "loading visual asset"}</small></div>
     {!baseline && <>
-      <div className="scene-object-label">Looming object <small>Approaching toward the fly →</small></div>
+      <div ref={objectLabel} className="scene-label-anchor">Looming object · current position</div>
       <div className="scene-projection" aria-label="Exploratory sensory projection">
         <span className="projection-glyph" aria-hidden="true">⌾</span>
         <div><span className="eyebrow">EXPLORATORY SENSORY PROJECTION</span><strong>Radius {scene.frame.lattice_radius} · {scene.frame.active_sensory_body_count} / 311 exposed</strong><small>Fixed relative-column centre · not a calibrated retinal map</small></div>

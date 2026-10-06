@@ -4,6 +4,7 @@ import test from "node:test";
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { ScenarioExplanation } from "../src/components/ScenarioExplanation";
+import { CurrentResult } from "../src/components/CurrentResult";
 import { scenarioNarrative } from "../src/lib/scenarioPresentation";
 import { loadScenarioPlayback } from "../src/app/scenarios/actions";
 import { advanceScenarioCursor, parseScenarioCatalog, parseScenarioPlayback, scenarioScene, PRESENTATION_SCALE, type ScenarioPlaybackResult } from "../src/lib/scenarioPlayback";
@@ -47,7 +48,7 @@ test("world experiment preserves scientific horizon, termination and frozen iden
   r.requested_duration_ms = 40;
   r.statuses.closed_loop_execution_completed = false;
   const parsed = parseScenarioPlayback(r);
-  const html = renderToStaticMarkup(createElement(ScenarioExplanation,{result:parsed,frame:parsed.frames[2]}));
+  const html = renderToStaticMarkup(createElement(CurrentResult,{result:parsed,step:2}))+renderToStaticMarkup(createElement(ScenarioExplanation,{result:parsed,frame:parsed.frames[2]}));
   assert.match(html,/STOPPED · GEOMETRY DOMAIN/);
   assert.match(html,/Requested horizon 40 ms/);
   assert.doesNotMatch(html,/RUN COMPLETE/);
@@ -126,25 +127,25 @@ test("baseline rendered explanation makes stationary control intentional", () =>
   const r = fixture();
   r.scenario.id = r.scenario.scenario_kind = "BASELINE_CONTROL";
   r.frames.forEach(f => { f.object = null; f.lattice_radius = null; f.relative_distance_world_eq = null; f.active_sensory_body_count = 0; f.sensory_summaries.forEach(s => { s.state_sum = 0; }); });
-  const html = renderToStaticMarkup(createElement(ScenarioExplanation, {result:r, frame:r.frames[0]}));
+  const html = renderToStaticMarkup(createElement(CurrentResult,{result:r,step:0}))+renderToStaticMarkup(createElement(ScenarioExplanation, {result:r, frame:r.frames[0]}));
   assert.match(html,/A control, not a broken simulation/);
   assert.match(html,/No external stimulus/);
   assert.match(html,/Body stationary/);
   assert.match(html,/Stimulus disabled/);
-  assert.match(html,/No genuine motor command/);
+  assert.match(html,/No recorded motor command/);
   assert.equal(scenarioScene(r,1).objectPosition,null);
 });
 test("looming rendered causal narrative explains subthreshold zero movement", () => {
   const r = fixture(), f = r.frames[2];
-  const html = renderToStaticMarkup(createElement(ScenarioExplanation,{result:r,frame:f}));
-  for (const text of ["Approaching object","Visual circuit responding","Below model spike threshold","SUBTHRESHOLD","No genuine motor command","Body stationary","RUN COMPLETE"]) assert.ok(html.includes(text),text);
-  assert.match(html,/No genuine actuator command was produced/);
+  const html = renderToStaticMarkup(createElement(CurrentResult,{result:r,step:f.step}))+renderToStaticMarkup(createElement(ScenarioExplanation,{result:r,frame:f}));
+  for (const text of ["Approaching object","Visual circuit responding","Below model spike threshold","SUBTHRESHOLD","No recorded motor command","Body stationary","RUN COMPLETE"]) assert.ok(html.includes(text),text);
+  assert.match(html,/No actuator command was produced/);
   assert.doesNotMatch(html,/escape failed/);
 });
 test("scientific values and selected-boundary story are sourced from DTO, not canonical literals", () => {
   const r = fixture(), f = r.frames[1];
   f.active_sensory_body_count = 31; f.lattice_radius = 8; f.dnp01_membrane_mv[0] = -48.125;
-  const html = renderToStaticMarkup(createElement(ScenarioExplanation,{result:r,frame:f}));
+  const html = renderToStaticMarkup(createElement(CurrentResult,{result:r,step:f.step}))+renderToStaticMarkup(createElement(ScenarioExplanation,{result:r,frame:f}));
   assert.match(html,/31/); assert.match(html,/Radius 8/); assert.match(html,/-48.125/); assert.match(html,/0.1/);
   assert.equal(scenarioNarrative(r,r.frames[0]).stages[1].state,"INITIAL STATE");
   assert.equal(scenarioNarrative(r,f).stages[1].state,"RESPONDING");

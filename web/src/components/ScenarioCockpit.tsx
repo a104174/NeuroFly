@@ -7,7 +7,10 @@ import { loadScenarioPlayback } from "@/app/scenarios/actions";
 import { ScenarioExplanation } from "./ScenarioExplanation";
 import { HorizontalMotionExplanation } from "./HorizontalMotionExplanation";
 import { CourseControlExplanation } from "./CourseControlExplanation";
-import { scenarioCopy } from "@/lib/scenarioPresentation";
+import { scenarioCopy, experimentMetadata } from "@/lib/scenarioPresentation";
+import { CurrentResult } from "./CurrentResult";
+import { ScientificTrace } from "./ScientificTrace";
+import { ScientificPlaybackLoading, ScientificPlaybackUnavailable, UnitHelp, PlaybackPhases } from "./ScientificInstrument";
 import { advanceScenarioCursor, isNeuralPlayback, isCoursePlayback, type ScenarioDefinition, type ScenarioPlayback } from "@/lib/scenarioPlayback";
 
 const ScenarioWorld = dynamic(() => import("@/components/ScenarioWorld"), { ssr: false, loading: () => <div className="scenario-world" role="status">Preparing 3D view…</div> });
@@ -34,21 +37,24 @@ function Playback({ result }: { result: ScenarioPlayback }) {
     return () => cancelAnimationFrame(frame);
   }, [isPlaying, last]);
   const frame = result.frames[Math.floor(Math.max(0, Math.min(last,cursor)))];
-  return <>
-    {isCoursePlayback(result) ? <CourseControlWorld result={result} cursor={cursor}/> : isNeuralPlayback(result) ? <HorizontalMotionWorld result={result} cursor={cursor}/> : <ScenarioWorld result={result} cursor={cursor} />}
+  return <div className="scientific-playback">
+    <div className="experiment-main">
+      <div className="experiment-viewport">{isCoursePlayback(result) ? <><CourseControlWorld result={result} cursor={cursor}/><ScientificTrace result={result} step={frame.step}/></> : isNeuralPlayback(result) ? <HorizontalMotionWorld result={result} cursor={cursor}/> : <ScenarioWorld result={result} cursor={cursor} />}</div>
+      <CurrentResult result={result} step={frame.step}/>
+    </div>
     <section className="scenario-transport" aria-label="Playback controls">
       <div className="scenario-control-row">
         <button onClick={() => { if (cursor >= last) setCursor(0); setPlaying(!isPlaying); }} aria-label={isPlaying ? "Pause playback" : "Play playback"}>{isPlaying ? "Pause" : "Play"}</button>
         <button onClick={() => { setPlaying(false); setCursor(0); }}>Reset</button>
         <span>Boundary {frame.step} / {last} · <strong>{frame.time_ms.toFixed(1)} ms</strong> scientific time</span>
       </div>
-      <label htmlFor="scenario-timeline">Scientific boundary</label>
+      <label htmlFor="scenario-timeline">Scrub scientific boundary</label>
       <input id="scenario-timeline" type="range" min={0} max={last} step={1} value={Math.floor(cursor)} onChange={e => { setPlaying(false); setCursor(Number(e.target.value)); }} />
       <small>{result.duration_ms.toFixed(1)} ms simulation shown over 6 s playback · rendering only, scientific time unchanged</small>
-      {isCoursePlayback(result) && <small>0→1: external perturbation · 1→500: feedback evolution · 500: experiment ends at a residual offset</small>}
+      <PlaybackPhases result={result}/>
     </section>
-    {isCoursePlayback(result) ? <CourseControlExplanation result={result} frame={result.frames[frame.step]}/> : isNeuralPlayback(result) ? <HorizontalMotionExplanation result={result} frame={result.frames[frame.step]}/> : <ScenarioExplanation result={result} frame={result.frames[frame.step]} />}
-  </>;
+    <div className="experiment-explanation">{isCoursePlayback(result) ? <CourseControlExplanation result={result} frame={result.frames[frame.step]}/> : isNeuralPlayback(result) ? <HorizontalMotionExplanation result={result} frame={result.frames[frame.step]}/> : <ScenarioExplanation result={result} frame={result.frames[frame.step]} />}<UnitHelp/></div>
+  </div>;
 }
 
 export function ScenarioCockpit({ scenario, initialResult = null, initialError = null }: { scenario: ScenarioDefinition; initialResult?: ScenarioPlayback | null; initialError?: string | null }) {
@@ -70,12 +76,12 @@ export function ScenarioCockpit({ scenario, initialResult = null, initialError =
     } catch { setError("Backend connection failed. No substitute simulation was loaded."); }
   }
   return <main className="scenario-route">
-    <Link className="back-link" href="/scenarios">← scenarios</Link>
-    <header className="scenario-heading"><div><p className="eyebrow">{copy.role}</p><h1>{scenario.title}</h1><p>{scenario.description}</p></div>
+    <Link className="back-link" href="/scenarios">← All experiments</Link>
+    <header className="scenario-heading"><div><p className="eyebrow">{copy.role}</p><h1>{scenario.title}</h1><p>{experimentMetadata[scenario.id].purpose}</p><div className="experiment-context"><span>{experimentMetadata[scenario.id].duration} scientific horizon</span><span>{experimentMetadata[scenario.id].input}</span><span>{experimentMetadata[scenario.id].scope}</span></div></div>
       <button className="scenario-run" disabled={running} onClick={() => startTransition(run)}>{running ? "Preparing validated replay…" : result ? "Run again" : "Run canonical preset"}</button>
     </header>
-    {running && <p role="status" className="scenario-pending">Replaying the frozen scientific model and validating source provenance. This can take several seconds.</p>}
-    {error && <p role="alert" className="scenario-error">{copy.failureNote && <><strong>{copy.failureNote}</strong><br/></>}{error} Retry Run when the scientific backend is available.</p>}
+    {running && <ScientificPlaybackLoading/>}
+    {error && <ScientificPlaybackUnavailable detail={error} retry={()=>startTransition(run)}/>}
     {!result && !running && !error && <section className="scenario-ready"><p className="eyebrow">READY TO OBSERVE</p><h2>Backend state. Honest outcomes.</h2><p>{scenario.scientific_caveat}</p><p>Run loads the numerically replay-validated canonical result. No local physics or fallback animation.</p></section>}
     {result && <Playback key={`${result.run_id}-${revision}`} result={result} />}
   </main>;

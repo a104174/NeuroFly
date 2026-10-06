@@ -96,5 +96,6 @@ test("presentation has no autonomous simulation or body transform", ()=>{
   const cockpit=readFileSync(new URL("../src/components/ScenarioCockpit.tsx",import.meta.url),"utf8");
   assert.match(cockpit,/HorizontalMotionExplanation/);
   assert.match(cockpit,/setPlaying\(false\); setCursor\(0\)/);
-  assert.match(cockpit,/role="alert"/);
+  assert.match(cockpit,/ScientificPlaybackUnavailable/);
+  assert.match(readFileSync(new URL("../src/components/ScientificInstrument.tsx",import.meta.url),"utf8"),/role="alert"/);
 });

@@ -1,5 +1,6 @@
 /** Transport validation and render-only playback. No scientific equations. */
-export const SCENARIO_KINDS = ["BASELINE_CONTROL", "LOOMING_CIRCUIT_VALIDATION", "LOOMING_WORLD_EXPERIMENT", "HORIZONTAL_MOTION_NEURAL_VALIDATION"] as const;
+import { parseCoursePlayback, type CoursePlaybackResult } from "./courseControlPlayback";
+export const SCENARIO_KINDS = ["BASELINE_CONTROL", "LOOMING_CIRCUIT_VALIDATION", "LOOMING_WORLD_EXPERIMENT", "HORIZONTAL_MOTION_NEURAL_VALIDATION", "EXPLORATORY_COURSE_CONTROL"] as const;
 export type ScenarioKind = typeof SCENARIO_KINDS[number];
 export interface ScenarioDefinition {
   id: ScenarioKind; scenario_kind: ScenarioKind; title: string; description: string;
@@ -80,8 +81,9 @@ export interface NeuralPlaybackResult {
   provenance: {dataset: "male-cns:v1.0"; selection_id: string; preregistration_id: string; context_audit_id: string; context_decision: "FEEDFORWARD_MOTIF_REMAINS_CURRENT_VALIDATED_BOUNDARY"; active_routes: NeuralRoute[]; excluded_routes: NeuralRoute[]};
   frames: NeuralPlaybackFrame[]; scientific_limitations: string[]; source_operation: "VALIDATED_CANONICAL_REPLAY";
 }
-export type ScenarioPlayback = ScenarioPlaybackResult | NeuralPlaybackResult;
-export function isNeuralPlayback(r: ScenarioPlayback): r is NeuralPlaybackResult { return "presentation_kind" in r; }
+export type ScenarioPlayback = ScenarioPlaybackResult | NeuralPlaybackResult | CoursePlaybackResult;
+export function isNeuralPlayback(r: ScenarioPlayback): r is NeuralPlaybackResult { return "presentation_kind" in r && r.presentation_kind === "NEURAL_ONLY_VALIDATION"; }
+export function isCoursePlayback(r: ScenarioPlayback): r is CoursePlaybackResult { return "presentation_kind" in r && r.presentation_kind === "EXPLORATORY_CLOSED_LOOP_MODEL"; }
 function parseNeuralPlayback(v: unknown): NeuralPlaybackResult {
   const r = record(v), s = record(r.statuses), p = record(r.provenance);
   const hash = (v: unknown) => { const h = str(v); return /^[0-9a-f]{64}$/.test(h) ? h : invalid(); };
@@ -112,9 +114,11 @@ function parseNeuralPlayback(v: unknown): NeuralPlaybackResult {
     provenance:{dataset:literal(p.dataset,["male-cns:v1.0"]),selection_id:hash(p.selection_id),preregistration_id:hash(p.preregistration_id),context_audit_id:hash(p.context_audit_id),context_decision:literal(p.context_decision,["FEEDFORWARD_MOTIF_REMAINS_CURRENT_VALIDATED_BOUNDARY"]),active_routes:active,excluded_routes:excluded},frames,scientific_limitations:array(r.scientific_limitations,str),source_operation:literal(r.source_operation,["VALIDATED_CANONICAL_REPLAY"])};
 }
 export function parseScenarioPlayback(v: NeuralPlaybackResult): NeuralPlaybackResult;
+export function parseScenarioPlayback(v: CoursePlaybackResult): CoursePlaybackResult;
 export function parseScenarioPlayback(v: ScenarioPlaybackResult): ScenarioPlaybackResult;
 export function parseScenarioPlayback(v: unknown): ScenarioPlayback;
 export function parseScenarioPlayback(v: unknown): ScenarioPlayback {
+  if (record(v).presentation_kind === "EXPLORATORY_CLOSED_LOOP_MODEL" || record(record(v).scenario).id === "EXPLORATORY_COURSE_CONTROL") return parseCoursePlayback(v);
   if (record(v).presentation_kind === "NEURAL_ONLY_VALIDATION" || record(record(v).scenario).id === "HORIZONTAL_MOTION_NEURAL_VALIDATION") return parseNeuralPlayback(v);
   const r = record(v), s = record(r.statuses);
   const scenario = parseScenarioDefinition(r.scenario);

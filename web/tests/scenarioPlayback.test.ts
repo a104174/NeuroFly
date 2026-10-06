@@ -29,9 +29,9 @@ test("typed payload preserves execution true and movement false independently", 
   assert.equal(r.statuses.body_movement_occurred, false);
   assert.equal(r.frames.length, 3);
 });
-test("exact four supported preset definitions and no phantom worlds", () => {
+test("exact five supported preset definitions and no phantom worlds", () => {
   const s = fixture().scenario;
-  assert.equal(parseScenarioCatalog([{...s,id:"BASELINE_CONTROL",scenario_kind:"BASELINE_CONTROL"},s,{...s,id:"LOOMING_WORLD_EXPERIMENT",scenario_kind:"LOOMING_WORLD_EXPERIMENT"},{...s,id:"HORIZONTAL_MOTION_NEURAL_VALIDATION",scenario_kind:"HORIZONTAL_MOTION_NEURAL_VALIDATION"}]).length, 4);
+  assert.equal(parseScenarioCatalog([{...s,id:"BASELINE_CONTROL",scenario_kind:"BASELINE_CONTROL"},s,{...s,id:"LOOMING_WORLD_EXPERIMENT",scenario_kind:"LOOMING_WORLD_EXPERIMENT"},{...s,id:"HORIZONTAL_MOTION_NEURAL_VALIDATION",scenario_kind:"HORIZONTAL_MOTION_NEURAL_VALIDATION"},{...s,id:"EXPLORATORY_COURSE_CONTROL",scenario_kind:"EXPLORATORY_COURSE_CONTROL"}]).length, 5);
   assert.throws(() => parseScenarioCatalog([s]));
   assert.throws(() => parseScenarioCatalog([{...s,id:"LIGHT_DARK"},s]));
 });

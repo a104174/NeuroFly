@@ -28,7 +28,13 @@ ScenarioKind = Literal[
     "LOOMING_CIRCUIT_VALIDATION",
     "LOOMING_WORLD_EXPERIMENT",
     "HORIZONTAL_MOTION_NEURAL_VALIDATION",
+    "EXPLORATORY_COURSE_CONTROL",
 ]
+COURSE_KIND = "EXPLORATORY_COURSE_CONTROL"
+COURSE_CONDITION = "CLOSED_LOOP_PERTURBATION"
+CANONICAL_COURSE_ARTIFACT_ID = (
+    "f6ad13b9ba57d1ddb5e95cf91440c5b67f503a407f7330d4423ce7ab4340e581"
+)
 NEURAL_KIND = "HORIZONTAL_MOTION_NEURAL_VALIDATION"
 CANONICAL_NEURAL_ARTIFACT_ID = (
     "2ae44804fd570e6b64f219ee50b15bed923855e772a07b5cecc9d766ff6f4113"
@@ -101,6 +107,20 @@ def scenario_catalog() -> list[ScenarioDefinition]:
                 "Uncalibrated horizontal_motion_eq and dnp15_state_eq. "
                 "Six chemical feedforward routes only; no recurrent/electrical "
                 "dynamics, events or body mapping."
+            ),
+        )
+    )
+    definitions.append(
+        ScenarioDefinition(
+            id=COURSE_KIND,
+            scenario_kind=COURSE_KIND,
+            title="Exploratory Course Control",
+            description="Model-space visual-motion feedback through HS→DNp15 "
+            "into exploratory orientation.",
+            scientific_caveat=(
+                "Closed-loop experiment · 50 ms · no translation. Marginal "
+                "orientation dynamics: motion modes decay, but no absolute "
+                "heading-error signal exists. Not calibrated biological behavior."
             ),
         )
     )
@@ -342,14 +362,313 @@ def load_neural_playback(path: Path | None = None) -> NeuralPlaybackResult:
     )
 
 
+class CourseObservation(TransportModel):
+    interval_start_step: int
+    interval_end_step: int
+    interval_start_ms: float
+    interval_end_ms: float
+    raw_view_motion_eq_per_ms: float
+    normalized_unclipped: float
+    global_horizontal_motion_eq: float = Field(ge=-1, le=1)
+    clipped: bool
+
+
+class CoursePlaybackFrame(TransportModel):
+    step: int
+    time_ms: float
+    yaw_orientation_eq: float
+    previous_orientation_eq: float | None
+    relative_view_eq: float
+    observation: CourseObservation | None
+    input_descriptor: HorizontalInput
+    hs_states: list[float] = Field(min_length=6, max_length=6)
+    dnp15_states: list[float] = Field(min_length=2, max_length=2)
+    bilateral_differential: float
+    yaw_drive_eq: float
+    observation_clipped: bool
+    external_orientation_increment_eq: float | None
+
+
+class CourseWorldReference(TransportModel):
+    reference_id: Literal["WORLD_FIXED_HEADING_ZERO"]
+    heading_eq: float
+    period_eq: Literal[1]
+    units: Literal["world_heading_eq"] = "world_heading_eq"
+
+
+class CourseAnalysis(TransportModel):
+    analysis_id: str
+    stage_a_decision: Literal[
+        "CLOSED_LOOP_COMPOSITION_MARGINAL_BUT_BOUNDED_FOR_FINITE_HORIZON_TEST"
+    ]
+    classification: Literal["MARGINAL_ORIENTATION_MODE"]
+    local_motion_spectral_radius: float = Field(gt=0, lt=1)
+    orientation_eigenvalue: Literal[1]
+    clipping_required_for_local_stability: Literal[False]
+
+
+class CourseProvenance(TransportModel):
+    neural: NeuralProvenance
+    neural_artifact_id: str
+    orientation_evidence_id: str
+    orientation_preregistration_id: str
+    orientation_artifact_id: str
+    observation_contract_id: str
+    closed_loop_preregistration_id: str
+    config_sha256: str
+    result_sha256: str
+    analysis: CourseAnalysis
+
+
+class CourseScientificStatus(TransportModel):
+    execution_completed: bool
+    orientation_feedback_connected: Literal[True]
+    orientation_feedback_realized: bool
+    translation: Literal["NOT_MODELLED"]
+    absolute_heading_error_signal: Literal[False]
+    event_semantics: Literal["NOT_DEFINED"]
+    recurrence_active: Literal[False]
+    electrical_coupling_active: Literal[False]
+
+
+class CourseSummary(TransportModel):
+    initial_perturbation_eq: float
+    final_orientation_eq: float
+    clipping_count: int
+    observed_interval_count: int
+    clipping_duration_ms: float
+
+
+class CoursePerturbation(TransportModel):
+    start_step: int
+    end_step: int
+    increment_eq: float
+
+
+class CourseTermination(TransportModel):
+    status: Literal["COMPLETED_VALID_HORIZON"]
+    step: int
+    time_ms: float
+
+
+class CoursePlaybackResult(TransportModel):
+    schema_version: Literal["scenario_playback_v1"] = Field(
+        default="scenario_playback_v1", serialization_alias="schema"
+    )
+    presentation_kind: Literal["EXPLORATORY_CLOSED_LOOP_MODEL"] = (
+        "EXPLORATORY_CLOSED_LOOP_MODEL"
+    )
+    artifact_id: str
+    run_id: str
+    scenario: ScenarioDefinition
+    condition_id: Literal["CLOSED_LOOP_PERTURBATION"]
+    dt_ms: float
+    duration_ms: float
+    statuses: CourseScientificStatus
+    world_reference: CourseWorldReference
+    sources: list[NeuralIdentity] = Field(min_length=6, max_length=6)
+    targets: list[NeuralIdentity] = Field(min_length=2, max_length=2)
+    input_units: Literal["horizontal_motion_eq"]
+    source_units: Literal["dimensionless_signed_proxy"]
+    target_units: Literal["dnp15_state_eq"]
+    orientation_units: Literal["yaw_orientation_eq"]
+    yaw_drive_units: Literal["yaw_drive_eq"]
+    view_units: Literal["relative_view_eq"]
+    provenance: CourseProvenance
+    summary: CourseSummary
+    perturbation: CoursePerturbation
+    termination: CourseTermination
+    frames: list[CoursePlaybackFrame]
+    scientific_limitations: list[str]
+    source_operation: Literal["VALIDATED_CANONICAL_REPLAY"] = (
+        "VALIDATED_CANONICAL_REPLAY"
+    )
+
+
+def load_course_playback(path: Path | None = None) -> CoursePlaybackResult:
+    """Reduced presentation DTO over immutable Phase30 replay, never generation."""
+    from neurofly.exploratory_course_control_artifacts import (
+        DEFAULT_ARTIFACT_ROOT as COURSE_ROOT,
+    )
+    from neurofly.exploratory_course_control_artifacts import (
+        replay_closed_loop_artifact,
+    )
+    from neurofly.hs_dnp15_neural_validation import load_preregistration
+    from neurofly.ttm_g1_electrophysiology_observations import canonical_sha256
+
+    payload = replay_closed_loop_artifact(
+        path or COURSE_ROOT / CANONICAL_COURSE_ARTIFACT_ID
+    )
+    if payload["artifact_id"] != CANONICAL_COURSE_ARTIFACT_ID:
+        raise ValueError("Phase30 canonical authority mismatch")
+    p = payload["config"]["preregistration"]
+    result = payload["result"]
+    n = load_preregistration()
+    run = next(r for r in result["runs"] if r["condition"]["id"] == COURSE_CONDITION)
+    if run["termination"]["status"] != "COMPLETED_VALID_HORIZON":
+        raise ValueError("canonical course-control experiment incomplete")
+    authorities = {
+        item["document"]: item["canonical_id"] for item in p["authority_records"]
+    }
+    frames = []
+    for b in run["boundaries"]:
+        o = b["observation"]
+        frames.append(
+            CoursePlaybackFrame(
+                step=b["boundary_index"],
+                time_ms=b["time_ms"],
+                yaw_orientation_eq=b["yaw_orientation_eq"],
+                previous_orientation_eq=b["previous_orientation_eq"],
+                relative_view_eq=b["relative_view_eq"],
+                observation=CourseObservation(
+                    interval_start_step=o["interval"]["before"]["index"],
+                    interval_end_step=o["available_boundary_index"],
+                    interval_start_ms=o["interval"]["before"]["time_ms"],
+                    interval_end_ms=o["interval"]["after"]["time_ms"],
+                    raw_view_motion_eq_per_ms=o["raw_view_motion_eq_per_ms"],
+                    normalized_unclipped=o["normalized_unclipped"],
+                    global_horizontal_motion_eq=o["global_horizontal_motion_eq"],
+                    clipped=o["clipped"],
+                )
+                if o
+                else None,
+                input_descriptor={
+                    "R": b["latched_motion"]["right"],
+                    "L": b["latched_motion"]["left"],
+                },
+                hs_states=b["hs_states"],
+                dnp15_states=b["dnp15_states"],
+                bilateral_differential=b["dnp15_differential"],
+                yaw_drive_eq=b["yaw_drive_eq"],
+                observation_clipped=b["observation_clipped"],
+                external_orientation_increment_eq=b[
+                    "external_orientation_increment_eq"
+                ],
+            )
+        )
+    diag, analysis = run["diagnostics"], p["analysis"]
+    return CoursePlaybackResult(
+        artifact_id=payload["artifact_id"],
+        run_id=canonical_sha256([payload["artifact_id"], COURSE_CONDITION]),
+        scenario=next(s for s in scenario_catalog() if s.id == COURSE_KIND),
+        condition_id=COURSE_CONDITION,
+        dt_ms=p["dt_ms"],
+        duration_ms=p["duration_ms"],
+        statuses=CourseScientificStatus(
+            execution_completed=True,
+            orientation_feedback_connected=True,
+            orientation_feedback_realized=any(
+                b["applied_neural_orientation_increment_eq"] not in (None, 0)
+                for b in run["boundaries"]
+            ),
+            translation="NOT_MODELLED",
+            absolute_heading_error_signal=False,
+            event_semantics="NOT_DEFINED",
+            recurrence_active=False,
+            electrical_coupling_active=False,
+        ),
+        world_reference=CourseWorldReference(
+            reference_id=p["world"]["reference_id"],
+            heading_eq=p["world"]["heading_eq"],
+            period_eq=p["world"]["period_eq"],
+        ),
+        sources=[
+            {k: v[k] for k in ("body_id", "type", "side")}
+            for v in result["source_order"]
+        ],
+        targets=[
+            {k: v[k] for k in ("body_id", "type", "side")}
+            for v in result["target_order"]
+        ],
+        input_units=p["units"]["motion"],
+        source_units=p["units"]["source"],
+        target_units=p["units"]["target"],
+        orientation_units=p["units"]["orientation"],
+        yaw_drive_units=p["units"]["drive"],
+        view_units=p["units"]["view"],
+        provenance=CourseProvenance(
+            neural=NeuralProvenance(
+                dataset=n["dataset"],
+                selection_id=n["selection_record_id"],
+                preregistration_id=authorities[
+                    "hs_dnp15_neural_validation_preregistration.json"
+                ],
+                context_audit_id=CONTEXT_AUDIT_ID,
+                context_decision="FEEDFORWARD_MOTIF_REMAINS_CURRENT_VALIDATED_BOUNDARY",
+                active_routes=[
+                    {k: e[k] for k in ("source_id", "target_id", "structural_count")}
+                    for e in n["selected_routes"]
+                ],
+                excluded_routes=[
+                    {k: e[k] for k in ("source_id", "target_id", "structural_count")}
+                    for e in n["omitted_induced_edges"]
+                ],
+            ),
+            neural_artifact_id=p["source_artifacts"]["phase25"]["artifact_id"],
+            orientation_evidence_id=authorities["dnp15_yaw_mapping_evidence_gate.json"],
+            orientation_preregistration_id=authorities[
+                "dnp15_exploratory_yaw_preregistration.json"
+            ],
+            orientation_artifact_id=p["source_artifacts"]["phase28"]["artifact_id"],
+            observation_contract_id=authorities[
+                "orientation_to_horizontal_motion_contract.json"
+            ],
+            closed_loop_preregistration_id=payload["config"]["preregistration_id"],
+            config_sha256=payload["config_sha256"],
+            result_sha256=payload["result_sha256"],
+            analysis=CourseAnalysis(
+                analysis_id=p["analysis_id"],
+                stage_a_decision=analysis["decision"],
+                classification="MARGINAL_ORIENTATION_MODE",
+                local_motion_spectral_radius=analysis["differential_spectral_radius"],
+                orientation_eigenvalue=analysis["full_spectral_radius"],
+                clipping_required_for_local_stability=False,
+            ),
+        ),
+        summary=CourseSummary(
+            initial_perturbation_eq=diag["initial_perturbation_eq"],
+            final_orientation_eq=diag["final_orientation_eq"],
+            clipping_count=diag["clipping"]["count"],
+            observed_interval_count=diag["clipping"]["observed_interval_count"],
+            clipping_duration_ms=diag["clipping"]["duration_ms"],
+        ),
+        perturbation=CoursePerturbation(
+            start_step=p["perturbation"]["interval_index"],
+            end_step=p["perturbation"]["interval_index"] + 1,
+            increment_eq=diag["initial_perturbation_eq"],
+        ),
+        termination=CourseTermination(
+            status=run["termination"]["status"],
+            step=run["termination"]["boundary_index"],
+            time_ms=frames[-1].time_ms,
+        ),
+        frames=frames,
+        scientific_limitations=[
+            "Exploratory model-space orientation, "
+            "not biological yaw or calibrated behavior.",
+            "Motion-only observation: no absolute heading-error signal; "
+            "residual offset is expected.",
+            "No translation, physical mechanics, chemical recurrence "
+            "or electrical coupling.",
+            "Rendering converts one abstract cycle to 2π display radians only; "
+            "no visual amplification or scientific feedback.",
+            "The open-loop control is stationary after its imposed step; feedback "
+            "introduces subsequent counter-motion, "
+            "not demonstrated biological superiority.",
+        ],
+    )
+
+
 def load_scenario_playback(
     scenario_id: str, path: Path = DEFAULT_SCENARIO_PATH
-) -> ScenarioPlaybackResult | NeuralPlaybackResult:
+) -> ScenarioPlaybackResult | NeuralPlaybackResult | CoursePlaybackResult:
     definitions = {item.id: item for item in scenario_catalog()}
     if scenario_id not in definitions:
         raise KeyError("unsupported scenario")
     if scenario_id == NEURAL_KIND:
         return load_neural_playback()
+    if scenario_id == COURSE_KIND:
+        return load_course_playback()
     # Full numerical replay and provenance validation on every request. No cache
     # of unvalidated internal JSON and no presentation-driven scientific changes.
     if scenario_id == WORLD_KIND:

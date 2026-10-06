@@ -2778,3 +2778,30 @@ Phase 30 `PASS`: 32 focused composition tests; 1,197 full Python tests
 format, typecheck, build and diff gates passed. Historical replay identities,
 frozen Phase 24–29 records and all four existing playback payload hashes are
 unchanged. Generated experiment data remain ignored; no commit/push.
+
+## NeuroFly v2 — Phase 31 exploratory course-control playback
+
+[Product/science integration specification](science/exploratory_course_control_playback_integration.md).
+Fifth scenario: `EXPLORATORY_COURSE_CONTROL`, condition
+`CLOSED_LOOP_PERTURBATION`, backed by immutable Phase 30 artifact
+`f6ad13b9ba57d1ddb5e95cf91440c5b67f503a407f7330d4423ce7ab4340e581`.
+An additive typed `scenario_playback_v1` variant presents 501 backend-authoritative
+boundaries, including observation, six HS states, bilateral DNp15 and exploratory
+orientation. The existing four serialized payloads remain byte-identical;
+Phase 27 remains neural-only.
+
+Frontend availability includes Play/Pause/Reset/Scrub, fixed world reference,
+direct abstract-cycle rendering, scientific telemetry and authority details.
+Motion modes decay; orientation retains +0.00033277101655776 eq because no
+absolute heading-error signal exists. Marginal orientation mode is explained
+without claiming biological yaw, navigation or heading restoration. Clipping
+is 0/500; no translation, spikes, recurrence or electrical coupling is added.
+
+Measured replay/validation ~641 ms, adapter-only ~4 ms; payload 453,262 bytes.
+Decision: `EXPLORATORY_COURSE_CONTROL_SCENARIO_INTEGRATION_COMPLETE`.
+Phase 31 `PASS`: 1,205 full-suite Python tests plus the later-added byte-regression
+test in a 9-test focused rerun; 65 frontend tests; all quality gates and
+desktop/mobile browser smoke pass. Historical replays and frozen scientific
+files remain unchanged; no commit/push.
+Next bounded action: review scientific readability across the five scenarios
+before a separately scoped UI redesign. No scientific model retuning.

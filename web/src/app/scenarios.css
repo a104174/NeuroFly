@@ -135,3 +135,17 @@
   .result-verdict strong { font-size: 16px; }
   .scenario-telemetry { grid-template-columns: 1fr; }
 }
+.course-causal-flow { grid-template-columns: repeat(3,minmax(0,1fr)); }
+.course-causal-flow li { border-bottom: 1px solid #34484c; }
+.course-mode { border-left: 2px solid #87afa3; padding: 10px 16px; background: #162c2b; color: #c9ddd4; }
+.course-mode p { margin-bottom: 0; }
+.course-telemetry h3 { font-size: 17px; font-variant-numeric: tabular-nums; }
+.course-telemetry p, .course-causal-flow p { overflow-wrap: anywhere; }
+.course-reference-label { position: absolute; top: 106px; left: 24px; color: #bad4ca; font-size: 12px; }
+.course-orientation-label { position: absolute; bottom: 72px; left: 24px; right: 24px; display: flex; flex-direction: column; gap: 6px; background: #0b1b22df; border-left: 2px solid #d9c199; padding: 12px; }
+.course-orientation-label strong { font: 14px monospace; overflow-wrap: anywhere; }
+.course-world-note { position: absolute; bottom: 16px; left: 24px; right: 24px; color: #b8c4c0; font-size: 11px; }
+.course-authorities dd { margin: 6px 0 16px; font-family: monospace; overflow-wrap: anywhere; }
+.course-authorities, .scenario-details:has(.course-authorities) { overflow-wrap: anywhere; min-width: 0; }
+@media(max-width:900px) { .course-causal-flow { grid-template-columns: repeat(2,minmax(0,1fr)); overflow: visible; } }
+@media(max-width:600px) { .course-causal-flow { display: flex; } .course-reference-label { top: 120px; left: 16px; } .course-orientation-label { left: 16px; right: 16px; bottom: 100px; } .course-world-note { left: 16px; right: 16px; } }

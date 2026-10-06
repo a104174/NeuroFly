@@ -1,0 +1,1426 @@
+{
+  "schema": "neurofly_deployment_runtime_inventory_v2",
+  "inventory_id": "cf85d5fb1b688857e0af44d7cfe934382cdc9e3588185c87a754f6fa5f24a98b",
+  "inventory": {
+    "schema": "neurofly_deployment_runtime_inventory_v2",
+    "source_git_commit": "735015182ac6f5abac1b7fc90cecc642b474ae3c",
+    "source_d1_inventory_id": "edd7d36d4d4a9adcbc3df33a98dd5d474b8516f40074c8551faf8f4092ea82e2",
+    "source_d1_file_sha256": "2e2719b09852164bdda97dac0f6ef3cd75f68670f6f531b1f70ae21bc1dc9b95",
+    "closure_policy": {
+      "scope": "Five canonical scenario playback adapters, eight deployment historical CLI replays, FastAPI factory/lifespan, health and scenario catalog; readiness requires verification of the entire explicit runtime set and tracked science authorities.",
+      "version_relationship": "v2 supersedes D1 only for deployment bundle construction; D1 remains the unchanged historical five-scenario audit authority.",
+      "authorization": "Every file reviewed by source dependency chain and a complete read-only discovery pass; no automatic missing-file authorization, directory wildcard, artifact generation or network retrieval.",
+      "isolation": "Separate temporary checkout layout; only explicit runtime files copied; application sources/science documents from tracked Git files; interpreter dependencies supplied separately; developer checkout reads and offline network access denied."
+    },
+    "required_gate_ids": [
+      "REPLAY_7O",
+      "REPLAY_8C",
+      "REPLAY_13B",
+      "REPLAY_16_CORRECTED",
+      "REPLAY_18",
+      "REPLAY_25",
+      "REPLAY_28",
+      "REPLAY_30",
+      "STARTUP",
+      "PLAYBACK_BASELINE_CONTROL",
+      "PLAYBACK_LOOMING_CIRCUIT_VALIDATION",
+      "PLAYBACK_LOOMING_WORLD_EXPERIMENT",
+      "PLAYBACK_HORIZONTAL_MOTION_NEURAL_VALIDATION",
+      "PLAYBACK_EXPLORATORY_COURSE_CONTROL"
+    ],
+    "tracked_build_dependencies": {
+      "application_source": "Tracked src/neurofly source and pyproject.toml/README.md, installed with existing Python dependencies; supplied by application build, not this data inventory.",
+      "science_documents": [
+        {
+          "repository_relative_path": "docs/science/dnp15_exploratory_yaw_preregistration.json",
+          "bytes": 5577,
+          "sha256": "3871086be8b0aa48c19925fa003705f14221b1f476dbe27aaed5189ef2877960",
+          "required_by": [
+            "PLAYBACK_EXPLORATORY_COURSE_CONTROL",
+            "REPLAY_28",
+            "REPLAY_30"
+          ]
+        },
+        {
+          "repository_relative_path": "docs/science/dnp15_yaw_mapping_evidence_gate.json",
+          "bytes": 10029,
+          "sha256": "2278f67e930e8868d9821a0240d8fb1f5a4b76b02bc13a998f9f2f8b2dacc6e8",
+          "required_by": [
+            "PLAYBACK_EXPLORATORY_COURSE_CONTROL",
+            "REPLAY_28",
+            "REPLAY_30"
+          ]
+        },
+        {
+          "repository_relative_path": "docs/science/exploratory_course_control_closed_loop_preregistration.json",
+          "bytes": 12099,
+          "sha256": "3ee98a073c9fb3cb6557649bb67475e64646a7ed471caf52f155ef22b5b5f9c8",
+          "required_by": [
+            "PLAYBACK_EXPLORATORY_COURSE_CONTROL",
+            "REPLAY_30"
+          ]
+        },
+        {
+          "repository_relative_path": "docs/science/horizontal_motion_neural_scenario_integration.md",
+          "bytes": 9896,
+          "sha256": "67612c85713d731929c466b4c8adb0eb0ad59786a97341289e006a26c277320d",
+          "required_by": [
+            "PLAYBACK_EXPLORATORY_COURSE_CONTROL",
+            "REPLAY_30"
+          ]
+        },
+        {
+          "repository_relative_path": "docs/science/hs_dnp15_network_context_audit.json",
+          "bytes": 39416,
+          "sha256": "3a2de92460f73141fe778056dc58fe46ccab1ba209ad83d1f01254d07480bda4",
+          "required_by": [
+            "PLAYBACK_EXPLORATORY_COURSE_CONTROL",
+            "PLAYBACK_HORIZONTAL_MOTION_NEURAL_VALIDATION",
+            "REPLAY_30"
+          ]
+        },
+        {
+          "repository_relative_path": "docs/science/hs_dnp15_neural_validation_preregistration.json",
+          "bytes": 10196,
+          "sha256": "65e4ed7debdb23ddae307227f1a883170fae8dc45f76bc834ec76d185810a7c4",
+          "required_by": [
+            "PLAYBACK_EXPLORATORY_COURSE_CONTROL",
+            "PLAYBACK_HORIZONTAL_MOTION_NEURAL_VALIDATION",
+            "REPLAY_25",
+            "REPLAY_28",
+            "REPLAY_30"
+          ]
+        },
+        {
+          "repository_relative_path": "docs/science/looming_world_experiment_preregistration.json",
+          "bytes": 2536,
+          "sha256": "f41ba3e40b2dcf920c635434b9acb4403cd172003e57a5e66bddef5daeda8e6f",
+          "required_by": [
+            "PLAYBACK_LOOMING_WORLD_EXPERIMENT",
+            "REPLAY_18"
+          ]
+        },
+        {
+          "repository_relative_path": "docs/science/neurofly_v1_scientific_status.json",
+          "bytes": 18965,
+          "sha256": "34068d92e670f221df2c6e3b94ce5eb156d05ea516073b6a9df43200503a904a",
+          "required_by": [
+            "PLAYBACK_EXPLORATORY_COURSE_CONTROL",
+            "PLAYBACK_HORIZONTAL_MOTION_NEURAL_VALIDATION",
+            "REPLAY_25",
+            "REPLAY_28",
+            "REPLAY_30"
+          ]
+        },
+        {
+          "repository_relative_path": "docs/science/orientation_to_horizontal_motion_contract.json",
+          "bytes": 12507,
+          "sha256": "26f080bad75a1f04daa0f0061fd188a5cdeb3e9b2148f8324dfe9a0161460715",
+          "required_by": [
+            "PLAYBACK_EXPLORATORY_COURSE_CONTROL",
+            "REPLAY_30"
+          ]
+        },
+        {
+          "repository_relative_path": "docs/science/second_circuit_selection_gate.json",
+          "bytes": 134108,
+          "sha256": "fcfd5711c4447faaf89039e9da5f0f2a776b426dcc7b909aa8d57401358d032f",
+          "required_by": [
+            "PLAYBACK_EXPLORATORY_COURSE_CONTROL",
+            "PLAYBACK_HORIZONTAL_MOTION_NEURAL_VALIDATION",
+            "REPLAY_25",
+            "REPLAY_28",
+            "REPLAY_30"
+          ]
+        }
+      ],
+      "frontend_static_assets": {
+        "category": "APPLICATION_STATIC_ASSET",
+        "delivery": "Tracked web/public assets, web source and package-lock.json supplied by Git/Next.js build; not part of the scientific runtime data bundle."
+      },
+      "other_dependencies": "Python interpreter/installed dependencies and OS runtime files are application environment dependencies, not scientific bundle data."
+    },
+    "runtime_files": [
+      {
+        "repository_relative_path": "data/derived/experiments/dnp15_exploratory_yaw_artifact_v1/243914905c17ceb1285c645aa9e9700b602a9e22c8703c9f9ce4c7fe4f7e935d/manifest.json",
+        "bytes": 416,
+        "sha256": "28d60cb728e168d3f48e5600a69b010d268f315f7638d1ccd7cee7d95f99f179",
+        "required_by": [
+          "PLAYBACK_EXPLORATORY_COURSE_CONTROL",
+          "REPLAY_28",
+          "REPLAY_30"
+        ],
+        "ignored_by_git": true,
+        "category": "CANONICAL_MANIFEST_OR_METADATA",
+        "inclusion_reason": "Exact canonical configuration/manifest/contract bytes checked by the recorded frozen replay or playback gates."
+      },
+      {
+        "repository_relative_path": "data/derived/experiments/dnp15_exploratory_yaw_artifact_v1/243914905c17ceb1285c645aa9e9700b602a9e22c8703c9f9ce4c7fe4f7e935d/orientation.json",
+        "bytes": 224588,
+        "sha256": "32d07672352cbf916be2c3531ff2d91c4e0436fca8e2d3ae0079c5d0bfbe17c8",
+        "required_by": [
+          "PLAYBACK_EXPLORATORY_COURSE_CONTROL",
+          "REPLAY_28",
+          "REPLAY_30"
+        ],
+        "ignored_by_git": true,
+        "category": "CANONICAL_SCIENTIFIC_ARTIFACT",
+        "inclusion_reason": "Persisted canonical scientific result used for integrity and exact numerical replay by the recorded required gates."
+      },
+      {
+        "repository_relative_path": "data/derived/experiments/exploratory_course_control_closed_loop_artifact_v1/f6ad13b9ba57d1ddb5e95cf91440c5b67f503a407f7330d4423ce7ab4340e581/closed_loop.json",
+        "bytes": 4354003,
+        "sha256": "60aab254456d125f8b9077746a406defb400f62312b49210bd7d87255fe429fa",
+        "required_by": [
+          "PLAYBACK_EXPLORATORY_COURSE_CONTROL",
+          "REPLAY_30"
+        ],
+        "ignored_by_git": true,
+        "category": "CANONICAL_SCIENTIFIC_ARTIFACT",
+        "inclusion_reason": "Persisted canonical scientific result used for integrity and exact numerical replay by the recorded required gates."
+      },
+      {
+        "repository_relative_path": "data/derived/experiments/exploratory_course_control_closed_loop_artifact_v1/f6ad13b9ba57d1ddb5e95cf91440c5b67f503a407f7330d4423ce7ab4340e581/manifest.json",
+        "bytes": 434,
+        "sha256": "122495b4627ea20676a547dd84516f7a273d7bc4fd81cc782262e944cb1a1ae0",
+        "required_by": [
+          "PLAYBACK_EXPLORATORY_COURSE_CONTROL",
+          "REPLAY_30"
+        ],
+        "ignored_by_git": true,
+        "category": "CANONICAL_MANIFEST_OR_METADATA",
+        "inclusion_reason": "Exact canonical configuration/manifest/contract bytes checked by the recorded frozen replay or playback gates."
+      },
+      {
+        "repository_relative_path": "data/derived/experiments/hs_dnp15_neural_validation_artifact_v1/2ae44804fd570e6b64f219ee50b15bed923855e772a07b5cecc9d766ff6f4113/manifest.json",
+        "bytes": 420,
+        "sha256": "12f4c5404472d227871b8645bfa721ec208132257c8d47f6eb4e274925818173",
+        "required_by": [
+          "PLAYBACK_EXPLORATORY_COURSE_CONTROL",
+          "PLAYBACK_HORIZONTAL_MOTION_NEURAL_VALIDATION",
+          "REPLAY_25",
+          "REPLAY_28",
+          "REPLAY_30"
+        ],
+        "ignored_by_git": true,
+        "category": "CANONICAL_MANIFEST_OR_METADATA",
+        "inclusion_reason": "Exact canonical configuration/manifest/contract bytes checked by the recorded frozen replay or playback gates."
+      },
+      {
+        "repository_relative_path": "data/derived/experiments/hs_dnp15_neural_validation_artifact_v1/2ae44804fd570e6b64f219ee50b15bed923855e772a07b5cecc9d766ff6f4113/validation.json",
+        "bytes": 713909,
+        "sha256": "82263212c98f3334363de95d76171619611d02a3ec799b0a4f2adcfc9ad50f63",
+        "required_by": [
+          "PLAYBACK_EXPLORATORY_COURSE_CONTROL",
+          "PLAYBACK_HORIZONTAL_MOTION_NEURAL_VALIDATION",
+          "REPLAY_25",
+          "REPLAY_28",
+          "REPLAY_30"
+        ],
+        "ignored_by_git": true,
+        "category": "CANONICAL_SCIENTIFIC_ARTIFACT",
+        "inclusion_reason": "Persisted canonical scientific result used for integrity and exact numerical replay by the recorded required gates."
+      },
+      {
+        "repository_relative_path": "data/derived/malecns/looming_giant_fiber_v1/body_columns_v1/column_body_summaries.jsonl",
+        "bytes": 122810,
+        "sha256": "ed3b56a403c02256048fffdfd1d165c667360265e95e75f307ae8eb210c10e2b",
+        "required_by": [
+          "PLAYBACK_BASELINE_CONTROL",
+          "PLAYBACK_LOOMING_CIRCUIT_VALIDATION",
+          "PLAYBACK_LOOMING_WORLD_EXPERIMENT",
+          "REPLAY_13B",
+          "REPLAY_16_CORRECTED",
+          "REPLAY_18",
+          "REPLAY_7O",
+          "REPLAY_8C"
+        ],
+        "ignored_by_git": true,
+        "category": "SOURCE_VALIDATION_DEPENDENCY",
+        "inclusion_reason": "Existing frozen anatomical/column source verification requires this exact file; no directory-wide source authorization."
+      },
+      {
+        "repository_relative_path": "data/derived/malecns/looming_giant_fiber_v1/body_columns_v1/column_inputs.jsonl",
+        "bytes": 3634995,
+        "sha256": "4d235b382e4cb317ebb77f9248a58cb1332e942b8a1a0eafb5c5526f2bed598e",
+        "required_by": [
+          "PLAYBACK_BASELINE_CONTROL",
+          "PLAYBACK_LOOMING_CIRCUIT_VALIDATION",
+          "PLAYBACK_LOOMING_WORLD_EXPERIMENT",
+          "REPLAY_13B",
+          "REPLAY_16_CORRECTED",
+          "REPLAY_18",
+          "REPLAY_7O",
+          "REPLAY_8C"
+        ],
+        "ignored_by_git": true,
+        "category": "SOURCE_VALIDATION_DEPENDENCY",
+        "inclusion_reason": "Existing frozen anatomical/column source verification requires this exact file; no directory-wide source authorization."
+      },
+      {
+        "repository_relative_path": "data/derived/malecns/looming_giant_fiber_v1/body_columns_v1/column_manifest.json",
+        "bytes": 3065,
+        "sha256": "6acc1a8266ed71d4f1373e5ab61a3bcd1a00e95045ab3ede870efa2f8d61f302",
+        "required_by": [
+          "PLAYBACK_BASELINE_CONTROL",
+          "PLAYBACK_LOOMING_CIRCUIT_VALIDATION",
+          "PLAYBACK_LOOMING_WORLD_EXPERIMENT",
+          "REPLAY_13B",
+          "REPLAY_16_CORRECTED",
+          "REPLAY_18",
+          "REPLAY_7O",
+          "REPLAY_8C"
+        ],
+        "ignored_by_git": true,
+        "category": "SOURCE_VALIDATION_DEPENDENCY",
+        "inclusion_reason": "Existing frozen anatomical/column source verification requires this exact file; no directory-wide source authorization."
+      },
+      {
+        "repository_relative_path": "data/derived/malecns/looming_giant_fiber_v1/bounded_sensory_population_128_v1/3d0ec7e8ddf5baf00449f6452d538d995978b571da5ea9efc632b91228d5dcc6/experiment_config.json",
+        "bytes": 44284,
+        "sha256": "ffdd914eb703aef94820632dbf3129c430519ca1e29b10e31e28269f2151e82a",
+        "required_by": [
+          "REPLAY_7O"
+        ],
+        "ignored_by_git": true,
+        "category": "CANONICAL_MANIFEST_OR_METADATA",
+        "inclusion_reason": "Frozen Phase 7M reference required by Phase 7O _nested_128 exact regression; canonical loader verifies its config/result/manifest."
+      },
+      {
+        "repository_relative_path": "data/derived/malecns/looming_giant_fiber_v1/bounded_sensory_population_128_v1/3d0ec7e8ddf5baf00449f6452d538d995978b571da5ea9efc632b91228d5dcc6/experiment_result.json",
+        "bytes": 31401313,
+        "sha256": "f51903bba2911b1f74a712b5325730ec36f19108f176fcb06a5b6b8f8a2ce998",
+        "required_by": [
+          "REPLAY_7O"
+        ],
+        "ignored_by_git": true,
+        "category": "CANONICAL_SCIENTIFIC_ARTIFACT",
+        "inclusion_reason": "Frozen Phase 7M reference required by Phase 7O _nested_128 exact regression; canonical loader verifies its config/result/manifest."
+      },
+      {
+        "repository_relative_path": "data/derived/malecns/looming_giant_fiber_v1/bounded_sensory_population_128_v1/3d0ec7e8ddf5baf00449f6452d538d995978b571da5ea9efc632b91228d5dcc6/manifest.json",
+        "bytes": 1111,
+        "sha256": "5a39de432fd5b8c9478ed7711c3353d1f24cb31edc15b075850ce53964518a5a",
+        "required_by": [
+          "REPLAY_7O"
+        ],
+        "ignored_by_git": true,
+        "category": "CANONICAL_MANIFEST_OR_METADATA",
+        "inclusion_reason": "Frozen Phase 7M reference required by Phase 7O _nested_128 exact regression; canonical loader verifies its config/result/manifest."
+      },
+      {
+        "repository_relative_path": "data/derived/malecns/looming_giant_fiber_v1/closed_loop_scenario_artifact_v1/55e2f4d37bc6f8fb81aee67886d8680a76646a0317961bd90cf0e3fbabb2c46b/manifest.json",
+        "bytes": 431,
+        "sha256": "92ac14bb50343ef37535d5b754a07b0898e96f32e9609b1281cc378268a3cf59",
+        "required_by": [
+          "PLAYBACK_BASELINE_CONTROL",
+          "PLAYBACK_LOOMING_CIRCUIT_VALIDATION",
+          "PLAYBACK_LOOMING_WORLD_EXPERIMENT",
+          "REPLAY_13B",
+          "REPLAY_16_CORRECTED",
+          "REPLAY_18"
+        ],
+        "ignored_by_git": true,
+        "category": "CANONICAL_MANIFEST_OR_METADATA",
+        "inclusion_reason": "Exact canonical configuration/manifest/contract bytes checked by the recorded frozen replay or playback gates."
+      },
+      {
+        "repository_relative_path": "data/derived/malecns/looming_giant_fiber_v1/closed_loop_scenario_artifact_v1/55e2f4d37bc6f8fb81aee67886d8680a76646a0317961bd90cf0e3fbabb2c46b/scenarios.json",
+        "bytes": 1137406,
+        "sha256": "a2cd79f8a457a48d177b055d003f63e539892f3854ea838b825c83dc26b4a707",
+        "required_by": [
+          "PLAYBACK_BASELINE_CONTROL",
+          "PLAYBACK_LOOMING_CIRCUIT_VALIDATION",
+          "PLAYBACK_LOOMING_WORLD_EXPERIMENT",
+          "REPLAY_13B",
+          "REPLAY_16_CORRECTED",
+          "REPLAY_18"
+        ],
+        "ignored_by_git": true,
+        "category": "CANONICAL_SCIENTIFIC_ARTIFACT",
+        "inclusion_reason": "Persisted canonical scientific result used for integrity and exact numerical replay by the recorded required gates."
+      },
+      {
+        "repository_relative_path": "data/derived/malecns/looming_giant_fiber_v1/connections.jsonl",
+        "bytes": 2866971,
+        "sha256": "f7e55419d8f18a885f5ebcffa99ec8bf117d055593c0285c61def47020ae340a",
+        "required_by": [
+          "PLAYBACK_BASELINE_CONTROL",
+          "PLAYBACK_LOOMING_CIRCUIT_VALIDATION",
+          "PLAYBACK_LOOMING_WORLD_EXPERIMENT",
+          "REPLAY_13B",
+          "REPLAY_16_CORRECTED",
+          "REPLAY_18",
+          "REPLAY_7O",
+          "REPLAY_8C"
+        ],
+        "ignored_by_git": true,
+        "category": "STRUCTURAL_CONTRACT",
+        "inclusion_reason": "Pinned structural identity/contact and target-route evidence is validated by the recorded required gates, not used as new physiological efficacy."
+      },
+      {
+        "repository_relative_path": "data/derived/malecns/looming_giant_fiber_v1/dnp01_subthreshold_diagnostic_artifact_v1/bb1d227dd3dc56d74939c37e231ca0f8aa02f8d0140964eef7f1fb31e00b101b/diagnostic.json",
+        "bytes": 90631,
+        "sha256": "e24335e0d44486857222e1b76f4fb3dc7ca1e7e78862eaecf641db4a5839f208",
+        "required_by": [
+          "REPLAY_16_CORRECTED"
+        ],
+        "ignored_by_git": true,
+        "category": "CANONICAL_SCIENTIFIC_ARTIFACT",
+        "inclusion_reason": "Corrected Phase 16 deployment historical gate; validates and replays the frozen diagnostic without generation."
+      },
+      {
+        "repository_relative_path": "data/derived/malecns/looming_giant_fiber_v1/dnp01_subthreshold_diagnostic_artifact_v1/bb1d227dd3dc56d74939c37e231ca0f8aa02f8d0140964eef7f1fb31e00b101b/manifest.json",
+        "bytes": 439,
+        "sha256": "592dee368d13ea694a3a9c9e4bc72f0e47750be531d05c41b64c654ce7a1aded",
+        "required_by": [
+          "REPLAY_16_CORRECTED"
+        ],
+        "ignored_by_git": true,
+        "category": "CANONICAL_MANIFEST_OR_METADATA",
+        "inclusion_reason": "Corrected Phase 16 deployment historical gate; validates and replays the frozen diagnostic without generation."
+      },
+      {
+        "repository_relative_path": "data/derived/malecns/looming_giant_fiber_v1/exploratory_planar_body_plant_artifact_v1/bb3696faae558778555601991de3fd36081d5853c889fcb7aac5ffd79593eba3/body.json",
+        "bytes": 41383,
+        "sha256": "77bf52321ffbb7070abcec5c3a9f90279492c47ae851e0d0e6273858b5624b6a",
+        "required_by": [
+          "PLAYBACK_BASELINE_CONTROL",
+          "PLAYBACK_LOOMING_CIRCUIT_VALIDATION",
+          "PLAYBACK_LOOMING_WORLD_EXPERIMENT",
+          "REPLAY_13B",
+          "REPLAY_16_CORRECTED",
+          "REPLAY_18"
+        ],
+        "ignored_by_git": true,
+        "category": "CANONICAL_SCIENTIFIC_ARTIFACT",
+        "inclusion_reason": "Persisted canonical scientific result used for integrity and exact numerical replay by the recorded required gates."
+      },
+      {
+        "repository_relative_path": "data/derived/malecns/looming_giant_fiber_v1/exploratory_planar_body_plant_artifact_v1/bb3696faae558778555601991de3fd36081d5853c889fcb7aac5ffd79593eba3/manifest.json",
+        "bytes": 433,
+        "sha256": "e192c0c295562e2bde5f9c7b9a0a2f2da63d3fe0567ea19d609020d0a6b80787",
+        "required_by": [
+          "PLAYBACK_BASELINE_CONTROL",
+          "PLAYBACK_LOOMING_CIRCUIT_VALIDATION",
+          "PLAYBACK_LOOMING_WORLD_EXPERIMENT",
+          "REPLAY_13B",
+          "REPLAY_16_CORRECTED",
+          "REPLAY_18"
+        ],
+        "ignored_by_git": true,
+        "category": "CANONICAL_MANIFEST_OR_METADATA",
+        "inclusion_reason": "Exact canonical configuration/manifest/contract bytes checked by the recorded frozen replay or playback gates."
+      },
+      {
+        "repository_relative_path": "data/derived/malecns/looming_giant_fiber_v1/full_sensory_coverage_plan_v1/0331ff3d309892ac5284e0da3898683df7b5fb8fd06055090b6100dcea4a6e56/coverage_config.json",
+        "bytes": 20797,
+        "sha256": "f3e47dd552ee12f01e7b3ce637f055d0f51b1393b1770235ce686725ad40c3e3",
+        "required_by": [
+          "PLAYBACK_BASELINE_CONTROL",
+          "PLAYBACK_LOOMING_CIRCUIT_VALIDATION",
+          "PLAYBACK_LOOMING_WORLD_EXPERIMENT",
+          "REPLAY_13B",
+          "REPLAY_16_CORRECTED",
+          "REPLAY_18",
+          "REPLAY_7O"
+        ],
+        "ignored_by_git": true,
+        "category": "CANONICAL_MANIFEST_OR_METADATA",
+        "inclusion_reason": "Exact canonical configuration/manifest/contract bytes checked by the recorded frozen replay or playback gates."
+      },
+      {
+        "repository_relative_path": "data/derived/malecns/looming_giant_fiber_v1/full_sensory_coverage_plan_v1/0331ff3d309892ac5284e0da3898683df7b5fb8fd06055090b6100dcea4a6e56/coverage_result.json",
+        "bytes": 110591,
+        "sha256": "082aedc328dcb442625c25edcbca924ee3695f0f6b44fa551867fb781230d52b",
+        "required_by": [
+          "PLAYBACK_BASELINE_CONTROL",
+          "PLAYBACK_LOOMING_CIRCUIT_VALIDATION",
+          "PLAYBACK_LOOMING_WORLD_EXPERIMENT",
+          "REPLAY_13B",
+          "REPLAY_16_CORRECTED",
+          "REPLAY_18",
+          "REPLAY_7O"
+        ],
+        "ignored_by_git": true,
+        "category": "CANONICAL_SCIENTIFIC_ARTIFACT",
+        "inclusion_reason": "Persisted canonical scientific result used for integrity and exact numerical replay by the recorded required gates."
+      },
+      {
+        "repository_relative_path": "data/derived/malecns/looming_giant_fiber_v1/full_sensory_coverage_plan_v1/0331ff3d309892ac5284e0da3898683df7b5fb8fd06055090b6100dcea4a6e56/manifest.json",
+        "bytes": 436,
+        "sha256": "13ada9a861dcac8836ed3eafc897afe2ea516361150fdc48eda43335a3a55520",
+        "required_by": [
+          "PLAYBACK_BASELINE_CONTROL",
+          "PLAYBACK_LOOMING_CIRCUIT_VALIDATION",
+          "PLAYBACK_LOOMING_WORLD_EXPERIMENT",
+          "REPLAY_13B",
+          "REPLAY_16_CORRECTED",
+          "REPLAY_18",
+          "REPLAY_7O"
+        ],
+        "ignored_by_git": true,
+        "category": "CANONICAL_MANIFEST_OR_METADATA",
+        "inclusion_reason": "Exact canonical configuration/manifest/contract bytes checked by the recorded frozen replay or playback gates."
+      },
+      {
+        "repository_relative_path": "data/derived/malecns/looming_giant_fiber_v1/full_sensory_population_plan_v1/0db2b29f168039e23858db9831e345cc25fdec8c06775e2f23a7d8d681544356/manifest.json",
+        "bytes": 424,
+        "sha256": "85c051a4c9c45f8deae7915fe1bb66e7d922f5ce3e84141db59c238f6e4079bc",
+        "required_by": [
+          "PLAYBACK_BASELINE_CONTROL",
+          "PLAYBACK_LOOMING_CIRCUIT_VALIDATION",
+          "PLAYBACK_LOOMING_WORLD_EXPERIMENT",
+          "REPLAY_13B",
+          "REPLAY_16_CORRECTED",
+          "REPLAY_18",
+          "REPLAY_7O"
+        ],
+        "ignored_by_git": true,
+        "category": "CANONICAL_MANIFEST_OR_METADATA",
+        "inclusion_reason": "Exact canonical configuration/manifest/contract bytes checked by the recorded frozen replay or playback gates."
+      },
+      {
+        "repository_relative_path": "data/derived/malecns/looming_giant_fiber_v1/full_sensory_population_plan_v1/0db2b29f168039e23858db9831e345cc25fdec8c06775e2f23a7d8d681544356/population_config.json",
+        "bytes": 4319,
+        "sha256": "55206aa053c5cdf7b262132156abd175ddc3ec14792d98228053b3122853d307",
+        "required_by": [
+          "PLAYBACK_BASELINE_CONTROL",
+          "PLAYBACK_LOOMING_CIRCUIT_VALIDATION",
+          "PLAYBACK_LOOMING_WORLD_EXPERIMENT",
+          "REPLAY_13B",
+          "REPLAY_16_CORRECTED",
+          "REPLAY_18",
+          "REPLAY_7O"
+        ],
+        "ignored_by_git": true,
+        "category": "CANONICAL_MANIFEST_OR_METADATA",
+        "inclusion_reason": "Exact canonical configuration/manifest/contract bytes checked by the recorded frozen replay or playback gates."
+      },
+      {
+        "repository_relative_path": "data/derived/malecns/looming_giant_fiber_v1/full_sensory_population_plan_v1/0db2b29f168039e23858db9831e345cc25fdec8c06775e2f23a7d8d681544356/population_result.json",
+        "bytes": 176585,
+        "sha256": "eebe33ddf251a59416225f54dcb14928fe2b0b0482ddf35b433ab5e6683b2be5",
+        "required_by": [
+          "PLAYBACK_BASELINE_CONTROL",
+          "PLAYBACK_LOOMING_CIRCUIT_VALIDATION",
+          "PLAYBACK_LOOMING_WORLD_EXPERIMENT",
+          "REPLAY_13B",
+          "REPLAY_16_CORRECTED",
+          "REPLAY_18",
+          "REPLAY_7O"
+        ],
+        "ignored_by_git": true,
+        "category": "CANONICAL_SCIENTIFIC_ARTIFACT",
+        "inclusion_reason": "Persisted canonical scientific result used for integrity and exact numerical replay by the recorded required gates."
+      },
+      {
+        "repository_relative_path": "data/derived/malecns/looming_giant_fiber_v1/g1_proxy_passive_electrical_response_artifact_v1/72636cc94c1508c074950b1d5b3847a9e0283ecb0cde04f3f85a36b2c62d2e0f/manifest.json",
+        "bytes": 444,
+        "sha256": "ae47f4438f4a02bb945b152592ce1f205aef344f8142c0a1a392b128d14af17c",
+        "required_by": [
+          "PLAYBACK_BASELINE_CONTROL",
+          "PLAYBACK_LOOMING_CIRCUIT_VALIDATION",
+          "PLAYBACK_LOOMING_WORLD_EXPERIMENT",
+          "REPLAY_13B",
+          "REPLAY_16_CORRECTED",
+          "REPLAY_18"
+        ],
+        "ignored_by_git": true,
+        "category": "CANONICAL_MANIFEST_OR_METADATA",
+        "inclusion_reason": "Exact canonical configuration/manifest/contract bytes checked by the recorded frozen replay or playback gates."
+      },
+      {
+        "repository_relative_path": "data/derived/malecns/looming_giant_fiber_v1/g1_proxy_passive_electrical_response_artifact_v1/72636cc94c1508c074950b1d5b3847a9e0283ecb0cde04f3f85a36b2c62d2e0f/response.json",
+        "bytes": 37091,
+        "sha256": "ddffce2a68ce4bb338b29169326f650ac880d33d6ccb87e7c8efbcacb23d8fff",
+        "required_by": [
+          "PLAYBACK_BASELINE_CONTROL",
+          "PLAYBACK_LOOMING_CIRCUIT_VALIDATION",
+          "PLAYBACK_LOOMING_WORLD_EXPERIMENT",
+          "REPLAY_13B",
+          "REPLAY_16_CORRECTED",
+          "REPLAY_18"
+        ],
+        "ignored_by_git": true,
+        "category": "CANONICAL_SCIENTIFIC_ARTIFACT",
+        "inclusion_reason": "Persisted canonical scientific result used for integrity and exact numerical replay by the recorded required gates."
+      },
+      {
+        "repository_relative_path": "data/derived/malecns/looming_giant_fiber_v1/looming_world_experiment_artifact_v1/ee781bd8c7e903c5fab78aff02d916fe68d26998a7caf774806778cacd2b616c/experiment.json",
+        "bytes": 11074057,
+        "sha256": "8668fcf98c19b6b078e428aa00bab5f9e45ba005d069a76ee45baedf778f3cbd",
+        "required_by": [
+          "PLAYBACK_LOOMING_WORLD_EXPERIMENT",
+          "REPLAY_18"
+        ],
+        "ignored_by_git": true,
+        "category": "CANONICAL_SCIENTIFIC_ARTIFACT",
+        "inclusion_reason": "Persisted canonical scientific result used for integrity and exact numerical replay by the recorded required gates."
+      },
+      {
+        "repository_relative_path": "data/derived/malecns/looming_giant_fiber_v1/looming_world_experiment_artifact_v1/ee781bd8c7e903c5fab78aff02d916fe68d26998a7caf774806778cacd2b616c/manifest.json",
+        "bytes": 437,
+        "sha256": "15369bc26233a86af7d67ff7598e19013eda9eecc78335b8421cabd446f1e161",
+        "required_by": [
+          "PLAYBACK_LOOMING_WORLD_EXPERIMENT",
+          "REPLAY_18"
+        ],
+        "ignored_by_git": true,
+        "category": "CANONICAL_MANIFEST_OR_METADATA",
+        "inclusion_reason": "Exact canonical configuration/manifest/contract bytes checked by the recorded frozen replay or playback gates."
+      },
+      {
+        "repository_relative_path": "data/derived/malecns/looming_giant_fiber_v1/manifest.json",
+        "bytes": 1124,
+        "sha256": "bf4aea0745a875ab4ca1927af71ce4d78f09d462559d6ab2aa1d552c98a4fe2c",
+        "required_by": [
+          "PLAYBACK_BASELINE_CONTROL",
+          "PLAYBACK_LOOMING_CIRCUIT_VALIDATION",
+          "PLAYBACK_LOOMING_WORLD_EXPERIMENT",
+          "REPLAY_13B",
+          "REPLAY_16_CORRECTED",
+          "REPLAY_18",
+          "REPLAY_7O",
+          "REPLAY_8C"
+        ],
+        "ignored_by_git": true,
+        "category": "CANONICAL_MANIFEST_OR_METADATA",
+        "inclusion_reason": "Exact canonical configuration/manifest/contract bytes checked by the recorded frozen replay or playback gates."
+      },
+      {
+        "repository_relative_path": "data/derived/malecns/looming_giant_fiber_v1/model_derived_ttmn_target_dispatch_artifact_v1/3bc011f9a8831f5291b6078d6132ef0dc6d6d7e87cc45ecfaa957ec80b8af360/dispatch_config.json",
+        "bytes": 2645,
+        "sha256": "53593d4d89bcf85aa6f0026aa0b9d69a23d3a82a2dc3c0726a2b9b23e5db4077",
+        "required_by": [
+          "PLAYBACK_BASELINE_CONTROL",
+          "PLAYBACK_LOOMING_CIRCUIT_VALIDATION",
+          "PLAYBACK_LOOMING_WORLD_EXPERIMENT",
+          "REPLAY_13B",
+          "REPLAY_16_CORRECTED",
+          "REPLAY_18"
+        ],
+        "ignored_by_git": true,
+        "category": "CANONICAL_MANIFEST_OR_METADATA",
+        "inclusion_reason": "Exact canonical configuration/manifest/contract bytes checked by the recorded frozen replay or playback gates."
+      },
+      {
+        "repository_relative_path": "data/derived/malecns/looming_giant_fiber_v1/model_derived_ttmn_target_dispatch_artifact_v1/3bc011f9a8831f5291b6078d6132ef0dc6d6d7e87cc45ecfaa957ec80b8af360/dispatch_result.json",
+        "bytes": 44160,
+        "sha256": "0a7c96feef03216273e6eba2aea4e5483ad3f89e49f5c1ffb804c5e4c87f7658",
+        "required_by": [
+          "PLAYBACK_BASELINE_CONTROL",
+          "PLAYBACK_LOOMING_CIRCUIT_VALIDATION",
+          "PLAYBACK_LOOMING_WORLD_EXPERIMENT",
+          "REPLAY_13B",
+          "REPLAY_16_CORRECTED",
+          "REPLAY_18"
+        ],
+        "ignored_by_git": true,
+        "category": "CANONICAL_SCIENTIFIC_ARTIFACT",
+        "inclusion_reason": "Persisted canonical scientific result used for integrity and exact numerical replay by the recorded required gates."
+      },
+      {
+        "repository_relative_path": "data/derived/malecns/looming_giant_fiber_v1/model_derived_ttmn_target_dispatch_artifact_v1/3bc011f9a8831f5291b6078d6132ef0dc6d6d7e87cc45ecfaa957ec80b8af360/manifest.json",
+        "bytes": 675,
+        "sha256": "989f9621d2e6ba07990ba4fbd408b7f4b73ee4621a92df38945959b498fc7822",
+        "required_by": [
+          "PLAYBACK_BASELINE_CONTROL",
+          "PLAYBACK_LOOMING_CIRCUIT_VALIDATION",
+          "PLAYBACK_LOOMING_WORLD_EXPERIMENT",
+          "REPLAY_13B",
+          "REPLAY_16_CORRECTED",
+          "REPLAY_18"
+        ],
+        "ignored_by_git": true,
+        "category": "CANONICAL_MANIFEST_OR_METADATA",
+        "inclusion_reason": "Exact canonical configuration/manifest/contract bytes checked by the recorded frozen replay or playback gates."
+      },
+      {
+        "repository_relative_path": "data/derived/malecns/looming_giant_fiber_v1/motor_neural_pathway_contract_v1/a12b0115c7e50fac3df92bf66d151b3a145aa630f472277226a7d05dc915b22c/contract.json",
+        "bytes": 13803,
+        "sha256": "654af1bf91e2ae7226d454ba714a5eae1a9bba9b8bfc684b0069a8f1ffe0e068",
+        "required_by": [
+          "PLAYBACK_BASELINE_CONTROL",
+          "PLAYBACK_LOOMING_CIRCUIT_VALIDATION",
+          "PLAYBACK_LOOMING_WORLD_EXPERIMENT",
+          "REPLAY_13B",
+          "REPLAY_16_CORRECTED",
+          "REPLAY_18"
+        ],
+        "ignored_by_git": true,
+        "category": "STRUCTURAL_CONTRACT",
+        "inclusion_reason": "Pinned structural identity/contact and target-route evidence is validated by the recorded required gates, not used as new physiological efficacy."
+      },
+      {
+        "repository_relative_path": "data/derived/malecns/looming_giant_fiber_v1/motor_neural_pathway_contract_v1/a12b0115c7e50fac3df92bf66d151b3a145aa630f472277226a7d05dc915b22c/manifest.json",
+        "bytes": 682,
+        "sha256": "8f622491b7c37b669eba26fe97f6b21f64e171b9a27c762bd534d1d855590483",
+        "required_by": [
+          "PLAYBACK_BASELINE_CONTROL",
+          "PLAYBACK_LOOMING_CIRCUIT_VALIDATION",
+          "PLAYBACK_LOOMING_WORLD_EXPERIMENT",
+          "REPLAY_13B",
+          "REPLAY_16_CORRECTED",
+          "REPLAY_18"
+        ],
+        "ignored_by_git": true,
+        "category": "STRUCTURAL_CONTRACT",
+        "inclusion_reason": "Pinned structural identity/contact and target-route evidence is validated by the recorded required gates, not used as new physiological efficacy."
+      },
+      {
+        "repository_relative_path": "data/derived/malecns/looming_giant_fiber_v1/motor_neural_pathway_contract_v1/a12b0115c7e50fac3df92bf66d151b3a145aa630f472277226a7d05dc915b22c/query_response.json",
+        "bytes": 6558,
+        "sha256": "845c1c1ddc60183fd02f8ac2ceaac5e1a16cba34c803707fb974e7b52861e43e",
+        "required_by": [
+          "PLAYBACK_BASELINE_CONTROL",
+          "PLAYBACK_LOOMING_CIRCUIT_VALIDATION",
+          "PLAYBACK_LOOMING_WORLD_EXPERIMENT",
+          "REPLAY_13B",
+          "REPLAY_16_CORRECTED",
+          "REPLAY_18"
+        ],
+        "ignored_by_git": true,
+        "category": "STRUCTURAL_CONTRACT",
+        "inclusion_reason": "Pinned structural identity/contact and target-route evidence is validated by the recorded required gates, not used as new physiological efficacy."
+      },
+      {
+        "repository_relative_path": "data/derived/malecns/looming_giant_fiber_v1/motor_neural_pathway_contract_v1/a12b0115c7e50fac3df92bf66d151b3a145aa630f472277226a7d05dc915b22c/source_manifest.json",
+        "bytes": 3447,
+        "sha256": "818a0d46678492999353850ecbfeb804e0f8a4d89f367360a0659ab88a366583",
+        "required_by": [
+          "PLAYBACK_BASELINE_CONTROL",
+          "PLAYBACK_LOOMING_CIRCUIT_VALIDATION",
+          "PLAYBACK_LOOMING_WORLD_EXPERIMENT",
+          "REPLAY_13B",
+          "REPLAY_16_CORRECTED",
+          "REPLAY_18"
+        ],
+        "ignored_by_git": true,
+        "category": "STRUCTURAL_CONTRACT",
+        "inclusion_reason": "Pinned structural identity/contact and target-route evidence is validated by the recorded required gates, not used as new physiological efficacy."
+      },
+      {
+        "repository_relative_path": "data/derived/malecns/looming_giant_fiber_v1/motor_neuron_muscle_target_contract_v1/5f02960bb5bdd81bcd622334a93199bc6973749f233dbc7aa5fd15481a5eddf0/manifest.json",
+        "bytes": 410,
+        "sha256": "9661bf76ebbce27898eff71e25bdd30f0cb077c3d5d9325a1843c02cda358f7e",
+        "required_by": [
+          "PLAYBACK_BASELINE_CONTROL",
+          "PLAYBACK_LOOMING_CIRCUIT_VALIDATION",
+          "PLAYBACK_LOOMING_WORLD_EXPERIMENT",
+          "REPLAY_13B",
+          "REPLAY_16_CORRECTED",
+          "REPLAY_18"
+        ],
+        "ignored_by_git": true,
+        "category": "STRUCTURAL_CONTRACT",
+        "inclusion_reason": "Pinned structural identity/contact and target-route evidence is validated by the recorded required gates, not used as new physiological efficacy."
+      },
+      {
+        "repository_relative_path": "data/derived/malecns/looming_giant_fiber_v1/motor_neuron_muscle_target_contract_v1/5f02960bb5bdd81bcd622334a93199bc6973749f233dbc7aa5fd15481a5eddf0/target_contract.json",
+        "bytes": 26564,
+        "sha256": "07fa469502e300b791834df98afd79e91591fd22f84d8eb09e96afe02dc7a3e2",
+        "required_by": [
+          "PLAYBACK_BASELINE_CONTROL",
+          "PLAYBACK_LOOMING_CIRCUIT_VALIDATION",
+          "PLAYBACK_LOOMING_WORLD_EXPERIMENT",
+          "REPLAY_13B",
+          "REPLAY_16_CORRECTED",
+          "REPLAY_18"
+        ],
+        "ignored_by_git": true,
+        "category": "STRUCTURAL_CONTRACT",
+        "inclusion_reason": "Pinned structural identity/contact and target-route evidence is validated by the recorded required gates, not used as new physiological efficacy."
+      },
+      {
+        "repository_relative_path": "data/derived/malecns/looming_giant_fiber_v1/neurons.jsonl",
+        "bytes": 124300,
+        "sha256": "00fcba6a1cb3ccd650610bce61de6ce017f4b7ab472cfc9339c5d5247cad264e",
+        "required_by": [
+          "PLAYBACK_BASELINE_CONTROL",
+          "PLAYBACK_LOOMING_CIRCUIT_VALIDATION",
+          "PLAYBACK_LOOMING_WORLD_EXPERIMENT",
+          "REPLAY_13B",
+          "REPLAY_16_CORRECTED",
+          "REPLAY_18",
+          "REPLAY_7O",
+          "REPLAY_8C"
+        ],
+        "ignored_by_git": true,
+        "category": "STRUCTURAL_CONTRACT",
+        "inclusion_reason": "Pinned structural identity/contact and target-route evidence is validated by the recorded required gates, not used as new physiological efficacy."
+      },
+      {
+        "repository_relative_path": "data/derived/malecns/looming_giant_fiber_v1/relative_column_sensory_state_v1/09a3d3ddc02c81bb5ea229bf48b76811123ebd2e20cfce17f45e72442dcb8b15/config.json",
+        "bytes": 2493,
+        "sha256": "ece7eccd1ee128ffdf0ec7c7262d4f8a9182ac237069590128683fcdcc767be7",
+        "required_by": [
+          "REPLAY_7O"
+        ],
+        "ignored_by_git": true,
+        "category": "CANONICAL_MANIFEST_OR_METADATA",
+        "inclusion_reason": "Frozen Phase 7E sentinel required by Phase 7O _sentinel_regression exact trajectory comparison."
+      },
+      {
+        "repository_relative_path": "data/derived/malecns/looming_giant_fiber_v1/relative_column_sensory_state_v1/09a3d3ddc02c81bb5ea229bf48b76811123ebd2e20cfce17f45e72442dcb8b15/manifest.json",
+        "bytes": 786,
+        "sha256": "b0cd2097094ad93acd663edcd94a648fabccd54cacbfe1d2f6086c54cdf59168",
+        "required_by": [
+          "REPLAY_7O"
+        ],
+        "ignored_by_git": true,
+        "category": "CANONICAL_MANIFEST_OR_METADATA",
+        "inclusion_reason": "Frozen Phase 7E sentinel required by Phase 7O _sentinel_regression exact trajectory comparison."
+      },
+      {
+        "repository_relative_path": "data/derived/malecns/looming_giant_fiber_v1/relative_column_sensory_state_v1/09a3d3ddc02c81bb5ea229bf48b76811123ebd2e20cfce17f45e72442dcb8b15/sensory_state_result.json",
+        "bytes": 122401,
+        "sha256": "91b785ec9de1509a40e14ad4096cc75282e75a8c80b46985a7bf61b54939a031",
+        "required_by": [
+          "REPLAY_7O"
+        ],
+        "ignored_by_git": true,
+        "category": "CANONICAL_SCIENTIFIC_ARTIFACT",
+        "inclusion_reason": "Frozen Phase 7E sentinel required by Phase 7O _sentinel_regression exact trajectory comparison."
+      },
+      {
+        "repository_relative_path": "data/derived/malecns/looming_giant_fiber_v1/sensory_dnp01_ttmn_adapter_v1/5f57cbc6c0ac770d65582ffe97c0c690e539bab33fef549da15d5273912279bf/adapter_config.json",
+        "bytes": 7472,
+        "sha256": "367d4e34ca6e6286e70dda410aa009a8e3828f08f94a22fb710d41bf88d136c5",
+        "required_by": [
+          "PLAYBACK_BASELINE_CONTROL",
+          "PLAYBACK_LOOMING_CIRCUIT_VALIDATION",
+          "PLAYBACK_LOOMING_WORLD_EXPERIMENT",
+          "REPLAY_13B",
+          "REPLAY_16_CORRECTED",
+          "REPLAY_18",
+          "REPLAY_8C"
+        ],
+        "ignored_by_git": true,
+        "category": "CANONICAL_MANIFEST_OR_METADATA",
+        "inclusion_reason": "Exact canonical configuration/manifest/contract bytes checked by the recorded frozen replay or playback gates."
+      },
+      {
+        "repository_relative_path": "data/derived/malecns/looming_giant_fiber_v1/sensory_dnp01_ttmn_adapter_v1/5f57cbc6c0ac770d65582ffe97c0c690e539bab33fef549da15d5273912279bf/adapter_result.json",
+        "bytes": 7206,
+        "sha256": "a140082b2714f880ea428367608dfe705caf377867781c07900eb2c883284e8a",
+        "required_by": [
+          "PLAYBACK_BASELINE_CONTROL",
+          "PLAYBACK_LOOMING_CIRCUIT_VALIDATION",
+          "PLAYBACK_LOOMING_WORLD_EXPERIMENT",
+          "REPLAY_13B",
+          "REPLAY_16_CORRECTED",
+          "REPLAY_18",
+          "REPLAY_8C"
+        ],
+        "ignored_by_git": true,
+        "category": "CANONICAL_SCIENTIFIC_ARTIFACT",
+        "inclusion_reason": "Persisted canonical scientific result used for integrity and exact numerical replay by the recorded required gates."
+      },
+      {
+        "repository_relative_path": "data/derived/malecns/looming_giant_fiber_v1/sensory_dnp01_ttmn_adapter_v1/5f57cbc6c0ac770d65582ffe97c0c690e539bab33fef549da15d5273912279bf/manifest.json",
+        "bytes": 308,
+        "sha256": "9c70d95060b7c3b30c227fffe29aa276e8ecbe5949a1f3e6273c5c8baba07ef8",
+        "required_by": [
+          "PLAYBACK_BASELINE_CONTROL",
+          "PLAYBACK_LOOMING_CIRCUIT_VALIDATION",
+          "PLAYBACK_LOOMING_WORLD_EXPERIMENT",
+          "REPLAY_13B",
+          "REPLAY_16_CORRECTED",
+          "REPLAY_18",
+          "REPLAY_8C"
+        ],
+        "ignored_by_git": true,
+        "category": "CANONICAL_MANIFEST_OR_METADATA",
+        "inclusion_reason": "Exact canonical configuration/manifest/contract bytes checked by the recorded frozen replay or playback gates."
+      },
+      {
+        "repository_relative_path": "data/derived/malecns/looming_giant_fiber_v1/sensory_population_execution_311_v1/a7d828993674634875b8b8862d40083690e77bb8aa748ad7079135cc8e10725f/execution_config.json",
+        "bytes": 26416,
+        "sha256": "7e2c3d1168a631873e2206796c3ad53ce5cedfd7712676d799521e04451ee7c8",
+        "required_by": [
+          "PLAYBACK_BASELINE_CONTROL",
+          "PLAYBACK_LOOMING_CIRCUIT_VALIDATION",
+          "PLAYBACK_LOOMING_WORLD_EXPERIMENT",
+          "REPLAY_13B",
+          "REPLAY_16_CORRECTED",
+          "REPLAY_18",
+          "REPLAY_7O"
+        ],
+        "ignored_by_git": true,
+        "category": "CANONICAL_MANIFEST_OR_METADATA",
+        "inclusion_reason": "Exact canonical configuration/manifest/contract bytes checked by the recorded frozen replay or playback gates."
+      },
+      {
+        "repository_relative_path": "data/derived/malecns/looming_giant_fiber_v1/sensory_population_execution_311_v1/a7d828993674634875b8b8862d40083690e77bb8aa748ad7079135cc8e10725f/execution_manifest.json",
+        "bytes": 52441,
+        "sha256": "0ac4d79f1885c919ae86112db11229ab3dcc54b3c2f7a853158478190e5e6f22",
+        "required_by": [
+          "PLAYBACK_BASELINE_CONTROL",
+          "PLAYBACK_LOOMING_CIRCUIT_VALIDATION",
+          "PLAYBACK_LOOMING_WORLD_EXPERIMENT",
+          "REPLAY_13B",
+          "REPLAY_16_CORRECTED",
+          "REPLAY_18",
+          "REPLAY_7O"
+        ],
+        "ignored_by_git": true,
+        "category": "CANONICAL_MANIFEST_OR_METADATA",
+        "inclusion_reason": "Exact canonical configuration/manifest/contract bytes checked by the recorded frozen replay or playback gates."
+      },
+      {
+        "repository_relative_path": "data/derived/malecns/looming_giant_fiber_v1/sensory_population_execution_311_v1/a7d828993674634875b8b8862d40083690e77bb8aa748ad7079135cc8e10725f/manifest.json",
+        "bytes": 434,
+        "sha256": "f739f631d28ba3a51ab094cbbf096c5a06be26fd818eb20f98b23d82665ddaa9",
+        "required_by": [
+          "PLAYBACK_BASELINE_CONTROL",
+          "PLAYBACK_LOOMING_CIRCUIT_VALIDATION",
+          "PLAYBACK_LOOMING_WORLD_EXPERIMENT",
+          "REPLAY_13B",
+          "REPLAY_16_CORRECTED",
+          "REPLAY_18",
+          "REPLAY_7O"
+        ],
+        "ignored_by_git": true,
+        "category": "CANONICAL_MANIFEST_OR_METADATA",
+        "inclusion_reason": "Exact canonical configuration/manifest/contract bytes checked by the recorded frozen replay or playback gates."
+      },
+      {
+        "repository_relative_path": "data/derived/malecns/looming_giant_fiber_v1/sensory_population_experiment_311_v1/99eeea47542abd5f9af2c1918e6e0514fa2c4b8f04d9a3f14a75ac1f8dbbcaa5/experiment_config.json",
+        "bytes": 3919,
+        "sha256": "e3fcd5c9c2155d5696b55d72aeef752dfb9d2448d3b7527b64fd6f9a4e838105",
+        "required_by": [
+          "PLAYBACK_BASELINE_CONTROL",
+          "PLAYBACK_LOOMING_CIRCUIT_VALIDATION",
+          "PLAYBACK_LOOMING_WORLD_EXPERIMENT",
+          "REPLAY_13B",
+          "REPLAY_16_CORRECTED",
+          "REPLAY_18",
+          "REPLAY_7O",
+          "REPLAY_8C"
+        ],
+        "ignored_by_git": true,
+        "category": "CANONICAL_MANIFEST_OR_METADATA",
+        "inclusion_reason": "Exact canonical configuration/manifest/contract bytes checked by the recorded frozen replay or playback gates."
+      },
+      {
+        "repository_relative_path": "data/derived/malecns/looming_giant_fiber_v1/sensory_population_experiment_311_v1/99eeea47542abd5f9af2c1918e6e0514fa2c4b8f04d9a3f14a75ac1f8dbbcaa5/experiment_result.json",
+        "bytes": 59301513,
+        "sha256": "2b4569acd1e2ae349bfadef646ddea1d14cbf82f13dfb0d467297f34e38a39cf",
+        "required_by": [
+          "PLAYBACK_BASELINE_CONTROL",
+          "PLAYBACK_LOOMING_CIRCUIT_VALIDATION",
+          "PLAYBACK_LOOMING_WORLD_EXPERIMENT",
+          "REPLAY_13B",
+          "REPLAY_16_CORRECTED",
+          "REPLAY_18",
+          "REPLAY_7O",
+          "REPLAY_8C"
+        ],
+        "ignored_by_git": true,
+        "category": "CANONICAL_SCIENTIFIC_ARTIFACT",
+        "inclusion_reason": "Persisted canonical scientific result used for integrity and exact numerical replay by the recorded required gates."
+      },
+      {
+        "repository_relative_path": "data/derived/malecns/looming_giant_fiber_v1/sensory_population_experiment_311_v1/99eeea47542abd5f9af2c1918e6e0514fa2c4b8f04d9a3f14a75ac1f8dbbcaa5/manifest.json",
+        "bytes": 439,
+        "sha256": "f003abb600537159647d8c28764e6c8ffe97c4d26c9b404da505b908ef13ccd0",
+        "required_by": [
+          "PLAYBACK_BASELINE_CONTROL",
+          "PLAYBACK_LOOMING_CIRCUIT_VALIDATION",
+          "PLAYBACK_LOOMING_WORLD_EXPERIMENT",
+          "REPLAY_13B",
+          "REPLAY_16_CORRECTED",
+          "REPLAY_18",
+          "REPLAY_7O",
+          "REPLAY_8C"
+        ],
+        "ignored_by_git": true,
+        "category": "CANONICAL_MANIFEST_OR_METADATA",
+        "inclusion_reason": "Exact canonical configuration/manifest/contract bytes checked by the recorded frozen replay or playback gates."
+      },
+      {
+        "repository_relative_path": "data/derived/malecns/looming_giant_fiber_v1/static_normalized_muscle_activation_artifact_v1/4e4a3e0528500cd87c49a272f01891e8cf24c5232e5c11588d6f1c25887e06fb/activation.json",
+        "bytes": 34962,
+        "sha256": "9bef8c43e1dab08407c6f36009b93e99f34e3fff29317c631eb6512b7534039c",
+        "required_by": [
+          "PLAYBACK_BASELINE_CONTROL",
+          "PLAYBACK_LOOMING_CIRCUIT_VALIDATION",
+          "PLAYBACK_LOOMING_WORLD_EXPERIMENT",
+          "REPLAY_13B",
+          "REPLAY_16_CORRECTED",
+          "REPLAY_18"
+        ],
+        "ignored_by_git": true,
+        "category": "CANONICAL_SCIENTIFIC_ARTIFACT",
+        "inclusion_reason": "Persisted canonical scientific result used for integrity and exact numerical replay by the recorded required gates."
+      },
+      {
+        "repository_relative_path": "data/derived/malecns/looming_giant_fiber_v1/static_normalized_muscle_activation_artifact_v1/4e4a3e0528500cd87c49a272f01891e8cf24c5232e5c11588d6f1c25887e06fb/manifest.json",
+        "bytes": 445,
+        "sha256": "a19a3f1f138ff211aee66e86006955c69883646af63f06f7ae5753a8625df751",
+        "required_by": [
+          "PLAYBACK_BASELINE_CONTROL",
+          "PLAYBACK_LOOMING_CIRCUIT_VALIDATION",
+          "PLAYBACK_LOOMING_WORLD_EXPERIMENT",
+          "REPLAY_13B",
+          "REPLAY_16_CORRECTED",
+          "REPLAY_18"
+        ],
+        "ignored_by_git": true,
+        "category": "CANONICAL_MANIFEST_OR_METADATA",
+        "inclusion_reason": "Exact canonical configuration/manifest/contract bytes checked by the recorded frozen replay or playback gates."
+      },
+      {
+        "repository_relative_path": "data/derived/malecns/looming_giant_fiber_v1/synthetic_dnp01_ttmn_interface_v1/4321adeee0412a79632ce4e008a1b8eaad22ee167f97f4a98521a9e71d9ef936/fixture_config.json",
+        "bytes": 14926,
+        "sha256": "d256a4e42606ac3df6991b8e5d4950321a408149ae223cbcfd1ee5878eb5628b",
+        "required_by": [
+          "PLAYBACK_BASELINE_CONTROL",
+          "PLAYBACK_LOOMING_CIRCUIT_VALIDATION",
+          "PLAYBACK_LOOMING_WORLD_EXPERIMENT",
+          "REPLAY_13B",
+          "REPLAY_16_CORRECTED",
+          "REPLAY_18"
+        ],
+        "ignored_by_git": true,
+        "category": "CANONICAL_MANIFEST_OR_METADATA",
+        "inclusion_reason": "Exact canonical configuration/manifest/contract bytes checked by the recorded frozen replay or playback gates."
+      },
+      {
+        "repository_relative_path": "data/derived/malecns/looming_giant_fiber_v1/synthetic_dnp01_ttmn_interface_v1/4321adeee0412a79632ce4e008a1b8eaad22ee167f97f4a98521a9e71d9ef936/fixture_result.json",
+        "bytes": 27848,
+        "sha256": "c526d8deeb63f3f9933beefda8e3f18b72b20ec1e5a46003625ac8e8efed94a8",
+        "required_by": [
+          "PLAYBACK_BASELINE_CONTROL",
+          "PLAYBACK_LOOMING_CIRCUIT_VALIDATION",
+          "PLAYBACK_LOOMING_WORLD_EXPERIMENT",
+          "REPLAY_13B",
+          "REPLAY_16_CORRECTED",
+          "REPLAY_18"
+        ],
+        "ignored_by_git": true,
+        "category": "CANONICAL_SCIENTIFIC_ARTIFACT",
+        "inclusion_reason": "Persisted canonical scientific result used for integrity and exact numerical replay by the recorded required gates."
+      },
+      {
+        "repository_relative_path": "data/derived/malecns/looming_giant_fiber_v1/synthetic_dnp01_ttmn_interface_v1/4321adeee0412a79632ce4e008a1b8eaad22ee167f97f4a98521a9e71d9ef936/manifest.json",
+        "bytes": 543,
+        "sha256": "2bcd105d0ec76482729d733a15de2dabbf7c73ea1d82c0c2464eb901ffe76bd4",
+        "required_by": [
+          "PLAYBACK_BASELINE_CONTROL",
+          "PLAYBACK_LOOMING_CIRCUIT_VALIDATION",
+          "PLAYBACK_LOOMING_WORLD_EXPERIMENT",
+          "REPLAY_13B",
+          "REPLAY_16_CORRECTED",
+          "REPLAY_18"
+        ],
+        "ignored_by_git": true,
+        "category": "CANONICAL_MANIFEST_OR_METADATA",
+        "inclusion_reason": "Exact canonical configuration/manifest/contract bytes checked by the recorded frozen replay or playback gates."
+      },
+      {
+        "repository_relative_path": "data/derived/malecns/looming_giant_fiber_v1/synthetic_ttmn_output_rule_v1/1c8aeac685646dac16fbb66f163743b662a3cd9a0e8f9f7582210fd7b39b9ab3/generator_config.json",
+        "bytes": 9684,
+        "sha256": "91489a1419a87492c10be1bc6200df3edca5861654b96fe717fa4bd99da43cdf",
+        "required_by": [
+          "PLAYBACK_BASELINE_CONTROL",
+          "PLAYBACK_LOOMING_CIRCUIT_VALIDATION",
+          "PLAYBACK_LOOMING_WORLD_EXPERIMENT",
+          "REPLAY_13B",
+          "REPLAY_16_CORRECTED",
+          "REPLAY_18"
+        ],
+        "ignored_by_git": true,
+        "category": "CANONICAL_MANIFEST_OR_METADATA",
+        "inclusion_reason": "Exact canonical configuration/manifest/contract bytes checked by the recorded frozen replay or playback gates."
+      },
+      {
+        "repository_relative_path": "data/derived/malecns/looming_giant_fiber_v1/synthetic_ttmn_output_rule_v1/1c8aeac685646dac16fbb66f163743b662a3cd9a0e8f9f7582210fd7b39b9ab3/manifest.json",
+        "bytes": 650,
+        "sha256": "3864bb285f9542d175fa84f13ab0062673d8ef11adce6a6fc383d6d30a342c80",
+        "required_by": [
+          "PLAYBACK_BASELINE_CONTROL",
+          "PLAYBACK_LOOMING_CIRCUIT_VALIDATION",
+          "PLAYBACK_LOOMING_WORLD_EXPERIMENT",
+          "REPLAY_13B",
+          "REPLAY_16_CORRECTED",
+          "REPLAY_18"
+        ],
+        "ignored_by_git": true,
+        "category": "CANONICAL_MANIFEST_OR_METADATA",
+        "inclusion_reason": "Exact canonical configuration/manifest/contract bytes checked by the recorded frozen replay or playback gates."
+      },
+      {
+        "repository_relative_path": "data/derived/malecns/looming_giant_fiber_v1/synthetic_ttmn_output_rule_v1/1c8aeac685646dac16fbb66f163743b662a3cd9a0e8f9f7582210fd7b39b9ab3/output_result.json",
+        "bytes": 58654,
+        "sha256": "ca093748fad463b26933ddf56d50a0f0a438ffbc981f08910abb39d5d3194f5a",
+        "required_by": [
+          "PLAYBACK_BASELINE_CONTROL",
+          "PLAYBACK_LOOMING_CIRCUIT_VALIDATION",
+          "PLAYBACK_LOOMING_WORLD_EXPERIMENT",
+          "REPLAY_13B",
+          "REPLAY_16_CORRECTED",
+          "REPLAY_18"
+        ],
+        "ignored_by_git": true,
+        "category": "CANONICAL_SCIENTIFIC_ARTIFACT",
+        "inclusion_reason": "Persisted canonical scientific result used for integrity and exact numerical replay by the recorded required gates."
+      },
+      {
+        "repository_relative_path": "data/derived/malecns/looming_giant_fiber_v1/ttm_abstract_electrical_input_artifact_v1/1a4a0e80a86945f10126ae5316b39332c55e7d2280fd0bda98c19544d69ec6fa/input_contract.json",
+        "bytes": 23017,
+        "sha256": "4994c19cfbb8a6faba2f743f3991fb317d5d043a39acc3a30878dff53a32ab1f",
+        "required_by": [
+          "PLAYBACK_BASELINE_CONTROL",
+          "PLAYBACK_LOOMING_CIRCUIT_VALIDATION",
+          "PLAYBACK_LOOMING_WORLD_EXPERIMENT",
+          "REPLAY_13B",
+          "REPLAY_16_CORRECTED",
+          "REPLAY_18"
+        ],
+        "ignored_by_git": true,
+        "category": "CANONICAL_MANIFEST_OR_METADATA",
+        "inclusion_reason": "Exact canonical configuration/manifest/contract bytes checked by the recorded frozen replay or playback gates."
+      },
+      {
+        "repository_relative_path": "data/derived/malecns/looming_giant_fiber_v1/ttm_abstract_electrical_input_artifact_v1/1a4a0e80a86945f10126ae5316b39332c55e7d2280fd0bda98c19544d69ec6fa/manifest.json",
+        "bytes": 496,
+        "sha256": "20beae6886238a0f445b01910a1e678b231fc89cec5dfd7512fc8d5846c297e6",
+        "required_by": [
+          "PLAYBACK_BASELINE_CONTROL",
+          "PLAYBACK_LOOMING_CIRCUIT_VALIDATION",
+          "PLAYBACK_LOOMING_WORLD_EXPERIMENT",
+          "REPLAY_13B",
+          "REPLAY_16_CORRECTED",
+          "REPLAY_18"
+        ],
+        "ignored_by_git": true,
+        "category": "CANONICAL_MANIFEST_OR_METADATA",
+        "inclusion_reason": "Exact canonical configuration/manifest/contract bytes checked by the recorded frozen replay or playback gates."
+      },
+      {
+        "repository_relative_path": "data/derived/malecns/looming_giant_fiber_v1/ttm_exploratory_actuator_command_artifact_v1/478b4a9d4b089dc0a0fffdb699f8bbab1c7483eddf2eed0a8b06185b48b04d40/commands.json",
+        "bytes": 27108,
+        "sha256": "e8acea79c4c8639be419e1afd5bb5926d5c987512634e4588bc806f19ee2d3ad",
+        "required_by": [
+          "PLAYBACK_BASELINE_CONTROL",
+          "PLAYBACK_LOOMING_CIRCUIT_VALIDATION",
+          "PLAYBACK_LOOMING_WORLD_EXPERIMENT",
+          "REPLAY_13B",
+          "REPLAY_16_CORRECTED",
+          "REPLAY_18"
+        ],
+        "ignored_by_git": true,
+        "category": "CANONICAL_SCIENTIFIC_ARTIFACT",
+        "inclusion_reason": "Persisted canonical scientific result used for integrity and exact numerical replay by the recorded required gates."
+      },
+      {
+        "repository_relative_path": "data/derived/malecns/looming_giant_fiber_v1/ttm_exploratory_actuator_command_artifact_v1/478b4a9d4b089dc0a0fffdb699f8bbab1c7483eddf2eed0a8b06185b48b04d40/manifest.json",
+        "bytes": 440,
+        "sha256": "39a65c81d72d6ca1c8ea0d004bdd9d61d4f6747f2fb9542f77d28066f8c96a04",
+        "required_by": [
+          "PLAYBACK_BASELINE_CONTROL",
+          "PLAYBACK_LOOMING_CIRCUIT_VALIDATION",
+          "PLAYBACK_LOOMING_WORLD_EXPERIMENT",
+          "REPLAY_13B",
+          "REPLAY_16_CORRECTED",
+          "REPLAY_18"
+        ],
+        "ignored_by_git": true,
+        "category": "CANONICAL_MANIFEST_OR_METADATA",
+        "inclusion_reason": "Exact canonical configuration/manifest/contract bytes checked by the recorded frozen replay or playback gates."
+      },
+      {
+        "repository_relative_path": "data/derived/malecns/looming_giant_fiber_v1/ttm_g1_electrophysiology_observation_artifact_v1/5993f2915c2281b13bee35919cadeb261e42cbf60c10f514171a059ce318ff1f/manifest.json",
+        "bytes": 597,
+        "sha256": "f12758c913aa9564a4cd1f6d5244009908f4517fc06a1d691a057d3f3173a748",
+        "required_by": [
+          "PLAYBACK_BASELINE_CONTROL",
+          "PLAYBACK_LOOMING_CIRCUIT_VALIDATION",
+          "PLAYBACK_LOOMING_WORLD_EXPERIMENT",
+          "REPLAY_13B",
+          "REPLAY_16_CORRECTED",
+          "REPLAY_18"
+        ],
+        "ignored_by_git": true,
+        "category": "CANONICAL_MANIFEST_OR_METADATA",
+        "inclusion_reason": "Exact canonical configuration/manifest/contract bytes checked by the recorded frozen replay or playback gates."
+      },
+      {
+        "repository_relative_path": "data/derived/malecns/looming_giant_fiber_v1/ttm_g1_electrophysiology_observation_artifact_v1/5993f2915c2281b13bee35919cadeb261e42cbf60c10f514171a059ce318ff1f/observation_contract.json",
+        "bytes": 39415,
+        "sha256": "a24ffecb924dbea7e561e16486f3d9fa81aa2e1700c13fc26b3ad94d6883c14b",
+        "required_by": [
+          "PLAYBACK_BASELINE_CONTROL",
+          "PLAYBACK_LOOMING_CIRCUIT_VALIDATION",
+          "PLAYBACK_LOOMING_WORLD_EXPERIMENT",
+          "REPLAY_13B",
+          "REPLAY_16_CORRECTED",
+          "REPLAY_18"
+        ],
+        "ignored_by_git": true,
+        "category": "CANONICAL_MANIFEST_OR_METADATA",
+        "inclusion_reason": "Exact canonical configuration/manifest/contract bytes checked by the recorded frozen replay or playback gates."
+      },
+      {
+        "repository_relative_path": "data/derived/malecns/looming_giant_fiber_v1/ttm_g1_observation_mapping_artifact_v1/f30f8ea3eaabb247b1c2999bf9b661c5eef1bf1b96ebfbd3d7f3826a0318b34f/manifest.json",
+        "bytes": 564,
+        "sha256": "efcd094f18ecc8d4408f5e55e94774de5ae02d2e39d1b54478c4db9639c1d479",
+        "required_by": [
+          "PLAYBACK_BASELINE_CONTROL",
+          "PLAYBACK_LOOMING_CIRCUIT_VALIDATION",
+          "PLAYBACK_LOOMING_WORLD_EXPERIMENT",
+          "REPLAY_13B",
+          "REPLAY_16_CORRECTED",
+          "REPLAY_18"
+        ],
+        "ignored_by_git": true,
+        "category": "CANONICAL_MANIFEST_OR_METADATA",
+        "inclusion_reason": "Exact canonical configuration/manifest/contract bytes checked by the recorded frozen replay or playback gates."
+      },
+      {
+        "repository_relative_path": "data/derived/malecns/looming_giant_fiber_v1/ttm_g1_observation_mapping_artifact_v1/f30f8ea3eaabb247b1c2999bf9b661c5eef1bf1b96ebfbd3d7f3826a0318b34f/mapping_contract.json",
+        "bytes": 25988,
+        "sha256": "5e774d70162a9d1c3e3b3143730de797b1786fb256e82be2cae7ddaaa9279a60",
+        "required_by": [
+          "PLAYBACK_BASELINE_CONTROL",
+          "PLAYBACK_LOOMING_CIRCUIT_VALIDATION",
+          "PLAYBACK_LOOMING_WORLD_EXPERIMENT",
+          "REPLAY_13B",
+          "REPLAY_16_CORRECTED",
+          "REPLAY_18"
+        ],
+        "ignored_by_git": true,
+        "category": "CANONICAL_MANIFEST_OR_METADATA",
+        "inclusion_reason": "Exact canonical configuration/manifest/contract bytes checked by the recorded frozen replay or playback gates."
+      },
+      {
+        "repository_relative_path": "data/derived/malecns/looming_giant_fiber_v1/ttm_g1_proxy_mapping_artifact_v1/030a9d22a27e4017f38d6bda166ba41515ea654c59d571f44bed2d37c7d3e3d8/manifest.json",
+        "bytes": 477,
+        "sha256": "3d40ff03a854466726df556a577b144658a1976cfc7fefe36324e4d394415d40",
+        "required_by": [
+          "PLAYBACK_BASELINE_CONTROL",
+          "PLAYBACK_LOOMING_CIRCUIT_VALIDATION",
+          "PLAYBACK_LOOMING_WORLD_EXPERIMENT",
+          "REPLAY_13B",
+          "REPLAY_16_CORRECTED",
+          "REPLAY_18"
+        ],
+        "ignored_by_git": true,
+        "category": "CANONICAL_MANIFEST_OR_METADATA",
+        "inclusion_reason": "Exact canonical configuration/manifest/contract bytes checked by the recorded frozen replay or playback gates."
+      },
+      {
+        "repository_relative_path": "data/derived/malecns/looming_giant_fiber_v1/ttm_g1_proxy_mapping_artifact_v1/030a9d22a27e4017f38d6bda166ba41515ea654c59d571f44bed2d37c7d3e3d8/proxy_contract.json",
+        "bytes": 8845,
+        "sha256": "d15fbdedbf727d76204bed2bcadd8f2c19c466760682f76c403544b9bb4cdbd5",
+        "required_by": [
+          "PLAYBACK_BASELINE_CONTROL",
+          "PLAYBACK_LOOMING_CIRCUIT_VALIDATION",
+          "PLAYBACK_LOOMING_WORLD_EXPERIMENT",
+          "REPLAY_13B",
+          "REPLAY_16_CORRECTED",
+          "REPLAY_18"
+        ],
+        "ignored_by_git": true,
+        "category": "CANONICAL_MANIFEST_OR_METADATA",
+        "inclusion_reason": "Exact canonical configuration/manifest/contract bytes checked by the recorded frozen replay or playback gates."
+      },
+      {
+        "repository_relative_path": "data/derived/malecns/looming_giant_fiber_v1/ttm_neuromuscular_input_receipt_artifact_v1/e04803f60304f58d0e6d27fdea5d15debb60358b46721caac09f10165c6df9c4/manifest.json",
+        "bytes": 664,
+        "sha256": "789af7f522736140b2266aa574325f67d10cc85a3c2902c06a401abc679742be",
+        "required_by": [
+          "PLAYBACK_BASELINE_CONTROL",
+          "PLAYBACK_LOOMING_CIRCUIT_VALIDATION",
+          "PLAYBACK_LOOMING_WORLD_EXPERIMENT",
+          "REPLAY_13B",
+          "REPLAY_16_CORRECTED",
+          "REPLAY_18"
+        ],
+        "ignored_by_git": true,
+        "category": "CANONICAL_MANIFEST_OR_METADATA",
+        "inclusion_reason": "Exact canonical configuration/manifest/contract bytes checked by the recorded frozen replay or playback gates."
+      },
+      {
+        "repository_relative_path": "data/derived/malecns/looming_giant_fiber_v1/ttm_neuromuscular_input_receipt_artifact_v1/e04803f60304f58d0e6d27fdea5d15debb60358b46721caac09f10165c6df9c4/receipt_config.json",
+        "bytes": 2099,
+        "sha256": "f24a54457ab62395cbaa17f776d823c5efb7c7fe869f3466be173204bae37752",
+        "required_by": [
+          "PLAYBACK_BASELINE_CONTROL",
+          "PLAYBACK_LOOMING_CIRCUIT_VALIDATION",
+          "PLAYBACK_LOOMING_WORLD_EXPERIMENT",
+          "REPLAY_13B",
+          "REPLAY_16_CORRECTED",
+          "REPLAY_18"
+        ],
+        "ignored_by_git": true,
+        "category": "CANONICAL_MANIFEST_OR_METADATA",
+        "inclusion_reason": "Exact canonical configuration/manifest/contract bytes checked by the recorded frozen replay or playback gates."
+      },
+      {
+        "repository_relative_path": "data/derived/malecns/looming_giant_fiber_v1/ttm_neuromuscular_input_receipt_artifact_v1/e04803f60304f58d0e6d27fdea5d15debb60358b46721caac09f10165c6df9c4/receipt_result.json",
+        "bytes": 35897,
+        "sha256": "aab7d9b541b28f1b0d844ed99a0aae757e4bf3720289e69cb3f06757c5a1a756",
+        "required_by": [
+          "PLAYBACK_BASELINE_CONTROL",
+          "PLAYBACK_LOOMING_CIRCUIT_VALIDATION",
+          "PLAYBACK_LOOMING_WORLD_EXPERIMENT",
+          "REPLAY_13B",
+          "REPLAY_16_CORRECTED",
+          "REPLAY_18"
+        ],
+        "ignored_by_git": true,
+        "category": "CANONICAL_SCIENTIFIC_ARTIFACT",
+        "inclusion_reason": "Persisted canonical scientific result used for integrity and exact numerical replay by the recorded required gates."
+      },
+      {
+        "repository_relative_path": "data/raw/malecns/optic-column-type-assignments-v1.0.xlsx",
+        "bytes": 111565,
+        "sha256": "d4af1cacb751036f7e84bfecc9bec79ca010066ac066559c29b566003ec080d3",
+        "required_by": [
+          "PLAYBACK_BASELINE_CONTROL",
+          "PLAYBACK_LOOMING_CIRCUIT_VALIDATION",
+          "PLAYBACK_LOOMING_WORLD_EXPERIMENT",
+          "REPLAY_13B",
+          "REPLAY_16_CORRECTED",
+          "REPLAY_18",
+          "REPLAY_7O",
+          "REPLAY_8C"
+        ],
+        "ignored_by_git": true,
+        "category": "SOURCE_VALIDATION_DEPENDENCY",
+        "inclusion_reason": "Existing frozen anatomical/column source verification requires this exact file; no directory-wide source authorization."
+      }
+    ],
+    "file_count": 74,
+    "total_bytes": 116239303,
+    "category_totals": {
+      "CANONICAL_MANIFEST_OR_METADATA": {
+        "files": 42,
+        "bytes": 302827
+      },
+      "CANONICAL_SCIENTIFIC_ARTIFACT": {
+        "files": 20,
+        "bytes": 109021306
+      },
+      "SOURCE_VALIDATION_DEPENDENCY": {
+        "files": 4,
+        "bytes": 3872435
+      },
+      "STRUCTURAL_CONTRACT": {
+        "files": 8,
+        "bytes": 3042735
+      }
+    },
+    "delta_from_d1": {
+      "added_files": 8,
+      "added_bytes": 31663458,
+      "removed_files": 0
+    },
+    "readiness_dependency_policy": "Verify every runtime_files entry plus tracked science document hashes once during provisioning/startup; bounded readiness reports that verified state, not numerical replay on every probe.",
+    "minimality_review": {
+      "unused_inherited_d1_files": [],
+      "policy": "Retain all D1 entries: each was observed under at least one required gate. No speculative directory-wide retention."
+    },
+    "closure_validation": {
+      "status": "PASS",
+      "gates": [
+        {
+          "artifact_id": "99eeea47542abd5f9af2c1918e6e0514fa2c4b8f04d9a3f14a75ac1f8dbbcaa5",
+          "gate": "REPLAY_7O",
+          "status": "PASS"
+        },
+        {
+          "artifact_id": "5f57cbc6c0ac770d65582ffe97c0c690e539bab33fef549da15d5273912279bf",
+          "gate": "REPLAY_8C",
+          "status": "PASS"
+        },
+        {
+          "artifact_id": "55e2f4d37bc6f8fb81aee67886d8680a76646a0317961bd90cf0e3fbabb2c46b",
+          "gate": "REPLAY_13B",
+          "status": "PASS"
+        },
+        {
+          "artifact_id": "bb1d227dd3dc56d74939c37e231ca0f8aa02f8d0140964eef7f1fb31e00b101b",
+          "gate": "REPLAY_16_CORRECTED",
+          "status": "PASS"
+        },
+        {
+          "artifact_id": "ee781bd8c7e903c5fab78aff02d916fe68d26998a7caf774806778cacd2b616c",
+          "gate": "REPLAY_18",
+          "status": "PASS"
+        },
+        {
+          "artifact_id": "2ae44804fd570e6b64f219ee50b15bed923855e772a07b5cecc9d766ff6f4113",
+          "gate": "REPLAY_25",
+          "status": "PASS"
+        },
+        {
+          "artifact_id": "243914905c17ceb1285c645aa9e9700b602a9e22c8703c9f9ce4c7fe4f7e935d",
+          "gate": "REPLAY_28",
+          "status": "PASS"
+        },
+        {
+          "artifact_id": "f6ad13b9ba57d1ddb5e95cf91440c5b67f503a407f7330d4423ce7ab4340e581",
+          "gate": "REPLAY_30",
+          "status": "PASS"
+        },
+        {
+          "gate": "STARTUP",
+          "status": "PASS"
+        },
+        {
+          "artifact_id": "55e2f4d37bc6f8fb81aee67886d8680a76646a0317961bd90cf0e3fbabb2c46b",
+          "bytes": 10290,
+          "gate": "PLAYBACK_BASELINE_CONTROL",
+          "payload_id": "75d1f2856f0d896589a8b1f62fb61016d701045b760e216b7cb5fa70daa30668",
+          "status": "PASS",
+          "transport_sha256": "475b550734133d6357fd5f8914549d9d1c5469ccfeaca8e1fb229311a9db5380"
+        },
+        {
+          "artifact_id": "55e2f4d37bc6f8fb81aee67886d8680a76646a0317961bd90cf0e3fbabb2c46b",
+          "bytes": 12021,
+          "gate": "PLAYBACK_LOOMING_CIRCUIT_VALIDATION",
+          "payload_id": "c3387396dcffa6372287df1a7d4680bb7ba605df319af4cf10f140cfc3a4d223",
+          "status": "PASS",
+          "transport_sha256": "743e475ec7ad41e4cb80492688491607a19ef31ce3389ddddf6281ee9f8d8510"
+        },
+        {
+          "artifact_id": "ee781bd8c7e903c5fab78aff02d916fe68d26998a7caf774806778cacd2b616c",
+          "bytes": 283219,
+          "gate": "PLAYBACK_LOOMING_WORLD_EXPERIMENT",
+          "payload_id": "d06ef32aaf054b981464948916e5687951b40f571be5286513dad8ae440f26df",
+          "status": "PASS",
+          "transport_sha256": "cd9755131ecf6eb39ec26136f8d4bdadc1e65573ebfd387c4bbac25d3e53a060"
+        },
+        {
+          "artifact_id": "2ae44804fd570e6b64f219ee50b15bed923855e772a07b5cecc9d766ff6f4113",
+          "bytes": 138336,
+          "gate": "PLAYBACK_HORIZONTAL_MOTION_NEURAL_VALIDATION",
+          "payload_id": "52554962f3e9c85c6866b5e3ec56f8a12d24340db2236ec52c7809c6ece8d404",
+          "status": "PASS",
+          "transport_sha256": "2d61227727a0708ed5635a0054c729f9664db4e6b883edfac417573eddaafa6b"
+        },
+        {
+          "artifact_id": "f6ad13b9ba57d1ddb5e95cf91440c5b67f503a407f7330d4423ce7ab4340e581",
+          "bytes": 453262,
+          "gate": "PLAYBACK_EXPLORATORY_COURSE_CONTROL",
+          "payload_id": "7fddc1109495023d8f64744237796d5d8e86852abef80b6979f1994088d46806",
+          "status": "PASS",
+          "transport_sha256": "ff1d4bfd9e0ba312155d1ddea76f15f0f4aba5048c4ffb3bcaf52f23e5a67e63"
+        }
+      ],
+      "isolated_validation": "PASS",
+      "unauthorized_runtime_reads": [],
+      "network_access": "DENIED",
+      "read_only_data": true
+    },
+    "explicit_exclusions": [
+      "All unlisted data files, SWC/morphology archives, unrelated experiment batteries, generation metrics and caches.",
+      "Tracked science/application/static assets from this ignored runtime data inventory; delivered separately through Git/build.",
+      "No archive, container image or storage object created."
+    ]
+  }
+}

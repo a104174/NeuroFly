@@ -1,0 +1,1634 @@
+{
+  "schema": "frontend_scientific_readability_audit_v1",
+  "audit_id": "3922ccf48edfcf10fc68b521573805f12a91a46909bdd044d8f704a5ee5c5157",
+  "audit": {
+    "schema": "frontend_scientific_readability_audit_v1",
+    "source": {
+      "commit": "c5ea8c35b757b7de5b70c78e86a6b4fba6b9cb40",
+      "branch": "main",
+      "origin_main_equal": true,
+      "initial_worktree_clean": true,
+      "phase31_committed": true,
+      "authorities": [
+        {
+          "document": "neurofly_v1_scientific_status.json",
+          "inner_key": "status",
+          "canonical_id": "1aa1a39710ebc68030834b3a04ea202eb57fb25a0080f444db0ea19af64730a6"
+        },
+        {
+          "document": "second_circuit_selection_gate.json",
+          "inner_key": "selection",
+          "canonical_id": "435ee01693ec0b4b1ad5a8547e77f865c43743cfa56d9c3dd2055a6a87b6ed41"
+        },
+        {
+          "document": "hs_dnp15_neural_validation_preregistration.json",
+          "inner_key": null,
+          "canonical_id": "371926570df00d88efb8e40aa8f6c64b757a420364143d42c9fb727722bfe074"
+        },
+        {
+          "document": "hs_dnp15_network_context_audit.json",
+          "inner_key": "audit",
+          "canonical_id": "04116360164262de5a2572f33e12cc90351869567c3202811807be576f1d03be"
+        },
+        {
+          "document": "horizontal_motion_neural_scenario_integration.md",
+          "inner_key": "DOCUMENT_BYTES",
+          "canonical_id": "67612c85713d731929c466b4c8adb0eb0ad59786a97341289e006a26c277320d"
+        },
+        {
+          "document": "dnp15_yaw_mapping_evidence_gate.json",
+          "inner_key": "gate",
+          "canonical_id": "42d46ef3e5deed0c36da518cc1523cfe3d0978e5cbed2aac85a9738fcdeadf2f"
+        },
+        {
+          "document": "dnp15_exploratory_yaw_preregistration.json",
+          "inner_key": null,
+          "canonical_id": "1be0f6364070a5a5536f4c772bd47abb3be2f08357b439a51e03f034f8b2a654"
+        },
+        {
+          "document": "orientation_to_horizontal_motion_contract.json",
+          "inner_key": null,
+          "canonical_id": "9e58649144a4cf3ca7cd913a6cf91dde116524906b0c600dd09f5e66ec5ffaad"
+        },
+        {
+          "document": "exploratory_course_control_closed_loop_preregistration.json",
+          "inner_key": null,
+          "canonical_id": "efc27a18e1d19119b8eebc5d0f8b91e61a47337dbb9f60e2518fabc42672cd0f"
+        },
+        {
+          "document": "exploratory_course_control_closed_loop_preregistration.json",
+          "inner_key": "analysis",
+          "canonical_id": "a8e82f1561df6deb05216d795f7d61067c9338fefffb5cb7d2a415f6a3464586"
+        },
+        {
+          "document": "exploratory_course_control_playback_integration.md",
+          "inner_key": "DOCUMENT_BYTES",
+          "canonical_id": "22e2a4b99e8324364f27529965a24989a5e6022b9e2249e904d0b341244441fa"
+        }
+      ],
+      "historical_replays": [
+        {
+          "phase": "7O",
+          "artifact_id": "99eeea47542abd5f9af2c1918e6e0514fa2c4b8f04d9a3f14a75ac1f8dbbcaa5",
+          "status": "PASS"
+        },
+        {
+          "phase": "8C",
+          "artifact_id": "5f57cbc6c0ac770d65582ffe97c0c690e539bab33fef549da15d5273912279bf",
+          "status": "PASS"
+        },
+        {
+          "phase": "13B",
+          "artifact_id": "55e2f4d37bc6f8fb81aee67886d8680a76646a0317961bd90cf0e3fbabb2c46b",
+          "status": "PASS"
+        },
+        {
+          "phase": "16",
+          "artifact_id": "bb1d227dd3dc56d74939c37e231ca0f8aa02f8d0140964eef7f1fb31e00b101b",
+          "status": "PASS"
+        },
+        {
+          "phase": "18",
+          "artifact_id": "ee781bd8c7e903c5fab78aff02d916fe68d26998a7caf774806778cacd2b616c",
+          "status": "PASS"
+        },
+        {
+          "phase": "25",
+          "artifact_id": "2ae44804fd570e6b64f219ee50b15bed923855e772a07b5cecc9d766ff6f4113",
+          "status": "PASS"
+        },
+        {
+          "phase": "28",
+          "artifact_id": "243914905c17ceb1285c645aa9e9700b602a9e22c8703c9f9ce4c7fe4f7e935d",
+          "status": "PASS"
+        },
+        {
+          "phase": "30",
+          "artifact_id": "f6ad13b9ba57d1ddb5e95cf91440c5b67f503a407f7330d4423ce7ab4340e581",
+          "status": "PASS"
+        }
+      ],
+      "playback_identities": [
+        {
+          "scenario": "BASELINE_CONTROL",
+          "playback_sha256": "75d1f2856f0d896589a8b1f62fb61016d701045b760e216b7cb5fa70daa30668",
+          "transport_sha256": "475b550734133d6357fd5f8914549d9d1c5469ccfeaca8e1fb229311a9db5380"
+        },
+        {
+          "scenario": "LOOMING_CIRCUIT_VALIDATION",
+          "playback_sha256": "c3387396dcffa6372287df1a7d4680bb7ba605df319af4cf10f140cfc3a4d223",
+          "transport_sha256": "743e475ec7ad41e4cb80492688491607a19ef31ce3389ddddf6281ee9f8d8510"
+        },
+        {
+          "scenario": "LOOMING_WORLD_EXPERIMENT",
+          "playback_sha256": "d06ef32aaf054b981464948916e5687951b40f571be5286513dad8ae440f26df",
+          "transport_sha256": "cd9755131ecf6eb39ec26136f8d4bdadc1e65573ebfd387c4bbac25d3e53a060"
+        },
+        {
+          "scenario": "HORIZONTAL_MOTION_NEURAL_VALIDATION",
+          "playback_sha256": "52554962f3e9c85c6866b5e3ec56f8a12d24340db2236ec52c7809c6ece8d404",
+          "transport_sha256": "2d61227727a0708ed5635a0054c729f9664db4e6b883edfac417573eddaafa6b"
+        },
+        {
+          "scenario": "EXPLORATORY_COURSE_CONTROL",
+          "playback_sha256": "7fddc1109495023d8f64744237796d5d8e86852abef80b6979f1994088d46806",
+          "transport_sha256": "ff1d4bfd9e0ba312155d1ddea76f15f0f4aba5048c4ffb3bcaf52f23e5a67e63"
+        }
+      ],
+      "frontend_backend_source_files": [
+        {
+          "path": "src/neurofly/scenario_playback_api.py",
+          "sha256": "6a68a2e9ff700ec0598a9700726a6602da0ed49e84c327c2e97a9b78b74744ee"
+        },
+        {
+          "path": "src/neurofly/http_api.py",
+          "sha256": "87220c5216d5bdff4942ca1846fa39fe660231d519415d200ed8eed9868e655a"
+        },
+        {
+          "path": "web/src/lib/scenarioPlayback.ts",
+          "sha256": "2043f180af08d7c85524d5af4bbedeb9db257f1cd21b401182205d950b120a24"
+        },
+        {
+          "path": "web/src/lib/courseControlPlayback.ts",
+          "sha256": "359f33aec6787fbb256cc74a9928db2115fcb0c0401e8b6a0e3394b2b8169ebd"
+        },
+        {
+          "path": "web/src/lib/scenarioPresentation.ts",
+          "sha256": "b85df6f3f9ff8ce1eb4ccc234a8aa654e3a462992519a5e6ddaeda5cb1ebca30"
+        },
+        {
+          "path": "web/src/components/ScenarioCockpit.tsx",
+          "sha256": "7bdfc659a18cc8a62992dc8d261872bfe9bd7eadc0425c82189054d1e14be7f8"
+        },
+        {
+          "path": "web/src/components/ScenarioExplanation.tsx",
+          "sha256": "41aadbc9969f64b2f8f35b6d769f2379e637621fd86cd7798ad545211298325f"
+        },
+        {
+          "path": "web/src/components/HorizontalMotionExplanation.tsx",
+          "sha256": "99e6112cbacce85a3a1c1de95ca2228efec1bb1b172f448d1708f17f25f8f063"
+        },
+        {
+          "path": "web/src/components/CourseControlExplanation.tsx",
+          "sha256": "4fc4df2386abb1a2bf9e4a475cfceab64605560a9d06617f9c00c82b500ec996"
+        },
+        {
+          "path": "web/src/components/ScenarioWorld.tsx",
+          "sha256": "2b0b4d6e2568124e54e72e0d4e58803a0cff012fba43154d1fc16403b81d1399"
+        },
+        {
+          "path": "web/src/components/HorizontalMotionWorld.tsx",
+          "sha256": "04f40905e5e252d9a8e5c61b55210cf4fcac9c306d3d8f216c38cbd6a22060ef"
+        },
+        {
+          "path": "web/src/components/CourseControlWorld.tsx",
+          "sha256": "be26915e0b5a935537340c2a6eb5b4ab6ed44ec3828c15c4052f3b201415cac6"
+        },
+        {
+          "path": "web/src/components/ScenarioFlyVisual.tsx",
+          "sha256": "23d86e69ff3970872f78a0cb62e956d1de1727c2462f2fbad5e6590054c567d8"
+        },
+        {
+          "path": "web/src/app/scenarios/page.tsx",
+          "sha256": "876918b5825af16d63574c2a5b2d367fd4dfdf5dd3111b5355ef0e98080235a1"
+        },
+        {
+          "path": "web/src/app/scenarios/[scenarioId]/page.tsx",
+          "sha256": "8500aa35887e014833d5e163743c4e1bd5703f7a1ffd6ac4187f5a1f500f1650"
+        },
+        {
+          "path": "web/src/app/scenarios/actions.ts",
+          "sha256": "d8c02cd0fc009405840f31bdf019af4ec248b011b94849218478cb2e64e972cb"
+        },
+        {
+          "path": "web/src/app/scenarios.css",
+          "sha256": "9cb5a771ba1de33df22bd33beb4f3833bd4ef62a5179094df77e80c714a1224c"
+        },
+        {
+          "path": "web/src/app/globals.css",
+          "sha256": "c2a77965c46f43cf99c21e10f189c08d292e8190a93ab31021f44b1305375b23"
+        }
+      ]
+    },
+    "methodology": {
+      "kind": "EXPERT_HEURISTIC_AUDIT",
+      "user_study": false,
+      "dated": "2026-10-06",
+      "newcomer_definition": "Technically literate newcomer without project documentation; assess complete visible frontend, with first-fold hierarchy noted separately.",
+      "core_questions": [
+        "What am I looking at?",
+        "What stimulus/input is applied?",
+        "Which circuit/model path is active?",
+        "What happened in this canonical run?",
+        "Why is there or is there not body movement?",
+        "What does this result not mean?"
+      ],
+      "question_keys": [
+        "looking",
+        "input",
+        "circuit",
+        "result",
+        "body_output",
+        "limits"
+      ],
+      "evidence_boundary": "Screenshots support UX observations only; scientific values checked against canonical backend replay payloads.",
+      "browser": "agent-browser controlled Chromium; real Next.js/FastAPI; no mocked scientific data.",
+      "automated_accessibility_tooling": "No pre-existing axe/Playwright accessibility harness located; used keyboard, DOM labels/focus/size/overflow inspection without dependencies.",
+      "wcag_conformance_evaluated": false,
+      "performance_scope": "Local development observations under some concurrent audit requests; not production benchmarks or claims of user comprehension speed."
+    },
+    "viewports": [
+      {
+        "id": "desktop_1440x1000",
+        "width_px": 1440,
+        "height_px": 1000
+      },
+      {
+        "id": "mobile_390x844",
+        "width_px": 390,
+        "height_px": 844
+      }
+    ],
+    "screenshots": [
+      {
+        "filename": "baseline-desktop.png",
+        "bytes": 313972,
+        "sha256": "53093bcc6edc818ddaa51daefb08d6ca9cc4a324155dfcd4ab7f04dae3f15df2",
+        "image_width_px": 1440,
+        "image_height_px": 1909,
+        "viewport_id": "desktop_1440x1000",
+        "purpose": "Baseline boundary 14, intentional neutral result",
+        "storage": "OUTSIDE_GIT_OPTIONAL_LOCAL_EVIDENCE",
+        "scientific_authority": false
+      },
+      {
+        "filename": "baseline-loading.png",
+        "bytes": 119046,
+        "sha256": "a2880f398f2632d140c9aa9c825fdc9b08c70190e798c9adf6aba45c9a9b257c",
+        "image_width_px": 1440,
+        "image_height_px": 1000,
+        "viewport_id": "desktop_1440x1000",
+        "purpose": "Actual pending validated replay, not null result",
+        "storage": "OUTSIDE_GIT_OPTIONAL_LOCAL_EVIDENCE",
+        "scientific_authority": false
+      },
+      {
+        "filename": "course-control-desktop.png",
+        "bytes": 334120,
+        "sha256": "e0c3536c8981f1bcd12a5eb2be475b36811280ab87c80f17e341eb1369a4aace",
+        "image_width_px": 1440,
+        "image_height_px": 2387,
+        "viewport_id": "desktop_1440x1000",
+        "purpose": "Closed-loop boundary 500; residual preserved",
+        "storage": "OUTSIDE_GIT_OPTIONAL_LOCAL_EVIDENCE",
+        "scientific_authority": false
+      },
+      {
+        "filename": "course-control-mobile.png",
+        "bytes": 481899,
+        "sha256": "42fa7f46c5da25539555590497cd2eebe5311c6d004a066ef274ae0baaa2b14e",
+        "image_width_px": 390,
+        "image_height_px": 5640,
+        "viewport_id": "mobile_390x844",
+        "purpose": "Closed-loop boundary 500, provenance expanded",
+        "storage": "OUTSIDE_GIT_OPTIONAL_LOCAL_EVIDENCE",
+        "scientific_authority": false
+      },
+      {
+        "filename": "course-mobile-fold.png",
+        "bytes": 69640,
+        "sha256": "9931e82dda7c3d4f4711df5589c6447ad00581e847c69e2d443cb800af93a59f",
+        "image_width_px": 390,
+        "image_height_px": 844,
+        "viewport_id": "mobile_390x844",
+        "purpose": "Closed-loop final first fold; truthful small orientation",
+        "storage": "OUTSIDE_GIT_OPTIONAL_LOCAL_EVIDENCE",
+        "scientific_authority": false
+      },
+      {
+        "filename": "course-provenance-desktop.png",
+        "bytes": 508903,
+        "sha256": "c98da1578d42a14b87e7eef349aeed7f2068a9805641e1361e239e29c958388a",
+        "image_width_px": 1440,
+        "image_height_px": 3629,
+        "viewport_id": "desktop_1440x1000",
+        "purpose": "Closed-loop boundary 500 with provenance expanded",
+        "storage": "OUTSIDE_GIT_OPTIONAL_LOCAL_EVIDENCE",
+        "scientific_authority": false
+      },
+      {
+        "filename": "horizontal-motion-desktop.png",
+        "bytes": 308312,
+        "sha256": "0bdcc286864aace05c077f11a1cdaa860f6071f753a9bda1a6f9010d1f31da65",
+        "image_width_px": 1440,
+        "image_height_px": 2534,
+        "viewport_id": "desktop_1440x1000",
+        "purpose": "Neural condition boundary 200; pulse off and continuing neural state",
+        "storage": "OUTSIDE_GIT_OPTIONAL_LOCAL_EVIDENCE",
+        "scientific_authority": false
+      },
+      {
+        "filename": "horizontal-motion-mobile.png",
+        "bytes": 278339,
+        "sha256": "d542253fa046dbaf712ca397eb357e4738a750c13cf39980b62b1f71e15dcd74",
+        "image_width_px": 390,
+        "image_height_px": 4339,
+        "viewport_id": "mobile_390x844",
+        "purpose": "Neural mobile boundary 200; full stacked hierarchy",
+        "storage": "OUTSIDE_GIT_OPTIONAL_LOCAL_EVIDENCE",
+        "scientific_authority": false
+      },
+      {
+        "filename": "library-desktop.png",
+        "bytes": 1026914,
+        "sha256": "0b54eb8fc4fbd1ac9e9f28c19c0a931205924ae6969718636b423b349d3bf790",
+        "image_width_px": 1440,
+        "image_height_px": 2219,
+        "viewport_id": "desktop_1440x1000",
+        "purpose": "Scenario library; all five cards",
+        "storage": "OUTSIDE_GIT_OPTIONAL_LOCAL_EVIDENCE",
+        "scientific_authority": false
+      },
+      {
+        "filename": "looming-circuit-desktop-final.png",
+        "bytes": 331554,
+        "sha256": "15e9ead54d165815546ffd0717ebfcce4ea3e942736b43c4019d394eca0afba8",
+        "image_width_px": 1440,
+        "image_height_px": 1934,
+        "viewport_id": "desktop_1440x1000",
+        "purpose": "Micro-window boundary 14; subthreshold and stationary",
+        "storage": "OUTSIDE_GIT_OPTIONAL_LOCAL_EVIDENCE",
+        "scientific_authority": false
+      },
+      {
+        "filename": "looming-circuit-desktop.png",
+        "bytes": 343884,
+        "sha256": "25c795c35e6290029a0382512450381efa28f218bb0eeb1dc893fcc9983bfcfd",
+        "image_width_px": 1440,
+        "image_height_px": 1934,
+        "viewport_id": "desktop_1440x1000",
+        "purpose": "Micro-window boundary zero; selected state versus whole-run copy",
+        "storage": "OUTSIDE_GIT_OPTIONAL_LOCAL_EVIDENCE",
+        "scientific_authority": false
+      },
+      {
+        "filename": "looming-world-desktop.png",
+        "bytes": 360237,
+        "sha256": "6b9d53b6f96fcd4ca15b45bb8f11e609dc230ee27eb7d8ca26ce5cdb29176cf0",
+        "image_width_px": 1440,
+        "image_height_px": 2002,
+        "viewport_id": "desktop_1440x1000",
+        "purpose": "World experiment boundary 400; exposure growth and zero output",
+        "storage": "OUTSIDE_GIT_OPTIONAL_LOCAL_EVIDENCE",
+        "scientific_authority": false
+      },
+      {
+        "filename": "looming-world-mobile.png",
+        "bytes": 196486,
+        "sha256": "e067db8e5aab3c93541a339df4ef6c68801cef9d5add247b012ce1870aea063e",
+        "image_width_px": 390,
+        "image_height_px": 3203,
+        "viewport_id": "mobile_390x844",
+        "purpose": "World experiment mobile boundary zero; spot-check",
+        "storage": "OUTSIDE_GIT_OPTIONAL_LOCAL_EVIDENCE",
+        "scientific_authority": false
+      },
+      {
+        "filename": "scientific-playback-unavailable.png",
+        "bytes": 122186,
+        "sha256": "c693a987e4574d5b1b69a468c8ac5d5528551538dfe337615aa923c977dc69a5",
+        "image_width_px": 1440,
+        "image_height_px": 1000,
+        "viewport_id": "desktop_1440x1000",
+        "purpose": "Real absent-artifact 503; canvas removed, retry/back available",
+        "storage": "OUTSIDE_GIT_OPTIONAL_LOCAL_EVIDENCE",
+        "scientific_authority": false
+      }
+    ],
+    "scenario_evaluations": [
+      {
+        "scenario_id": "BASELINE_CONTROL",
+        "newcomer_answers": {
+          "looking": "CLEAR",
+          "input": "CLEAR",
+          "circuit": "CLEAR",
+          "result": "CLEAR",
+          "body_output": "CLEAR",
+          "limits": "CLEAR"
+        },
+        "viewport_dominance": "DOMINANT",
+        "desktop_reviewed": true,
+        "mobile_reviewed": false,
+        "notes": {
+          "result": "Intentional no-stimulus control; neutral source states, model DNp01 resting coordinate -52 mV_eq, no spikes/actuation/displacement.",
+          "hierarchy": "Control cue visible in viewport; full intentional-null explanation below controls and causal panels.",
+          "telemetry": "Time/control status essential; no-object/exposure/zero-actuator/body coordinates repeat null result.",
+          "causal": "Disabled sensory stage and stationary body clear; 'yet' wording is unnecessarily anticipatory.",
+          "provenance": "Collapsed by default; model-space voltage/distance definitions explicit when opened.",
+          "accessibility": "Keyboard transport works with visible outline; shared navigation focus risk.",
+          "asset": "Large identifiable specimen; simplified mesh detail and leg/shadow overlap."
+        },
+        "attention_order": [
+          "EXPERIMENT_IDENTITY",
+          "VISUALIZATION",
+          "PLAYBACK",
+          "CAUSAL_EXPLANATION",
+          "CURRENT_RESULT",
+          "TELEMETRY",
+          "PROVENANCE"
+        ],
+        "matrix": {
+          "input_clarity": "CLEAR",
+          "circuit_clarity": "CLEAR",
+          "output_result_clarity": "CLEAR",
+          "body_output_clarity": "CLEAR",
+          "causal_chain_clarity": "CLEAR",
+          "unit_clarity": "PARTIALLY_CLEAR",
+          "playback_clarity": "CLEAR",
+          "provenance_clarity": "PARTIALLY_CLEAR",
+          "mobile_clarity": "NOT_AUDITED",
+          "claim_safety": "CLEAR"
+        }
+      },
+      {
+        "scenario_id": "LOOMING_CIRCUIT_VALIDATION",
+        "newcomer_answers": {
+          "looking": "CLEAR",
+          "input": "CLEAR",
+          "circuit": "PARTIALLY_CLEAR",
+          "result": "CLEAR",
+          "body_output": "CLEAR",
+          "limits": "CLEAR"
+        },
+        "viewport_dominance": "DOMINANT",
+        "desktop_reviewed": true,
+        "mobile_reviewed": false,
+        "notes": {
+          "result": "1.4 ms causal micro-window; exposure 19 to 22; final right DNp01 -51.933657842035174 mV_eq, left -52; zero genuine spikes/actuation/movement.",
+          "hierarchy": "Micro-window role named in header; null-result conclusion lies below causal panels.",
+          "causal": "World to sensory to DNp01 to motor/body clear; LC4/LPLC2 identities are in expanded detail.",
+          "telemetry": "Right target is the main value; bilateral exact targets available in details.",
+          "provenance": "Artifact/run IDs and unit limits secondary; not a behavior-scale escape experiment.",
+          "visualization": "One sphere only; dashed guide not another object; fly visible.",
+          "accessibility": "Keyboard range/Home/End and focus verified; no event semantics invented."
+        },
+        "attention_order": [
+          "EXPERIMENT_IDENTITY",
+          "VISUALIZATION",
+          "PLAYBACK",
+          "CAUSAL_EXPLANATION",
+          "CURRENT_RESULT",
+          "TELEMETRY",
+          "PROVENANCE"
+        ],
+        "matrix": {
+          "input_clarity": "CLEAR",
+          "circuit_clarity": "PARTIALLY_CLEAR",
+          "output_result_clarity": "CLEAR",
+          "body_output_clarity": "CLEAR",
+          "causal_chain_clarity": "CLEAR",
+          "unit_clarity": "PARTIALLY_CLEAR",
+          "playback_clarity": "CLEAR",
+          "provenance_clarity": "PARTIALLY_CLEAR",
+          "mobile_clarity": "NOT_AUDITED",
+          "claim_safety": "CLEAR"
+        }
+      },
+      {
+        "scenario_id": "LOOMING_WORLD_EXPERIMENT",
+        "newcomer_answers": {
+          "looking": "CLEAR",
+          "input": "CLEAR",
+          "circuit": "PARTIALLY_CLEAR",
+          "result": "CLEAR",
+          "body_output": "CLEAR",
+          "limits": "CLEAR"
+        },
+        "viewport_dominance": "DOMINANT",
+        "desktop_reviewed": true,
+        "mobile_reviewed": true,
+        "notes": {
+          "result": "40 ms preregistered model-space probe; exposure 19 to 26; final right DNp01 -48.733429620244685 mV_eq, left -52; no spikes/actuation/movement.",
+          "hierarchy": "Longer experiment role explicit; result and 40 ms termination shown after causal section.",
+          "causal": "Sensory growth and subthreshold response explained; no physiological duration claim.",
+          "telemetry": "Exposure, target state and time useful; unchanged actuator/body fields repeat outcome.",
+          "provenance": "Includes preregistration and requested/completed horizon; units remain uncalibrated.",
+          "visualization": "Single approaching sphere with fixed body, grid and guide; front details partly crowded at final approach.",
+          "accessibility": "Mobile no overflow; labels readable but small; controls reachable."
+        },
+        "attention_order": [
+          "EXPERIMENT_IDENTITY",
+          "VISUALIZATION",
+          "PLAYBACK",
+          "CAUSAL_EXPLANATION",
+          "CURRENT_RESULT",
+          "TELEMETRY",
+          "PROVENANCE"
+        ],
+        "matrix": {
+          "input_clarity": "CLEAR",
+          "circuit_clarity": "PARTIALLY_CLEAR",
+          "output_result_clarity": "CLEAR",
+          "body_output_clarity": "CLEAR",
+          "causal_chain_clarity": "CLEAR",
+          "unit_clarity": "PARTIALLY_CLEAR",
+          "playback_clarity": "CLEAR",
+          "provenance_clarity": "PARTIALLY_CLEAR",
+          "mobile_clarity": "PARTIALLY_CLEAR",
+          "claim_safety": "CLEAR"
+        }
+      },
+      {
+        "scenario_id": "HORIZONTAL_MOTION_NEURAL_VALIDATION",
+        "newcomer_answers": {
+          "looking": "CLEAR",
+          "input": "CLEAR",
+          "circuit": "CLEAR",
+          "result": "PARTIALLY_CLEAR",
+          "body_output": "CLEAR",
+          "limits": "CLEAR"
+        },
+        "viewport_dominance": "DOMINANT",
+        "desktop_reviewed": true,
+        "mobile_reviewed": true,
+        "notes": {
+          "result": "RIGHT_SIDE_MOTION; R input pulse then recovery, R HS/DNp15 response, left neutral; at 20 ms DNp15 R 0.746469 (rounded UI), L 0. No body mapping or event semantics.",
+          "hierarchy": "Viewport dominated by input panels; bilateral result and source identities much farther below.",
+          "causal": "Five explicit stages and six source/two target identities available without provenance; no selected-motif viewport inset.",
+          "telemetry": "R/L targets and differential essential; six identity cards useful secondary.",
+          "provenance": "Six active chemical routes, seven excluded routes, source IDs and model limits preserved.",
+          "visualization": "Text-labelled L/R stripe panels; explicitly presentation rather than retinal imagery.",
+          "accessibility": "Native transport/summary keyboard operable; mobile controls 40 px high."
+        },
+        "attention_order": [
+          "EXPERIMENT_IDENTITY",
+          "VISUALIZATION",
+          "PLAYBACK",
+          "CAUSAL_EXPLANATION",
+          "CURRENT_RESULT",
+          "TELEMETRY",
+          "PROVENANCE"
+        ],
+        "matrix": {
+          "input_clarity": "CLEAR",
+          "circuit_clarity": "CLEAR",
+          "output_result_clarity": "PARTIALLY_CLEAR",
+          "body_output_clarity": "CLEAR",
+          "causal_chain_clarity": "CLEAR",
+          "unit_clarity": "PARTIALLY_CLEAR",
+          "playback_clarity": "CLEAR",
+          "provenance_clarity": "PARTIALLY_CLEAR",
+          "mobile_clarity": "PARTIALLY_CLEAR",
+          "claim_safety": "CLEAR"
+        }
+      },
+      {
+        "scenario_id": "EXPLORATORY_COURSE_CONTROL",
+        "newcomer_answers": {
+          "looking": "CLEAR",
+          "input": "PARTIALLY_CLEAR",
+          "circuit": "CLEAR",
+          "result": "PARTIALLY_CLEAR",
+          "body_output": "CLEAR",
+          "limits": "CLEAR"
+        },
+        "viewport_dominance": "DOMINANT",
+        "desktop_reviewed": true,
+        "mobile_reviewed": true,
+        "notes": {
+          "result": "External +0.001 eq kick, subsequent counter-motion/reversals, final +0.00033277101655776 eq; clipping 0/500. No absolute heading-error signal.",
+          "hierarchy": "Exact orientation/residual caption inside viewport; full explanation and marginal-mode status below six causal panels.",
+          "causal": "Delayed feedback described; six cards plus return glyph, but row/column reading requires care.",
+          "telemetry": "Orientation, view-motion descriptor, R/L neural state, differential and clipping accurate; raw observation secondary.",
+          "provenance": "All phases and analytical IDs available, excluded recurrent/electrical context clearly inactive.",
+          "visualization": "World reference explicitly not a goal; direct orientation rotation small, not exaggerated. No translation.",
+          "accessibility": "Expanded mobile provenance no overflow; keyboard summaries work, transport reset zero and paused state stable."
+        },
+        "attention_order": [
+          "EXPERIMENT_IDENTITY",
+          "VISUALIZATION",
+          "PLAYBACK",
+          "CAUSAL_EXPLANATION",
+          "CURRENT_RESULT",
+          "TELEMETRY",
+          "PROVENANCE"
+        ],
+        "matrix": {
+          "input_clarity": "PARTIALLY_CLEAR",
+          "circuit_clarity": "CLEAR",
+          "output_result_clarity": "PARTIALLY_CLEAR",
+          "body_output_clarity": "CLEAR",
+          "causal_chain_clarity": "PARTIALLY_CLEAR",
+          "unit_clarity": "PARTIALLY_CLEAR",
+          "playback_clarity": "CLEAR",
+          "provenance_clarity": "PARTIALLY_CLEAR",
+          "mobile_clarity": "PARTIALLY_CLEAR",
+          "claim_safety": "CLEAR"
+        }
+      }
+    ],
+    "library_evaluation": {
+      "experiment_class_clarity": "CLEAR",
+      "duration_clarity": "PARTIALLY_CLEAR",
+      "body_scope_clarity": "CLEAR",
+      "result_summary_clarity": "PARTIALLY_CLEAR",
+      "naming": "Named roles differentiate the five experiments; course control correctly qualified as exploratory.",
+      "hierarchy": "Long two-column cards; start-here cue visible but four non-control cards share category styling.",
+      "finding_ids": [
+        "UX01",
+        "UX09"
+      ]
+    },
+    "cross_scenario_matrix": [
+      {
+        "scenario_id": "BASELINE_CONTROL",
+        "input_clarity": "CLEAR",
+        "circuit_clarity": "CLEAR",
+        "output_result_clarity": "CLEAR",
+        "body_output_clarity": "CLEAR",
+        "causal_chain_clarity": "CLEAR",
+        "unit_clarity": "PARTIALLY_CLEAR",
+        "playback_clarity": "CLEAR",
+        "provenance_clarity": "PARTIALLY_CLEAR",
+        "mobile_clarity": "NOT_AUDITED",
+        "claim_safety": "CLEAR"
+      },
+      {
+        "scenario_id": "LOOMING_CIRCUIT_VALIDATION",
+        "input_clarity": "CLEAR",
+        "circuit_clarity": "PARTIALLY_CLEAR",
+        "output_result_clarity": "CLEAR",
+        "body_output_clarity": "CLEAR",
+        "causal_chain_clarity": "CLEAR",
+        "unit_clarity": "PARTIALLY_CLEAR",
+        "playback_clarity": "CLEAR",
+        "provenance_clarity": "PARTIALLY_CLEAR",
+        "mobile_clarity": "NOT_AUDITED",
+        "claim_safety": "CLEAR"
+      },
+      {
+        "scenario_id": "LOOMING_WORLD_EXPERIMENT",
+        "input_clarity": "CLEAR",
+        "circuit_clarity": "PARTIALLY_CLEAR",
+        "output_result_clarity": "CLEAR",
+        "body_output_clarity": "CLEAR",
+        "causal_chain_clarity": "CLEAR",
+        "unit_clarity": "PARTIALLY_CLEAR",
+        "playback_clarity": "CLEAR",
+        "provenance_clarity": "PARTIALLY_CLEAR",
+        "mobile_clarity": "PARTIALLY_CLEAR",
+        "claim_safety": "CLEAR"
+      },
+      {
+        "scenario_id": "HORIZONTAL_MOTION_NEURAL_VALIDATION",
+        "input_clarity": "CLEAR",
+        "circuit_clarity": "CLEAR",
+        "output_result_clarity": "PARTIALLY_CLEAR",
+        "body_output_clarity": "CLEAR",
+        "causal_chain_clarity": "CLEAR",
+        "unit_clarity": "PARTIALLY_CLEAR",
+        "playback_clarity": "CLEAR",
+        "provenance_clarity": "PARTIALLY_CLEAR",
+        "mobile_clarity": "PARTIALLY_CLEAR",
+        "claim_safety": "CLEAR"
+      },
+      {
+        "scenario_id": "EXPLORATORY_COURSE_CONTROL",
+        "input_clarity": "PARTIALLY_CLEAR",
+        "circuit_clarity": "CLEAR",
+        "output_result_clarity": "PARTIALLY_CLEAR",
+        "body_output_clarity": "CLEAR",
+        "causal_chain_clarity": "PARTIALLY_CLEAR",
+        "unit_clarity": "PARTIALLY_CLEAR",
+        "playback_clarity": "CLEAR",
+        "provenance_clarity": "PARTIALLY_CLEAR",
+        "mobile_clarity": "PARTIALLY_CLEAR",
+        "claim_safety": "CLEAR"
+      }
+    ],
+    "findings": [
+      {
+        "id": "UX01",
+        "scenarios": [
+          "BASELINE_CONTROL",
+          "LOOMING_CIRCUIT_VALIDATION",
+          "LOOMING_WORLD_EXPERIMENT",
+          "HORIZONTAL_MOTION_NEURAL_VALIDATION",
+          "EXPLORATORY_COURSE_CONTROL"
+        ],
+        "severity": "MEDIUM",
+        "category": "INFORMATION_HIERARCHY",
+        "current_behavior": "Library cards repeat description, preview, explanation and caveat; duration and body-output metadata are uneven. Most non-control cards share the same amber treatment.",
+        "why_it_matters": "Different experiment classes need a compact comparison before selection.",
+        "scientific_risk": "No false scenario is offered; class/scope distinctions take extended reading.",
+        "ux_impact": "Long cards push the fifth scenario below two large rows.",
+        "screenshot_evidence": [
+          "library-desktop.png"
+        ],
+        "phase33_remedy": "Use consistent experiment type, scientific duration, input, output scope and canonical-result metadata; retain all five distinct identifiers.",
+        "required_change_layer": "FRONTEND_ONLY",
+        "scientific_model_change_required": false,
+        "phase32_micro_fix_eligible": false
+      },
+      {
+        "id": "UX02",
+        "scenarios": [
+          "BASELINE_CONTROL",
+          "LOOMING_CIRCUIT_VALIDATION",
+          "LOOMING_WORLD_EXPERIMENT",
+          "HORIZONTAL_MOTION_NEURAL_VALIDATION",
+          "EXPLORATORY_COURSE_CONTROL"
+        ],
+        "severity": "MEDIUM",
+        "category": "INFORMATION_HIERARCHY",
+        "current_behavior": "Cockpit order is identity, viewport, playback, causal cards, interpretation, telemetry, provenance. Desktop result starts around y=1290–1450 px.",
+        "why_it_matters": "The result should explain a quiet or subtle visualization before raw values.",
+        "scientific_risk": "Correct result exists, but may not be noticed during first inspection.",
+        "ux_impact": "Newcomer must scroll past controls and multiple panels to learn the outcome.",
+        "screenshot_evidence": [
+          "baseline-desktop.png",
+          "course-control-desktop.png"
+        ],
+        "phase33_remedy": "Promote a concise current-result summary adjoining the dominant viewport; distinguish selected-boundary state from whole-run outcome.",
+        "required_change_layer": "FRONTEND_ONLY",
+        "scientific_model_change_required": false,
+        "phase32_micro_fix_eligible": false
+      },
+      {
+        "id": "UX03",
+        "scenarios": [
+          "HORIZONTAL_MOTION_NEURAL_VALIDATION"
+        ],
+        "severity": "MEDIUM",
+        "category": "VISUALIZATION",
+        "current_behavior": "Neural viewport contains two stripe panels, not the selected eight-node motif. Six identity cards start around y=1953 px on desktop.",
+        "why_it_matters": "The experiment is a circuit validation, not only a motion stimulus.",
+        "scientific_risk": "No fake network is rendered; causal topology is less visually discoverable.",
+        "ux_impact": "Readers must assemble the six-source/two-target path from later cards.",
+        "screenshot_evidence": [
+          "horizontal-motion-desktop.png"
+        ],
+        "phase33_remedy": "Pair descriptor presentation with a bounded, identity-labelled six-route motif readout driven only by backend states; exclude seven context edges.",
+        "required_change_layer": "FRONTEND_ONLY",
+        "scientific_model_change_required": false,
+        "phase32_micro_fix_eligible": false
+      },
+      {
+        "id": "UX04",
+        "scenarios": [
+          "EXPLORATORY_COURSE_CONTROL"
+        ],
+        "severity": "MEDIUM",
+        "category": "VISUALIZATION",
+        "current_behavior": "Direct cycle-to-angle rendering correctly preserves very small rotation; counter-motion and residual offset are difficult to discern geometrically without the numeric caption.",
+        "why_it_matters": "Subtle valid motion needs an explanatory readout rather than a larger gain.",
+        "scientific_risk": "Changing orientation gain would violate science; current values are correct.",
+        "ux_impact": "Visual scene alone does not explain the response or offset mode.",
+        "screenshot_evidence": [
+          "course-control-desktop.png",
+          "course-mobile-fold.png"
+        ],
+        "phase33_remedy": "Add truthful orientation/view-motion trend or geometric annotation with explicit model-space axes; preserve direct specimen orientation and final residual, with no scientific or visual gain retuning.",
+        "required_change_layer": "FRONTEND_ONLY",
+        "scientific_model_change_required": false,
+        "phase32_micro_fix_eligible": false
+      },
+      {
+        "id": "UX05",
+        "scenarios": [
+          "BASELINE_CONTROL",
+          "LOOMING_CIRCUIT_VALIDATION",
+          "LOOMING_WORLD_EXPERIMENT",
+          "HORIZONTAL_MOTION_NEURAL_VALIDATION",
+          "EXPLORATORY_COURSE_CONTROL"
+        ],
+        "severity": "MEDIUM",
+        "category": "PLAYBACK",
+        "current_behavior": "Timeline primarily shows scientific boundary numbers. Neural pulse/recovery phases lack persistent interval markers; course interval text runs immediately after the presentation-speed sentence.",
+        "why_it_matters": "Meaningful stimulus and recovery boundaries are more useful than an unlabeled range.",
+        "scientific_risk": "No timing error found; phase context is easy to miss.",
+        "ux_impact": "Scrubbing is responsive but interpretation requires nearby copy.",
+        "screenshot_evidence": [
+          "horizontal-motion-desktop.png",
+          "course-control-desktop.png"
+        ],
+        "phase33_remedy": "Annotate phases from authoritative descriptors/perturbation metadata; separate scientific and presentation time clearly; retain keyboard scrub, exact reset and final-state persistence.",
+        "required_change_layer": "FRONTEND_ONLY",
+        "scientific_model_change_required": false,
+        "phase32_micro_fix_eligible": false
+      },
+      {
+        "id": "UX06",
+        "scenarios": [
+          "BASELINE_CONTROL",
+          "LOOMING_CIRCUIT_VALIDATION",
+          "LOOMING_WORLD_EXPERIMENT",
+          "HORIZONTAL_MOTION_NEURAL_VALIDATION",
+          "EXPLORATORY_COURSE_CONTROL"
+        ],
+        "severity": "MEDIUM",
+        "category": "TELEMETRY",
+        "current_behavior": "Result, causal cards and telemetry repeat stationary/no-command/time labels. Neural telemetry has five cells in a three-column grid, leaving an empty sixth slot. Course drive and clipping share one value line.",
+        "why_it_matters": "Telemetry should prioritize understanding over dashboard density.",
+        "scientific_risk": "No scientific values are incorrect.",
+        "ux_impact": "Fragmented cards and repeated statements compete with the central experiment.",
+        "screenshot_evidence": [
+          "horizontal-motion-desktop.png",
+          "baseline-desktop.png",
+          "course-control-desktop.png"
+        ],
+        "phase33_remedy": "Use a compact primary readout and expandable secondary values; keep paired R/L targets comparable and preserve sign/zero; separate clipping status from drive.",
+        "required_change_layer": "FRONTEND_ONLY",
+        "scientific_model_change_required": false,
+        "phase32_micro_fix_eligible": false
+      },
+      {
+        "id": "UX07",
+        "scenarios": [
+          "BASELINE_CONTROL",
+          "LOOMING_CIRCUIT_VALIDATION",
+          "LOOMING_WORLD_EXPERIMENT",
+          "HORIZONTAL_MOTION_NEURAL_VALIDATION",
+          "EXPLORATORY_COURSE_CONTROL"
+        ],
+        "severity": "MEDIUM",
+        "category": "TELEMETRY",
+        "current_behavior": "Technical unit tokens are visible, but important plain-language definitions often sit in collapsed provenance; source state alternates between signed proxy and dimensionless_signed_proxy.",
+        "why_it_matters": "Units need to be clear without interpreting a variable name.",
+        "scientific_risk": "Possible novice physical interpretation of mV_eq or orientation is mitigated by existing model-space qualifiers, not eliminated by the token alone.",
+        "ux_impact": "Long labels and nine-place decimals make reading effort uneven.",
+        "screenshot_evidence": [
+          "looming-world-desktop.png",
+          "course-control-desktop.png"
+        ],
+        "phase33_remedy": "Pair plain-language labels with exact unit tokens and a consistent discoverable model-space glossary; keep precision in expert detail and never replace proxy units with physical units.",
+        "required_change_layer": "FRONTEND_ONLY",
+        "scientific_model_change_required": false,
+        "phase32_micro_fix_eligible": false
+      },
+      {
+        "id": "UX08",
+        "scenarios": [
+          "LOOMING_CIRCUIT_VALIDATION",
+          "LOOMING_WORLD_EXPERIMENT",
+          "HORIZONTAL_MOTION_NEURAL_VALIDATION",
+          "EXPLORATORY_COURSE_CONTROL"
+        ],
+        "severity": "MEDIUM",
+        "category": "SCIENTIFIC_SEMANTICS",
+        "current_behavior": "Connectome structure, exploratory dynamics and derived outcomes are separated mainly through prose/provenance, not a common visible evidence grammar. LC4/LPLC2 names appear in looming details rather than the main causal stages.",
+        "why_it_matters": "Structural routing must not be mistaken for validated physiology.",
+        "scientific_risk": "No contact-count efficacy claim located; the evidence/model boundary requires careful reading.",
+        "ux_impact": "A newcomer cannot quickly identify which part is empirical versus assumed.",
+        "screenshot_evidence": [
+          "looming-world-desktop.png",
+          "course-provenance-desktop.png"
+        ],
+        "phase33_remedy": "Expose concise Structural route / Exploratory model / Recorded model result labels and name LC4/LPLC2 in the looming path using existing telemetry metadata.",
+        "required_change_layer": "FRONTEND_ONLY",
+        "scientific_model_change_required": false,
+        "phase32_micro_fix_eligible": false
+      },
+      {
+        "id": "UX09",
+        "scenarios": [
+          "LOOMING_WORLD_EXPERIMENT",
+          "HORIZONTAL_MOTION_NEURAL_VALIDATION",
+          "EXPLORATORY_COURSE_CONTROL"
+        ],
+        "severity": "MEDIUM",
+        "category": "RESPONSIVE",
+        "current_behavior": "Mobile panels stack vertically without horizontal overflow, but the neural page is about 4339 px tall and the course page about 5640 px with provenance expanded. Course interpretation starts around y=1844 px.",
+        "why_it_matters": "Responsive layout should preserve the main result and causal meaning early.",
+        "scientific_risk": "No scientific data loss or fake state observed.",
+        "ux_impact": "Long scrolling delays interpretation; six source cards occupy much of the neural page.",
+        "screenshot_evidence": [
+          "horizontal-motion-mobile.png",
+          "course-control-mobile.png",
+          "looming-world-mobile.png"
+        ],
+        "phase33_remedy": "Place identity/input, viewport, concise result and reachable transport first; condense causal stages and group secondary identities/provenance without dropping data.",
+        "required_change_layer": "FRONTEND_ONLY",
+        "scientific_model_change_required": false,
+        "phase32_micro_fix_eligible": false
+      },
+      {
+        "id": "UX10",
+        "scenarios": [
+          "BASELINE_CONTROL",
+          "LOOMING_CIRCUIT_VALIDATION",
+          "LOOMING_WORLD_EXPERIMENT",
+          "HORIZONTAL_MOTION_NEURAL_VALIDATION",
+          "EXPLORATORY_COURSE_CONTROL"
+        ],
+        "severity": "MEDIUM",
+        "category": "ACCESSIBILITY",
+        "current_behavior": "Navigation/back-link focus removes outlines and changes text color only. Transport has a visible 2 px outline; native summaries remain keyboard operable.",
+        "why_it_matters": "Keyboard focus should be recognizable independently of color.",
+        "scientific_risk": "No science change implicated.",
+        "ux_impact": "Navigation focus is less robust than transport focus.",
+        "screenshot_evidence": [
+          "course-mobile-fold.png"
+        ],
+        "phase33_remedy": "Provide consistent non-color-only focus indicators for links, controls and summaries; preserve logical tab order and native keyboard behavior.",
+        "required_change_layer": "FRONTEND_ONLY",
+        "scientific_model_change_required": false,
+        "phase32_micro_fix_eligible": false
+      },
+      {
+        "id": "UX11",
+        "scenarios": [
+          "BASELINE_CONTROL",
+          "LOOMING_CIRCUIT_VALIDATION",
+          "LOOMING_WORLD_EXPERIMENT",
+          "HORIZONTAL_MOTION_NEURAL_VALIDATION",
+          "EXPLORATORY_COURSE_CONTROL"
+        ],
+        "severity": "LOW",
+        "category": "ACCESSIBILITY",
+        "current_behavior": "Measured Run/Play/Reset controls are 40 px high on mobile; scientific labels can be 9–13 px.",
+        "why_it_matters": "Small targets and dense labels merit a practical readability review.",
+        "scientific_risk": "No inaccessible scientific value was demonstrated.",
+        "ux_impact": "Touch/low-vision interaction could be less comfortable.",
+        "screenshot_evidence": [
+          "horizontal-motion-mobile.png"
+        ],
+        "phase33_remedy": "Review touch hit areas and legibility at supported mobile sizes; do not claim WCAG conformance from this limited audit.",
+        "required_change_layer": "FRONTEND_ONLY",
+        "scientific_model_change_required": false,
+        "phase32_micro_fix_eligible": false
+      },
+      {
+        "id": "UX12",
+        "scenarios": [
+          "BASELINE_CONTROL",
+          "LOOMING_CIRCUIT_VALIDATION",
+          "LOOMING_WORLD_EXPERIMENT",
+          "HORIZONTAL_MOTION_NEURAL_VALIDATION",
+          "EXPLORATORY_COURSE_CONTROL"
+        ],
+        "severity": "LOW",
+        "category": "PROVENANCE",
+        "current_behavior": "Collapsed provenance is appropriately secondary, but expanded course provenance is a long list of raw 64-character IDs and machine-oriented status terms.",
+        "why_it_matters": "Experts need authority identity without making newcomers decode hashes.",
+        "scientific_risk": "Authorities and exclusions are accurate.",
+        "ux_impact": "Expanded detail is verbose and difficult to scan.",
+        "screenshot_evidence": [
+          "course-provenance-desktop.png"
+        ],
+        "phase33_remedy": "Group evidence, model contracts and run identity with plain-language explanations and optional copy controls; retain full IDs and excluded-edge information.",
+        "required_change_layer": "FRONTEND_ONLY",
+        "scientific_model_change_required": false,
+        "phase32_micro_fix_eligible": false
+      },
+      {
+        "id": "UX13",
+        "scenarios": [
+          "BASELINE_CONTROL",
+          "LOOMING_CIRCUIT_VALIDATION",
+          "LOOMING_WORLD_EXPERIMENT"
+        ],
+        "severity": "LOW",
+        "category": "SCIENTIFIC_COPY",
+        "current_behavior": "Baseline uses 'No sensory response yet' while marked DISABLED. 'Genuine' actuation/response is not defined for a newcomer.",
+        "why_it_matters": "Control-neutral language and model-derived language should be consistent.",
+        "scientific_risk": "Potential expectation of later baseline activity; no actual false movement or physiological claim is made.",
+        "ux_impact": "Minor terminology friction across scenarios.",
+        "screenshot_evidence": [
+          "baseline-desktop.png"
+        ],
+        "phase33_remedy": "Use control-specific neutral wording and explain recorded model output versus injected presentation; preserve intentional silence and valid null results.",
+        "required_change_layer": "FRONTEND_ONLY",
+        "scientific_model_change_required": false,
+        "phase32_micro_fix_eligible": false
+      },
+      {
+        "id": "UX14",
+        "scenarios": [
+          "LOOMING_CIRCUIT_VALIDATION",
+          "LOOMING_WORLD_EXPERIMENT"
+        ],
+        "severity": "LOW",
+        "category": "VISUALIZATION",
+        "current_behavior": "One solid object and dashed guide are clear; static labels can detach from the moving object, and dense grid/shadow cues compete with thin legs at final approach.",
+        "why_it_matters": "Depth cues should support stimulus interpretation, not apparent physics.",
+        "scientific_risk": "Scene guide already says grid/shadows are presentation, not contact mechanics.",
+        "ux_impact": "Scene is readable but small visual details are busy.",
+        "screenshot_evidence": [
+          "looming-world-desktop.png",
+          "looming-world-mobile.png"
+        ],
+        "phase33_remedy": "Keep one authoritative object; anchor presentation labels clearly and restrain grid/guide clutter without altering geometry, trajectory, camera-derived scientific values or body outputs.",
+        "required_change_layer": "FRONTEND_ONLY",
+        "scientific_model_change_required": false,
+        "phase32_micro_fix_eligible": false
+      },
+      {
+        "id": "UX15",
+        "scenarios": [
+          "BASELINE_CONTROL",
+          "LOOMING_CIRCUIT_VALIDATION",
+          "LOOMING_WORLD_EXPERIMENT"
+        ],
+        "severity": "MEDIUM",
+        "category": "PERFORMANCE",
+        "current_behavior": "Local replay waits were multi-second: circuit approximately 6.6–6.8 s, world approximately 16.4–17.2 s; baseline Run showed 13.7 s during concurrent audit requests. New neural/course restores were about 222/660 ms.",
+        "why_it_matters": "A long validated replay must remain visibly distinct from an empty result.",
+        "scientific_risk": "Do not weaken validation or invent progress/state to hide latency.",
+        "ux_impact": "Uncertainty during loading, particularly on restored replay URLs.",
+        "screenshot_evidence": [
+          "baseline-loading.png"
+        ],
+        "phase33_remedy": "Keep the scenario shell and accessible validation/loading explanation visible, with honest wait and retry messaging; profile replay cost separately before proposing an authority-preserving adapter optimization.",
+        "required_change_layer": "PRESENTATION_ADAPTER_ONLY",
+        "scientific_model_change_required": false,
+        "phase32_micro_fix_eligible": false
+      },
+      {
+        "id": "UX16",
+        "scenarios": [
+          "BASELINE_CONTROL",
+          "LOOMING_CIRCUIT_VALIDATION",
+          "LOOMING_WORLD_EXPERIMENT",
+          "HORIZONTAL_MOTION_NEURAL_VALIDATION",
+          "EXPLORATORY_COURSE_CONTROL"
+        ],
+        "severity": "MEDIUM",
+        "category": "ERROR_STATE",
+        "current_behavior": "An actual absent-artifact 503 removes the canvas and gives source-artifact/retry guidance. Only course-control copy explicitly states that no synthetic fallback was substituted.",
+        "why_it_matters": "Scientific unavailability should use consistent plain language.",
+        "scientific_risk": "No fallback scientific data occurred; assurance is uneven.",
+        "ux_impact": "Earlier scenarios use technical replay-validation wording.",
+        "screenshot_evidence": [
+          "scientific-playback-unavailable.png"
+        ],
+        "phase33_remedy": "Use a consistent artifact-unavailable panel with explicit no-fallback assurance, in-context Retry and back navigation; retain typed errors and no visualization when scientific data are unavailable.",
+        "required_change_layer": "FRONTEND_ONLY",
+        "scientific_model_change_required": false,
+        "phase32_micro_fix_eligible": false
+      },
+      {
+        "id": "UX17",
+        "scenarios": [
+          "BASELINE_CONTROL",
+          "LOOMING_CIRCUIT_VALIDATION",
+          "LOOMING_WORLD_EXPERIMENT",
+          "EXPLORATORY_COURSE_CONTROL"
+        ],
+        "severity": "LOW",
+        "category": "ASSET_LIMITATION",
+        "current_behavior": "Specimen silhouette, wings and eyes are identifiable, but body forms and rod-like legs are simplified; wings/materials lack fine anatomical detail. Some leg/shadow overlap is camera/lighting presentation, not mesh anatomy.",
+        "why_it_matters": "Asset shortcomings must not be attributed to the neural/body model or fixed by scientific tuning.",
+        "scientific_risk": "The asset is labelled a visual specimen, not validated anatomy or biomechanics.",
+        "ux_impact": "Appearance can dominate expectations of biological realism.",
+        "screenshot_evidence": [
+          "baseline-desktop.png",
+          "course-control-desktop.png"
+        ],
+        "phase33_remedy": "Preserve an unobtrusive visual-asset disclaimer; separate any future asset project from Phase33 layout work. Do not replace the fly or add mechanics in the redesign.",
+        "required_change_layer": "FRONTEND_ONLY",
+        "scientific_model_change_required": false,
+        "phase32_micro_fix_eligible": false
+      }
+    ],
+    "severity_counts": {
+      "CRITICAL": 0,
+      "HIGH": 0,
+      "MEDIUM": 12,
+      "LOW": 5
+    },
+    "stage_a": {
+      "completed": true,
+      "findings_frozen": true,
+      "freeze_identity_location": "OUTER_AUDIT_ID",
+      "scientific_inconsistency_located": false,
+      "critical_high_micro_fix_needed": false
+    },
+    "stage_b": {
+      "status": "NOT_RUN",
+      "reason": "No CRITICAL/HIGH local semantic or blocking bug located. Medium/low design issues belong to Phase33; no aesthetic cleanup authorized.",
+      "fixes": [],
+      "frontend_changes": [],
+      "scientific_changes": [],
+      "payload_changes": []
+    },
+    "telemetry_classification": [
+      {
+        "scenarios": [
+          "BASELINE_CONTROL",
+          "LOOMING_CIRCUIT_VALIDATION",
+          "LOOMING_WORLD_EXPERIMENT",
+          "HORIZONTAL_MOTION_NEURAL_VALIDATION",
+          "EXPLORATORY_COURSE_CONTROL"
+        ],
+        "classification": "ESSENTIAL",
+        "items": [
+          "Scientific time/current boundary",
+          "Current result and output scope"
+        ]
+      },
+      {
+        "scenarios": [
+          "LOOMING_CIRCUIT_VALIDATION",
+          "LOOMING_WORLD_EXPERIMENT"
+        ],
+        "classification": "ESSENTIAL",
+        "items": [
+          "Sensory exposure",
+          "DNp01 model state and subthreshold/event result where defined"
+        ]
+      },
+      {
+        "scenarios": [
+          "HORIZONTAL_MOTION_NEURAL_VALIDATION",
+          "EXPLORATORY_COURSE_CONTROL"
+        ],
+        "classification": "ESSENTIAL",
+        "items": [
+          "R/L motion descriptor",
+          "Paired DNp15 states",
+          "Signed bilateral differential, diagnostic qualifier"
+        ]
+      },
+      {
+        "scenarios": [
+          "EXPLORATORY_COURSE_CONTROL"
+        ],
+        "classification": "ESSENTIAL",
+        "items": [
+          "Model-space orientation/residual",
+          "Clipping status"
+        ]
+      },
+      {
+        "scenarios": [
+          "LOOMING_CIRCUIT_VALIDATION",
+          "LOOMING_WORLD_EXPERIMENT"
+        ],
+        "classification": "USEFUL_SECONDARY",
+        "items": [
+          "Object distance",
+          "LC4/LPLC2 state sums",
+          "Exact bilateral DNp01 values"
+        ]
+      },
+      {
+        "scenarios": [
+          "HORIZONTAL_MOTION_NEURAL_VALIDATION",
+          "EXPLORATORY_COURSE_CONTROL"
+        ],
+        "classification": "USEFUL_SECONDARY",
+        "items": [
+          "Six identity-resolved HS states",
+          "Per-type source proxy readouts"
+        ]
+      },
+      {
+        "scenarios": [
+          "EXPLORATORY_COURSE_CONTROL"
+        ],
+        "classification": "USEFUL_SECONDARY",
+        "items": [
+          "Yaw drive with exploratory transform label",
+          "Raw observation and relative view",
+          "Local analytical classification/explanation"
+        ]
+      },
+      {
+        "scenarios": [
+          "BASELINE_CONTROL",
+          "LOOMING_CIRCUIT_VALIDATION",
+          "LOOMING_WORLD_EXPERIMENT",
+          "HORIZONTAL_MOTION_NEURAL_VALIDATION",
+          "EXPLORATORY_COURSE_CONTROL"
+        ],
+        "classification": "PROVENANCE_ONLY",
+        "items": [
+          "Full artifact/config/result hashes",
+          "Structural contact counts",
+          "Detailed authority phases",
+          "Excluded-edge evidence"
+        ]
+      },
+      {
+        "scenarios": [
+          "BASELINE_CONTROL",
+          "LOOMING_CIRCUIT_VALIDATION",
+          "LOOMING_WORLD_EXPERIMENT"
+        ],
+        "classification": "REDUNDANT",
+        "items": [
+          "Repeated stationary/no-command verdicts and constant zero position in separate large cells"
+        ]
+      },
+      {
+        "scenarios": [
+          "EXPLORATORY_COURSE_CONTROL"
+        ],
+        "classification": "CONFUSING",
+        "items": [
+          "Combining yaw-drive magnitude and clipping YES/NO on one numeric line"
+        ]
+      },
+      {
+        "scenarios": [
+          "HORIZONTAL_MOTION_NEURAL_VALIDATION"
+        ],
+        "classification": "REDUNDANT",
+        "items": [
+          "Empty sixth telemetry grid slot"
+        ]
+      }
+    ],
+    "terminology": {
+      "consistent": [
+        "model-space",
+        "scientific time",
+        "diagnostic only",
+        "no body mapping",
+        "subthreshold",
+        "not-defined events"
+      ],
+      "drift": [
+        "signed proxy vs dimensionless_signed_proxy",
+        "genuine vs recorded model output",
+        "pre-registered vs preregistration",
+        "body movement versus orientation-only output scope"
+      ],
+      "no_unqualified_biological_behavior_claim_located": true
+    },
+    "claim_audit": {
+      "rendered_copy_and_sources_checked": true,
+      "forbidden_positive_claims_located": [],
+      "negated_terms_not_false_positives": true,
+      "limits": "This is not a completeness proof of all product copy. Reviewed scenario catalog/cockpits/viewport/explanations/provenance; no learning, consciousness, fake optic-flow calibration, physiological voltage or complete-network claim found."
+    },
+    "interaction_checks": {
+      "play_pause": "PASS; neural playback advanced to boundary 47 and stayed paused",
+      "reset": "PASS; returns to boundary zero",
+      "scrub": "PASS; Home/End/PageUp yield authoritative boundaries; allowed React update time before comparison",
+      "provenance_keyboard": "PASS; native summary Enter toggles",
+      "transport_focus": "PASS; 2 px visible outline",
+      "navigation_focus": "RISK; outline none, text-color change only",
+      "mobile_overflow": "NONE_LOCATED in reviewed complex/looming views including expanded course provenance",
+      "error": "PASS; real missing source path returned typed 503, removed canvas; canonical retry recovered",
+      "loading_null_distinction": "CLEAR for interactive Run; replay restoration waits merit shell/loading hierarchy review"
+    },
+    "performance_observations": {
+      "shell_library_ms": 498,
+      "shell_baseline_ready_ms": 358,
+      "neural_restored_ms": 222,
+      "course_restored_ms": 660,
+      "circuit_restored_ms": [
+        6600,
+        6800
+      ],
+      "world_restored_ms": [
+        16400,
+        17200
+      ],
+      "baseline_concurrent_run_ms": 13700,
+      "playback": "No obvious sustained jank in brief play/pause/scrub inspection; no FPS benchmark collected.",
+      "provenance": "Immediate native expansion, no overflow; long content rather than slow processing.",
+      "upstream_warning": "THREE.Clock deprecated in favor of THREE.Timer; observed in all R3F variants, no runtime error or refactor required."
+    },
+    "phase33": {
+      "desired_newcomer_journey": [
+        "SCENARIO_CARD",
+        "EXPERIMENT_TITLE_TYPE",
+        "WHAT_IS_APPLIED",
+        "MAIN_VISUALIZATION",
+        "CURRENT_SCIENTIFIC_RESULT",
+        "CAUSAL_EXPLANATION",
+        "PLAYBACK_TIMELINE",
+        "DETAILED_TELEMETRY",
+        "PROVENANCE"
+      ],
+      "requirements": [
+        {
+          "id": "R01",
+          "priority": "MUST_IMPROVE",
+          "screens": [
+            "BASELINE_CONTROL",
+            "LOOMING_CIRCUIT_VALIDATION",
+            "LOOMING_WORLD_EXPERIMENT",
+            "HORIZONTAL_MOTION_NEURAL_VALIDATION",
+            "EXPLORATORY_COURSE_CONTROL"
+          ],
+          "requirement": "Use identity/input, dominant viewport, concise current result, causal explanation, transport, telemetry, then provenance as the primary reading hierarchy.",
+          "acceptance": "Current outcome and body-output reason are discoverable without opening provenance; desktop/mobile reading order tested.",
+          "required_change_layer": "FRONTEND_ONLY"
+        },
+        {
+          "id": "R02",
+          "priority": "MUST_PRESERVE_SCIENCE",
+          "screens": [
+            "BASELINE_CONTROL",
+            "LOOMING_CIRCUIT_VALIDATION",
+            "LOOMING_WORLD_EXPERIMENT",
+            "HORIZONTAL_MOTION_NEURAL_VALIDATION",
+            "EXPLORATORY_COURSE_CONTROL"
+          ],
+          "requirement": "Render only backend-authoritative values. Preserve the five scenario identities, payloads, model-space units and exclusions.",
+          "acceptance": "No scientific kernel/config/artifact changes, frontend integration or fake fallback; regressions and contract parity pass.",
+          "required_change_layer": "FRONTEND_ONLY"
+        },
+        {
+          "id": "R03",
+          "priority": "MUST_IMPROVE",
+          "screens": [
+            "SCENARIO_LIBRARY"
+          ],
+          "requirement": "Compact comparison of control, micro-window, world experiment, neural-only slice and exploratory closed loop.",
+          "acceptance": "Every card exposes class, scientific duration, input, body-output scope and honest canonical result; no five interchangeable simulations.",
+          "required_change_layer": "FRONTEND_ONLY"
+        },
+        {
+          "id": "R04",
+          "priority": "MUST_PRESERVE_SCIENCE",
+          "screens": [
+            "BASELINE_CONTROL"
+          ],
+          "requirement": "Present neutral baseline as an intentional no-stimulus control.",
+          "acceptance": "No movement/response expectation, no loading/failure confusion, no locomotor-baseline claim.",
+          "required_change_layer": "FRONTEND_ONLY"
+        },
+        {
+          "id": "R05",
+          "priority": "MUST_PRESERVE_SCIENCE",
+          "screens": [
+            "LOOMING_CIRCUIT_VALIDATION",
+            "LOOMING_WORLD_EXPERIMENT"
+          ],
+          "requirement": "Preserve 1.4 ms micro-window versus 40 ms preregistered model-space world roles and the honest null motor outcome.",
+          "acceptance": "LC4/LPLC2 route named, subthreshold DNp01 and zero actual actuation clear; no biological escape/timing claim.",
+          "required_change_layer": "FRONTEND_ONLY"
+        },
+        {
+          "id": "R06",
+          "priority": "MUST_IMPROVE",
+          "screens": [
+            "HORIZONTAL_MOTION_NEURAL_VALIDATION"
+          ],
+          "requirement": "Create a distinct neural-only viewport pattern pairing controlled descriptor with the selected eight-node, six-route identity motif.",
+          "acceptance": "Six sources/two targets preserved; no fly/body mapping, spikes, active context edges, fake retinal imagery or structural-count signal scaling.",
+          "required_change_layer": "FRONTEND_ONLY"
+        },
+        {
+          "id": "R07",
+          "priority": "MUST_IMPROVE",
+          "screens": [
+            "EXPLORATORY_COURSE_CONTROL"
+          ],
+          "requirement": "Make counter-motion and residual offset comprehensible through truthful readouts/annotations, not larger angles.",
+          "acceptance": "World reference is not a goal; direct specimen orientation retained; no heading restoration, gain tuning, torque or translation.",
+          "required_change_layer": "FRONTEND_ONLY"
+        },
+        {
+          "id": "R08",
+          "priority": "MUST_IMPROVE",
+          "screens": [
+            "BASELINE_CONTROL",
+            "LOOMING_CIRCUIT_VALIDATION",
+            "LOOMING_WORLD_EXPERIMENT",
+            "HORIZONTAL_MOTION_NEURAL_VALIDATION",
+            "EXPLORATORY_COURSE_CONTROL"
+          ],
+          "requirement": "Use a shared current-result grammar distinguishing selected boundary, whole canonical run, valid null and not-defined output.",
+          "acceptance": "Baseline neutral, looming subthreshold/stationary, neural unilateral readout and course residual have distinct summaries.",
+          "required_change_layer": "FRONTEND_ONLY"
+        },
+        {
+          "id": "R09",
+          "priority": "SHOULD_IMPROVE",
+          "screens": [
+            "BASELINE_CONTROL",
+            "LOOMING_CIRCUIT_VALIDATION",
+            "LOOMING_WORLD_EXPERIMENT",
+            "HORIZONTAL_MOTION_NEURAL_VALIDATION",
+            "EXPLORATORY_COURSE_CONTROL"
+          ],
+          "requirement": "Pair plain-language labels and stable model-space unit tokens with a compact glossary.",
+          "acceptance": "mV_eq/world_eq/horizontal_motion_eq/dnp15_state_eq/yaw_drive_eq/yaw_orientation_eq/relative_view_eq never become physical calibration claims.",
+          "required_change_layer": "FRONTEND_ONLY"
+        },
+        {
+          "id": "R10",
+          "priority": "MUST_IMPROVE",
+          "screens": [
+            "BASELINE_CONTROL",
+            "LOOMING_CIRCUIT_VALIDATION",
+            "LOOMING_WORLD_EXPERIMENT",
+            "HORIZONTAL_MOTION_NEURAL_VALIDATION",
+            "EXPLORATORY_COURSE_CONTROL"
+          ],
+          "requirement": "Place compact causal understanding before dense telemetry; use a clearly delayed return path for the closed loop.",
+          "acceptance": "Active/neutral/disabled/not-defined states are distinguished with text; no missing/mirrored/extra edges or instantaneous feedback implied.",
+          "required_change_layer": "FRONTEND_ONLY"
+        },
+        {
+          "id": "R11",
+          "priority": "MUST_IMPROVE",
+          "screens": [
+            "MOBILE_COMPLEX_SCENARIOS"
+          ],
+          "requirement": "Prioritize identity/input, viewport, current result and transport on mobile; group secondary detail.",
+          "acceptance": "At 390–430 px, no horizontal overflow with details opened; core result does not require traversing every telemetry/source card.",
+          "required_change_layer": "FRONTEND_ONLY"
+        },
+        {
+          "id": "R12",
+          "priority": "MUST_IMPROVE",
+          "screens": [
+            "ALL_SCREENS"
+          ],
+          "requirement": "Provide non-color-only focus, keyboard transport/provenance, readable labels and comfortable touch targets.",
+          "acceptance": "Tab/Enter/Home/End tests, visible focus, textual R/L/sign states and mobile hit-area inspection; no unsupported WCAG-conformance claim.",
+          "required_change_layer": "FRONTEND_ONLY"
+        },
+        {
+          "id": "R13",
+          "priority": "SHOULD_IMPROVE",
+          "screens": [
+            "PROVENANCE_EXPANDED"
+          ],
+          "requirement": "Keep provenance collapsed/secondary; group empirical structure, exploratory assumptions and result authorities.",
+          "acceptance": "Full hashes/identities and excluded context remain available; expansions readable on mobile without forcing hash decoding for the main story.",
+          "required_change_layer": "FRONTEND_ONLY"
+        },
+        {
+          "id": "R14",
+          "priority": "SHOULD_IMPROVE",
+          "screens": [
+            "BASELINE_CONTROL",
+            "LOOMING_CIRCUIT_VALIDATION",
+            "LOOMING_WORLD_EXPERIMENT",
+            "HORIZONTAL_MOTION_NEURAL_VALIDATION",
+            "EXPLORATORY_COURSE_CONTROL"
+          ],
+          "requirement": "Give the scientific timeline meaningful stimulus/perturbation/recovery/end annotations from existing authoritative data.",
+          "acceptance": "Play/Pause/Reset/Scrub synchronized; 6 s presentation versus scientific horizon explicit; final residual not auto-zeroed.",
+          "required_change_layer": "FRONTEND_ONLY"
+        },
+        {
+          "id": "R15",
+          "priority": "SHOULD_IMPROVE",
+          "screens": [
+            "BASELINE_CONTROL",
+            "LOOMING_CIRCUIT_VALIDATION",
+            "LOOMING_WORLD_EXPERIMENT",
+            "HORIZONTAL_MOTION_NEURAL_VALIDATION",
+            "EXPLORATORY_COURSE_CONTROL"
+          ],
+          "requirement": "Use essential primary telemetry and progressive disclosure of secondary/provenance values.",
+          "acceptance": "No redundant empty card, R/L paired consistently, signs/zero preserved, no invented thresholds or events.",
+          "required_change_layer": "FRONTEND_ONLY"
+        },
+        {
+          "id": "R16",
+          "priority": "MUST_IMPROVE",
+          "screens": [
+            "SCIENTIFIC_PLAYBACK_UNAVAILABLE",
+            "LOADING"
+          ],
+          "requirement": "Present clear scientific-artifact unavailability and honest loading without mock experiment state.",
+          "acceptance": "Explicit no-fallback language across scenarios, accessible status/alert, contextual Retry/back, no canvas scientific result after failure.",
+          "required_change_layer": "FRONTEND_ONLY"
+        },
+        {
+          "id": "R17",
+          "priority": "OPTIONAL_POLISH",
+          "screens": [
+            "ALL_SCREENS"
+          ],
+          "requirement": "Use Stitch only as visual inspiration for an immersive, restrained scientific layout.",
+          "acceptance": "No science inferred from mockups; no new asset, decorative motion, global redesign or chart library in Phase32.",
+          "required_change_layer": "FRONTEND_ONLY"
+        },
+        {
+          "id": "R18",
+          "priority": "MUST_PRESERVE_SCIENCE",
+          "screens": [
+            "BASELINE_CONTROL",
+            "LOOMING_CIRCUIT_VALIDATION",
+            "LOOMING_WORLD_EXPERIMENT",
+            "HORIZONTAL_MOTION_NEURAL_VALIDATION",
+            "EXPLORATORY_COURSE_CONTROL"
+          ],
+          "requirement": "Preserve empirical routing versus model assumptions versus derived result and the v1/v2 freeze.",
+          "acceptance": "No physiological efficacy from contact counts; no heading sensor, recurrence/electrical coupling, learning/consciousness or physical-body interpretation added.",
+          "required_change_layer": "FRONTEND_ONLY"
+        }
+      ],
+      "screen_briefs": [
+        {
+          "screen": "SCENARIO_LIBRARY",
+          "requirements": [
+            "R03",
+            "R12",
+            "R17"
+          ],
+          "brief": "Compact five-class selection; consistent duration/output/result metadata; avoid repeated caveat walls while retaining limits."
+        },
+        {
+          "screen": "BASELINE_CONTROL",
+          "requirements": [
+            "R01",
+            "R04",
+            "R08"
+          ],
+          "brief": "Dominant quiet specimen plus persistent intentional-control result; neutral/disabled language, no fake activity."
+        },
+        {
+          "screen": "LOOMING_CIRCUIT_VALIDATION",
+          "requirements": [
+            "R01",
+            "R05",
+            "R08",
+            "R10"
+          ],
+          "brief": "Name the LC4/LPLC2→DNp01 path; preserve 1.4 ms role, single object and subthreshold/stationary conclusion."
+        },
+        {
+          "screen": "LOOMING_WORLD_EXPERIMENT",
+          "requirements": [
+            "R01",
+            "R05",
+            "R08",
+            "R14"
+          ],
+          "brief": "Make 40 ms preregistration and exposure/subthreshold growth visible; preserve zero genuine motor/body output."
+        },
+        {
+          "screen": "HORIZONTAL_MOTION_NEURAL_VALIDATION",
+          "requirements": [
+            "R06",
+            "R08",
+            "R10",
+            "R15"
+          ],
+          "brief": "Descriptor and bounded six-route motif with bilateral continuous readout; signed source identities secondary; no body/event display."
+        },
+        {
+          "screen": "EXPLORATORY_COURSE_CONTROL",
+          "requirements": [
+            "R07",
+            "R08",
+            "R10",
+            "R14"
+          ],
+          "brief": "Fixed world reference, truthful orientation/readout, delayed loop and residual-offset status; motion sensing is not heading restoration."
+        },
+        {
+          "screen": "PROVENANCE_EXPANDED",
+          "requirements": [
+            "R09",
+            "R13",
+            "R18"
+          ],
+          "brief": "Group structure, assumptions, exclusions and run identities; retain hashes, no mobile overflow."
+        },
+        {
+          "screen": "SCIENTIFIC_PLAYBACK_UNAVAILABLE",
+          "requirements": [
+            "R12",
+            "R16"
+          ],
+          "brief": "Plain-language unavailable artifact/no synthetic fallback, contextual retry/back; no fabricated visualization."
+        },
+        {
+          "screen": "MOBILE_COMPLEX_SCENARIOS",
+          "requirements": [
+            "R01",
+            "R11",
+            "R12",
+            "R15"
+          ],
+          "brief": "Compact result-first reading path while retaining dominant viewport, reachable timeline and expandable identities/provenance."
+        }
+      ],
+      "scientific_invariants": [
+        "Backend scientific authority only",
+        "All five identifiers and frozen payloads preserved",
+        "No model/config/artifact tuning",
+        "No biological unit conversion",
+        "Null results intentional",
+        "Neural-only viewport has no body mapping or spikes",
+        "Course orientation no translation, no heading sensor/restoration",
+        "Structural counts provenance only",
+        "Seven chemical context edges/electrical coupling remain excluded",
+        "No decorative motion or asset appearance supplies scientific evidence"
+      ],
+      "stitch_alignment": "Visual inspiration only in Phase33. Phase32 neither fetched nor implemented Stitch designs; science outranks visual mockup behavior.",
+      "science_limitations_not_ui_fixes": [
+        "Missing physiological calibration",
+        "No biomechanical body model",
+        "No absolute heading-error signal",
+        "DNp15 no event semantics",
+        "Incomplete recurrent/electrical network context"
+      ]
+    },
+    "decision": "FRONTEND_READY_FOR_VISUAL_SYSTEM_REDESIGN",
+    "next_action": "Create a bounded Phase33 visual-system redesign specification for the five scenario screens using this audit and frozen scientific invariants."
+  }
+}

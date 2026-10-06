@@ -2805,3 +2805,27 @@ desktop/mobile browser smoke pass. Historical replays and frozen scientific
 files remain unchanged; no commit/push.
 Next bounded action: review scientific readability across the five scenarios
 before a separately scoped UI redesign. No scientific model retuning.
+
+## NeuroFly v2 — Phase 32 scientific readability / UX audit
+
+[Heuristic audit and Phase 33 brief](science/frontend_scientific_readability_ux_audit.md)
+and [deterministic evidence record](science/frontend_scientific_readability_ux_audit.json).
+Schema: `frontend_scientific_readability_audit_v1`; Stage A canonical ID:
+`3922ccf48edfcf10fc68b521573805f12a91a46909bdd044d8f704a5ee5c5157`.
+All five scenarios were reviewed with actual backend playback at desktop size;
+complex neural/course scenarios and a looming spot-check also at mobile size.
+Fourteen local screenshots document UX only, not scientific authority.
+
+Findings: zero CRITICAL/HIGH, 12 MEDIUM, 5 LOW. Stage B `NOT_RUN`; no frontend,
+transport or scientific change. Priorities: result-before-detail hierarchy,
+distinct neural/world/closed-loop viewport patterns, compact comparison cards,
+truthful tiny-motion/residual readouts, unit glossary, mobile priority, focus
+visibility and consistent loading/error assurance. Scientific limitations are
+not design defects to fix through animation or parameter changes.
+
+Decision: `FRONTEND_READY_FOR_VISUAL_SYSTEM_REDESIGN`.
+Phase 32 `PASS`: 12 focused audit tests, 1,218 full Python tests (one configured
+integration test deselected), 65 unchanged frontend tests, all quality gates and
+historical/five-payload identity checks pass. No commit/push.
+Next bounded action: specify the Phase 33 visual system for the five scenario
+screens while preserving frozen science, typed playback and claim limits.

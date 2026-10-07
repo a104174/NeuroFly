@@ -1,4 +1,4 @@
-# Deployment Gate D2.2 resume — release ownership confirmation
+# Deployment Gate D2.2 resume — corrected release ownership
 
 Decision: `STORAGE_PROVIDER_OPERATOR_ACTION_REQUIRED`.
 Status: `READY_FOR_OPERATOR_ACTION`. No remote release is verified.
@@ -26,56 +26,99 @@ Archive bytes: **3,674,299**. Archive SHA-256:
 `12c2f5c314a273c7ada36277cf0db6415e929ab3bdf4911a26f78d72943fbca5`.
 All 74 original inventory files retain exact sizes/hashes.
 
-## New stopping boundary: scope ownership
+## Ownership correction — authoritative user direction
 
-The committed authentication handoff names team
-`team_lqFdMyuSy0bBP4cAMU8az64v`, slug
-`andrepintos-projects-24230ca3`, discovered through the connected MCP account.
+The previously referenced `andrepintos-projects-24230ca3` scope came from an
+unrelated external connector account. The NeuroFly user explicitly confirmed
+that it is not owned by or associated with this project. It is **invalid and
+excluded from NeuroFly deployment authority**, not an alternative destination.
+Its historical appearance does not authorize querying, mutating, reusing or
+creating resources there. No further operations will target that scope.
 
-The newly authenticated CLI account instead lists only:
+The user-authenticated CLI session is the operational authority and lists only:
 
 | CLI scope | Team name | Plan |
 | --- | --- | --- |
 | `hd-dev` | HC | Hobby |
 
-The explicit read-only command targeting the handoff's scope:
+Current verification at `e409f91e38463ea1457a77bf88ff26555aedc0ac`:
+`whoami` succeeds as `hcruz`; `teams list` confirms only `hd-dev` / HC, Hobby.
+The worktree started clean: this handoff had been committed since the previous
+turn. The user authorizes its correction. No scientific files differ.
 
-```sh
-npx --yes vercel@latest blob list-stores --all --json \
-  --scope andrepintos-projects-24230ca3
+## Authorized continuation
+
+**`hd-dev` / HC is the sole user-authorized NeuroFly release scope.** Ownership
+is resolved; no further ownership choice or login to the excluded account is
+required. Continue store enumeration and any private-store creation exclusively
+through the authenticated Vercel CLI with explicit `--scope hd-dev`.
+
+No personal/team destination was guessed. Store enumeration in `hd-dev` returned
+no stores. One dedicated store was then created using the authenticated CLI:
+
+- Name: `neurofly-runtime`.
+- Safe identifier: `store_S3zkyGCIjHi3p79M`.
+- Scope: `hd-dev` / HC, Hobby.
+- Access: **private**, independently confirmed by `blob get-store` and the
+  authenticated store-metadata API.
+- Region: `iad1`; status available; billing active.
+- Provider reports zero objects and zero bytes; no connected projects.
+- Dashboard:
+  <https://vercel.com/hd-dev/~/stores/blob/store_S3zkyGCIjHi3p79M>.
+
+The store is retained for continuation. No object was uploaded, overwritten or
+deleted. No frontend project was created/linked and no backend was deployed.
+The original authentication handoff remains unchanged; its missing-account-
+authentication observation is historical, not the current blocker.
+
+## Remaining operator boundary — store transfer credentials
+
+`blob list --scope hd-dev --prefix <content-addressed-prefix> --limit 100`
+fails with **No Vercel Blob credentials found**. The authenticated store metadata
+response provides access/identity metadata, not transfer credentials. Thus the
+exact-key existing-object check is not completed, despite the store's reported
+zero-object count. Account login is not object-transfer authentication.
+
+Configure the **existing store's** `BLOB_READ_WRITE_TOKEN` externally in the
+release-tool execution environment. Obtain it through the authenticated store
+dashboard; do not paste it into chat, command arguments, tracked files or logs.
+The CLI documents this server-side environment credential for unlinked/local
+execution. Do not create/link a frontend project merely to obtain OIDC access.
+Do not create another store or repeat account login to resolve this boundary.
+
+The exact frozen object key is:
+
+```text
+neurofly/runtime/v2/12c2f5c314a273c7ada36277cf0db6415e929ab3bdf4911a26f78d72943fbca5/neurofly-runtime-v2-12c2f5c314a273c7ada36277cf0db6415e929ab3bdf4911a26f78d72943fbca5.tar.gz
 ```
 
-failed with `The specified scope does not exist` (exit 1). Thus the current CLI
-identity cannot resolve the documented release-owner scope. This does **not**
-establish that the team/store is globally absent. It does not authorize moving
-the release into `hd-dev` merely because that team is accessible.
-
-## Required operator direction
-
-Confirm one ownership path before store creation:
-
-1. Explicitly authorize **`hd-dev` / HC** as the NeuroFly runtime-release owner;
-   then resume read-only store enumeration there and create a dedicated private
-   store only if no suitable NeuroFly store exists.
-2. Retain **`andrepintos-projects-24230ca3`** as release owner and authenticate a
-   CLI account that can resolve that team.
-
-No personal/team destination was guessed. No store was created, selected,
-modified or deleted. No object was checked, uploaded or retrieved. No frontend
-project or backend deployment occurred. The original authentication handoff
-remains unchanged; its missing-authentication observation is historical, not
-the current blocker.
-
-The frozen object key and complete resumed transfer/provisioning sequence remain
-in `deployment_gate_d22_storage_handoff.md`. After scope confirmation, continue
-from **store enumeration**, not from artifact generation. Store-specific Blob
-credentials may still need separate configuration; account login is not proof
-that object-transfer credentials are available. Never expose them in chat/logs.
+The ignored local archive with that basename remains under
+`data/derived/runtime_bundles/`. Continue from **exact-key existing-object check**
+in this store, not store creation or artifact generation. Retrieve an existing
+object and compare SHA-256 before reuse; otherwise upload the verified archive
+with private access, no random suffix and no overwrite. Then retrieve into a
+fresh temporary file and run the committed D2 verifier and
+`tools/provisioned_runtime_validation.py`, followed by full quality gates.
 
 No remote release JSON was created because cloud round-trip verification has not
 occurred. Cloud-derived provisioning, `/health`, `/ready`, all five playback
 identities, eight historical replays and post-run hashes are NOT_RUN. Full
 repository quality gates are pending successful round-trip; no PASS is claimed.
+
+## D3 boundary and operational observations
+
+D3 must pin the store identifier, exact key, archive SHA-256, inventory ID and
+manifest ID above. Frontend: **no Blob credential**. Backend build/release:
+authenticated retrieval access only; if the provider requires a read-write
+credential, restrict it operationally to controlled release tooling, not browser
+or runtime execution. Baked backend runtime: **no Blob credential**. No claim of
+a provisioned remote release or available read-only token is made here.
+
+Upload/retrieval/download hashing/provisioning/startup-readiness timings are
+NOT_RUN. Provider stored bytes are zero; the verified local archive is
+3,674,299 bytes. Future rollback pins a previously verified content-addressed
+object; it never edits an object in place. No mutable alias or overwrite was
+used. Account/store-management access was exercised only in `hd-dev`.
 
 Current official private-storage/CLI documentation was checked alongside the
 installed CLI help:
@@ -84,6 +127,6 @@ installed CLI help:
 The Vercel CLI/storage skills informed the explicit-scope and secret-handling
 checks. No provider credential was read, logged or committed.
 
-Only this non-secret handoff document was added. No scientific/application code,
+Only this non-secret handoff document was modified. No scientific/application code,
 frozen authority, archive, scenario payload or prior record was modified.
 No Git staging, commit or push occurred.

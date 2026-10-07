@@ -1,0 +1,14 @@
+**
+!Dockerfile.backend
+!pyproject.toml
+!README.md
+!src/
+!src/**
+!docs/
+!docs/**
+!data/
+!data/reference/
+!data/reference/**
+**/__pycache__/
+**/*.pyc
+**/*.egg-info/

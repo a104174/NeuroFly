@@ -1,0 +1,33 @@
+# syntax=docker/dockerfile:1
+# Supply the verified archive through the named build context "runtime".
+FROM python:3.12-slim
+ENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1
+WORKDIR /opt/app
+COPY pyproject.toml README.md ./
+COPY src ./src
+COPY docs ./docs
+COPY data/reference ./data/reference
+RUN pip install --no-cache-dir .
+ARG RUNTIME_ARCHIVE=neurofly-runtime-v2-12c2f5c314a273c7ada36277cf0db6415e929ab3bdf4911a26f78d72943fbca5.tar.gz
+COPY --from=runtime ${RUNTIME_ARCHIVE} /tmp/runtime.tar.gz
+ENV PYTHONPATH=/opt/release/src
+RUN PYTHONPATH=/opt/app/src python -m neurofly.runtime_bundle_cli provision \
+    --inventory docs/deployment_runtime_inventory_v2.json \
+    --archive /tmp/runtime.tar.gz \
+    --manifest docs/neurofly_runtime_bundle_manifest_v1.json \
+    --expected-manifest-id e0dd15da7a1dd27456f7c1d9ecebc5a6ec8f2b11e07c8e3065b047c22ad9c882 \
+    --destination /opt/release \
+    && chmod u+w /opt/release/data \
+    && cp -a /opt/app/. /opt/release/ \
+    && chmod a-w /opt/release/data \
+    && rm /tmp/runtime.tar.gz
+WORKDIR /opt/release
+ENV NEUROFLY_RUNTIME_MODE=provisioned \
+    NEUROFLY_RUNTIME_RELEASE_ROOT=/opt/release \
+    NEUROFLY_RUNTIME_INVENTORY_ID=cf85d5fb1b688857e0af44d7cfe934382cdc9e3588185c87a754f6fa5f24a98b \
+    NEUROFLY_RUNTIME_MANIFEST_ID=e0dd15da7a1dd27456f7c1d9ecebc5a6ec8f2b11e07c8e3065b047c22ad9c882 \
+    NEUROFLY_EXPERIMENT_ARTIFACT_ROOT=/opt/release/data/derived/experiments \
+    NEUROFLY_CIRCUIT_CONTRACT_ROOT=/opt/release/data/derived/malecns/looming_giant_fiber_v1
+USER 65534:65534
+EXPOSE 8000
+CMD ["uvicorn", "neurofly.http_api:create_app_from_env", "--factory", "--host", "0.0.0.0", "--port", "8000"]

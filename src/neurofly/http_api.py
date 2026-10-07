@@ -494,6 +494,7 @@ def create_app(
     circuit_contract_root: str | Path | None = None,
     motor_experiment_artifact_root: str | Path | None = None,
     scenario_artifact_path: str | Path = DEFAULT_SCENARIO_PATH,
+    runtime_readiness: dict[str, Any] | None = None,
 ) -> FastAPI:
     """Create an isolated read-only API over one configured artifact root."""
 
@@ -523,6 +524,15 @@ def create_app(
         else MotorPathwayArtifactStore(motor_experiment_artifact_root)
     )
     _register_error_handlers(app)
+    readiness = runtime_readiness or {
+        "mode": "local",
+        "ready": False,
+        "status": "LOCAL_UNVERIFIED",
+    }
+
+    @app.get("/ready", tags=["system"])
+    def scientific_readiness():
+        return JSONResponse(readiness, status_code=200 if readiness["ready"] else 503)
 
     @app.get(
         "/api/v1/scenarios", response_model=list[ScenarioDefinition], tags=["scenarios"]
@@ -541,6 +551,10 @@ def create_app(
         if scenario_id not in {s.id for s in scenario_catalog()}:
             return _error_response(
                 404, "unsupported_scenario", "scenario is not available"
+            )
+        if readiness["mode"] != "local" and not readiness["ready"]:
+            return _error_response(
+                503, "scenario_unavailable", "scientific runtime is not verified"
             )
         try:
             return load_scenario_playback(scenario_id, Path(scenario_artifact_path))
@@ -693,12 +707,19 @@ def create_app_from_env() -> FastAPI:
     morphology_root = os.environ.get(MORPHOLOGY_ARTIFACT_ROOT_ENV)
     circuit_contract_root = os.environ.get(CIRCUIT_CONTRACT_ROOT_ENV)
     motor_root = os.environ.get(MOTOR_EXPERIMENT_ARTIFACT_ROOT_ENV)
+    readiness = None
+    if os.environ.get("NEUROFLY_RUNTIME_MODE", "local") != "local":
+        from neurofly.runtime_readiness import startup_readiness
+
+        readiness = startup_readiness()
+
     return create_app(
         configured,
         morphology_root,
         circuit_contract_root,
         motor_root,
         os.environ.get("NEUROFLY_SCENARIO_ARTIFACT_PATH", str(DEFAULT_SCENARIO_PATH)),
+        runtime_readiness=readiness,
     )
 
 

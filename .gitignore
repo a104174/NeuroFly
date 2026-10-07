@@ -17,6 +17,7 @@ htmlcov/
 data/derived/malecns/
 data/derived/experiments/
 data/derived/motor_experiments/
+data/derived/runtime_bundles/
 
 # Pinned external MaleCNS supplemental files (never committed source data)
 data/raw/malecns/

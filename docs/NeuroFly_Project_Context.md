@@ -2848,3 +2848,20 @@ dependencies or backend transport changes; no commit/push.
 Decision: `REDESIGN_COMPLETE_WITH_DEFERRED_ASSET_LIMITATIONS`.
 Next bounded action: validate newcomer readability/usability across the redesigned
 five canonical scenarios without changing scientific models.
+
+## Deployment Gate D2 — deterministic scientific runtime release
+
+D2.1 inventory v2 is the exclusive runtime-bundle authority (74 files,
+116,239,303 bytes; ID `cf85d5fb1b688857e0af44d7cfe934382cdc9e3588185c87a754f6fa5f24a98b`).
+D1 and prior blocking/closure records remain frozen. Deterministic USTAR/gzip
+archive `12c2f5c314a273c7ada36277cf0db6415e929ab3bdf4911a26f78d72943fbca5`
+is 3,674,299 bytes; manifest
+`e0dd15da7a1dd27456f7c1d9ecebc5a6ec8f2b11e07c8e3065b047c22ad9c882`.
+Safe offline packaging/provisioning and explicit provisioned-runtime startup
+readiness preserve `/health` liveness and local development. Clean read-only
+release validation reproduces eight historical replays and five canonical
+playbacks with original-data/network/write fallback denied. No science/frontend
+payload changes, artifact regeneration or replay caching. See
+`deployment_gate_d2_runtime_bundle.md` for commands and private-storage handoff.
+Storage upload requires operator action; application deployment has not run.
+Docker is unavailable locally, so the provider-neutral image recipe is untested.

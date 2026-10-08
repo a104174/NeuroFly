@@ -8,7 +8,7 @@
       "root": ".",
       "framework": "fastapi",
       "entrypoint": "app:app",
-      "buildCommand": "python tools/vercel_runtime_build.py",
+      "buildCommand": "npm ci --prefix tools/vercel_blob --ignore-scripts --no-audit --no-fund && python tools/vercel_runtime_build.py",
       "functions": {
         "app.py": {
           "includeFiles": ".neurofly-release/**",

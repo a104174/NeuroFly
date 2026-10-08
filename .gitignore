@@ -3,6 +3,7 @@
 .venv/
 .vercel/
 .neurofly-release/
+tools/vercel_blob/node_modules/
 .env
 
 # Python caches and local tooling state

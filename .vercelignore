@@ -8,6 +8,7 @@ data/derived
 data/raw
 .neurofly-release
 web/node_modules
+tools/vercel_blob/node_modules
 web/.next
 web/.env*
 web/tsconfig.tsbuildinfo

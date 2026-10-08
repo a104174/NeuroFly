@@ -1,3 +1,552 @@
+# D3R-SDK-DEPLOY — authorized single commit/push preflight
+
+Date: 2026-10-08. This continuation authorizes exactly one additional focused
+SDK-fix commit on d3r-preview and one push; no manual deployment/redeployment,
+Production action, main change or fix-and-redeploy loop. Outcome pending the
+fresh full Python gate and the authorized Git-triggered Preview.
+
+Read-only Git audit confirms HEAD/local/remote d3r-preview at
+0fac819d68d439fdac1dabd42bf3e7c321a4247f and local/remote main at
+521769960d0730f45faec35aa669f91f5fd48d8b; exact origin a104174/NeuroFly.
+Only the ten intended SDK-correction files are pending, nothing staged. Entire
+implementation, tests, public-registry lock entries and retained history reviewed;
+no blocking defect or implementation edit was required in this continuation.
+
+Fresh authenticated provider reads: hcruz, hd-dev / HC, Hobby, exact neurofly
+project prj_W1e15xknFkEC4NYH0OT4JENgBN4i; github link a104174/NeuroFly,
+Production Branch main, project nodeVersion 24.x. Thus remote Node compatibility
+is established from provider configuration, not merely the local Node version.
+Official provider documentation supports Node 24 for builds/functions. Exact
+running version/SDK installation remain cloud build observations to capture.
+Protection all persisted, no observed bypass/exception, OIDC enabled/team issuer.
+Only Preview BLOB_STORE_ID/BLOB_WEBHOOK_PUBLIC_KEY env records, zero Production
+records. Existing store remains private/available/not quota exceeded and connected
+only to Preview on this project. Only the two historical ERROR deployments exist.
+
+Candidate uses exact @vercel/blob 2.8.0 with a complete npm lock, explicit backend
+npm ci before provisioning, ESM package-relative SDK resolution and no frontend
+node_modules dependency. Installed 2.8.0 signatures match get/private/OIDC/store/
+stream/abort/cache options. Store/pathname and D2 verifier authority unchanged.
+Preview-only guards, bounded streaming, owned partial cleanup, no overwrite,
+finite diagnostics, no CLI login/static token/local fallback/runtime retrieval
+were reconfirmed. Scientific source and D2 manifest/inventory diff remain empty.
+
+Fresh local gates so far: 23 Node tests passed; isolated clean install and its
+23 tests passed; focused deployment/D2 suite 61 passed (55.41s, two existing
+warnings); Ruff check/format passed (354 files); frontend 76 passed (49.117s),
+lint/typecheck/build passed. Full Python: 1,300 passed, 1 integration test deselected, two existing
+deprecation warnings, 920.54s (15:20).
+Only generated Next type-import lines restored to baseline after build.
+
+Fresh supported read-only source dry-run passed: 464 entries, 7,372,701 bytes,
+22 ignored. SDK helper/package/lock, Python integration/dependencies, frontend
+and ten required science documents included; no env/auth, node_modules, raw/
+derived data, archive/runtime tree or build output included. No deployment object
+was created by dry-run. No provider settings or store connections were changed.
+
+All mandatory local gates completed. Final security scans found no credential
+values in candidate files or frontend static output. Existing D2 file-scoped
+verification confirms all 74 manifest-listed checkout files; five fresh canonical
+DTO fingerprints were captured for remote comparison. An initial strict release-
+tree check was unsuitable for the checkout with expected extra data; the existing
+verifier exact=False mode passed. No scientific identity differs. Final staged
+review and provider/remote branch recheck precede the single authorized commit. Actual remote results will be a local-only report update
+after the single push; no second commit/amend/push is authorized.
+All historical outcomes and diagnostic uncertainty remain below unchanged.
+
+---
+
+# D3R-SDK-FIX — local build-only retrieval correction
+
+Date: 2026-10-08. Final decision: **D3R_SDK_FIX_LOCAL_VERIFIED**. All mandatory
+local gates passed. No commit, push, deployment or provider mutation. This is
+local verification only; actual remote SDK access/scientific staging is unverified.
+The historical D3/D3R outcomes, genuine failed Preview and diagnostic uncertainty
+remain below unchanged.
+
+## Baseline and scope
+
+Read-only entry audit: d3r-preview at pushed commit
+0fac819d68d439fdac1dabd42bf3e7c321a4247f, main/origin/main at
+521769960d0730f45faec35aa669f91f5fd48d8b. Only the existing 347-line report update
+was pending. Existing CLI defect is preserved: the pinned CLI account-login gate
+runs before Blob's OIDC handler. Lost cloud stderr still prevents proving that
+this was the only failure in the historical Preview.
+
+## SDK and deterministic build dependency
+
+Selected @vercel/blob 2.8.0, verified against installed TypeScript signatures,
+package engines and current official SDK/private-storage documentation. Supports
+get(pathname, {access:'private', oidcToken, storeId, useCache:false, abortSignal}),
+200/304 discriminated responses, null missing object and Web ReadableStream.
+Node >=20 is required; local verification uses Node 24.11.1 / npm 11.21.0.
+No Vercel CLI login or credential file is needed for direct SDK calls.
+
+A private build-only tools/vercel_blob/package.json declares exact 2.8.0;
+package-lock.json resolves all transitive dependencies with integrity hashes.
+There is no new root package-manager architecture or frontend SDK dependency.
+Backend Services root remains '.', with build command:
+`npm ci --prefix tools/vercel_blob --ignore-scripts --no-audit --no-fund &&
+python tools/vercel_runtime_build.py`.
+The helper's ESM import resolves its own adjacent node_modules independently of
+cwd and frontend installation. Ignore rules exclude that generated dependency
+folder from Git and source upload. No package install lifecycle scripts run.
+The archive retrieval operation itself uses no dynamic npx package resolution.
+
+## Retrieval, safety and integration
+
+Python retains all existing release pins, manifest checks, D2 provisioning,
+archive bytes/SHA, safe extraction, exact inventory/manifest and runtime layout.
+Only retrieve() changes to deterministic `node <absolute-helper> <temporary-file>
+<pinned-pathname> <pinned-store-id>`. Tokens are inherited environment values,
+never arguments. Preview environment is now checked explicitly in Python and
+Node, alongside required OIDC, exact store metadata and static-token prohibition.
+
+The Node helper checks the trusted destination: absolute runtime.tar.gz inside a
+real, non-symlink neurofly-build-* directory immediately below the system temp
+root. Pathname must have the canonical release-path shape; Python supplies the
+exact immutable pathname/store constants. No listing, put, delete, public URL,
+local data, scientific generation, extraction or application route exists.
+
+The SDK receives explicit private access, inherited OIDC and the exact supplied
+store ID. It returns bytes through Web stream -> Node pipeline with backpressure.
+No full-file arrayBuffer/buffer conversion. An exclusive mode-0600 .part file is
+closed on completion/failure. Transport-byte count must equal SDK metadata size;
+this is supplementary transfer-completeness evidence, not scientific validation
+or a substitute for the pinned Python count/SHA. After complete transfer, an
+atomic no-overwrite hard link publishes the destination and removes the owned
+partial. Existing destination/partial files are never overwritten/deleted.
+Owned partial/completed files are removed on failures; cleanup errors fail closed.
+Transfer/request timeout is 120 seconds; Python outer subprocess timeout is 180.
+
+Diagnostics use a finite category allowlist, typed SDK errors, known structured
+network error codes and controlled operation stages. No SDK exception messages,
+headers, URLs, bodies or environment values are printed. Success emits no output;
+failure emits only `NEUROFLY_BLOB_FAILURE <category>` and exit 1.
+Python accepts only that entire exact failure protocol with empty stdout/exit 1;
+extra/unknown output becomes UNKNOWN_REDACTED_FAILURE without forwarding content.
+Missing executable/timeouts/OS failures are sanitized and suppress exception
+chaining. No successful child result substitutes for D2 archive verification.
+No runtime request-time retrieval or factory/readiness/API change was introduced.
+
+## Focused and clean-install evidence
+
+- Node helper: 23 tests passed on the final implementation, including exact
+  bytes/pins/options, Preview-only guards, missing auth/store, static rejection,
+  null/not-found/access, network, unknown errors, dependency absence, non-200,
+  timeout, interrupted/truncated/stalled streams, filesystem failure, invalid
+  destination, no overwrite and sanitized child-process protocol.
+- Child-process test runs the real helper from an isolated directory with a
+  synthetic mocked SDK and no Vercel account credentials. No actual Blob request.
+- Fresh temporary package/source directory, empty HOME/cache and no developer
+  node_modules: npm ci succeeded, SDK 2.8.0 installed; all 23 tests passed there.
+- Python deployment + D2 bundle tests: 61 passed, two existing warnings, 39.47s.
+  Covers wrapper arguments, finite diagnostics, uncontrolled output, spawn errors,
+  no extraction after retrieval failure, original byte/SHA/safe archive checks,
+  provisioned readiness failure and isolated five canonical local playback routes.
+- Node/Python finite protocol parity verified independently.
+- Initial stream cleanup tests exposed a file-handle issue; corrected locally
+  using FileHandle-owned auto-closing stream. Final tests above pass.
+
+## Current complete gates and source packaging
+
+Ruff check and format check pass (354 Python files).
+Full Python suite: 1,300 passed, 1 deselected, two existing dependency warnings,
+809.41s (13:29), on the final implementation. Includes 36 deployment tests and
+existing complete scientific/D2 coverage.
+Final frontend with the repository Python environment activated: 76 tests passed,
+lint/typecheck/build passed. Initial unactivated frontend attempt failed because
+its subprocesses could not find python; this is recorded, not counted as a pass.
+Next regenerated tracked type imports; only those generated lines were restored
+to baseline after the build. No frontend source change remains.
+
+Pinned supported read-only dry-run passed without deployment creation:
+464 entries, 7,372,701 bytes, 22 ignored. All four helper/package/lock/test files,
+Python entrypoints/tools, Services config, dependencies, 151 Python source modules
+and all ten manifest-listed scientific documents are included. No raw/derived
+scientific data, runtime/archive, env/credential, node_modules, .vercel or build
+output entered the source manifest. Final native cloud Function layout and actual
+Preview SDK authentication remain future remote acceptance evidence.
+
+## Files and remaining boundary
+
+Intended local files: .gitignore, .vercelignore, vercel.json,
+tools/vercel_runtime_build.py, tests/test_vercel_runtime.py,
+tools/vercel_blob/package.json, tools/vercel_blob/package-lock.json,
+tools/vercel_blob/retrieve.mjs, tools/vercel_blob/retrieve.test.mjs,
+docs/deployment_gate_d3_staging.md. Nothing staged, committed or pushed.
+Scientific source/data/docs/science and D2 identity authorities remain unchanged.
+No credential value, signed private URL, root env file or runtime tree is added.
+No real local private Blob request or provider configuration mutation occurred.
+Existing protection/Preview-only store configuration is not changed by this task.
+
+A future separately authorized Preview is required to verify actual SDK OIDC/store
+access, remote D2 bytes/SHA/inventory/manifest, native packaging, readiness,
+canonical payload identities and product smoke. Local acceptance does not erase
+DEPLOYMENT_BUILD_FAILED or establish scientifically verified online staging.
+No automatic commit/push/deploy is authorized or performed here. Final Git
+review: six modified tracked files plus the four new helper/package files;
+nothing staged. HEAD remains 0fac819d68d439fdac1dabd42bf3e7c321a4247f and
+main/origin/main remain the starting SHA. Scientific diff is empty; no root
+credential file, runtime tree/archive, SDK dependency tree or frontend build
+output enters Git. Pending file sizes and credential-value scans were reviewed;
+27 frontend static JS files contain no matching Blob/GitHub/JWT credential value.
+The helper test includes only an explicit synthetic example.invalid error URL,
+not an actual signed private Blob URL or credential.
+
+Official SDK references:
+https://vercel.com/docs/vercel-blob/using-blob-sdk
+https://vercel.com/docs/vercel-blob/private-storage
+
+---
+
+# D3R-BLOB-DIAG — credential-safe retrieval investigation
+
+Date: 2026-10-08. Diagnostic decision: **ROOT_CAUSE_IDENTIFIED** for a
+reproduced build-authentication contract defect: pinned Vercel CLI 62.7.0 requires
+CLI account authentication before its OIDC-capable Blob handler can execute.
+This establishes a concrete incompatibility with the selected OIDC-only build
+contract. The historical child's discarded output is unavailable, so it does
+not establish that this was the sole error emitted in the failed cloud process;
+an earlier npm/dependency failure cannot be excluded retrospectively.
+No diagnostic instrumentation or retrieval replacement was implemented. No new
+commit, push, deployment, object access/mutation or provider configuration change.
+All previous reports and outcomes below are preserved.
+
+## Starting Git state and existing evidence
+
+Branch d3r-preview tracks origin/d3r-preview at
+`0fac819d68d439fdac1dabd42bf3e7c321a4247f`.
+Local main/origin/main remain `521769960d0730f45faec35aa669f91f5fd48d8b`.
+Only the preceding 194-line post-deployment report update was dirty at entry;
+no unrelated/scientific modifications were found. This investigation extends
+that same report without discarding its contents.
+
+Independent GETs confirm existing deployment
+`dpl_98hZtMqD1tx2K9oWr5ZR8rfFzwzx`, exact existing project,
+Preview target null, ERROR, BUILD_UTILS_SPAWN_1, backend build command exit 1.
+Allowlisted log milestones confirm one Git clone, cloud builder CLI invocation,
+Python 3.12, uv dependency installation, backend command, wrapper failure.
+Metadata timestamps: createdAt 1791424744732, buildingAt 1791424746389,
+ready 1791424806357. Backend command log at 1791424777415 and wrapper failure
+at 1791424805094: about 27.7 seconds, not an observed 180-second timeout.
+This interval alone is not an authentication diagnosis.
+
+## Exact implementation and process contract
+
+`build()` in tools/vercel_runtime_build.py validates committed manifest/archive
+pins, creates a temporary archive pathname and calls `retrieve(archive)`.
+Retrieval uses Python subprocess -> npx -> pinned Vercel CLI, not a Python SDK:
+`npx --yes vercel@62.7.0 blob get <exact-pinned-pathname> --access private
+--output <temporary-archive> --non-interactive`.
+The pinned pathname is correct and unchanged. Tokens are not command arguments.
+
+Required names: VERCEL_OIDC_TOKEN must be nonempty; BLOB_STORE_ID must equal the
+pinned store; BLOB_READ_WRITE_TOKEN must be absent/nonempty-rejected.
+No subprocess env/cwd override is supplied: parent environment and working
+directory are inherited. Services backend root is '.', and cloud traceback
+locates the helper at /vercel/path0/tools/vercel_runtime_build.py; the expected
+checkout working directory is /vercel/path0, although logs do not print cwd.
+The Python package/dependencies are installed from pyproject.toml before the
+custom command. Node/npm are evidenced by successful frontend installation/build;
+the child relies on npx/PATH and on package download availability. Logs do not
+prove that the child CLI package successfully downloaded/started.
+
+`capture_output=True`, `check=False`, timeout=180. A nonzero child result becomes
+the fixed RuntimeError at helper line 42, discarding stdout/stderr. This exact
+branch proves subprocess.run returned a nonzero result, not FileNotFoundError
+or TimeoutExpired. Those exceptions would escape separately; no classifier exists.
+D2 provision() is called only after retrieval returns successfully. Existing D2
+byte/SHA, canonical archive/safe-path/member checks, inventory and manifest logic
+is reused unchanged. No failed retrieval continues to provisioning/readiness.
+The earlier D2.2 local round trip used an authenticated operator CLI environment,
+which does not establish account-free CLI behavior in a clean cloud build.
+
+## Pinned CLI and SDK compatibility proof
+
+The installed package manifests independently identify Vercel CLI 62.7.0 with
+exact dependency @vercel/blob 2.8.0; Blob SDK engines require Node >=20.
+The cloud builder reports CLI 62.1.0, but the retrieval helper explicitly requests
+62.7.0. The child version is not printed in historical logs. Current official
+documentation confirms OIDC support; no precise minimum CLI/SDK version is
+specified by the consulted documentation, so no minimum is guessed.
+
+Installed pinned CLI dist/index.js declares SUBCOMMANDS_WITHOUT_TOKEN without
+'blob'. Before command dispatch, absent account authConfig.token / --token causes
+promptMissingCredentials(). In CI that function returns exit 1 for missing CLI
+account credentials. This guard does not consult VERCEL_OIDC_TOKEN/BLOB_STORE_ID.
+Only later, in commands-bulk.js, getBlobRWToken() resolves that OIDC pair and
+get2() calls @vercel/blob.get(..., {oidcToken, storeId, access:'private'}).
+The Blob handler itself therefore supports private OIDC, but its outer CLI gate
+still requires a separate account session. A build OIDC token is not an account
+login token and must not be supplied as --token or persisted as a CLI session.
+
+Two isolated local reproductions used only synthetic inputs and empty temporary
+HOME/XDG/global-config directories, CI=1, VERCEL=1, VERCEL_ENV=preview and telemetry
+disabled. One exercised dist/index.js, the second the actual bin dist/vc.js.
+Both returned exit 1 with the known login-required condition, produced no archive,
+and created no auth.json/.env.local. Captured output was never printed/persisted;
+only booleans and exit code were reported. No actual token or developer auth file
+was read, copied or decoded. Synthetic strings are not real token-shaped values.
+The CLI source shows this exit happens before Blob handler/API invocation.
+
+Provider read-back confirms OIDC enabled/team issuer and only Preview store-ID /
+webhook-key env records. No configured VERCEL_TOKEN or static Blob token exists.
+No credential values or hidden child environment were inspected. Build-time OIDC
+availability is documented; CLI account login is not part of the selected build
+contract. Thus the account prerequisite is a proven implementation/tool-choice
+mismatch. It is not evidence that Blob rejected OIDC, that store permissions are
+wrong, or that the immutable object is absent.
+
+Failure category for the reproduced mechanism: DEPENDENCY_OR_CLI_FAILURE,
+reason CLI_ACCOUNT_AUTH_REQUIRED. The historical unobserved child output remains
+UNKNOWN_REDACTED_FAILURE; do not label it OIDC_AUTHENTICATION_REJECTED or infer a
+specific HTTP status. No child text parser/classifier was added.
+
+## Smallest supported correction — proposed, not implemented
+
+Replace only the authenticated-account CLI download layer with a small build-only
+Node helper using pinned @vercel/blob 2.8.0 directly. The SDK supports private
+get(pathname, {access:'private'}) using inherited short-lived OIDC/store envs;
+it has no Vercel CLI command-dispatch/account-login gate. Declare the build
+dependency explicitly rather than depend on the developer's cached package.
+Stream the result to the existing temporary archive, then keep the complete D2
+verifier/provisioner and all pins unchanged. Reject missing result/status/stream.
+
+Typed SDK errors permit a small fixed diagnostic allowlist without printing
+messages, headers, bodies, URLs or tokens; unknown failures stay sanitized.
+Do not add VERCEL_TOKEN, a static Blob credential, CLI login, env pull, a local
+science fallback or Production metadata. A valid Preview-scoped token accepted
+by the existing store still needs verification in a future authorized build.
+No network/object retrieval is needed to prove the current CLI prerequisite.
+
+Official sources consulted:
+- https://vercel.com/changelog/vercel-blob-now-supports-oidc-authentication
+- https://vercel.com/docs/vercel-blob/using-blob-sdk
+- https://vercel.com/docs/environment-variables/system-environment-variables
+- https://vercel.com/docs/cli/blob (older static-token description is incomplete
+  relative to the June 2026 announcement and installed pinned code).
+
+## Tests, security, science and final boundary
+
+Current focused tests: 10 passed, two existing warnings, 32.60s.
+Ruff check passed; Ruff format check passed, 354 files. Offline pinned-CLI
+reproductions passed their expected exit/account-auth/no-file assertions.
+No implementation or persistent test code changed, so complete Python/frontend
+suites were not rerun and no new deployment candidate is proposed as validated.
+The preceding full gate results remain historical, not new diagnostic-run results.
+No new classifier exists, so synthetic classifier scenario tests are not claimed.
+
+Only docs/deployment_gate_d3_staging.md changed. Scientific source, D2 metadata,
+archive SHA/size/inventory/manifest, canonical payloads and mappings remain
+unchanged. All Deployments protection remains all. No credentials/raw child
+output/signed URLs were written into docs or Git, and no root credential file
+was created. No provider mutation, Blob download/reconnection/object mutation,
+Production change, paid activation, commit or push occurred.
+
+Another deployment is not necessary for this diagnosis. The next smallest step
+is a separately scoped local implementation/test change for the direct SDK layer,
+with focused synthetic error tests and full canonical gates before any future
+candidate authorization. A future deployment is needed only to verify corrected
+Preview OIDC/store access and complete scientific/online acceptance, not to
+reproduce the existing account-login prerequisite. Stop here; do not start Phase 34.
+
+---
+
+# D3R-PROTECTED — GitHub App recovery final result
+
+Date: 2026-10-08. Decision: **DEPLOYMENT_BUILD_FAILED**.
+The first genuine protected Git Preview was created from the one authorized
+staging commit/push. Its build failed closed at private archive retrieval.
+No further commit, push, deployment, Production repair or promotion was attempted.
+The complete earlier chronology remains below, including the pre-push snapshot
+committed with this candidate. This final evidence update is intentionally left
+uncommitted because authorization permitted only one commit and push.
+
+## 1. Repository and Git authority
+
+Starting main/HEAD/origin/main/remote main were exactly
+`521769960d0730f45faec35aa669f91f5fd48d8b`; origin is
+`https://github.com/a104174/NeuroFly.git`. Only eight intended files were pending.
+No unrelated/scientific changes, credential files in Git, runtime/archive trees
+in Git, unresolved Git operation or conflicting staging branch were found.
+Final remote main and local main still have that same SHA.
+
+## 2. Vercel authority and protection
+
+Pinned local CLI 62.7.0 authenticated as hcruz; team hd-dev / HC,
+`team_9xOi3efW7pKf7C6OU0JMwy9r`, remains Hobby. Existing project is
+`neurofly`, `prj_W1e15xknFkEC4NYH0OT4JENgBN4i`.
+Independent initial, post-connection and final provider reads consistently show
+`ssoProtection.deploymentType="all"`, no project bypass configured, and no
+observed public exception. No protection PATCH, upgrade or protection weakening
+was performed. Authentication remained usable throughout this recovery.
+
+## 3. GitHub App and connection
+
+GitHub CLI identity a104174 has ADMIN access to a104174/NeuroFly; default main.
+An installation-list diagnostic was inconclusive and was not treated as denial.
+One supported connection POST via pinned CLI API succeeded:
+`/v9/projects/prj_W1e15xknFkEC4NYH0OT4JENgBN4i/link`, github,
+a104174/NeuroFly. Independent read-back confirms repoId 1364434373, exact
+repository and Production Branch main. This establishes effective App access.
+The project was reused; no replacement project or GitHub permission change.
+
+## 4. Historical incidents and revised boundary
+
+D2.2 remains verified; D3 remains SECURITY_BOUNDARY_FAILED; D3R and D3R-GIT
+remain BLOCKED. The prior protected attempt stopped on App access. The operator
+explicitly permitted protected automatic Production initialization only with
+All Deployments authentication, no Production science credentials and no deliberate
+Production deployment/promotion. This execution did not create an initialization
+deployment: after connection the list still had only historical
+`dpl_DShTisiRfUpNSyPBb92LnkHAnLsP`, Production/ERROR, no assigned alias.
+No historical conclusion was rewritten.
+
+## 5. Packaging, authorities and changes
+
+The existing D2 isolated layout is reused: immutable release plus tracked src,
+docs/science and data/reference metadata. Runtime imports from release/src before
+scientific imports, so five source-relative authority paths resolve within the
+release. A fresh isolated Python process exercises authority loaders, network
+context documents, readiness and all five local playbacks without importing the
+developer checkout. All ten manifest-listed scientific documents match bytes/SHA.
+Final native cloud Function layout remains unverified because provisioning failed
+before packaging could complete.
+
+Only new implementation correction in this recovery: replace branch deny `*`
+with documented minimatch `**`, covering nested branch names, and update the
+focused configuration assertion. The explicit staging allow is retained. This
+branch-local policy does not claim to protect remote main's absent configuration.
+No scientific source/content or frontend source was edited.
+
+## 6. Tests and complete current gates
+
+- Final full `.venv/bin/python -m pytest`: 1,274 passed, 1 deselected,
+  two existing dependency deprecation warnings, 836.79s. Includes all ten D3 tests.
+- Focused deployment suite: 10 passed in 33.42s before the wildcard-only edit;
+  updated config test separately passed; final full suite validates the final edit.
+- `.venv/bin/python -m ruff check .`: passed.
+- `.venv/bin/python -m ruff format --check .`: passed, 354 files.
+- Final web `npm test`: 76 passed; `npm run lint`, `npm run typecheck`,
+  `npm run build`: all passed. Generated Next type imports restored to baseline.
+- `git diff --check` and staged diff check passed.
+- Read-only source dry-run: 460 entries, 7,339,100 bytes, 21 ignored at the
+  recorded pre-normalization snapshot; required source/authorities included,
+  no raw/derived data, release/archive, credential, node_modules or build output.
+
+The initial full Python run was intentionally stopped at 3% before the policy
+correction; it is not counted as a pass. No historical pass substitutes for the
+current full results.
+
+## 7. Authorized Git operations
+
+One branch: d3r-preview. One commit:
+`0fac819d68d439fdac1dabd42bf3e7c321a4247f`.
+Message: `chore(deploy): prepare protected NeuroFly D3R staging`.
+One successful push: origin/d3r-preview. No main push, merge, force-push,
+PR creation, tag or release. Exact eight committed paths:
+`.gitignore`, `.vercelignore`, `app.py`, `vercel.json`,
+`tools/vercel_runtime_build.py`, `tools/vercel_runtime_entrypoint.py`,
+`tests/test_vercel_runtime.py`, `docs/deployment_gate_d3_staging.md`.
+Committed diff: 8 files, 2,135 insertions. Explicit staging/checks and credential
+scan passed. Only this post-deployment report update is pending after the commit.
+
+## 8. Preview source and classification
+
+Deployment: `dpl_98hZtMqD1tx2K9oWr5ZR8rfFzwzx`.
+URL: https://neurofly-breqgi5g1-hd-dev.vercel.app
+Source git, a104174/NeuroFly, ref d3r-preview,
+SHA `0fac819d68d439fdac1dabd42bf3e7c321a4247f`, exact existing project.
+Provider target is null: actual Preview, observed immediately while BUILDING.
+Final readyState ERROR; aliasAssigned false. Alias API nevertheless lists branch
+alias `neurofly-git-d3r-preview-hd-dev.vercel.app` against this Preview; that
+record is reported separately from the deployment's aliasAssigned field.
+No new Production deployment or Production alias/promotion was created.
+
+## 9. Preview Blob/OIDC and frozen D2.2
+
+Store store_S3zkyGCIjHi3p79M remains private, available, not quota-exceeded.
+Connection spc_oOQLjCdMzHYshRF6 is only ['preview'], prefix BLOB, exact project.
+Env records remain only Preview BLOB_STORE_ID and BLOB_WEBHOOK_PUBLIC_KEY;
+zero Production env records and no static BLOB_READ_WRITE_TOKEN.
+Build reached retrieval after checking nonempty build OIDC, exact store metadata
+and absence of static Blob token. This proves those guards passed, not that the
+token was accepted by Blob or the download completed.
+
+Frozen archive remains 3,674,299 bytes, SHA
+`12c2f5c314a273c7ada36277cf0db6415e929ab3bdf4911a26f78d72943fbca5`;
+inventory `cf85d5fb1b688857e0af44d7cfe934382cdc9e3588185c87a754f6fa5f24a98b`;
+manifest `e0dd15da7a1dd27456f7c1d9ecebc5a6ec8f2b11e07c8e3065b047c22ad9c882`.
+Canonical pathname remains pinned in the helper and committed authority.
+No other object or local scientific fallback was used.
+
+## 10. Remote build failure and logs
+
+Cloud builder CLI was 62.1.0 (local/retrieval CLI pin remains 62.7.0), Python 3.12,
+uv 0.10.11, iad1, 2 cores/8 GB. Git clone matched exact branch/commit; .vercelignore
+removed 29 ignored files. Next.js 16.3.5 compiled and typechecked successfully.
+The Python build then failed in retrieve(), tools/vercel_runtime_build.py:42:
+`RuntimeError: pinned private release retrieval failed`.
+Provider errorCode BUILD_UTILS_SPAWN_1; build command exited 1.
+The helper intentionally captured and suppressed child stdout/stderr to avoid
+leaking private URLs or credentials. Consequently the underlying CLI/Blob failure
+is unresolved: logs cannot distinguish authentication, provider permission,
+network/package retrieval, or object retrieval errors. No cause is invented.
+
+No successful remote bytes/SHA check, D2 verifier, safe extraction, inventory/
+manifest verification or runtime provisioning evidence exists. The build stopped
+before those operations could complete. No build success or scientific readiness
+is claimed. No corrective cloud operation/retry occurred.
+
+## 11. Backend, scientific and product verification
+
+Backend startup, /health, /ready and catalogue functional checks were not reached.
+All five remote products remain unverified: BASELINE_CONTROL,
+LOOMING_CIRCUIT_VALIDATION, LOOMING_WORLD_EXPERIMENT,
+HORIZONTAL_MOTION_NEURAL_VALIDATION, EXPLORATORY_COURSE_CONTROL.
+Local relocated tests pass, but no remote payload identity/hash comparison was
+possible. Frontend cloud build passed; online frontend/same-origin catalogue,
+playback, browser/WebGL and mobile functional smoke were not reached.
+No runtime logs from an operational backend exist. No latency/performance claim.
+
+## 12. Anonymous-access, security and cost
+
+Without cookies/credentials, Preview root and /ready returned 302 to
+vercel.com/sso-api; historical Production URL also returned that challenge.
+Configured unassigned Production domain neurofly-liard.vercel.app returned 404;
+this is not an end-to-end protection test of a functioning Production domain.
+Authoritative all scope covers Production domain and existing/future URLs.
+No app/scientific response was exposed by the checks.
+
+No root .env.local or other root credential file was created. .vercel remains
+ignored non-secret project.json/README only. Existing ignored web/.env.local
+contains only the local development API-base key and was preserved/excluded.
+Candidate/staged scans found no credential values, JWTs or signed private URLs;
+frontend static output scan found no Blob credential/JWT value. No runtime/
+archive/generated-data file entered Git. No env pull, link, automation bypass,
+share link, exception, public domain change or protection disabling occurred.
+No Production scientific config was added. Existing private store was not altered.
+Hobby remained unchanged; no paid feature/plan/infrastructure enabled.
+
+## 13. Final boundary and smallest next action
+
+Final branch tracks origin/d3r-preview; local/remote main unchanged. One authorized
+commit/push consumed. Final evidence remains a report-only uncommitted update;
+no second commit/push is authorized. Frozen scientific files remain unchanged.
+The task stops at DEPLOYMENT_BUILD_FAILED, not a scientific staging pass.
+No cleanup is required: retained project/Git link/protected failed Preview and
+historical failure are safe to leave under observed protection/no science config.
+
+Smallest next step: authorize a separate, narrowly scoped follow-up to obtain
+credential-safe failure classification for the captured private retrieval command
+(e.g. only allowlisted error codes, never full child stderr/URLs/tokens), then
+review the evidence and propose the minimal fix. Any new commit/push/deployment
+needs fresh explicit authorization; none is performed here. Do not change release
+identities, enable static credentials, repair Production or weaken authentication.
+
+---
+
 # D3R-PROTECTED — resumed after GitHub App repository authorization
 
 Date: 2026-10-08. The operator reports authorizing the Vercel GitHub App for

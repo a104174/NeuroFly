@@ -10,36 +10,58 @@ MANIFEST_ID = "e0dd15da7a1dd27456f7c1d9ecebc5a6ec8f2b11e07c8e3065b047c22ad9c882"
 ARCHIVE_SHA = "12c2f5c314a273c7ada36277cf0db6415e929ab3bdf4911a26f78d72943fbca5"
 STORE_ID = "store_S3zkyGCIjHi3p79M"
 PATHNAME = f"neurofly/runtime/v2/{ARCHIVE_SHA}/neurofly-runtime-v2-{ARCHIVE_SHA}.tar.gz"
+FAILURE_CATEGORIES = frozenset(
+    (
+        "SDK_DEPENDENCY_MISSING",
+        "BUILD_OIDC_MISSING",
+        "STORE_METADATA_MISMATCH",
+        "STATIC_CREDENTIAL_PROHIBITED",
+        "PREVIEW_ENVIRONMENT_REQUIRED",
+        "INVALID_ARGUMENT",
+        "PRIVATE_OBJECT_NOT_FOUND",
+        "BLOB_ACCESS_REJECTED",
+        "NETWORK_OR_TLS_FAILURE",
+        "DOWNLOAD_TIMEOUT",
+        "DOWNLOAD_STREAM_INTERRUPTED",
+        "OUTPUT_FILESYSTEM_FAILURE",
+        "INVALID_RESPONSE",
+        "UNKNOWN_REDACTED_FAILURE",
+    )
+)
 
 
 def retrieve(archive):
     if not os.environ.get("VERCEL_OIDC_TOKEN"):
         raise ValueError("build OIDC authentication is required")
+    if os.environ.get("VERCEL_ENV") != "preview":
+        raise ValueError("Preview build environment is required")
     if os.environ.get("BLOB_STORE_ID") != STORE_ID:
         raise ValueError("build store metadata does not match the pinned store")
     if os.environ.get("BLOB_READ_WRITE_TOKEN"):
         raise ValueError("static Blob credentials are prohibited")
-    result = subprocess.run(
-        [
-            "npx",
-            "--yes",
-            "vercel@62.7.0",
-            "blob",
-            "get",
-            PATHNAME,
-            "--access",
-            "private",
-            "--output",
-            str(archive),
-            "--non-interactive",
-        ],
-        capture_output=True,
-        timeout=180,
-        check=False,
-    )
-    if result.returncode:
-        # Provider error output can contain URLs; never forward it to build logs.
-        raise RuntimeError("pinned private release retrieval failed")
+    helper = Path(__file__).resolve().parent / "vercel_blob/retrieve.mjs"
+    try:
+        result = subprocess.run(
+            ["node", str(helper), str(Path(archive).resolve()), PATHNAME, STORE_ID],
+            capture_output=True,
+            timeout=180,
+            check=False,
+        )
+    except FileNotFoundError:
+        raise RuntimeError("SDK_DEPENDENCY_MISSING") from None
+    except subprocess.TimeoutExpired:
+        raise RuntimeError("DOWNLOAD_TIMEOUT") from None
+    except OSError:
+        raise RuntimeError("UNKNOWN_REDACTED_FAILURE") from None
+    if result.returncode or result.stdout or result.stderr:
+        # Accept only the helper's entire finite protocol, never arbitrary output.
+        category = "UNKNOWN_REDACTED_FAILURE"
+        if result.returncode == 1 and not result.stdout:
+            for candidate in FAILURE_CATEGORIES:
+                if result.stderr == f"NEUROFLY_BLOB_FAILURE {candidate}\n".encode():
+                    category = candidate
+                    break
+        raise RuntimeError(category)
 
 
 def build(root):

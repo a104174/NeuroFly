@@ -33,6 +33,7 @@
     { "source": "/health", "destination": { "service": "backend" } },
     { "source": "/ready", "destination": { "service": "backend" } },
     { "source": "/api/v1/:path*", "destination": { "service": "backend" } },
+    { "source": "/", "destination": { "service": "frontend" } },
     { "source": "/:path*", "destination": { "service": "frontend" } }
   ]
 }

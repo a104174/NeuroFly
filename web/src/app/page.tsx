@@ -1,50 +1,25 @@
 import { AppHeader } from "@/components/AppHeader";
-import { ExperimentList } from "@/components/ExperimentList";
+import { ScenarioCards } from "@/components/ScenarioCards";
 import { StateMessage } from "@/components/StateMessage";
-import {
-  listExperiments,
-  NeuroflyApiError,
-  type ExperimentSummary,
-} from "@/lib/neuroflyClient";
+import { EmptyScenarioCatalogueError, listScenarios } from "@/lib/scenarioCatalog";
 
 export const dynamic = "force-dynamic";
 
 export default async function HomePage() {
-  let experiments: ExperimentSummary[] | null = null;
-  let requestError: unknown = null;
+  let scenarios;
   try {
-    experiments = await listExperiments();
+    scenarios = await listScenarios();
   } catch (error) {
-    requestError = error;
-  }
-  if (requestError) {
-    const detail =
-      requestError instanceof NeuroflyApiError
-        ? requestError.message
-        : "The experiment API could not be reached.";
+    const empty = error instanceof EmptyScenarioCatalogueError;
     return (
       <div className="app-shell">
         <AppHeader />
         <main className="main-content main-content-wide">
           <StateMessage
-            eyebrow="API UNAVAILABLE"
-            title="The catalogue could not load."
-            detail={detail}
-            tone="error"
-          />
-        </main>
-      </div>
-    );
-  }
-  if (!experiments || experiments.length === 0) {
-    return (
-      <div className="app-shell">
-        <AppHeader />
-        <main className="main-content main-content-wide">
-          <StateMessage
-            eyebrow="NO COMPLETED RUNS"
-            title="The catalogue is empty."
-            detail="No completed experiment artifacts are available through the configured read-only API yet."
+            eyebrow={empty ? "NO CANONICAL SCENARIOS" : "SCENARIO API UNAVAILABLE"}
+            title={empty ? "The scenario catalogue is empty." : "Scenarios could not load."}
+            detail={error instanceof Error ? error.message : "Please check the backend."}
+            tone={empty ? "neutral" : "error"}
           />
         </main>
       </div>
@@ -53,48 +28,29 @@ export default async function HomePage() {
   return (
     <div className="app-shell">
       <AppHeader />
-      <div className="workspace">
-        <aside className="catalogue">
-          <div className="catalogue-inner">
-            <p className="eyebrow">NEUROFLY / PHASE 5A</p>
-            <h1 className="catalogue-title">Model experiments</h1>
-            <p className="catalogue-copy">
-              Browse deterministic runs persisted by the scientific core.
-              Nothing on this page starts a simulation.
+      <main className="scenario-route">
+        <p className="eyebrow">NEUROFLY / SCIENTIFIC SCENARIOS</p>
+        <div className="library-heading">
+          <div>
+            <h1>Explore canonical scenarios.</h1>
+            <p className="scenario-intro">
+              Bounded connectome-based models. Explicit inputs. Frozen scientific results.
+              Deterministic replay; browsing starts no simulation.
             </p>
-            <ExperimentList experiments={experiments} />
           </div>
-        </aside>
-        <main className="main-content main-content-wide">
-          <section className="hero-panel">
-            <div>
-              <p className="eyebrow">READ-ONLY WORKSPACE</p>
-              <h1>Observe the model.</h1>
-              <p className="hero-copy">
-                Select a completed run to inspect its provenance, pathway
-                output, and persisted neural timeline.
-              </p>
-            </div>
-            <div className="validation-flag">
-              <span className="status-dot" aria-hidden="true" />
-              <span>
-                <strong>Empirical validation</strong>
-                <small>Not evaluated</small>
-              </span>
-            </div>
-          </section>
-          <section className="section-block">
-            <div className="section-heading">
-              <p className="eyebrow">BROWSER BOUNDARY</p>
-              <h2>Choose a run from the catalogue.</h2>
-            </div>
-            <p className="subtle-note">
-              The browser consumes the Phase 4B HTTP contract only. It does
-              not access Python objects, artifact paths, or simulator state.
-            </p>
-          </section>
-        </main>
-      </div>
+          <span className="library-count">
+            {String(scenarios.length).padStart(2, "0")} <small>CANONICAL SCENARIOS</small>
+          </span>
+        </div>
+        <section aria-label="Canonical scenario catalogue">
+          <ScenarioCards scenarios={scenarios} />
+        </section>
+        <p className="subtle-note">
+          These presets are separate from completed Phase 3B experiments, available
+          through Experiments when compatible persisted artifacts are configured.
+          Broader interactive simulation remains future work.
+        </p>
+      </main>
     </div>
   );
 }

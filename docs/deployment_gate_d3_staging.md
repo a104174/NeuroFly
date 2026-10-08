@@ -1,3 +1,800 @@
+# D3R-PROTECTED-RELEASE-GATE — final combined candidate review
+
+Date: 2026-10-08. One focused commit and one non-force staging push explicitly
+authorized, conditional on all current local/provider gates. No manual deployment,
+second publication, Production release or provider configuration mutation.
+This section records pre-publication evidence; actual release results will be
+added locally after the one push, without another commit or amendment.
+
+## Current authority and exact review scope
+
+Starting local/remote d3r-preview: 1e8489be8961ba5ed24c570a0fe56a0299665796.
+Local/origin/remote main: 521769960d0730f45faec35aa669f91f5fd48d8b.
+Exact GitHub origin a104174/NeuroFly, default branch main, authenticated account
+a104174 with current REST admin/push permissions. A GraphQL repo-view request
+had a transient connection error; the authenticated REST read independently
+confirmed exact repository permissions. Nothing staged; exactly 15 intended
+pending files. No unexpected work or scientific changes. No active Git hooks.
+
+Reviewed paths: README.md; pyproject.toml; vercel.json;
+docs/deployment_gate_d3_staging.md; tests/test_dependency_profiles.py;
+tests/test_vercel_runtime.py; web/src/app/page.tsx; web/src/app/loading.tsx;
+web/src/app/scenarios/page.tsx; web/src/components/AppHeader.tsx;
+web/src/app/experiments/page.tsx; web/src/app/experiments/loading.tsx;
+web/src/components/ScenarioCards.tsx; web/src/lib/scenarioCatalog.ts;
+web/tests/homepage.test.ts. No code correction was required in this release gate.
+
+The candidate moves only neuprint-python==0.6.3 into the acquisition extra;
+retains FastAPI/NumPy/Uvicorn serving dependencies; inserts only the explicit
+root frontend rule before the unchanged catch-all; and uses the real canonical
+scenario catalogue for HomePage. Legacy experiment discovery remains separate
+at /experiments with unchanged integrity validation. No backend API, scientific
+source, model, corpus, scenario metadata, frozen authority, SDK retrieval or
+readiness changes. No new dependency, CSS redesign, fake data or simulation UI.
+
+## Provider and protection preflight
+
+CLI 62.7.0 authenticates hcruz under hd-dev / HC, Hobby. Linked project and API
+both confirm neurofly, prj_W1e15xknFkEC4NYH0OT4JENgBN4i, correct account/team,
+Node 24.x configuration, GitHub a104174/NeuroFly and Production Branch main.
+Current protection is ssoProtection.deploymentType=all; no protection bypass,
+password exception, trusted-IP/public exception or shareable link is observed.
+Production has no environment records. Only BLOB_STORE_ID and
+BLOB_WEBHOOK_PUBLIC_KEY metadata are present, both targeted to Preview; values
+were not printed. Existing store store_S3zkyGCIjHi3p79M is private, available,
+not quota-exceeded, and connected only to Preview for this exact project.
+No configuration PATCH, store reconnection, billing change or paid feature.
+
+Retained scientifically verified deployment dpl_4Tohmr2Kmbn4jZySar7S6Sts1TiH
+remains READY, source git, target null, exact starting staging SHA/branch/repo.
+Historical dpl_DShTisiRfUpNSyPBb92LnkHAnLsP remains Production/ERROR with no alias.
+Those provider records are untouched. Current branch policy and Production Branch
+support a new Git Preview; authoritative new target must be checked after push.
+
+## Credential-safe protected access finding
+
+Preflight inspected the actual pinned CLI implementation before remote checks.
+vercel curl 62.7.0 uses getOrCreateDeploymentProtectionToken and can PATCH
+/v1/projects/<id>/protection-bypass when none exists. That hidden configuration
+mutation conflicts with this gate. vercel curl was not executed and no bypass
+was created. This new command-semantics finding does not rewrite historical
+remote checks or assume they used the same current protection state.
+
+Supported alternative: vercel env run in development, from an isolated directory
+containing only non-secret project/team link identifiers. Inspected implementation
+uses GET /v3/env/pull, keeps values in child process memory and does not write an
+environment file. The isolated directory has no local environment files to read.
+Python uses the short-lived token only as an origin-scoped
+x-vercel-trusted-oidc-idp-token HTTPS header, refuses redirects and never prints,
+decodes, persists or passes the token as a command argument. The old exact
+Preview health endpoint returned 200/application JSON through this access path.
+Independent project read-back still shows all protection and no bypass; no
+credential file appeared. This path will be used for new Preview verification.
+No env pull, signed URL, static credential or widened Trusted Sources rule.
+
+## Current local acceptance
+
+Full Python: 1,304 passed, one authenticated integration test deselected by
+canonical configuration, two existing Starlette/httpx and AnyIO deprecation
+warnings, 852.73s (14:12). No required local gate was skipped.
+Focused dependency/deployment/compiler/D2/HTTP/experiment suite: 84 passed,
+two existing warnings, 45.29s. Full frontend: 88 passed; lint, typecheck and
+production build passed. SDK: 23 passed; isolated npm ci (lifecycle scripts
+excluded) installed the locked SDK package and its 23 tests also passed.
+Clean acquisition offline regression: 45 passed, 1.37s. Both isolated Python
+profiles pass pip check. Ruff check/format and git whitespace checks passed.
+
+Current fresh process in the retained isolated serving environment verifies
+health, exact readiness, catalogue, existing mixed-directory 409, invalid/missing
+release failure and all five complete authoritative payload SHA identities.
+Acquisition packages and test tools are absent from that core environment.
+No biological data or private Blob was downloaded locally. Existing builder
+implementation uses uv sync --no-dev without acquisition extras; actual new
+cloud bundle and runtime installation behavior remain remote acceptance gates.
+Historical size measurements are not claimed as a new cloud size measurement.
+
+Source dry-run: 462 files, 7,372,635 bytes, five ignored; required backend, SDK,
+frontend and pinned science documents included. No runtime tree/archive, datasets,
+node_modules, venv, build output, .env credential or .vercel auth material is
+uploaded. Changed files and frontend static output pass targeted credential/
+signed-URL scans. Generated Next declaration paths were restored only to their
+starting forms after the required build. The deployment report is upload-ignored.
+
+## Publication and remote acceptance boundary
+
+Before commit/push, re-read repository refs and project protection/repository/
+Production environment/store scope. Stage only the 15 paths listed above and
+review the full staged diff. One commit message:
+fix(staging): stabilize serving and integrate scenario homepage.
+Push only origin/d3r-preview once. Inspect exact Git SHA and Preview target before
+accepting any build. No retry or manual deployment on failure.
+
+Read-only new Preview acceptance will check build provisioning, selected Python
+closure, bounded successful initializations and runtime logs, genuine readiness,
+five complete payload identities/consumer schemas, actual root/API-derived cards,
+canonical replay pages and assets, strict legacy integrity failure and anonymous
+protection. Current tool inventory exposes no browser automation and no installed
+browser CLI/binary was found. If machine gates pass, authenticated visual/WebGL/
+mobile smoke remains an honest operator gate. Finite requests cannot prove that
+future cold-start failures are impossible. No Phase 34 or Production promotion.
+
+# D3R-HOMEPAGE-INTEGRATION — local canonical scenario homepage
+
+Date: 2026-10-08. Final decision: **D3R_HOMEPAGE_LOCAL_VERIFIED**.
+The operator explicitly approved canonical scenarios as the homepage's primary
+catalogue for the frozen D2.2 release. This resolves the preceding homepage
+product-contract blocker locally, without changing legacy experiment integrity.
+All prior outcomes and provider evidence remain intact below.
+
+## Baseline and preserved work
+
+Verified d3r-preview HEAD and remote branch at
+1e8489be8961ba5ed24c570a0fe56a0299665796. Local/origin/remote main remains
+521769960d0730f45faec35aa669f91f5fd48d8b; exact repository is
+a104174/NeuroFly. Six intended pending files were present, with nothing staged:
+README.md, pyproject.toml, tests/test_dependency_profiles.py,
+tests/test_vercel_runtime.py, vercel.json and this report. Existing dependency,
+root-routing and historical documentation changes are preserved.
+
+## Product/API integration and historical workflow
+
+HomePage remains a force-dynamic Next.js server component. It requests only
+/api/v1/scenarios through the shared listScenarios helper. That helper reuses
+requestJson (configured service URL, no-store fetch, typed HTTP/network errors)
+and the existing parseScenarioCatalog validator. No backend schema or validator
+changed. It never requests the legacy experiment list as a fallback.
+
+The existing ScenarioCard and presentation labels provide the card content;
+ScenarioCards only shares the existing card grid between / and /scenarios.
+HomePage identifies its content as CANONICAL SCENARIOS and deterministic replay
+of frozen model results. The count comes from the validated response. Titles
+come from the response; established bounded-model classification/limitations
+come from unchanged presentation metadata. No completed Phase 3B run identity,
+scientific metric, payload frame or new empirical-validity claim is fabricated.
+Scenario links retain /scenarios/<canonical ID>, accessible Open-title names,
+stable identity keys and existing responsive CSS. No CSS, package or lock change.
+
+The old HomePage is preserved as /experiments with the same listExperiments,
+ExperimentList, completed-run descriptions and explicit errors/empty states.
+The existing experiment detail and cockpit routes remain unchanged. AppHeader's
+Experiments navigation now targets /experiments; the brand remains a home link
+with the accurate accessible name NeuroFly home. Original experiment loading
+presentation is retained in experiments/loading.tsx. README now documents both
+catalogues and points completed-run navigation to /experiments, preserving all
+prior acquisition setup changes. No experiment feature was silently deleted. Byte comparison confirms the old
+homepage is retained verbatim apart from the function name, and its loading
+component is retained verbatim.
+
+The strict canonical parser continues requiring the exact five ordered IDs and
+complete metadata. Shared loading throws a typed absence error for an empty
+array rather than treating it as a valid scientific set. HomePage renders an
+explicit neutral NO CANONICAL SCENARIOS state; /scenarios continues rendering
+an error for that absence. Missing/incomplete/malformed data, HTTP failures and
+network failures yield visible errors and no cards. No cached/hardcoded fallback.
+Root loading is an accessible live status with aria-busy and no substitute data.
+Its scientific-data wording also remains accurate for morphology pages inheriting
+this boundary; experiment/scenario routes retain their own specific loading text.
+
+Public URLs/navigation remain relative to this project's origin. Server-side
+requests retain the existing deployment service binding through
+NEUROFLY_API_BASE_URL. No hardcoded deployment URL, localhost source configuration,
+client-side acquisition, scientific simulation, credential or Blob access added.
+
+## Tests and local product evidence
+
+Twelve new offline Node/React homepage tests use synthetic transport fixtures
+only, with mocked fetch and actual page rendering. They check canonical API
+selection, no-store request, response-derived titles, five accessible route
+links/classifications, no legacy dependency/fallback, empty response, incomplete
+set, missing metadata, wrong classification/shape, HTTP/network/JSON failure,
+legacy 409 preservation, shared /scenarios presentation and empty-error behavior,
+loading status and preservation of experiment detail/cockpit functionality.
+
+Current complete frontend suite: 88 passed; lint, typecheck and production build
+passed. Before the last empty-/scenarios regression test, 11 focused homepage
+and 87 total frontend tests also passed. A frontend rerun was mistakenly invoked
+at the repository root (no package.json, ENOENT); no test ran in that invocation.
+It was rerun correctly from web, where all current gates passed. Next build
+lists dynamic /, /experiments, /scenarios and their existing nested routes.
+Only generated Next declaration path changes were returned to their starting
+values; user work was preserved.
+
+Current focused Python suite: dependency profiles, deployment/routing, D2 bundle,
+HTTP API and experiment API: 84 passed, two existing warnings, 44.29s. Existing
+compiler test additionally covers the new /experiments index. The explicit root
+rewrite and every existing backend/frontend rule remain unchanged. Dedicated
+Node Blob SDK suite: 23 passed. Ruff check/format and whitespace checks passed.
+Full Python result: 1,304 passed, one authenticated integration test deselected
+by canonical configuration, two existing deprecation warnings, 816.28s (13:36).
+Warnings concern Starlette TestClient/httpx and AnyIO BlockingPortal aliases.
+Every required local gate ran; no historical pass substitutes for current results.
+
+Local production smoke used the existing provisioned native-layout fixture in
+the retained isolated Python 3.12 core-serving environment, with processes bound
+only to 127.0.0.1. Serving closure remains 16 distributions, no neuPrint/SciPy/
+PyArrow/pandas/pytest/httpx; pip check passes. Fresh service startup returned
+health 200, readiness 200 with exact frozen inventory/manifest, canonical
+catalogue 200 and legacy catalogue 409 artifact_integrity_failure. Next production
+server rendered / and /scenarios as HTML 200 with all five actual API-derived
+scenario links; /experiments rendered the integrity error and no scenario cards.
+Unknown frontend /api/unknown returned 404. These temporary servers were stopped.
+No mock catalogue was used for that product smoke. No Blob retrieval, biological
+acquisition or new scientific release was performed.
+
+All five full-payload SHA assertions passed in the current relocated deployment
+suite, alongside valid readiness and fail-closed invalid/missing-release checks.
+Acquisition dependency metadata and frozen release pins are unchanged by this
+task. Scientific source, authority documents, backend catalogue/playback APIs,
+D2 verification and SDK retrieval have empty diffs relative to the starting
+staging commit. The historical mixed-root 409 is intentionally still visible
+through the separate legacy workflow.
+
+## Packaging, security and local boundary
+
+Final source dry-run result: 462 files, 7,372,635 bytes,
+5 ignored.
+All ten inventory-listed scientific authority documents are included.
+The Git candidate contains intended new frontend files as well as existing
+tracked files. A supported pinned CLI dry-run uses only non-secret project-link
+identifiers and creates no deployment. No raw/derived scientific data, archive,
+provisioned tree, virtual environment, node_modules, build output or credential
+file is included. Required SDK helper/manifests and pinned science documents
+remain present. No frontend dependency was added.
+
+Targeted final source/static credential scan result: no JWT, static Blob token
+or signed-private-URL pattern hits in changed files or frontend static output.
+No environment secret values or generated preview-mode keys were read or printed.
+No credentials, bypass link or signed private Blob URL was introduced. Vercel
+Authentication, Git Integration, private Blob/OIDC, Production settings and
+billing were not modified. No commit, staging, push, deployment or Phase 34 work.
+This is local acceptance only; no fresh remote security or availability claim.
+
+## Changed paths and remaining gate
+
+Changed in this task: README.md; this report; tests/test_vercel_runtime.py (one
+frontend index path); web/src/app/page.tsx; web/src/app/loading.tsx;
+web/src/app/scenarios/page.tsx; web/src/components/AppHeader.tsx;
+web/src/app/experiments/page.tsx; web/src/app/experiments/loading.tsx;
+web/src/components/ScenarioCards.tsx; web/src/lib/scenarioCatalog.ts;
+web/tests/homepage.test.ts. Prior pyproject.toml, vercel.json and
+untracked tests/test_dependency_profiles.py changes are preserved unchanged.
+
+A future separately authorized protected Preview must verify actual root ingress,
+API-derived homepage/scenario navigation, independent Function startups after
+the dependency split, exact readiness/five payload hashes, legacy integrity
+failure, All Deployments protection and browser/WebGL/mobile usability. Local
+rendering and API tests do not establish remote layout or continuous availability.
+No new commit, push or deployment is authorized by this local gate.
+
+Final working tree contains 15 intended pending files, nothing staged. Main and
+staging branch SHAs remain unchanged locally and remotely. Local acceptance
+does not verify a new Preview. Smallest next step: review these three combined
+local corrections (dependency split, root ingress, homepage integration), then
+separately authorize one controlled protected Preview release/verification gate.
+
+# D3R-CATALOGUE-AND-ROOT-GATE — local routing and catalogue classification
+
+Date: 2026-10-08. Final decision:
+**D3R_ROOT_LOCAL_VERIFIED_CATALOGUE_PRODUCT_BLOCKER**.
+This section preserves the dependency-split candidate and every historical
+incident/result below. No staging, commit, push, deployment or provider mutation.
+
+## Repository authority and edit boundary
+
+Read-only audit confirmed d3r-preview local HEAD and remote branch at
+1e8489be8961ba5ed24c570a0fe56a0299665796; local/origin/remote main remains
+521769960d0730f45faec35aa669f91f5fd48d8b. Exact origin is
+https://github.com/a104174/NeuroFly.git. Nothing staged. Five intended pending
+files were preserved: README.md, pyproject.toml, tests/test_dependency_profiles.py,
+tests/test_vercel_runtime.py and this report. This gate changes only vercel.json,
+the existing deployment tests and this report. No scientific source changes.
+
+## Catalogue classification: CATALOGUE_409_PRODUCT_BLOCKER
+
+GET /api/v1/experiments returns 409 artifact_integrity_failure. The request
+calls ExperimentArtifactStore.list_experiment_summaries, enumerates every
+immediate directory beneath its configured root, and applies the Phase 3B
+load_experiment_artifact validator to each. That validator requires exactly
+manifest.json, delivered_events.jsonl, spikes.jsonl, summary.json and
+telemetry.json before validating manifest schema or hashes. The first failure is
+dnp15_exploratory_yaw_artifact_v1: it contains a hash-named child directory,
+not those five flat files. This is a layout/contract mismatch, not evidence that
+the D2.2 archive or its scenario-specific authorities are corrupt. It occurs
+before duplicate-identity checks, manifest consistency or version comparison.
+
+The immutable release's data/derived/experiments directory contains namespaced
+DNp15 yaw, exploratory course-control and horizontal-motion validation artifacts.
+All six inventory-listed files under that root belong to those three modern
+formats. No valid flat Phase 3B catalogue corpus is included in this frozen
+inventory. These artifacts are valid for their respective canonical adapters,
+but their parent is incompatible with the legacy catalogue loader.
+
+The serving entrypoint explicitly sets NEUROFLY_EXPERIMENT_ARTIFACT_ROOT to that
+release directory. It is the actual deployment configuration, not an intentionally
+invalid unit-test fixture. D2.2's stated closure covers five scenario adapters,
+eight historical replays, factory/lifespan, health and scenario catalogue;
+it did not establish the legacy experiment catalogue as a successful closure.
+
+The actual Next.js App Router HomePage calls listExperiments, which requests this
+exact endpoint. README and frontend-foundation contracts describe browsing
+completed Phase 3B runs from the homepage. Existing HTTP tests prove a legitimate
+flat artifact fixture yields catalogue 200/count 1; the empty-root test's 200/count
+0 establishes an empty test fixture contract, not a deployment substitute.
+The frozen mixed root correctly fails closed. Both clean serving-only and
+acquisition-enabled profiles reproduce the same 409. Removing acquisition
+packages has not introduced or repaired this catalogue incompatibility.
+
+HomePage honestly renders 'The catalogue could not load.' for the 409 and a
+separate empty state for a successful empty catalogue. A temporary offline probe
+of the actual TypeScript client confirmed HTTP 409 maps to
+artifact_integrity_failure/status 409, while a rejected fetch maps to
+API_UNREACHABLE/status null. Thus typed client semantics distinguish the errors;
+the homepage's general API UNAVAILABLE heading covers both. No fabricated list,
+empty-success replacement, filtering workaround or validator change was made.
+The five scenario routes and /scenarios use the independent canonical scenario
+catalogue and remain valid. This does not make the intended homepage healthy.
+
+Smallest safe future action: explicitly resolve the product catalogue contract
+for the frozen five-scenario release. The existing real /api/v1/scenarios is an
+available verified authority if an approved homepage integration uses that
+catalogue. Retaining the legacy completed-experiment homepage instead requires
+an approved, verified flat Phase 3B corpus and explicit release-scope decision;
+none is supplied by D2.2. Do not silently substitute local experiments, regenerate
+D2.2, or reinterpret modern manifests as legacy artifacts. This task makes no
+catalogue correction and does not declare staging ready.
+
+## Single root rewrite and compiler evidence
+
+Inserted only {source: '/', destination: {service: 'frontend'}} immediately before
+the existing /:path* frontend rule. Health, readiness and /api/v1/:path* backend
+rules retain their order and contents. No Next.js route, redirect, service,
+SDK retrieval, OIDC guard, readiness or scientific authority changed.
+
+Regression tests invoke routing-utils bundled with the installed pinned Vercel
+62.7.0 CLI. A small test-only adapter discovers that export in the pinned npm
+cache, or accepts NEUROFLY_VERCEL_ROUTING_MODULE for CI. The compiler test requires
+this tooling and fails explicitly if unavailable; it does not install dependencies
+or create deployments. It compares actual compiled first-service matches before
+and after the root rule: '/' previously selected none, now frontend. Every tested
+non-root route retains its previous owner. This avoids an approximate wildcard
+matcher and reproduces the strict compiler's original root omission.
+
+Coverage: /scenarios and nested scenario pages, experiment cockpit, morphology,
+/_next/static assets, health/readiness, both catalogues, all five playback routes
+and unknown v1 API. FastAPI's unknown v1 route remains JSON 404; service ingress
+is terminal, so it cannot fall through to frontend success. Other /api namespaces
+remain frontend-owned by the unchanged catch-all. A local production Next server
+returned HTML 404 for /api/unknown, /api/v1/unknown and an unknown page; no frontend
+API fallback is defined. This is local service behavior, not a new remote check.
+
+Official routing contract: https://vercel.com/docs/services/routing documents
+ordered first matching service ownership and terminal service 404 behavior.
+Next.js production build still generates dynamic '/', /scenarios, experiment and
+morphology routes. The prior protected remote root NOT_FOUND remains historical;
+this local candidate has not been deployed.
+
+## Current quality and dependency evidence
+
+Current routing/configuration gates: 3 passed. An initial compiler-test adapter
+used dest instead of the emitted destination field; corrected after inspecting
+safe route-only compiler output, then all three passed. No routing redesign.
+Focused dependency/deployment/D2 suite: 65 passed, two existing warnings, 42.83s.
+Four targeted valid-catalogue/root-selection/corruption tests passed, 0.83s.
+Dedicated SDK suite: 23 passed. Frontend: 76 passed, lint/typecheck/build passed.
+The first frontend invocation lacked python on PATH and failed three fixture
+processes (ENOENT); the complete rerun with repository .venv/bin on PATH passed.
+No source change was needed. Generated Next declaration path changes were restored
+only to their starting values; no unrelated work was discarded.
+
+Full Python result: 1,304 passed, one authenticated integration test deselected
+by canonical configuration, two existing deprecation warnings, 839.08s (13:59).
+Warnings concern Starlette TestClient/httpx and AnyIO BlockingPortal aliases.
+No mandatory local gate was skipped; remote deployment/browser verification is
+outside this local authorization.
+Ruff check and format check passed; whitespace check passed.
+
+The retained clean Python 3.12 serving environment has 16 distributions excluding
+pip, approximately 89.15 MB, with neuPrint/SciPy/PyArrow/pandas and development
+tools absent. A current isolated -I/-B process with minimal environment repeated
+health, exact provisioned readiness, five canonical full-payload SHA comparisons,
+invalid/missing-release failure and the frozen catalogue 409. Acquisition-enabled
+clean environment retained neuprint-python 0.6.3 and working imports; current
+startup/readiness/catalogue checks agree, and 45 offline acquisition tests passed.
+Both clean environments pass pip check. The current serving distribution list
+contains exactly 16 entries excluding pip, with the acquisition packages absent.
+No biological acquisition or private Blob request was performed.
+
+The previous installer-selection audit remains intact: provider-like uv --no-dev
+without extras installs only serving dependencies, despite optional entries in
+temporary lock metadata. No dependency constraints or setup instructions were
+changed in this gate. Actual cloud bundle reduction and independent Function
+initialization reliability remain unverified until a future authorized release.
+
+## Source package, science and security
+
+Pinned CLI deploy --dry --format=json executed against an isolated copy of the
+actual Git candidate, with only non-secret project-link identifiers. Result:
+457 files, 7,360,765 bytes, five ignored. Required backend/SDK manifests, lockfile,
+helper, entrypoints, configuration and all ten inventory-listed scientific
+authority documents are present. No local raw/derived data, runtime tree/archive,
+node_modules, virtual environment, build output, environment credential file or
+.vercel credentials are included. The ignored deployment report is intentionally
+not uploaded. Tracked Blender source remains unchanged; no asset cleanup.
+
+Changed-file and frontend static-output scans found no JWT/static-Blob-token or
+signed private URL patterns. No environment secret values were read or printed.
+No persistent Blob token, OIDC file, protection bypass or provider setting was
+created. Protection, Preview Blob connection and Production configuration remain
+untouched; this local gate does not claim fresh remote protection verification.
+No paid infrastructure or billing change. Scientific source/authority diff is
+empty, existing D2.2 pins and all five canonical payload hashes are unchanged.
+
+## Final status and next step
+
+Six intended files remain pending: README.md, pyproject.toml,
+tests/test_dependency_profiles.py, tests/test_vercel_runtime.py, vercel.json and
+this report. Nothing staged. Main and staging baseline SHAs remain unchanged.
+The root fix passes this local gate; the homepage catalogue remains a product
+blocker, so staging is not declared ready. Smallest next step is an explicit
+operator decision authorizing homepage integration with the existing verified
+five-scenario catalogue for this frozen release, before any controlled release.
+Keep the legacy experiment validator fail-closed. No such frontend correction
+or new release is implemented or authorized here.
+No commit, push, deployment, provider mutation or Phase 34 work is authorized.
+
+# D3R-DEPENDENCY-SPLIT — local serving/acquisition separation
+
+Date: 2026-10-08. Final decision: **D3R_DEPENDENCY_SPLIT_LOCAL_VERIFIED**. No commit,
+push, deployment, provider configuration change, biological download or new
+scientific release. All historical decisions below remain unchanged.
+
+## Baseline and demonstrated cause
+
+Starting d3r-preview local/remote HEAD is
+1e8489be8961ba5ed24c570a0fe56a0299665796; local/remote main remains
+521769960d0730f45faec35aa669f91f5fd48d8b. Only the existing 176-line report
+update was pending, nothing staged; that evidence is preserved below.
+
+The subsequent read-only runtime audit established eight retained backend 500s
+between 2026-10-08 15:43:52.447Z and 15:46:16.918Z. All contain runtime dependency
+installation failure, uv exit 1 and ENOSPC/os error 28 during SciPy or PyArrow
+wheel extraction. This occurs before app import, not scientific readiness.
+The cloud build logged a 499.05 MB bundle before dependency optimization;
+optimized backend output was about 48.05 MB plus deferred installation.
+At 16:04:15–16:04:23Z the same deployment again served valid health, exact
+provisioned readiness and catalogue. Historical successful five-product hashes
+remain evidence at the time tested, not continuous availability.
+
+## Actual dependency boundary and minimal change
+
+AST/import inspection finds neuPrint imports only in MaleCNS client/acquisition,
+column ingestion, raw morphology SWC conversion and live motor-contract queries.
+Pandas imports are in official annotation Feather ingestion/normalization.
+No direct SciPy/PyArrow serving imports exist; those enter via neuprint-python.
+Frozen provenance strings still retain neuprint-python 0.6.3 as acquisition
+provenance, not a requirement to contact neuPrint while serving stored science.
+
+Core before: fastapi>=0.115,<1; numpy>=2,<3; neuprint-python==0.6.3;
+uvicorn>=0.30,<1. Core after: same FastAPI/NumPy/Uvicorn constraints, with only
+neuprint-python==0.6.3 moved into PEP 621 optional extra acquisition. Project
+name/version, Python >=3.12,<3.13, package discovery, APIs and science unchanged.
+No repository Python lockfile exists. Neither Node lockfile changed. No unrelated
+version constraint was upgraded/downgraded; all common freshly resolved versions
+were identical in the before-equivalent acquisition and serving profiles.
+
+README development installation now selects .[dev,acquisition], preserving the
+full previous acquisition workflow. Serving uses the core package; acquisition
+can be installed explicitly via .[acquisition]. Documented preflight uses
+find_spec before importing neuprint and reports an actionable missing-extra
+message instead of mislabelling a missing package as biological corruption.
+The preflight was executed in both clean environments: serving exits 1 with the
+explicit install instruction; acquisition succeeds. Existing credential-safe
+acquisition client code and scientific errors were not modified.
+
+## Clean environments and measured closure
+
+Task environments are under /tmp/neurofly-dependency-split-jm284sef, not Git.
+Python 3.12.3, fresh venvs without system-site-packages; noneditable wheel installs.
+Fresh processes use -I/-B and a minimal environment without inherited PYTHONPATH,
+credentials or developer-installed packages. Core serving environment contains
+neither pytest/httpx nor acquisition packages. Installed pip metadata/direct_url
+confirms no editable project installation.
+
+| Profile | Distributions excluding pip | Package file bytes excluding pip |
+| --- | ---: | ---: |
+| Acquisition enabled, equivalent to former core closure | 31 | 479,432,179 |
+| Core serving only | 16 | 89,149,930 |
+
+Reduction: 15 distributions, 390,282,249 bytes (81.41%). Sizes include installed
+package files/bytecode; they are not a measured cloud Function zip size. The
+acquisition measurement preceded adding pytest/httpx solely for offline testing.
+Removed from serving: neuprint-python, scipy, pyarrow, pandas, networkx,
+requests, urllib3, certifi, charset-normalizer, python-dateutil, six, tqdm,
+ujson, asciitree, packaging. Serving still includes NumPy and the normal
+FastAPI/Pydantic/Starlette/Uvicorn dependency closure. pip check passes in both.
+
+Clean acquisition imports: neuprint Client/fetch_custom/skeleton_swc_to_df,
+exact neuprint-python 0.6.3. CLI help/entrypoints available. 20 MaleCNS/motor
+contract offline tests plus 21 columns/snapshot/morphology tests pass. No live
+neuPrint credential, network request to datasets or biological download.
+
+## Vercel installer contract and packaging
+
+Inspected installed @vercel/python: its uv sync uses --active --no-dev
+--link-mode hardlink --no-editable, without --extra or --all-extras. Its bundle
+sizing mirrors installed distributions rather than installing all optional lock
+entries. Reproduced with exact uv 0.10.11 in an isolated source copy and initially
+empty task cache: resolves 40 lock entries but installs only 16 distributions.
+Temporary lock contains acquisition/dev metadata; it is not a repository lock.
+Frozen --no-dev --no-build --no-install-project sync leaves 15 dependency
+distributions (project source supplied by the existing release), still no
+neuPrint/SciPy/PyArrow/pandas or development tools. Local graph selection passes.
+
+Measured staged release files: 118,805,866 bytes. Conservative local sum of core
+installed files, staged release, source upload and even build-only SDK node_modules
+is about 222.74 MB, below the inspected builder 225 MiB/235,929,600-byte threshold.
+This deliberately double-counts some project source and includes local bytecode;
+it is an estimate, not an actual cloud builder sizing result. Remote builder
+version, added runtime support and generated packaging may differ. No claim that
+remote ENOSPC is definitively fixed or that cloud externalization is disabled.
+A future authorized Preview must log actual full bundle size and demonstrate
+independent initializations without heavy runtime installation.
+
+Git-candidate source dry-run: 457 entries, 7,356,440 bytes, five ignored. Required
+metadata, README, new test, SDK helper/lock, Python provisioner, frontend and all
+ten manifest-listed authority documents present. No environment/auth file,
+node_modules, .next, build/dist output, egg-info, archive or extracted runtime.
+The existing .vercelignore allows pre-existing ignored egg-info in a direct CLI
+workspace upload. The actual workflow is Git deployment: an isolated copy of
+tracked plus intended untracked source proves that ignored metadata is excluded.
+Pre-existing generated installation metadata was preserved in its normal location;
+new pip build output was retained in task-owned /tmp. No ignore/routing/provider
+configuration was changed. Source dry-runs create no deployment.
+
+## Serving/startup/scientific regressions
+
+Two fresh independent core-only processes over the same D2 isolated layout pass
+health, exact inventory/manifest readiness, scenario catalogue and all five full
+payload fingerprints. A third process after the provider-like frozen uv sync
+passes the same checks. No request-time Blob or acquisition import. A meta-path
+guard rejects neuprint/scipy/pyarrow/pandas dynamic imports in regression tests.
+All science documents resolve inside the provisioned isolated release; no
+editable checkout data is substituted. D2's committed deterministic fixture
+helper supplied exact pinned test bytes; no deployment release was regenerated
+or uploaded. Existing byte/SHA/extraction verifier remains unchanged.
+
+Full canonical JSON hashes remain:
+
+- BASELINE_CONTROL: 75d1f2856f0d896589a8b1f62fb61016d701045b760e216b7cb5fa70daa30668
+- LOOMING_CIRCUIT_VALIDATION: c3387396dcffa6372287df1a7d4680bb7ba605df319af4cf10f140cfc3a4d223
+- LOOMING_WORLD_EXPERIMENT: d06ef32aaf054b981464948916e5687951b40f571be5286513dad8ae440f26df
+- HORIZONTAL_MOTION_NEURAL_VALIDATION: 52554962f3e9c85c6866b5e3ec56f8a12d24340db2236ec52c7809c6ece8d404
+- EXPLORATORY_COURSE_CONTROL: 7fddc1109495023d8f64744237796d5d8e86852abef80b6979f1994088d46806
+
+Invalid manifest or missing configured release: ready 503; invalid-runtime
+playback 503, no local fallback. Independent fresh-process restart results agree.
+Two new profile regression tests cover core/extra metadata, onboarding and
+fresh-process serving without acquisition imports. Existing relocated deployment
+test now also checks exact five hashes, catalogues and absence of acquisition.
+
+Important pre-existing catalogue limitation: v1 ExperimentArtifactStore treats
+namespaced scenario subdirectories as flat v1 artifacts. Frozen parent-root
+/api/v1/experiments therefore returns 409 artifact_integrity_failure, both before
+and after this split; the release bytes themselves pass D2 verification. The
+supported empty v1 catalogue fixture returns 200/count zero without acquisition.
+No fake catalogue or schema downgrade was introduced. Initial new tests assumed
+200 over the mixed frozen root and failed; that unsupported assumption was
+corrected transparently, preserving the actual fail-closed response. This
+separate adapter/layout issue was not repaired and remains a product limitation.
+
+## Current quality gates
+
+Focused profile/deployment/D2 suite: 63 passed, two existing deprecation warnings,
+41.67s. Additional metadata/fresh-process rerun: two passed, 0.85s. Node helper:
+23 passed. Clean acquisition offline tests: 20 plus 21 passed. Ruff check and
+format passed, 355 files. Frontend: 76 passed in 31.040s, lint/typecheck/build
+passed. Generated Next type imports restored to their baseline. Full Python:
+1,302 passed, one integration deselected, two existing deprecation warnings;
+842.05s (14:02). No mandatory current quality gate was skipped. No real-data
+integration test was deliberately enabled. Initial focused run: 61 passed and
+two new assertions failed because they assumed a successful v1 catalogue at the
+mixed frozen root; corrected as documented above, then all 63 passed. Initial
+Ruff checks reported long hash-literal lines and one formatting issue in new test
+code; corrected before the full gate. One additional catalogue comparison probe
+used a pytest fixture already pruned by normal retention and could not import
+tools; repeating with the current fixture confirms the same 409 in acquisition
+and serving installations. This is not an application startup defect.
+
+## Security, scope and remaining steps
+
+Changed only dependency metadata, acquisition setup, narrowly relevant tests and
+this report. Source science, data, authority docs, D2 logic, Blob SDK/helpers,
+Vercel configuration/routing and both Node lockfiles remain unchanged. Root
+.env files absent; no OIDC/static Blob token/signed private URL persisted. No
+provider mutation, billing change, new resource, staging, commit or push.
+The separately diagnosed frontend root rewrite remains pending. Current local
+verification does not establish a recovered online product: root routing, the
+mixed v1 catalogue limitation and remote initialization evidence remain separate.
+Any future correction/commit/push/Preview needs explicit authorization. No Phase 34.
+
+---
+
+# D3R-SDK-DEPLOY — post-deployment evidence (LOCAL ONLY, UNCOMMITTED)
+
+Date: 2026-10-08. Final decision: **BLOCKED**. The SDK correction successfully
+provisioned the frozen release remotely and all five canonical scientific products
+match, but the mandatory authenticated product root returns a Vercel NOT_FOUND
+404. This is not a scientific readiness failure: /ready is verified and true.
+No full staging or visual-smoke readiness pass is claimed. No repair/redeployment
+was attempted after this acceptance failure.
+
+## Authorized Git and deployment result
+
+Exactly one new commit, `1e8489be8961ba5ed24c570a0fe56a0299665796`, message
+`fix(deploy): retrieve pinned runtime via Blob SDK`, parent
+`0fac819d68d439fdac1dabd42bf3e7c321a4247f`, and exactly one successful non-force
+push to origin/d3r-preview. Reviewed/staged/committed exactly ten paths:
+
+- .gitignore
+- .vercelignore
+- vercel.json
+- tools/vercel_runtime_build.py
+- tests/test_vercel_runtime.py
+- docs/deployment_gate_d3_staging.md
+- tools/vercel_blob/package.json
+- tools/vercel_blob/package-lock.json
+- tools/vercel_blob/retrieve.mjs
+- tools/vercel_blob/retrieve.test.mjs
+
+Commit stat: 1,360 insertions, 23 deletions. Main remained unchanged locally and
+remotely at `521769960d0730f45faec35aa669f91f5fd48d8b`. Git-triggered deployment:
+
+- Project: neurofly / prj_W1e15xknFkEC4NYH0OT4JENgBN4i.
+- Deployment: dpl_4Tohmr2Kmbn4jZySar7S6Sts1TiH.
+- Protected URL: https://neurofly-7cjwdb4fd-hd-dev.vercel.app.
+- Source: git / a104174/NeuroFly / d3r-preview / exact new commit above.
+- Provider target: null (genuine Preview), terminal state READY.
+- Preview alias assigned automatically; no Production deployment or promotion.
+
+No manual deployment, second commit/push, main update, configuration mutation,
+Blob reconnection/object mutation, billing change or new resource was performed.
+This section was added after the push and intentionally remains uncommitted.
+
+## Current local gates and packaging
+
+Fresh full Python: 1,300 passed, one integration test deselected, two existing
+dependency deprecation warnings; 920.54s. Focused Python deployment/D2: 61 passed,
+two existing warnings; 55.41s. Node helper: 23 passed. Fresh isolated npm clean
+install with empty account environment: passed, then 23 helper tests passed.
+Ruff check and format: passed, 354 files. Frontend: 76 tests passed in 49.117s;
+lint, typecheck and production build passed. Diff whitespace checks passed.
+No mandatory local gate was skipped. Only generated Next import paths were
+restored to the pre-build baseline; no frontend source alteration was made.
+
+Source dry-run (no deployment creation): 464 entries, 7,372,701 bytes, 22 ignored.
+Helper, package, lock, Python integration, frontend and ten science documents
+included; no environment/auth files, node_modules, runtime archive/tree,
+raw/derived datasets or build outputs included. Exact dependency @vercel/blob
+2.8.0, dedicated build-only package, deterministic npm ci with lifecycle scripts
+disabled, package-relative ESM resolution. SDK signatures and Node >=20 contract
+reviewed. Project and deployment nodeVersion are 24.x; local Node is 24.11.1.
+The cloud log does not expose the exact running Node patch version.
+
+Scientific source/authority diff remains empty. Existing D2 file-scoped verifier
+checked all 74 manifest entries; source-relocated provisioning and five local
+playback contracts passed in the local suite. No science, equations, canonical
+payloads or release identities were changed.
+
+## Remote SDK, archive and runtime evidence
+
+Build logs show the exact backend npm ci command, 31 packages installed in
+760ms, then the unchanged Python provisioning path. The safe success marker is:
+
+`D3 RELEASE VERIFIED e0dd15da7a1dd27456f7c1d9ecebc5a6ec8f2b11e07c8e3065b047c22ad9c882 12c2f5c314a273c7ada36277cf0db6415e929ab3bdf4911a26f78d72943fbca5 3674299 bytes`
+
+The unchanged build code emits this only after SDK retrieval, Python byte/SHA
+validation, committed D2 verifier/safe extraction, manifest/inventory verification
+and isolated immutable application layout assembly succeed. This is code-linked
+remote evidence, not a claim that each internal operation had a separate log.
+Preview-only environment/OIDC/store guards passed. No static token, CLI account
+login or local scientific fallback was used. Retrieval is build-only; runtime
+imports the provisioned release and does not retrieve Blob per request.
+
+Build completed in /vercel/output [40s]; deployment completed. Cloud builder CLI
+reported 62.1.0, distinct from the local audit CLI 62.7.0; SDK retrieval no longer
+uses that CLI. Created-to-READY interval was approximately 57 seconds.
+
+Authenticated /health: HTTP 200, status ok, read_only true.
+Authenticated /ready: HTTP 200, mode provisioned, ready true, status VERIFIED,
+inventory cf85d5fb1b688857e0af44d7cfe934382cdc9e3588185c87a754f6fa5f24a98b,
+manifest e0dd15da7a1dd27456f7c1d9ecebc5a6ec8f2b11e07c8e3065b047c22ad9c882.
+Subsequent /ready returned the same exact response. Catalogue HTTP 200 and exact
+committed scenario definitions match.
+
+All five remote playback responses passed the actual TypeScript consumer parser,
+exact authority identity fields and complete canonical JSON SHA-256 comparison
+against freshly calculated local references (sorted keys, compact JSON):
+
+| Scenario | Frames | Full payload SHA-256 | Authority/hash result |
+| --- | ---: | --- | --- |
+| BASELINE_CONTROL | 15 | `75d1f2856f0d896589a8b1f62fb61016d701045b760e216b7cb5fa70daa30668` | Match |
+| LOOMING_CIRCUIT_VALIDATION | 15 | `c3387396dcffa6372287df1a7d4680bb7ba605df319af4cf10f140cfc3a4d223` | Match |
+| LOOMING_WORLD_EXPERIMENT | 401 | `d06ef32aaf054b981464948916e5687951b40f571be5286513dad8ae440f26df` | Match |
+| HORIZONTAL_MOTION_NEURAL_VALIDATION | 501 | `52554962f3e9c85c6866b5e3ec56f8a12d24340db2236ec52c7809c6ece8d404` | Match |
+| EXPLORATORY_COURSE_CONTROL | 501 | `7fddc1109495023d8f64744237796d5d8e86852abef80b6979f1994088d46806` | Match |
+
+Observed successful-check request times in seconds: health 6.788; ready 0.264;
+catalogue 0.223; baseline 20.056; looming neural 19.402; looming world 51.114;
+horizontal motion 0.640; exploratory course 2.286; subsequent ready 0.270.
+These are observations, not optimisation work or guaranteed latency.
+
+Two temporary verifier problems preceded the final successful scientific checks:
+an inbound Pydantic validator did not accept the outbound schema serialization
+alias, and a temporary .ts parser outside an ESM package could not start with
+top-level await. Corrected the temporary checker to the existing TypeScript
+consumer in a .mts entrypoint and tested it locally. These were checker defects,
+not deployed payload mismatches. No application/scientific fix was made.
+
+## Frontend blocker and stop
+
+Authenticated GET / returns HTTP 404, content-type text/plain, provider error
+code NOT_FOUND; it is not the FastAPI JSON Not Found response and is not an
+authentication rejection. Read-only follow-up GET /scenarios returns HTTP 200
+HTML. Provider metadata contains backend and frontend services. Therefore the
+frontend is partially available, but the product root requirement fails. The
+precise root-route packaging/rewrite cause is not established in this task.
+
+Browser, WebGL, mobile and five UI playback flows were not executed after this
+mandatory machine gate failed. A temporary browser driver was prepared under
+/tmp but was not run. No visual pass, no frontend flow pass and no complete
+staging pass is claimed. No further commit/push/deployment is authorized here.
+
+## Security, provider, cost and logs
+
+Independent final project read-back: hcruz / hd-dev / HC authority retained,
+Hobby, correct Git repository and Production Branch main, ssoProtection all,
+no observed protectionBypass. Only Preview BLOB_STORE_ID and
+BLOB_WEBHOOK_PUBLIC_KEY records; zero Production environment records. Existing
+neurofly-runtime store remains private and available. Final projectsMetadata read-back
+confirms exactly one connection to the expected project, environments [preview],
+BLOB prefix; usageQuotaExceeded false. No store connection change.
+
+Anonymous requests without a cookie/token to Preview /, /ready, catalogue and
+baseline playback all return HTTP 302 to Vercel sso-api. The historical Production
+URL neurofly-95mm68hhm-hd-dev.vercel.app also redirects to authentication. This
+establishes protection before access to the checked endpoints; the authenticated
+root 404 remains a separate product failure. No 404 was used as protection proof.
+No new protection bypass, public link, credential persistence or protection change.
+Authenticated verification used existing short-lived OIDC in process memory only;
+no token value was inspected, printed, decoded or written to a file/command argument.
+No env pull, local credential file or persistent Blob token was introduced.
+
+Build logs contain the successful D2 marker and no retrieval/package import failure.
+Sampled runtime logs before final playback contained eight serverless GET info
+records and no warning/error records; this is a sampled log review, not proof of
+absence of every possible runtime problem. The root 404 is an observed routing
+failure independently of those log samples. No raw SDK error/header/token output
+was printed or recorded. Source/staged/frontend-output secret-value scans passed.
+Runtime read_only response, successful canonical contracts and sealed build
+layout establish the retained read-only contract; no destructive write probe.
+
+No paid feature, plan upgrade, infrastructure activation or provider mutation.
+Scientific sources and all frozen identities remain unchanged. Historical D3
+SECURITY_BOUNDARY_FAILED, D3R BLOCKED and D3R-GIT BLOCKED remain below intact.
+The previous lost child stderr still means the CLI login defect was not proved
+to be the sole historical Preview failure.
+
+## Remaining operator action and next step
+
+No cleanup or rollback is required by the observed security evidence. Leave the
+protected Preview and private store in place. The smallest next step is a separate
+read-only investigation of native Services frontend root-route packaging and
+rewrites, reproducing the authenticated / NOT_FOUND versus /scenarios HTML split.
+Any correction and another commit/push/deployment require fresh authorization.
+Do not disable protection, alter Production or start Phase 34.
+
+---
+
 # D3R-SDK-DEPLOY — authorized single commit/push preflight
 
 Date: 2026-10-08. This continuation authorizes exactly one additional focused

@@ -3,7 +3,7 @@ import Link from "next/link";
 export function AppHeader() {
   return (
     <header className="app-header">
-      <Link className="brand" href="/" aria-label="NeuroFly experiments home">
+      <Link className="brand" href="/" aria-label="NeuroFly home">
         <span className="brand-mark" aria-hidden="true">
           NF
         </span>
@@ -13,7 +13,7 @@ export function AppHeader() {
         </span>
       </Link>
       <nav className="header-nav" aria-label="Primary navigation">
-        <Link href="/">Experiments</Link>
+        <Link href="/experiments">Experiments</Link>
         <Link href="/scenarios">Scenarios</Link>
         <Link href="/morphology">Morphology</Link>
         <span className="header-status" aria-label="Application status">

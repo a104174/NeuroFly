@@ -82,8 +82,31 @@ environment and install the project with its development tools:
 
 ```bash
 python -m venv .venv
-python -m pip install --editable ".[dev]"
+python -m pip install --editable ".[dev,acquisition]"
 ```
+
+For read-only serving of the frozen runtime, install only the core package with
+`python -m pip install .`. Core serving does not need neuPrint acquisition,
+SciPy, pandas or PyArrow. The `acquisition` extra retains the pinned
+`neuprint-python==0.6.3` and its dependencies for connectome ingestion and
+annotation analysis; `dev` supplies the test and quality tools.
+
+Before running MaleCNS acquisition from a serving-only environment, install and
+check the extra:
+
+```bash
+python -m pip install --editable ".[acquisition]"
+python - <<'PY'
+import importlib.util
+if importlib.util.find_spec("neuprint") is None:
+    raise SystemExit('Missing acquisition extra: install ".[acquisition]" in this environment.')
+import neuprint
+PY
+```
+
+If that check reports a missing acquisition extra, install it in the
+same environment. This is a missing optional dependency, not corrupt biological
+data. Acquisition still requires the separate neuPrint credentials described below.
 
 The canonical quality commands are:
 
@@ -379,7 +402,8 @@ NEUROFLY_CIRCUIT_CONTRACT_ROOT=data/derived/malecns/looming_giant_fiber_v1 \
 ```
 
 In another terminal, configure `NEUROFLY_API_BASE_URL` to that local API and
-run `npm run dev` from `web/`. Choose a real experiment in `/` and follow its
+run `npm run dev` from `web/`. Choose a real completed experiment in
+`/experiments` and follow its
 “Scientific cockpit” link, or open
 `/experiments/<experiment-artifact-id>/cockpit`. The route validates the
 experiment's circuit hashes against the pinned six-body structure and never
@@ -388,6 +412,12 @@ unavailable states if their local roots are missing; existing playback still
 works. No generated scientific data should be committed for this view.
 
 ## Read-only browser foundation (Phase 5A)
+
+The current HomePage (`/`) explores the verified canonical scenario catalogue,
+using the same cards and playback routes as `/scenarios`. Historical completed
+Phase 3B runs remain available at `/experiments` when a compatible flat artifact
+root is configured. An incompatible root still reports its integrity error;
+canonical scenarios are not substituted for completed experiment artifacts.
 
 The `web/` application is a small Next.js App Router slice. It consumes the
 real Phase 4B API with a typed, runtime-checked client, lists completed

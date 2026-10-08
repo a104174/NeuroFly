@@ -1,6 +1,7 @@
 """D3 build authentication, pinned provisioning, and runtime wiring."""
 
 import json
+import os
 import shutil
 import subprocess
 import sys
@@ -219,8 +220,16 @@ def test_pinned_build_and_runtime_readiness(monkeypatch, build_root, tmp_path):
         ignore=shutil.ignore_patterns("__pycache__", "node_modules"),
     )
     script = """
+import hashlib
+import importlib.abc
+import json
 import sys
 from pathlib import Path
+class RejectAcquisition(importlib.abc.MetaPathFinder):
+    def find_spec(self, fullname, path=None, target=None):
+        if fullname.split('.')[0] in {'neuprint', 'scipy', 'pyarrow', 'pandas'}:
+            raise AssertionError('serving attempted acquisition import')
+sys.meta_path.insert(0, RejectAcquisition())
 sys.path.insert(0, str(Path.cwd()))
 from tools.vercel_runtime_entrypoint import application
 assert 'neurofly' not in sys.modules
@@ -240,12 +249,34 @@ yaw.load_preregistration()
 course.load_preregistration()
 from fastapi.testclient import TestClient
 with TestClient(app) as client:
+    assert client.get('/health').json()['read_only'] is True
     assert client.get('/ready').status_code == 200
+    assert len(client.get('/api/v1/scenarios').json()) == 5
+    # Existing v1 discovery treats namespaced scenario directories as v1 runs.
+    # Dependency selection must preserve that explicit failure, not fake a list.
+    experiments = client.get('/api/v1/experiments')
+    assert experiments.status_code == 409
+    assert experiments.json()['code'] == 'artifact_integrity_failure'
+    hashes = {
+        'BASELINE_CONTROL':
+            '75d1f2856f0d896589a8b1f62fb61016d701045b760e216b7cb5fa70daa30668',
+        'LOOMING_CIRCUIT_VALIDATION':
+            'c3387396dcffa6372287df1a7d4680bb7ba605df319af4cf10f140cfc3a4d223',
+        'LOOMING_WORLD_EXPERIMENT':
+            'd06ef32aaf054b981464948916e5687951b40f571be5286513dad8ae440f26df',
+        'HORIZONTAL_MOTION_NEURAL_VALIDATION':
+            '52554962f3e9c85c6866b5e3ec56f8a12d24340db2236ec52c7809c6ece8d404',
+        'EXPLORATORY_COURSE_CONTROL':
+            '7fddc1109495023d8f64744237796d5d8e86852abef80b6979f1994088d46806',
+    }
     for scenario in ['BASELINE_CONTROL', 'LOOMING_CIRCUIT_VALIDATION',
                      'LOOMING_WORLD_EXPERIMENT', 'HORIZONTAL_MOTION_NEURAL_VALIDATION',
                      'EXPLORATORY_COURSE_CONTROL']:
         response = client.get('/api/v1/scenarios/' + scenario + '/playback')
         assert response.status_code == 200
+        canonical = json.dumps(response.json(), sort_keys=True,
+                               separators=(',', ':'), allow_nan=False).encode()
+        assert hashlib.sha256(canonical).hexdigest() == hashes[scenario]
 """
     result = subprocess.run(
         [sys.executable, "-I", "-B", "-c", script],
@@ -319,6 +350,7 @@ def test_services_route_api_before_frontend_and_bind_remote_backend():
         "backend",
         "backend",
         "frontend",
+        "frontend",
     ]
     assert routes[2]["source"] == "/api/v1/:path*"
     assert config["services"]["frontend"]["bindings"] == [
@@ -329,3 +361,115 @@ def test_services_route_api_before_frontend_and_bind_remote_backend():
             "env": "NEUROFLY_API_BASE_URL",
         }
     ]
+
+
+def test_pinned_compiler_root_and_service_precedence():
+    """Use installed CLI 62.7.0 routing-utils, with no network or deployment.
+
+    CI can supply NEUROFLY_VERCEL_ROUTING_MODULE instead of an npm cache.
+    This small bundle adapter is confined to the compiler regression gate.
+    """
+    explicit = os.environ.get("NEUROFLY_VERCEL_ROUTING_MODULE")
+    modules = [Path(explicit)] if explicit else []
+    if not explicit:
+        cache = Path(os.environ.get("NPM_CONFIG_CACHE", Path.home() / ".npm"))
+        for package in sorted((cache / "_npx").glob("*/node_modules/vercel")):
+            if (
+                json.loads((package / "package.json").read_text())["version"]
+                != "62.7.0"
+            ):
+                continue
+            modules.extend(
+                path
+                for path in sorted((package / "dist/chunks").glob("*.js"))
+                if "getTransformedRoutes" in path.read_text()
+                and "require_dist" in path.read_text()
+            )
+    assert modules, "Compiler gate requires installed Vercel 62.7.0 routing-utils"
+    script = """
+import fs from 'node:fs';
+import {pathToFileURL} from 'node:url';
+let compiler;
+for (const file of JSON.parse(process.argv[1])) {
+    const module = await import(pathToFileURL(file));
+    if (typeof module.require_dist !== 'function') continue;
+    const api = module.require_dist();
+    if (typeof api.getTransformedRoutes === 'function') {compiler = api; break;}
+}
+if (!compiler) throw new Error('Pinned routing-utils export not found');
+const config = JSON.parse(fs.readFileSync(process.argv[2], 'utf8'));
+const old = {...config, rewrites: config.rewrites.filter(row => row.source !== '/')};
+function select(config, path) {
+    const {routes, error} = compiler.getTransformedRoutes(config);
+    if (error) throw new Error('Routing configuration rejected');
+    return routes.find(row => row.src && new RegExp(row.src).test(path)
+        && row.destination?.service)?.destination.service ?? null;
+}
+console.log(JSON.stringify(JSON.parse(process.argv[3]).map(path =>
+    ({path, previous: select(old, path), current: select(config, path)}))));
+"""
+    frontend = [
+        "/scenarios",
+        "/scenarios/BASELINE_CONTROL",
+        "/experiments",
+        "/experiments/" + "a" * 64 + "/cockpit",
+        "/morphology/example",
+        "/_next/static/chunks/example.js",
+        "/api/unknown",
+    ]
+    backend = [
+        "/health",
+        "/ready",
+        "/api/v1/scenarios",
+        "/api/v1/experiments",
+        "/api/v1/unknown",
+        *[
+            f"/api/v1/scenarios/{name}/playback"
+            for name in (
+                "BASELINE_CONTROL",
+                "LOOMING_CIRCUIT_VALIDATION",
+                "LOOMING_WORLD_EXPERIMENT",
+                "HORIZONTAL_MOTION_NEURAL_VALIDATION",
+                "EXPLORATORY_COURSE_CONTROL",
+            )
+        ],
+    ]
+    result = subprocess.run(
+        [
+            "node",
+            "--input-type=module",
+            "-e",
+            script,
+            json.dumps([str(path) for path in modules]),
+            str(ROOT / "vercel.json"),
+            json.dumps(["/", *frontend, *backend]),
+        ],
+        capture_output=True,
+        text=True,
+        check=True,
+        timeout=30,
+    )
+    rows = json.loads(result.stdout)
+    assert rows[0] == {"path": "/", "previous": None, "current": "frontend"}
+    for row in rows[1:]:
+        expected = "backend" if row["path"] in backend else "frontend"
+        assert row["current"] == row["previous"] == expected
+    routes = json.loads((ROOT / "vercel.json").read_text())["rewrites"]
+    assert [row["source"] for row in routes] == [
+        "/health",
+        "/ready",
+        "/api/v1/:path*",
+        "/",
+        "/:path*",
+    ]
+
+
+def test_unknown_scientific_api_does_not_become_frontend_success(tmp_path):
+    from neurofly.http_api import create_app
+
+    with TestClient(create_app(tmp_path)) as client:
+        response = client.get("/api/v1/unknown")
+        assert response.status_code == 404
+        assert response.headers["content-type"] == "application/json"
+    # Other /api paths remain Next-owned; no frontend API fallback exists.
+    assert not list((ROOT / "web/src/app").glob("api/**/route.*"))

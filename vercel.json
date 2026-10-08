@@ -1,0 +1,38 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "git": {
+    "deploymentEnabled": { "**": false, "d3r-preview": true }
+  },
+  "services": {
+    "backend": {
+      "root": ".",
+      "framework": "fastapi",
+      "entrypoint": "app:app",
+      "buildCommand": "python tools/vercel_runtime_build.py",
+      "functions": {
+        "app.py": {
+          "includeFiles": ".neurofly-release/**",
+          "maxDuration": 300
+        }
+      }
+    },
+    "frontend": {
+      "root": "web",
+      "framework": "nextjs",
+      "bindings": [
+        {
+          "type": "service",
+          "service": "backend",
+          "format": "url",
+          "env": "NEUROFLY_API_BASE_URL"
+        }
+      ]
+    }
+  },
+  "rewrites": [
+    { "source": "/health", "destination": { "service": "backend" } },
+    { "source": "/ready", "destination": { "service": "backend" } },
+    { "source": "/api/v1/:path*", "destination": { "service": "backend" } },
+    { "source": "/:path*", "destination": { "service": "frontend" } }
+  ]
+}

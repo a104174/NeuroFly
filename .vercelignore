@@ -1,0 +1,14 @@
+.git
+.venv
+.env*
+.pytest_cache
+.ruff_cache
+**/__pycache__
+data/derived
+data/raw
+.neurofly-release
+web/node_modules
+web/.next
+web/.env*
+web/tsconfig.tsbuildinfo
+docs/deployment_gate_d3_staging.md

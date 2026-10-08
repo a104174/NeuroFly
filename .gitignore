@@ -1,6 +1,8 @@
 
 # Local Python environment and secrets
 .venv/
+.vercel/
+.neurofly-release/
 .env
 
 # Python caches and local tooling state
@@ -38,3 +40,4 @@ web/.env.production.local
 *.blend1
 *.blend2
 *.blend@
+.env*

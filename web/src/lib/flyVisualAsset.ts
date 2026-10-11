@@ -1,3 +1,4 @@
+import { parseVisualV2, VISUAL_SCHEMA_V2, type FlyVisualAssetManifestV2 } from "./flyVisualAssetV2";
 import manifestJson from "@/assets/fly_visual_v1.json";
 
 export const FLY_VISUAL_ASSET_SCHEMA =
@@ -7,7 +8,9 @@ export const FLY_VISUAL_ASSET_VERSION = 1 as const;
 
 export type FlyAssetLoadStatus = "loading" | "ready" | "error";
 
-export interface FlyVisualAssetManifest {
+export type FlyVisualAssetManifest = FlyVisualAssetManifestV1 | FlyVisualAssetManifestV2;
+
+export interface FlyVisualAssetManifestV1 {
   schema: typeof FLY_VISUAL_ASSET_SCHEMA;
   asset_id: typeof FLY_VISUAL_ASSET_ID;
   asset_version: typeof FLY_VISUAL_ASSET_VERSION;
@@ -64,6 +67,7 @@ export function parseFlyVisualAssetManifest(
     throw new Error("Fly visual asset manifest must be an object.");
   }
   const manifest = value as Record<string, unknown>;
+  if (manifest.schema === VISUAL_SCHEMA_V2) return parseVisualV2(value);
   if (
     manifest.schema !== FLY_VISUAL_ASSET_SCHEMA ||
     manifest.asset_id !== FLY_VISUAL_ASSET_ID ||
@@ -129,10 +133,10 @@ export function parseFlyVisualAssetManifest(
   return value as FlyVisualAssetManifest;
 }
 
-export function flyAssetStatusMessage(status: FlyAssetLoadStatus): string {
+export function flyAssetStatusMessage(status: FlyAssetLoadStatus, manifest: FlyVisualAssetManifest = FLY_VISUAL_ASSET): string {
   if (status === "loading") return "Loading 3D asset…";
   if (status === "error") return "Fly asset unavailable · procedural fallback";
-  return `${FLY_VISUAL_ASSET_ID} · presentation only`;
+  return `${manifest.asset_id} · presentation only`;
 }
 
 export function flyVisualAssetProvenance(

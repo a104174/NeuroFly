@@ -175,8 +175,10 @@ test("one current object, no opaque history spheres, no fake retinal geometry", 
 });
 test("scenario-only material clone preserves historical asset and avoids idle motion", () => {
   const asset = readFileSync(new URL("../src/components/ScenarioFlyVisual.tsx",import.meta.url),"utf8");
-  assert.match(asset,/gltf.scene.clone\(true\)/);
-  assert.match(asset,/opacity: 0.22/);
+  assert.match(asset,/prepareFlyVisual\(gltf.scene, FLY_VISUAL_ASSET, "scenario"/);
+  const instance = readFileSync(new URL("../src/lib/flyVisualInstance.ts",import.meta.url),"utf8");
+  assert.match(instance,/source.clone\(true\)/);
+  assert.match(instance,/opacity: 0.22/);
   assert.doesNotMatch(asset,/useFrame|rotation\.set|position\.add|random|sin\(/);
   const ui = readFileSync(new URL("../src/components/ScenarioCockpit.tsx",import.meta.url),"utf8");
   assert.match(ui,/<ScenarioExplanation result=\{result\} frame=\{result.frames\[frame.step\]\}/);

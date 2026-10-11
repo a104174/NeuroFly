@@ -5,9 +5,11 @@ import {
   Component,
   Suspense,
   useEffect,
+  useMemo,
   type ErrorInfo,
   type ReactNode,
 } from "react";
+import { flyPresentationFit, prepareFlyVisual } from "@/lib/flyVisualInstance";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 
 import {
@@ -84,14 +86,16 @@ function LoadedFlyVisualAsset({
 }) {
   const gltf = useLoader(GLTFLoader, FLY_VISUAL_ASSET.runtime.public_url);
   useEffect(() => onStatusChange("ready"), [onStatusChange]);
-  const transform = FLY_VISUAL_ASSET.canonical_transform;
+  const prepared = useMemo(() => prepareFlyVisual(gltf.scene, FLY_VISUAL_ASSET, "historical", gltf.animations.length, gltf.parser), [gltf.scene, gltf.animations.length, gltf.parser]);
+  useEffect(() => { prepared.activate(); return () => prepared.dispose(); }, [prepared]);
+  const transform = flyPresentationFit(FLY_VISUAL_ASSET, "historical");
   return (
     <group
-      position={transform.scene_position}
-      rotation={transform.scene_rotation_euler_rad}
-      scale={transform.scene_uniform_scale}
+      position={transform.position}
+      rotation={transform.rotation}
+      scale={transform.scale}
     >
-      <primitive object={gltf.scene} />
+      <primitive object={prepared.scene} />
     </group>
   );
 }

@@ -1,4 +1,4 @@
-import { DoubleSide, Material, Mesh, MeshPhysicalMaterial, MeshStandardMaterial, Object3D, SRGBColorSpace, NoColorSpace, Box3 } from "three";
+import { DoubleSide, Material, Mesh, MeshPhysicalMaterial, MeshStandardMaterial, Object3D, SRGBColorSpace, NoColorSpace, Box3, Vector3, Matrix4, Quaternion, Euler } from "three";
 import type { FlyVisualAssetManifest } from "./flyVisualAsset";
 import { cloneVisualNodeIdentity, visualNodeIdentity, type VisualNodeParser } from "./flyVisualNodeIdentity";
 import { STATIC_ANATOMY, VISUAL_SCHEMA_V2 } from "./flyVisualAssetV2";
@@ -11,6 +11,19 @@ export function flyPresentationFit(manifest: FlyVisualAssetManifest, profile: Fl
   }
   const t = manifest.canonical_transform;
   return { position: t.scene_position, rotation: t.scene_rotation_euler_rad, scale: t.scene_uniform_scale };
+}
+
+/** Anchor is a camera/presentation target, never an implicit mesh translation.
+ * Runtime asset point -> uniform scale -> Euler rotation -> scene translation.
+ */
+export function flyPresentationAnchor(manifest: FlyVisualAssetManifest, profile: FlyPresentationProfile): [number, number, number] {
+  const fit = flyPresentationFit(manifest, profile);
+  const point = manifest.schema === VISUAL_SCHEMA_V2 && manifest.canonical_transform.origin === "model origin"
+    ? manifest.canonical_transform.visual_anchor.position : [0, 0, 0];
+  return new Vector3(...point).applyMatrix4(new Matrix4().compose(
+    new Vector3(...fit.position), new Quaternion().setFromEuler(new Euler(...fit.rotation)),
+    new Vector3(fit.scale, fit.scale, fit.scale),
+  )).toArray();
 }
 
 /** A named placeholder or degenerate triangle is not anatomical surface geometry. */
@@ -66,6 +79,16 @@ export function prepareFlyVisual(source: Object3D, manifest: FlyVisualAssetManif
     const bounds = new Box3().setFromObject(source);
     for (const [actual, expected] of [[bounds.min.toArray(), manifest.bounds.min], [bounds.max.toArray(), manifest.bounds.max]]) {
       if (actual.some((v,i) => !Number.isFinite(v) || Math.abs(v - expected[i]) > 1e-5)) throw new Error("Asset geometry bounds do not match metadata.");
+    }
+    if (manifest.canonical_transform.origin === "model origin") {
+      const anchor = manifest.canonical_transform.visual_anchor;
+      const helper = identities.get(anchor.node);
+      if (!helper || helper === root || !root.getObjectById(helper.id)) throw new Error("Visual anchor helper missing or outside root.");
+      let hasMesh = false; helper.traverse(n => { if (n instanceof Mesh) hasMesh = true; });
+      if (hasMesh) throw new Error("Visual anchor must be a transform helper, not anatomical geometry.");
+      source.updateMatrixWorld(true);
+      const actual = helper.getWorldPosition(new Vector3()).toArray();
+      if (actual.some((v, i) => !Number.isFinite(v) || Math.abs(v - anchor.position[i]) > 1e-6)) throw new Error("Visual anchor transform does not match metadata.");
     }
     const roles = manifest.materials.roles;
     const allowed = [...roles.body, ...roles.eyes, ...roles.wings];

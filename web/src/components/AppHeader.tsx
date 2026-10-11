@@ -16,6 +16,7 @@ export function AppHeader() {
         <Link href="/experiments">Experiments</Link>
         <Link href="/scenarios">Scenarios</Link>
         <Link href="/morphology">Morphology</Link>
+        <Link href="/visual-lab/fly">Visual Lab</Link>
         <span className="header-status" aria-label="Application status">
           <span className="status-dot" aria-hidden="true" />
           <span>READ ONLY</span>

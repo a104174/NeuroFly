@@ -5,11 +5,18 @@ export const REQUIRED_ANATOMY = ["Head", "Thorax", "Abdomen", "Eye.L", "Eye.R", 
 export type StaticBodyAnatomy = { body_topology: "separated" } | { body_topology: "combined"; body_node: string; limitation: string };
 export const STATIC_ANATOMY = REQUIRED_ANATOMY.filter(name => name !== "Thorax" && name !== "Abdomen");
 export type TextureRole = "base_color" | "emissive" | "normal" | "metallic_roughness" | "occlusion";
+type VisualTransformBase = Omit<FlyVisualAssetManifestV1["canonical_transform"], "origin"> & { source_up_axis: "+Z"; source_forward_axis: "-Y" };
+export type VisualTransformV2 = VisualTransformBase & (
+  | { origin: "thorax center"; origin_description?: never; visual_anchor?: never }
+  | { origin: "model origin"; origin_description: string; visual_anchor: {
+      coordinate_space: "runtime asset"; position: [number, number, number]; node: string; rationale: string;
+    } }
+);
 export interface FlyVisualAssetManifestV2 extends Omit<FlyVisualAssetManifestV1, "schema" | "asset_id" | "asset_version" | "measured"> {
   schema: typeof VISUAL_SCHEMA_V2;
   asset_id: string;
   asset_version: 2;
-  canonical_transform: FlyVisualAssetManifestV1["canonical_transform"] & { source_up_axis: "+Z"; source_forward_axis: "-Y" };
+  canonical_transform: VisualTransformV2;
   specimen: { species: "Drosophila melanogaster"; sex: "male" | "female" | "unspecified"; reference_basis: string };
   bounds: { min: [number, number, number]; max: [number, number, number] };
   anatomy?: StaticBodyAnatomy;
@@ -40,7 +47,14 @@ export function parseVisualV2(value: unknown): FlyVisualAssetManifestV2 {
   requireValue(m.schema === VISUAL_SCHEMA_V2 && m.asset_version === 2 && text(m.asset_id) && m.role === "NEUROFLY_VISUAL_ASSET", "Unsupported v2 visual identity.");
   const r = object(m.runtime), t = object(m.canonical_transform), s = object(m.specimen), b = object(m.bounds);
   requireValue(typeof r.public_url === "string" && /^\/assets\/fly\/[a-zA-Z0-9_-]+\.glb$/.test(r.public_url) && r.glb_path === "web/public" + r.public_url && hash(r.sha256), "Invalid v2 visual runtime reference.");
-  requireValue(t.source_up_axis === "+Z" && t.source_forward_axis === "-Y" && t.runtime_up_axis === "+Y" && t.runtime_forward_axis === "+Z" && t.runtime_left_axis === "-X" && t.origin === "thorax center" && t.normalized_scale === "runtime long-axis (+Z) extent is 1.0 asset unit" && triplet(t.scene_position) && triplet(t.scene_rotation_euler_rad) && typeof t.scene_uniform_scale === "number" && Number.isFinite(t.scene_uniform_scale) && t.scene_uniform_scale > 0, "Invalid v2 axes, origin or presentation fitting.");
+  requireValue(t.source_up_axis === "+Z" && t.source_forward_axis === "-Y" && t.runtime_up_axis === "+Y" && t.runtime_forward_axis === "+Z" && t.runtime_left_axis === "-X" && t.normalized_scale === "runtime long-axis (+Z) extent is 1.0 asset unit" && triplet(t.scene_position) && triplet(t.scene_rotation_euler_rad) && typeof t.scene_uniform_scale === "number" && Number.isFinite(t.scene_uniform_scale) && t.scene_uniform_scale > 0, "Invalid v2 axes, origin or presentation fitting.");
+  if (t.origin === "thorax center") {
+    requireValue(t.visual_anchor === undefined && t.origin_description === undefined, "Contradictory thorax origin/anchor declaration.");
+  } else {
+    requireValue(t.origin === "model origin" && text(t.origin_description), "Explicit model origin description required.");
+    const anchor = object(t.visual_anchor);
+    requireValue(Object.keys(anchor).every(k => ["coordinate_space", "position", "node", "rationale"].includes(k)) && anchor.coordinate_space === "runtime asset" && triplet(anchor.position) && text(anchor.node) && text(anchor.rationale), "Invalid visual anchor coordinates or reference.");
+  }
   requireValue(s.species === "Drosophila melanogaster" && ["male", "female", "unspecified"].includes(String(s.sex)) && text(s.reference_basis), "Invalid visual specimen designation.");
   requireValue(triplet(b.min) && triplet(b.max) && b.max.every((n, i) => n > (b.min as number[])[i]) && Math.abs(b.max[2] - b.min[2] - 1) < 1e-6, "Invalid normalized visual bounds.");
   const n = object(m.nodes);
@@ -59,6 +73,11 @@ export function parseVisualV2(value: unknown): FlyVisualAssetManifestV2 {
     }
   }
   requireValue(requiredAnatomy.every(k => required.includes(k)) && !required.includes(root) && !optional.some(k => required.includes(k) || k === root), "Invalid required/optional anatomical nodes.");
+  if (t.origin === "model origin") {
+    const anchor = object(t.visual_anchor);
+    requireValue(optional.includes(String(anchor.node)) && !required.includes(String(anchor.node)) && anchor.node !== root, "Visual anchor must be a distinct optional helper identity.");
+    requireValue((anchor.position as number[]).every((v, i) => v >= (b.min as number[])[i] && v <= (b.max as number[])[i]), "Visual anchor lies outside asset bounds.");
+  }
   const c = object(m.capabilities), count = object(m.measured), scientific = object(m.scientific_status), exp = object(m.export);
   requireValue(c.static === true && c.skeletal_animation === false && c.morph_animation === false && count.animation_count === 0 && count.camera_count === 0 && count.light_count === 0, "Only static visual assets are supported.");
   requireValue([count.triangle_count, count.material_count, count.texture_image_count].every(v => Number.isInteger(v) && Number(v) >= 0) && Number(count.triangle_count) > 0 && Number(count.material_count) > 0, "Invalid visual asset counts.");

@@ -268,8 +268,8 @@ shadow policy and both legacy fitting profiles are unchanged.
 Combined geometry does not validate a pivot. A visually selected thorax anchor can
 be established on a combined mesh without physically separating it, but must be
 supported by inspection and recorded independently of replay pose. No new anchor,
-pivot offset or fitting value was selected in V2-D. The current contract continues
-to require its declared thorax-centred origin; the V2-C joined-body AABB midpoint
+pivot offset or fitting value was selected in V2-D. At the V2-D checkpoint the contract required
+a declared thorax-centred origin; the V2-C joined-body AABB midpoint
 is provisional and cannot honestly satisfy that declaration yet. Final asset
 acceptance remains blocked until its anchor is reviewed. Do not label that pivot a
 measured biological centre of mass or change scientific pose to compensate.
@@ -340,3 +340,76 @@ scientific authority files were included, and environments, caches, credentials
 and external source archives were excluded. Credential-pattern scans found no
 new hits; the existing synthetic SDK error fixture remained unchanged. The
 historical deployment report, source ZIP and V2-C checkpoint were preserved.
+
+## V2-G: preserved model origin and explicit visual anchor
+
+Existing v2 manifests with `canonical_transform.origin: "thorax center"` retain
+exactly their previous semantics and fitting. They cannot also declare a separate
+anchor. V1 and the default scientific scene asset remain unchanged.
+
+The additive variant uses `origin: "model origin"`, a nonempty
+`origin_description`, and `visual_anchor` containing `coordinate_space:
+"runtime asset"`, a finite position triplet, an original-source `node` identity,
+and a nonempty artistic `rationale`. The node must be an optional helper, distinct
+from root and anatomical identities. It must exist inside the root, contain no
+mesh, and its actual asset-space world position must match metadata within 1e-6.
+Coordinates must be inside declared bounds. Missing, conflicting, non-finite or
+unknown-space declarations fail closed. Root identity and static-only checks remain.
+
+The anchor is a viewing reference, not biological data or a thorax mesh. Asset
+geometry is not translated. Its presentation target is computed once as
+`scene_position + EulerXYZ(scene_rotation) * (scene_uniform_scale * anchor)`.
+Camera targeting uses this result; fitting still applies only the existing scale,
+rotation and translation to the instance. No implicit anchor subtraction occurs.
+This keeps recorded scientific pose, display fitting and asset coordinates separate.
+
+The opt-in `/visual-lab/fly` route uses the byte-identical approved V2-F GLB and
+`web/src/assets/fly_visual_v2f.json`. Runtime SHA-256 is checked before parsing;
+actual source-node associations and `prepareFlyVisual` validate anatomy, bounds,
+static geometry, PBR maps/UV/color spaces and instance ownership. Cached geometry
+and textures remain shared read-only, materials are cloned per mounted instance.
+No procedural fallback is used. The app's existing v1 scene selection is unchanged.
+
+The preserved model origin is the joined-body bounding-box midpoint. The anchor
+is runtime `[0, 0.06168119236826897, 0.12187743186950684]`; Blender conversion
+`(x,y,z) -> (x,z,-y)` gives Blender `[0,-0.12187743186950684,0.06168119236826897]`.
+It is an artist-selected visual pivot, not a measured centre of mass.
+
+Viewer cameras orbit this anchor, disable pan, and reset both position and target.
+Responsive framing fits projected asset bounds into both horizontal and
+vertical fields of view, retaining the anchor as target. The fly is static. Optional FPS is a one-second frame-rate
+sample; draw calls/triangles and geometry/texture counts come from renderer counters,
+not scientific telemetry or GPU memory measurement. No mobile certification is implied.
+
+Source: *Wildtype Male Drosophila Melanogaster*, mlykouretzos, CC BY 4.0,
+https://sketchfab.com/3d-models/wildtype-male-drosophila-melanogaster-0affd20207ca4c889bd7e1e513e04dfa .
+Modified for NeuroFly: selective optimization, restored original eyes, source-derived
+colors and wing textures, localized UVs, artistic PBR maps and visual anchor.
+The runtime asset is a third-party visualization, not MaleCNS-derived morphology.
+Prior source checkpoints remain external. The viewer is not an experiment.
+
+### Local V2-G verification
+
+Frontend: `PATH="<repository>/.venv/bin:$PATH" npm test` (112 passed),
+`npm run lint`, `npm run typecheck`, `npm run build`, and `git diff --check`.
+`python3 tools/blender/verify_fly_visual.py` confirms the original v1 SHA-256
+`bc49dc056a9fee62779de38367e2f868eccdc4356f88412b72401cc149e0c49e`.
+The approved v2 runtime SHA-256 is
+`0502cb995d25b2f9d7b57eff0cf95a0c9cfd7f838e212e95b3895bb69c7e5238`.
+
+Chromium 134 headless / SwiftShader inspected the actual production-built local
+route at desktop 1440x1080 and narrow 390x844. Overview, lateral, frontal, dorsal,
+zoomed eyes, orbit/zoom and reset screenshots were reviewed. Camera reset restores
+identical measured position/target; the narrow layout has no horizontal overflow.
+HTTP 404, corrupted-byte checksum and WebGL-disabled cases display explicit errors.
+No normal-load React, WebGL or texture errors; a pre-existing favicon.ico 404 remains.
+Measured renderer counters: 284 draw calls, 46,440 rendered triangles, 282 geometries,
+7 renderer textures including studio resources. Asset geometry remains 41,440 triangles
+and five embedded images. Sampled software-rendered FPS is approximately 17–25,
+not hardware GPU or mobile performance certification. Transparent layered wings
+may still sort imperfectly at untested angles; no destructive material correction
+was applied. Human visual approval and hardware profiling remain separate gates.
+
+No backend, replay, scientific payload, v1 asset, provider or source Blender changes.
+No commits, pushes or deployments were performed. Browser evidence and reproducible
+Playwright scripts remain outside Git under the external assets work/v2g/browser folder.

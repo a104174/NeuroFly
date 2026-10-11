@@ -277,3 +277,31 @@ test("clone mapping rejects altered hierarchy, foreign objects and aliased ident
   const eye = s.root.getObjectByName("Eye.L")!;
   assert.throws(() => cloneVisualNodeIdentity(s.source, s.source.clone(true), new Map([["Eye.L", eye], ["Eye.R", eye]])), /ambiguous/);
 });
+
+test("explicit model origin requires a finite, distinct visual anchor; legacy origin stays valid", () => {
+  const m = metadata();
+  const transform = { ...m.canonical_transform, origin: "model origin", origin_description: "Preserved authoring frame", visual_anchor: { coordinate_space: "runtime asset", position: [0, .1, .2], node: "VisualAnchor", rationale: "Artist-selected viewing pivot" } };
+  const anchored = { ...m, canonical_transform: transform, nodes: { ...m.nodes, optional: ["VisualAnchor"] } };
+  assert.equal(parseFlyVisualAssetManifest(anchored).asset_version, 2);
+  assert.equal(parseFlyVisualAssetManifest(m).asset_version, 2);
+  for (const t of [
+    { ...transform, origin: "thorax center" }, { ...transform, origin: "other" },
+    { ...transform, origin_description: "" }, { ...transform, visual_anchor: undefined },
+    { ...transform, visual_anchor: { ...transform.visual_anchor, position: [NaN, 0, 0] } },
+    { ...transform, visual_anchor: { ...transform.visual_anchor, position: [0, Infinity, 0] } },
+    { ...transform, visual_anchor: { ...transform.visual_anchor, position: [0, 0] } },
+    { ...transform, visual_anchor: { ...transform.visual_anchor, position: [0, 0, 2] } },
+    { ...transform, visual_anchor: { ...transform.visual_anchor, coordinate_space: "Blender" } },
+    { ...transform, visual_anchor: { ...transform.visual_anchor, node: "Head" } },
+  ]) assert.throws(() => parseFlyVisualAssetManifest({ ...anchored, canonical_transform: t }));
+  const s = scene(); const helper = new Group(); helper.name = "VisualAnchor"; helper.position.set(0, .1, .2); s.root.add(helper);
+  const manifest = parseFlyVisualAssetManifest(anchored);
+  const instance = prepareFlyVisual(s.source, manifest, "historical");
+  assert.deepEqual(instance.scene.position.toArray(), [0, 0, 0]); instance.dispose();
+  helper.add(new Mesh(new BoxGeometry(.1, .1, .1), s.body));
+  assert.throws(() => prepareFlyVisual(s.source, manifest, "historical"), /transform helper/);
+  helper.clear(); helper.position.x = NaN;
+  assert.throws(() => prepareFlyVisual(s.source, manifest, "historical"), /anchor transform/);
+  helper.position.x = .01; assert.throws(() => prepareFlyVisual(s.source, manifest, "historical"), /anchor transform/);
+  s.root.remove(helper); assert.throws(() => prepareFlyVisual(s.source, manifest, "historical"), /anchor helper/);
+});

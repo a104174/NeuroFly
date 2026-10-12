@@ -20,6 +20,8 @@
 .fly-viewer-stats { position: absolute; right: 22px; top: 22px; font: 10px/1.8 monospace; text-align: right; color: #b1c8cd; background: #101b22dd; padding: 7px; pointer-events: none; }
 .fly-viewer-credits { border-top: 1px solid var(--line); color: var(--muted); font-size: 11px; line-height: 1.6; padding-top: 12px; }
 .fly-viewer-credits a { text-decoration: underline; text-underline-offset: 3px; color: #bdcdd3; }
+.arena-viewer-stage .fly-viewer-toolbar { flex-wrap: wrap; }
+.arena-viewer-stage .fly-viewer-views { flex-wrap: wrap; }
 @media (max-width: 600px) {
   .fly-viewer-page { padding: 24px 16px; }
   .fly-viewer-heading { align-items: flex-start; flex-direction: column; gap: 10px; }
@@ -29,4 +31,6 @@
   .fly-viewer-caption { left: 16px; top: 16px; }
   .fly-viewer-notes { align-items: flex-start; flex-direction: column; gap: 5px; }
   .fly-viewer-stats { top: 66px; left: 16px; right: auto; text-align: left; }
+  .arena-viewer-stage .fly-viewer-toolbar { display: grid; grid-template-columns: 1fr auto; align-items: end; }
+  .arena-viewer-stage .fly-viewer-views { gap: 4px; }
 }

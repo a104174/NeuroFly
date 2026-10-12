@@ -34,3 +34,17 @@
   .arena-viewer-stage .fly-viewer-toolbar { display: grid; grid-template-columns: 1fr auto; align-items: end; }
   .arena-viewer-stage .fly-viewer-views { gap: 4px; }
 }
+
+/* Arena-only replay controls; no change to the standalone studio. */
+.arena-mode-controls, .arena-replay-controls { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 16px; }
+.arena-mode-controls button, .arena-replay-controls button { font: inherit; font-size: 12px; min-height: 42px; padding: 10px 14px; color: var(--ink); border: 1px solid var(--line); border-radius: 6px; background: #14232b; cursor: pointer; }
+.arena-mode-controls button[aria-pressed="true"] { border-color: var(--cyan); background: #25434c; }
+.arena-mode-controls button:focus-visible, .arena-replay-controls button:focus-visible, #arena-course-boundary:focus-visible { outline: 2px solid var(--cyan); outline-offset: 3px; }
+.arena-replay-panel { padding: 18px; margin-bottom: 20px; border: 1px solid var(--line); border-radius: 8px; background: #111c22; overflow-wrap: anywhere; }
+.arena-science-limit { margin-top: 0; color: var(--ink); font-size: 13px; line-height: 1.6; }
+.arena-replay-identity, .arena-replay-note, .arena-replay-panel label { color: var(--muted); font-size: 11px; line-height: 1.6; }
+.arena-replay-controls output { color: var(--ink); font: 12px monospace; }
+#arena-course-boundary { display: block; width: 100%; margin: 12px 0; accent-color: var(--cyan); }
+.arena-course-telemetry { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr)); gap: 12px; margin: 14px 0; }
+.arena-course-telemetry dt { color: var(--muted); font-size: 11px; }
+.arena-course-telemetry dd { margin: 5px 0 0; font: 12px monospace; color: var(--ink); }

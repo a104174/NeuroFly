@@ -9,7 +9,7 @@ import { FLY_VIEWER_ASSET, type FlyViewerView } from "@/lib/flyViewer";
 
 const FlyViewerCanvas = dynamic(() => import("./FlyViewerCanvas"), { ssr: false, loading: () => <p className="fly-viewer-message">Preparing the studio…</p> });
 const views: { id: FlyViewerView; label: string }[] = [{ id: "three-quarter", label: "Overview" }, { id: "lateral", label: "Side" }, { id: "head", label: "Front" }, { id: "dorsal", label: "Top" }];
-export function FlyViewer({ arena = false }: { arena?: boolean }) {
+export function FlyViewer({ arena = false, replayPose }: { arena?: boolean; replayPose?: import("@/lib/arenaCourseReplay").ArenaCoursePose }) {
   const [tableReady, setTableReady] = useState(false);
   const onTableReady = useCallback(() => setTableReady(true), []);
   const [view, setView] = useState<ArenaCameraView>("three-quarter");
@@ -22,8 +22,8 @@ export function FlyViewer({ arena = false }: { arena?: boolean }) {
   const provenance = FLY_VIEWER_ASSET.provenance;
   return <>
     <section className={`fly-viewer-stage${arena ? " arena-viewer-stage" : ""}`} aria-label={arena ? "Controlled chamber visual prototype" : "Interactive male Drosophila visual asset"}>
-      <FlyViewerCanvas arena={arena} onTableReady={onTableReady} view={view} reset={reset} diagnostics={diagnostics} onStatus={onStatus} onStats={setStats} onFailure={onFailure} />
-      <div className="fly-viewer-caption"><span>V2-F / MALE DROSOPHILA</span><small>{arena ? "A+C v0.1 / Controlled chamber" : "Static visual specimen"}</small></div>
+      <FlyViewerCanvas arena={arena} replayPose={arena ? replayPose : undefined} onTableReady={onTableReady} view={view} reset={reset} diagnostics={diagnostics} onStatus={onStatus} onStats={setStats} onFailure={onFailure} />
+      <div className="fly-viewer-caption"><span>V2-F / MALE DROSOPHILA</span><small>{arena ? replayPose ? "A+C v0.2 / Course orientation replay" : "A+C v0.1 / Controlled chamber" : "Static visual specimen"}</small></div>
       {(status.state !== "ready" || (arena && !tableReady)) ? <div className="fly-viewer-message" role={status.state === "error" ? "alert" : "status"}>
         <strong>{status.state === "error" ? "The specimen could not be displayed." : arena ? "Preparing the chamber and specimen…" : "Loading the specimen…"}</strong>
         {status.detail ? <p>{status.detail}</p> : null}
@@ -37,6 +37,6 @@ export function FlyViewer({ arena = false }: { arena?: boolean }) {
     </section>
     <div className="fly-viewer-notes"><p>Drag to orbit · Scroll or pinch to zoom · Camera pivots around the visual thoracic anchor.{arena ? " Inspect Fly moves the camera only. Reset returns to Overview." : ""}</p><label><input type="checkbox" checked={diagnostics} onChange={event => setDiagnostics(event.target.checked)} /> Render diagnostics</label></div>
     <p className="fly-viewer-notes"><Link href={arena ? "/visual-lab/fly" : "/visual-lab/arena"}>{arena ? "Inspect the specimen in the studio →" : "Explore the experimental chamber prototype →"}</Link></p>
-    <footer className="fly-viewer-credits"><p><a href={provenance.source_url} target="_blank" rel="noreferrer">Wildtype Male Drosophila Melanogaster</a> by {provenance.author} · <a href={provenance.license_url} target="_blank" rel="noreferrer">CC BY 4.0</a> · Modified for NeuroFly.</p><p>A third-party visual representation, not MaleCNS-derived external anatomy. No simulation or experimental replay runs here.</p>{arena ? <p>Environment: original NeuroFly acrylic enclosure and backdrop. <a href={ARENA.tableSource} target="_blank" rel="noreferrer">Lab Table</a> by zeeshanfareed · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noreferrer">CC BY 4.0</a> · Uniformly fitted; decorative tabletop bottles omitted and material response adjusted for NeuroFly. Display scale is illustrative, not a biological measurement.</p> : null}</footer>
+    <footer className="fly-viewer-credits"><p><a href={provenance.source_url} target="_blank" rel="noreferrer">Wildtype Male Drosophila Melanogaster</a> by {provenance.author} · <a href={provenance.license_url} target="_blank" rel="noreferrer">CC BY 4.0</a> · Modified for NeuroFly.</p><p>A third-party visual representation, not MaleCNS-derived external anatomy. {arena && replayPose ? "Recorded abstract model orientation only; no biological locomotion or chamber interaction." : "No simulation or experimental replay runs here."}</p>{arena ? <p>Environment: original NeuroFly acrylic enclosure and backdrop. <a href={ARENA.tableSource} target="_blank" rel="noreferrer">Lab Table</a> by zeeshanfareed · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noreferrer">CC BY 4.0</a> · Uniformly fitted; decorative tabletop bottles omitted and material response adjusted for NeuroFly. Display scale is illustrative, not a biological measurement.</p> : null}</footer>
   </>;
 }

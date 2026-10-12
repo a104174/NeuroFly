@@ -111,7 +111,7 @@ class ViewerBoundary extends Component<{ children: ReactNode; onFailure: (messag
   render() { return this.state.failed ? null : this.props.children; }
 }
 
-export default function FlyViewerCanvas({ view, reset, diagnostics, onStatus, onStats, onFailure, arena = false, onTableReady }: { arena?: boolean; onTableReady?: () => void; view: ArenaCameraView; reset: number; diagnostics: boolean; onStatus: (value: Status) => void; onStats: (value: ViewerStats) => void; onFailure: (message: string) => void }) {
+export default function FlyViewerCanvas({ view, reset, diagnostics, onStatus, onStats, onFailure, arena = false, onTableReady, replayPose }: { replayPose?: import("@/lib/arenaCourseReplay").ArenaCoursePose; arena?: boolean; onTableReady?: () => void; view: ArenaCameraView; reset: number; diagnostics: boolean; onStatus: (value: Status) => void; onStats: (value: ViewerStats) => void; onFailure: (message: string) => void }) {
   const [webGLAvailable] = useState(() => {
     try {
       const probe = document.createElement("canvas").getContext("webgl2");
@@ -125,7 +125,7 @@ export default function FlyViewerCanvas({ view, reset, diagnostics, onStatus, on
   return <ViewerBoundary onFailure={onFailure}><Canvas dpr={[1, 1.5]} camera={{ position: [1.5, 1, 2], fov: 35 }} gl={{ antialias: true, alpha: false, toneMapping: AgXToneMapping, toneMappingExposure: 1 }} fallback={null}>
     <color attach="background" args={["#182129"]} />
     <Studio view={view} reset={reset} diagnostics={diagnostics} onStats={onStats} onFailure={onFailure} arena={arena} />
-    <group position={arena ? ARENA.flyOffset : [0, 0, 0]} scale={arena ? ARENA.flyScale : 1}><Fly onStatus={onStatus} /></group>
+    {arena && replayPose ? <group position={replayPose.anchor} rotation={[0, replayPose.rotation, 0]} scale={ARENA.flyScale}><group position={replayPose.assetOffset}><Fly onStatus={onStatus} /></group></group> : <group position={arena ? ARENA.flyOffset : [0, 0, 0]} scale={arena ? ARENA.flyScale : 1}><Fly onStatus={onStatus} /></group>}
     {arena && onTableReady ? <ExperimentalArena onReady={onTableReady} onFailure={onFailure} /> : null}
   </Canvas></ViewerBoundary>;
 }

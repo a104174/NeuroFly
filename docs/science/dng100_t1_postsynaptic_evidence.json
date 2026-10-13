@@ -1,0 +1,588 @@
+{
+  "review": {
+    "authorities": {
+      "motif_artifact_id": "baae20599455c2a7acb3271e6eeb6b73326d17185b6e705022b74818ff0f8934",
+      "motif_source_sha256": "def753409faa5daa7932ad5c256c644b2b426f44c053b2c40a5b89a17d6b024e",
+      "nt_artifact_id": "38dc667d74acc3c6691b95659f38a1beab2f6208b5c592341f024f61d31bc526",
+      "nt_config_sha256": "fa2b375118fb5cd51aa7efdd60b4ce998f4b6b1bfb873e9274aa5a9a3e3a2ea9",
+      "nt_reference": "docs/science/dng100_nt_sign_reference.json",
+      "nt_result_sha256": "1807b37dd825165680f44d24faa37633c7782f99429213857acadb3fdbc24cfa",
+      "nt_source_sha256": "95c9289220663abeb3409f3ad9e5a7f8a53f8093f5139d15502cd08da8879621"
+    },
+    "dataset": {
+      "name": "MaleCNS v1.0",
+      "uuid": "4b2087c0fbe046bfaf0d60bc970e3e5d"
+    },
+    "decision": "DNG100_T1_POSTSYNAPTIC_SIGNS_UNKNOWN",
+    "evidence_records": [
+      {
+        "cross_dataset_correspondence": {
+          "manc_postsynaptic_body_id": 10707,
+          "manc_presynaptic_body_id": 13905,
+          "method": "PINNED_ANNOTATION_MANC_BODYID_AND_TYPE_FIELDS",
+          "source_sha256": "2177e246113e4cfbf1e7772ec37c6da1955ff22e8063d0b1f833101f99a9a3b2",
+          "transfer": "ANATOMICAL_CORRESPONDENCE_ONLY_NOT_PHYSIOLOGICAL_SIGN"
+        },
+        "functional_sign_status": "UNKNOWN",
+        "model_context_references": [
+          "PUGLIESE_2026",
+          "PUGLIESE_ORIGINAL_2025"
+        ],
+        "physiological_sign_evidence": {
+          "measured_effect": null,
+          "references": [],
+          "status": "NO_APPLICABLE_LEVEL_A_IDENTIFIED"
+        },
+        "postsynaptic_identity": {
+          "bodyId": 800173,
+          "class": null,
+          "instance": "IN17A001_L",
+          "somaNeuromere": "T1",
+          "somaSide": "L",
+          "status": "Traced",
+          "statusLabel": "Reviewed",
+          "subclass": "IR",
+          "superclass": "vnc_intrinsic",
+          "type": "IN17A001"
+        },
+        "postsynaptic_receptor_evidence": {
+          "candidate_receptor_identity": null,
+          "general_context_references": [
+            "ALLEN_2020",
+            "FAN_2025"
+          ],
+          "matched_target_assay_references": [],
+          "raw_annotation_receptorType": null,
+          "status": "POSTSYNAPTIC_RECEPTOR_UNRESOLVED",
+          "synapse_localization_references": []
+        },
+        "segment": "T1",
+        "side": "L",
+        "structural": {
+          "annotation_sha256": "2177e246113e4cfbf1e7772ec37c6da1955ff22e8063d0b1f833101f99a9a3b2",
+          "confidence_policy": "SERVER_STANDARD_WEIGHT_NO_ADDITIONAL_SYNAPSE_FILTER",
+          "dataset": "male-cns:v1.0",
+          "post": 800173,
+          "post_anatomy": {
+            "somaNeuromere": "T1",
+            "somaSide": "L",
+            "superclass": "vnc_intrinsic",
+            "type": "IN17A001"
+          },
+          "pre": 801884,
+          "pre_anatomy": {
+            "somaNeuromere": "T1",
+            "somaSide": "L",
+            "superclass": "vnc_intrinsic",
+            "type": "IN16B036"
+          },
+          "roi_counts": {
+            "LegNp(T1)(L)": {
+              "post": 525
+            },
+            "VNC": {
+              "post": 526
+            },
+            "VNC-unspecified": {
+              "post": 1
+            }
+          },
+          "source_references": [
+            {
+              "file": "source.json",
+              "query": "induced",
+              "row": 20,
+              "row_sha256": "ad4c5fe817d5662baaa120292c9941592733768a34c286e4507a7432d97d99eb"
+            },
+            {
+              "file": "source.json",
+              "query": "primary_outputs",
+              "row": 995,
+              "row_sha256": "ad4c5fe817d5662baaa120292c9941592733768a34c286e4507a7432d97d99eb"
+            }
+          ],
+          "synapse_count": 526
+        },
+        "transmitter_prediction": {
+          "annotation": {
+            "bodyId": 801884,
+            "class": null,
+            "instance": "IN16B036_L",
+            "somaNeuromere": "T1",
+            "somaSide": "L",
+            "status": "Traced",
+            "statusLabel": "Reviewed",
+            "subclass": "IR",
+            "superclass": "vnc_intrinsic",
+            "type": "IN16B036"
+          },
+          "annotation_source_sha256": "2177e246113e4cfbf1e7772ec37c6da1955ff22e8063d0b1f833101f99a9a3b2",
+          "body_id": 801884,
+          "conflict": false,
+          "evidence": [
+            {
+              "category": "EXPERIMENTAL_GROUND_TRUTH",
+              "confidence": null,
+              "direct_experiment_on_selected_body": false,
+              "field": "ground_truth",
+              "resolution": "SOURCE_REPORTED_CELLTYPE_TRAINING_GROUND_TRUTH_NOT_EXPERIMENT_ON_MALECNS_BODY_OR_SYNAPSE",
+              "value": "glutamate"
+            },
+            {
+              "category": "MALECNS_CONSENSUS",
+              "confidence": null,
+              "direct_experiment_on_selected_body": false,
+              "field": "consensus_nt",
+              "resolution": "CELLTYPE_AGGREGATE_OR_CURATED_CONSENSUS",
+              "value": "glutamate"
+            },
+            {
+              "category": "MALECNS_NEURON_PREDICTION",
+              "confidence": 0.8619699965779787,
+              "direct_experiment_on_selected_body": false,
+              "field": "predicted_nt",
+              "resolution": "BODY_AGGREGATE_PREDICTION",
+              "value": "glutamate"
+            },
+            {
+              "category": "MALECNS_CELLTYPE_PREDICTION",
+              "confidence": 0.8286996121056763,
+              "direct_experiment_on_selected_body": false,
+              "field": "celltype_predicted_nt",
+              "resolution": "CELLTYPE_AGGREGATE_OR_CURATED_CONSENSUS",
+              "value": "glutamate"
+            }
+          ],
+          "nt_source_sha256": "95c9289220663abeb3409f3ad9e5a7f8a53f8093f5139d15502cd08da8879621",
+          "primary_evidence": "EXPERIMENTAL_GROUND_TRUTH",
+          "primary_field": "ground_truth",
+          "raw": {
+            "body": 801884,
+            "cell_type": "IN16B036",
+            "celltype_predicted_nt": "glutamate",
+            "celltype_predicted_nt_confidence": 0.8286996121056763,
+            "celltype_total_nt_predictions": 7860,
+            "consensus_nt": "glutamate",
+            "ground_truth": "glutamate",
+            "predicted_nt": "glutamate",
+            "predicted_nt_confidence": 0.8619699965779787,
+            "total_nt_predictions": 983
+          },
+          "raw_annotation_receptorType": null,
+          "raw_row_sha256": "14748ea4026b611212318b8419e1fab7f08107651a508d3403a48091270ec461",
+          "sdk_raw": {
+            "bodyId": 801884,
+            "celltypePredictedNt": "glutamate",
+            "celltypePredictedNtConfidence": 0.8286995887756348,
+            "consensusNt": "glutamate",
+            "groundTruth": null,
+            "predictedNt": "glutamate",
+            "predictedNtConfidence": 0.8619700074195862,
+            "receptorType": null,
+            "somaNeuromere": "T1",
+            "somaSide": "L",
+            "type": "IN16B036"
+          },
+          "source_row": 178380,
+          "unresolved_reasons": []
+        },
+        "unresolved_reasons": [
+          "NO_VERIFIED_TARGET_RECEPTOR_ASSAY",
+          "NO_VERIFIED_PAIR_PHYSIOLOGY",
+          "MODEL_SIGN_ASSIGNMENT_NOT_EXPERIMENTAL_EVIDENCE",
+          "BOUNDED_SEARCH_NOT_PROOF_OF_RECEPTOR_ABSENCE"
+        ]
+      },
+      {
+        "cross_dataset_correspondence": {
+          "manc_postsynaptic_body_id": 10690,
+          "manc_presynaptic_body_id": 14096,
+          "method": "PINNED_ANNOTATION_MANC_BODYID_AND_TYPE_FIELDS",
+          "source_sha256": "2177e246113e4cfbf1e7772ec37c6da1955ff22e8063d0b1f833101f99a9a3b2",
+          "transfer": "ANATOMICAL_CORRESPONDENCE_ONLY_NOT_PHYSIOLOGICAL_SIGN"
+        },
+        "functional_sign_status": "UNKNOWN",
+        "model_context_references": [
+          "PUGLIESE_2026",
+          "PUGLIESE_ORIGINAL_2025"
+        ],
+        "physiological_sign_evidence": {
+          "measured_effect": null,
+          "references": [],
+          "status": "NO_APPLICABLE_LEVEL_A_IDENTIFIED"
+        },
+        "postsynaptic_identity": {
+          "bodyId": 800288,
+          "class": null,
+          "instance": "IN17A001_R",
+          "somaNeuromere": "T1",
+          "somaSide": "R",
+          "status": "Traced",
+          "statusLabel": "Reviewed",
+          "subclass": "IR",
+          "superclass": "vnc_intrinsic",
+          "type": "IN17A001"
+        },
+        "postsynaptic_receptor_evidence": {
+          "candidate_receptor_identity": null,
+          "general_context_references": [
+            "ALLEN_2020",
+            "FAN_2025"
+          ],
+          "matched_target_assay_references": [],
+          "raw_annotation_receptorType": null,
+          "status": "POSTSYNAPTIC_RECEPTOR_UNRESOLVED",
+          "synapse_localization_references": []
+        },
+        "segment": "T1",
+        "side": "R",
+        "structural": {
+          "annotation_sha256": "2177e246113e4cfbf1e7772ec37c6da1955ff22e8063d0b1f833101f99a9a3b2",
+          "confidence_policy": "SERVER_STANDARD_WEIGHT_NO_ADDITIONAL_SYNAPSE_FILTER",
+          "dataset": "male-cns:v1.0",
+          "post": 800288,
+          "post_anatomy": {
+            "somaNeuromere": "T1",
+            "somaSide": "R",
+            "superclass": "vnc_intrinsic",
+            "type": "IN17A001"
+          },
+          "pre": 803183,
+          "pre_anatomy": {
+            "somaNeuromere": "T1",
+            "somaSide": "R",
+            "superclass": "vnc_intrinsic",
+            "type": "IN16B036"
+          },
+          "roi_counts": {
+            "LegNp(T1)(R)": {
+              "post": 439
+            },
+            "VNC": {
+              "post": 439
+            }
+          },
+          "source_references": [
+            {
+              "file": "source.json",
+              "query": "induced",
+              "row": 26,
+              "row_sha256": "4468c018c648cfa223a335a69ce7b5942c52e0e25448873ac50f87e9a06c512d"
+            },
+            {
+              "file": "source.json",
+              "query": "primary_outputs",
+              "row": 1253,
+              "row_sha256": "4468c018c648cfa223a335a69ce7b5942c52e0e25448873ac50f87e9a06c512d"
+            }
+          ],
+          "synapse_count": 439
+        },
+        "transmitter_prediction": {
+          "annotation": {
+            "bodyId": 803183,
+            "class": null,
+            "instance": "IN16B036_R",
+            "somaNeuromere": "T1",
+            "somaSide": "R",
+            "status": "Traced",
+            "statusLabel": "Reviewed",
+            "subclass": "IR",
+            "superclass": "vnc_intrinsic",
+            "type": "IN16B036"
+          },
+          "annotation_source_sha256": "2177e246113e4cfbf1e7772ec37c6da1955ff22e8063d0b1f833101f99a9a3b2",
+          "body_id": 803183,
+          "conflict": false,
+          "evidence": [
+            {
+              "category": "EXPERIMENTAL_GROUND_TRUTH",
+              "confidence": null,
+              "direct_experiment_on_selected_body": false,
+              "field": "ground_truth",
+              "resolution": "SOURCE_REPORTED_CELLTYPE_TRAINING_GROUND_TRUTH_NOT_EXPERIMENT_ON_MALECNS_BODY_OR_SYNAPSE",
+              "value": "glutamate"
+            },
+            {
+              "category": "MALECNS_CONSENSUS",
+              "confidence": null,
+              "direct_experiment_on_selected_body": false,
+              "field": "consensus_nt",
+              "resolution": "CELLTYPE_AGGREGATE_OR_CURATED_CONSENSUS",
+              "value": "glutamate"
+            },
+            {
+              "category": "MALECNS_NEURON_PREDICTION",
+              "confidence": 0.8493499033789996,
+              "direct_experiment_on_selected_body": false,
+              "field": "predicted_nt",
+              "resolution": "BODY_AGGREGATE_PREDICTION",
+              "value": "glutamate"
+            },
+            {
+              "category": "MALECNS_CELLTYPE_PREDICTION",
+              "confidence": 0.8286996121056763,
+              "direct_experiment_on_selected_body": false,
+              "field": "celltype_predicted_nt",
+              "resolution": "CELLTYPE_AGGREGATE_OR_CURATED_CONSENSUS",
+              "value": "glutamate"
+            }
+          ],
+          "nt_source_sha256": "95c9289220663abeb3409f3ad9e5a7f8a53f8093f5139d15502cd08da8879621",
+          "primary_evidence": "EXPERIMENTAL_GROUND_TRUTH",
+          "primary_field": "ground_truth",
+          "raw": {
+            "body": 803183,
+            "cell_type": "IN16B036",
+            "celltype_predicted_nt": "glutamate",
+            "celltype_predicted_nt_confidence": 0.8286996121056763,
+            "celltype_total_nt_predictions": 7860,
+            "consensus_nt": "glutamate",
+            "ground_truth": "glutamate",
+            "predicted_nt": "glutamate",
+            "predicted_nt_confidence": 0.8493499033789996,
+            "total_nt_predictions": 937
+          },
+          "raw_annotation_receptorType": null,
+          "raw_row_sha256": "958417e2d7585c5b36fae20cc2337deb1453bc3d56af5c8427ae8c47fd7468bc",
+          "sdk_raw": {
+            "bodyId": 803183,
+            "celltypePredictedNt": "glutamate",
+            "celltypePredictedNtConfidence": 0.8286995887756348,
+            "consensusNt": "glutamate",
+            "groundTruth": null,
+            "predictedNt": "glutamate",
+            "predictedNtConfidence": 0.8493499159812927,
+            "receptorType": null,
+            "somaNeuromere": "T1",
+            "somaSide": "R",
+            "type": "IN16B036"
+          },
+          "source_row": 179350,
+          "unresolved_reasons": []
+        },
+        "unresolved_reasons": [
+          "NO_VERIFIED_TARGET_RECEPTOR_ASSAY",
+          "NO_VERIFIED_PAIR_PHYSIOLOGY",
+          "MODEL_SIGN_ASSIGNMENT_NOT_EXPERIMENTAL_EVIDENCE",
+          "BOUNDED_SEARCH_NOT_PROOF_OF_RECEPTOR_ABSENCE"
+        ]
+      }
+    ],
+    "experiment_id": "DNG100_T1_POSTSYNAPTIC_EVIDENCE_V1",
+    "kind": "EVIDENCE_REVIEW_NOT_SIMULATION_ARTIFACT",
+    "new_biological_parameters": [],
+    "policy": {
+      "complete_definition": "# DNg100 T1 postsynaptic evidence V1\n\n## Fixed evidence policy\n\nExperiment: DNG100_T1_POSTSYNAPTIC_EVIDENCE_V1. Evidence contract:\ndng100_t1_postsynaptic_evidence_v1. Policy was written after read-only source\npreflight and before final evidence classification. No independently verified\nprospective timestamp is claimed.\n\nPrimary scope is exclusively 801884/IN16B036_L -> 800173/IN17A001_L (526\nstructural synapses) and 803183/IN16B036_R -> 800288/IN17A001_R (439), both T1.\nMaleCNS v1.0 UUID 4b2087c0fbe046bfaf0d60bc970e3e5d and all published structural\nand transmitter authorities remain frozen. No broad graph extraction.\n\nEvidence levels are separate:\n\n| Level | Required resolution | Permitted interpretation |\n| --- | --- | --- |\n| A | Identified pre/post pair, direct physiological response, independently supported correspondence to selected male adult T1 cell types | Potential connection-sign support, limited to measured preparation/state |\n| B | Experimentally identified target neuron with controlled receptor expression assay | Target receptor evidence; sign still UNKNOWN without applicable pair physiology |\n| C | Explicitly validated matching target cell type with receptor assay | Type-level receptor context; not individual EM body/synapse evidence |\n| D | Other fly/VNC populations, hemilineages, unmatched clusters or preparations | General biological context only |\n| E | Assigned simulation signs, model effects, fitted/selected parameters | Model hypothesis only |\n| F | No applicable evidence identified within declared search | UNKNOWN; not biological absence |\n\nDefault functional_sign_status=UNKNOWN. A supported sign requires Level A\nmatched adult T1 pair evidence, demonstrably direct causal response, controls\nexcluding indirect network effects, documented voltage/current effect and\nexplicit dataset/cell-type correspondence. Receptor expression alone cannot\nestablish the sign or compartment of these contacts. Context dependence requires\nmeasured dependence on conditions, not speculation about chloride potential.\n\nConfidence is qualitative evidence resolution, not a newly invented numeric\nscore. Missing sex/segment/type mapping lowers applicability; it is never filled\nfrom another connectome. Conflicting findings are preserved. A publication's\nletters E/I, presynaptic glutamate, transcript detection alone or structural\ncounts cannot supply functional sign. No conductance, gain, delay or reversal\npotential is assigned.\n\nDiscovery is timeboxed to a focused set: official MaleCNS annotations/property\nschemas; revised Pugliese full text and original author manuscript if necessary;\nprimary adult VNC transcriptomic/receptor resources; exact IN17A001/IN16B036\nphysiology/receptor queries; and selected primary glutamate physiology controls.\nNo broad omics or synapse download. At most eight directly relevant publications\nwill be assessed; newly encountered unrelated pathways will not be extracted.\n\nExternal sources record version/DOI/URL, retrieval date, method, preparation,\nsex/stage/segment, target correspondence and evidence/compartment resolution.\nSame type spelling or a genetic driver is insufficient without anatomical\nmatching. A verified type mapping transfers only the stated type-level finding.\n\nPublication requires both original edges and glutamate source verified, useful\nrecoverable evidence records, honest resolution/uncertainty and unchanged frozen\nscience. Documentation-only work uses source/integrity and diff checks rather\nthan rerunning an unchanged full scientific suite.\n",
+      "definition_sha256": "1cf844f08d7baf62fde9f23fb34cb989be7a1f9a4be9b10367d6a6f3dbb23984",
+      "independently_verified_prospective_timestamp": false,
+      "version": 1
+    },
+    "previous_authorities_modified": false,
+    "repository_commit": "ffad7a4ee077bc3fa5e1b8163875ae23451f80f3",
+    "reproduction": "Load the frozen NT artifact with dng100_nt_sign_authority.load_artifact; compare the two structural records and inherited predictions; retrieve cited versions; recompute canonical_sha256(review). This reproduces authority inheritance/hash, not an automated proof of the literature-negative conclusion.",
+    "review_date": "2026-10-13",
+    "source_discovery": {
+      "limitations": [
+        "PROPERTY_ABSENCE_NOT_BIOLOGICAL_ABSENCE",
+        "NO_BULK_OMICS_DOWNLOAD",
+        "SEARCH_NOT_EXHAUSTIVE",
+        "PMC_PUBLISHER_CHALLENGES_FOR_SOME_ROUTES",
+        "SAPKAL_2026_V2_INDEXED_ONLY_NOT_USED_FOR_SIGN_FINDING",
+        "LIU_WILSON_2013_FULLTEXT_RETRIEVAL_FAILED_NOT_USED_FOR_TARGET_EVIDENCE"
+      ],
+      "official_query": {
+        "dataset": "male-cns:v1.0",
+        "query": "MATCH (n:Neuron)-[:Contains]->(:SynapseSet)-[:Contains]->(s:Synapse) WHERE n.bodyId IN [800173,800288] RETURN DISTINCT keys(s) AS properties",
+        "response": {
+          "columns": [
+            "properties"
+          ],
+          "data": [
+            [
+              [
+                "type",
+                "confidence",
+                "bodyId",
+                "compartment",
+                "location",
+                "VNC",
+                "LegNp(T1)(L)"
+              ]
+            ],
+            [
+              [
+                "type",
+                "confidence",
+                "bodyId",
+                "compartment",
+                "location",
+                "VNC",
+                "VNC-unspecified"
+              ]
+            ],
+            [
+              [
+                "type",
+                "confidence",
+                "bodyId",
+                "compartment",
+                "ntAcetylcholineProb",
+                "ntDopamineProb",
+                "ntGabaProb",
+                "ntGlutamateProb",
+                "ntHistamineProb",
+                "ntOctopamineProb",
+                "ntSerotoninProb",
+                "split",
+                "location",
+                "VNC",
+                "LegNp(T1)(L)"
+              ]
+            ],
+            [
+              [
+                "type",
+                "confidence",
+                "bodyId",
+                "compartment",
+                "ntAcetylcholineProb",
+                "ntDopamineProb",
+                "ntGabaProb",
+                "ntGlutamateProb",
+                "ntHistamineProb",
+                "ntOctopamineProb",
+                "ntSerotoninProb",
+                "split",
+                "location",
+                "VNC",
+                "DProN(L)"
+              ]
+            ],
+            [
+              [
+                "type",
+                "confidence",
+                "bodyId",
+                "compartment",
+                "location",
+                "VNC",
+                "LegNp(T1)(R)"
+              ]
+            ],
+            [
+              [
+                "type",
+                "confidence",
+                "bodyId",
+                "compartment",
+                "location",
+                "VNC",
+                "NTct(UTct-T1)(R)"
+              ]
+            ],
+            [
+              [
+                "type",
+                "confidence",
+                "bodyId",
+                "compartment",
+                "ntAcetylcholineProb",
+                "ntDopamineProb",
+                "ntGabaProb",
+                "ntGlutamateProb",
+                "ntHistamineProb",
+                "ntOctopamineProb",
+                "ntSerotoninProb",
+                "split",
+                "location",
+                "VNC",
+                "LegNp(T1)(R)"
+              ]
+            ],
+            [
+              [
+                "type",
+                "confidence",
+                "bodyId",
+                "compartment",
+                "ntAcetylcholineProb",
+                "ntDopamineProb",
+                "ntGabaProb",
+                "ntGlutamateProb",
+                "ntHistamineProb",
+                "ntOctopamineProb",
+                "ntSerotoninProb",
+                "split",
+                "location",
+                "VNC",
+                "VNC-unspecified"
+              ]
+            ]
+          ]
+        }
+      },
+      "query_content_sha256": "32a103248a9aa05001c86c870c1d91eb78c057734fef6c6c62dd4143cd3906a9"
+    },
+    "sources": [
+      {
+        "doi": "10.1101/2025.09.12.675944",
+        "finding": "Glutamatergic/GABAergic source weights assigned negative; no selected-pair receptor assay or physiological recording established.",
+        "id": "PUGLIESE_2026",
+        "level": "E",
+        "method": "CONNECTOME_SIMULATION_AND_DESCENDING_NEURON_BEHAVIORAL_ACTIVATION",
+        "preparation": "Adult male MANC/MaleCNS and female FANC/BANC connectomes; female dewinged decapitated tethered behavior",
+        "retrieval_method": "FULL_TEXT_XML",
+        "retrieved_file_sha256": "8601d675a0284d631dfbd65bae9e834c3332e0f11808b81a5136ff2d75078143",
+        "retrieved_on": "2026-10-13",
+        "target_correspondence": "CURATED_MALECNS_MANC_ANATOMICAL_TYPE_MAPPING_NOT_PHYSIOLOGICAL_MAPPING",
+        "url": "https://www.ebi.ac.uk/europepmc/webservices/rest/PMC13142387/fullTextXML",
+        "version": "REVISED_PREPRINT_2026_04_30"
+      },
+      {
+        "doi": "10.7554/eLife.54074",
+        "finding": "GluClalpha broadly transcribed; enriched cluster 103. Not selected-cell receptor protein/localization or pair response.",
+        "id": "ALLEN_2020",
+        "level": "D",
+        "method": "SINGLE_CELL_RNA_SEQUENCING",
+        "preparation": "Adult male and female VNC, five days post-eclosion",
+        "retrieval_method": "FULL_TEXT_XML",
+        "retrieved_file_sha256": "95b5d75bd2e3f077405e3e04994b14c283d29650c01698a4811aee24c705b507",
+        "retrieved_on": "2026-10-13",
+        "target_correspondence": "NO_VERIFIED_CLUSTER_TO_IN17A001_RECEPTOR_MAPPING",
+        "url": "https://www.ebi.ac.uk/europepmc/webservices/rest/PMC7173974/fullTextXML",
+        "version": "ELIFE_9_E54074_2020"
+      },
+      {
+        "doi": "10.1007/s12264-025-01397-1",
+        "finding": "GluClalpha-dependent inhibitory input in other VNC cells, not this pair.",
+        "id": "FAN_2025",
+        "level": "D",
+        "method": "GENETIC_GLUCLALPHA_DEPLETION_AND_GLUTAMATE_EVOCATED_CALCIUM_IMAGING",
+        "preparation": "Adult 23E10-positive T3 VNC cells; male behavioral assays aged 3-5 days; isolated brain/VNC imaging sex not separately specified",
+        "retrieval_method": "PUBLISHER_FULL_TEXT_HTML",
+        "retrieved_file_sha256": null,
+        "retrieved_on": "2026-10-13",
+        "target_correspondence": "NO_VERIFIED_MATCH_TO_T1_IN17A001",
+        "url": "https://link.springer.com/article/10.1007/s12264-025-01397-1",
+        "version": "PUBLISHED_2025_04_30_NEUROSCIENCE_BULLETIN_41_1729_1742"
+      },
+      {
+        "doi": "10.1101/2025.09.12.675944",
+        "finding": "Original model-cell identity context, not synaptic physiology.",
+        "id": "PUGLIESE_ORIGINAL_2025",
+        "level": "E",
+        "method": "CONNECTOME_SIMULATION",
+        "preparation": "MANC male and FANC female adult VNC connectomes",
+        "retrieval_method": "AUTHOR_PDF",
+        "retrieved_file_sha256": "3f8bbf6f077917893a6fa6bf7f2fbdfe486eb7522ec6351324bdd389640ad801",
+        "retrieved_on": "2026-10-13",
+        "target_correspondence": "MANC_10707_AND_13905_LABELLED_LEFT_E1_AND_I1",
+        "url": "https://faculty.washington.edu/tuthill/docs/Pugliese_cpg_2025.pdf",
+        "version": "ORIGINAL_2025_AUTHOR_MANUSCRIPT_NOT_2026_REVISION"
+      }
+    ]
+  },
+  "review_id": "4c29057f3a069e26ac5604754c304408c48bc511a564c3dc5595e7ac305cacf9",
+  "schema": "dng100_t1_postsynaptic_evidence_v1"
+}

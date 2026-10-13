@@ -1,0 +1,251 @@
+{
+  "schema": "dng100_nt_sign_policy_v1",
+  "experiment_id": "DNG100_NEUROTRANSMITTER_SIGN_AUTHORITY_V1",
+  "dataset": "male-cns:v1.0",
+  "dataset_uuid": "4b2087c0fbe046bfaf0d60bc970e3e5d",
+  "annotation_sha256": "2177e246113e4cfbf1e7772ec37c6da1955ff22e8063d0b1f833101f99a9a3b2",
+  "motif_source_sha256": "def753409faa5daa7932ad5c256c644b2b426f44c053b2c40a5b89a17d6b024e",
+  "motif_artifact_id": "baae20599455c2a7acb3271e6eeb6b73326d17185b6e705022b74818ff0f8934",
+  "nt_source_url": "https://storage.googleapis.com/flyem-male-cns/v1.0/connectome-data/flat-connectome/body-neurotransmitters-male-cns-v1.0.feather",
+  "nt_source_sha256": "95c9289220663abeb3409f3ad9e5a7f8a53f8093f5139d15502cd08da8879621",
+  "nt_source_bytes": 43282834,
+  "sdk_source_sha256": "7a930b6eb5083b58976df1ce8cd0f82dc5b9b34a4aeb59622edce4decf2a9fd8",
+  "retrieved_at_utc": "2026-10-13",
+  "targets": [
+    {
+      "body_id": 10045,
+      "type": "DNg100",
+      "side": "L",
+      "segment": null
+    },
+    {
+      "body_id": 10056,
+      "type": "DNg100",
+      "side": "R",
+      "segment": null
+    },
+    {
+      "body_id": 800173,
+      "type": "IN17A001",
+      "side": "L",
+      "segment": "T1"
+    },
+    {
+      "body_id": 800288,
+      "type": "IN17A001",
+      "side": "R",
+      "segment": "T1"
+    },
+    {
+      "body_id": 800863,
+      "type": "INXXX466",
+      "side": "L",
+      "segment": "T1"
+    },
+    {
+      "body_id": 801884,
+      "type": "IN16B036",
+      "side": "L",
+      "segment": "T1"
+    },
+    {
+      "body_id": 803183,
+      "type": "IN16B036",
+      "side": "R",
+      "segment": "T1"
+    },
+    {
+      "body_id": 903216,
+      "type": "INXXX466",
+      "side": "R",
+      "segment": "T1"
+    }
+  ],
+  "edges": [
+    [
+      10045,
+      800288
+    ],
+    [
+      10056,
+      800173
+    ],
+    [
+      10056,
+      800863
+    ],
+    [
+      800173,
+      800863
+    ],
+    [
+      800173,
+      801884
+    ],
+    [
+      800288,
+      803183
+    ],
+    [
+      800288,
+      903216
+    ],
+    [
+      800863,
+      800173
+    ],
+    [
+      800863,
+      801884
+    ],
+    [
+      801884,
+      800173
+    ],
+    [
+      801884,
+      800863
+    ],
+    [
+      803183,
+      800288
+    ],
+    [
+      803183,
+      903216
+    ],
+    [
+      903216,
+      800288
+    ],
+    [
+      903216,
+      803183
+    ]
+  ],
+  "columns": [
+    "body",
+    "cell_type",
+    "total_nt_predictions",
+    "predicted_nt_confidence",
+    "predicted_nt",
+    "ground_truth",
+    "celltype_total_nt_predictions",
+    "celltype_predicted_nt",
+    "celltype_predicted_nt_confidence",
+    "consensus_nt"
+  ],
+  "lookup": "EXACT_INTEGER_BODY_ID_UNIQUE_ROW_NO_FRAGMENT_AGGREGATION_DUPLICATES_FAIL",
+  "aggregation": "OFFICIAL_PER_SEGMENT_BODY_AGGREGATE_TYPE_COLUMNS_SHARED_NO_NEW_CATEGORICAL_OR_CONFIDENCE_AVERAGING",
+  "known_labels": [
+    "acetylcholine",
+    "dopamine",
+    "gaba",
+    "glutamate",
+    "glycine",
+    "histamine",
+    "nitric_oxide",
+    "octopamine",
+    "serotonin",
+    "tyramine"
+  ],
+  "null_semantics": "NULL_UNCLEAR_AND_UNRECOGNIZED_LABELS_PRESERVED_UNRESOLVED_NOT_ZERO",
+  "confidence": "RAW_FINITE_0_TO_1_NULL_ALLOWED_NO_ADDITIONAL_CUTOFF_NOT_PHYSIOLOGICAL_CONFIDENCE",
+  "sdk_confidence_comparison": "EXACT_FLOAT32_CONVERSION_OF_FEATHER_FLOAT64_NOT_SOURCE_REPLACEMENT",
+  "evidence_categories": [
+    "EXPERIMENTAL_GROUND_TRUTH",
+    "MALECNS_CONSENSUS",
+    "MALECNS_NEURON_PREDICTION",
+    "MALECNS_CELLTYPE_PREDICTION",
+    "EXTERNAL_CONTEXT_ONLY",
+    "UNKNOWN"
+  ],
+  "precedence": [
+    "ground_truth",
+    "consensus_nt",
+    "predicted_nt",
+    "celltype_predicted_nt"
+  ],
+  "ground_truth_resolution": "SOURCE_REPORTED_CELLTYPE_TRAINING_GROUND_TRUTH_NOT_EXPERIMENT_ON_MALECNS_BODY_OR_SYNAPSE",
+  "ground_truth_mapping": "OFFICIAL_FILE_CELL_TYPE_JOIN_NO_NEW_CROSS_DATASET_BODY_MAPPING_RELEASE_GT_STUDY_CHAIN_NOT_IN_FILE",
+  "conflicts": "PRESERVE_ALL_FIELDS_FLAG_ANY_KNOWN_LABEL_DISAGREEMENT_PRIMARY_EVIDENCE_UNKNOWN_NO_MAJORITY_REPAIR",
+  "receptor_annotation": "receptorType_IS_NOT_ACCEPTED_AS_POSTSYNAPTIC_MOLECULAR_EVIDENCE_WITHOUT_DOCUMENTED_MEANING_AND_TARGET_LOCALIZATION",
+  "receptor_audit": {
+    "status": "POSTSYNAPTIC_RECEPTOR_UNRESOLVED",
+    "accepted_claims": [],
+    "resolution": "NO_SELECTED_BODY_OR_SELECTED_SYNAPSE_SPECIFIC_RECEPTOR_FUNCTION_EVIDENCE_FOUND_IN_BOUNDED_SOURCE_AUDIT",
+    "absence_interpretation": "NOT_PROOF_OF_BIOLOGICAL_RECEPTOR_ABSENCE",
+    "queries": [
+      "IN17A001 INXXX466 IN16B036 receptor glutamate acetylcholine",
+      "DNg100 BDN2 postsynaptic receptor walking Pugliese",
+      "IN17A001 nicotinic GluCl receptor expression",
+      "MaleCNS receptorType ppk25"
+    ],
+    "sources": [
+      {
+        "url": "https://male-cns.janelia.org/download/",
+        "kind": "OFFICIAL_SOURCE_SCHEMA"
+      },
+      {
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12636603/",
+        "doi": "10.1101/2025.10.09.680999",
+        "kind": "MALECNS_METHODS_PREPRINT",
+        "access": "SEARCH_INDEX_METHODS_FULL_PAGE_CHALLENGE"
+      },
+      {
+        "url": "https://doi.org/10.7554/eLife.43701",
+        "kind": "EXTERNAL_CONTEXT_ONLY",
+        "scope": "ADULT_DROSOPHILA_VNC_HEMILINEAGE_FISH_TRANSMITTER_NOT_RECEPTOR_NOT_SELECTED_BODY_MEASUREMENT"
+      },
+      {
+        "url": "https://github.com/flyconnectome/drosophila_neurotransmitters/blob/a9417412c8a70fcc9f80a65ca5bc6064eba07be3/gt_data.csv",
+        "kind": "EXTERNAL_CONTEXT_ONLY",
+        "scope": "CURATED_17A_16B_TYPE_FISH_LACIN_2019_CURRENT_REVISION_NOT_VERIFIED_RELEASE_INPUT"
+      },
+      {
+        "url": "https://github.com/janelia-flyem/flyem-snapshot/blob/4dbfcb9ebcfa52a3660906d472aedc5bfc40d197/flyem_snapshot/inputs/neurotransmitters.py",
+        "kind": "PIPELINE_IMPLEMENTATION_CONTEXT",
+        "scope": "GROUND_TRUTH_JOIN_CELL_TYPE_CONFUSION_BASED_CONFIDENCE_CONSENSUS_OVERRIDES_NOT_VERIFIED_EXACT_RELEASE_CODE"
+      },
+      {
+        "url": "https://doi.org/10.1101/2025.09.12.675944",
+        "kind": "EXTERNAL_CONTEXT_ONLY",
+        "scope": "PUGLIESE_E1_E2_I1_MODEL_LABELS_NOT_MALECNS_SIGNS"
+      },
+      {
+        "url": "https://projects.iq.harvard.edu/files/wilson-lab/files/liuwilson2013a.pdf",
+        "doi": "10.1073/pnas.1220560110",
+        "kind": "EXTERNAL_CONTEXT_ONLY",
+        "scope": "ADULT_DROSOPHILA_ANTENNAL_LOBE_GLUCLa_PHYSIOLOGY_NOT_T1_SELECTED_BODY"
+      }
+    ]
+  },
+  "functional_signs": [
+    "EXCITATORY_SUPPORTED",
+    "INHIBITORY_SUPPORTED",
+    "MODULATORY_SUPPORTED",
+    "MIXED_OR_CONTEXT_DEPENDENT",
+    "UNKNOWN"
+  ],
+  "functional_sign_default": "UNKNOWN",
+  "non_unknown_criteria": "VERIFIED_TARGET_BODY_OR_INDEPENDENT_CORRESPONDENCE_RECEPTOR_EXPRESSION_RELEVANT_SYNAPTIC_COMPARTMENT_LOCALIZATION_AND_DIRECT_MATCHED_PHYSIOLOGICAL_EFFECT_NO_CONFLICT",
+  "v1_sign_assessment": "NO_ACCEPTED_TARGET_SPECIFIC_RECEPTOR_CLAIMS_ALL_SIGNS_UNKNOWN_NEW_EVIDENCE_REQUIRES_NEW_VERSION",
+  "external_inclusion": "PRIMARY_OR_OFFICIAL_WITH_METHOD_SPECIES_SEX_STAGE_PREPARATION_RESOLUTION_NO_BODY_ID_IMPORT_NO_TYPE_TO_SYNAPSE_PROMOTION",
+  "ordering": "NUMERIC_BODY_ID_THEN_PRE_POST_SOURCE_ROW_POSITION_RECORDED",
+  "hashing": "SORTED_COMPACT_JSON_ASCII_ALLOW_NAN_FALSE_LOGICAL_SCHEMA_CONFIG_RESULT_DISTINCT_RAW_SHA256",
+  "verified": "ALL_8_IDENTITIES_SOURCES_15_EDGES_VALID_AND_ALL_SIGNS_MEET_NON_UNKNOWN_CRITERIA",
+  "signs_unknown": "ALL_8_IDENTITIES_OFFICIAL_ROWS_AND_15_EDGES_VALID_NO_TARGET_SPECIFIC_RECEPTOR_EVIDENCE",
+  "partial": "VALID_SOURCE_WITH_MISSING_OR_UNRESOLVED_TRANSMITTER_FIELDS_OR_CONFLICTS",
+  "failure_states": [
+    "SOURCE_PIN_MISMATCH",
+    "MISSING_DUPLICATE_OR_CONFLICTING_IDENTITY",
+    "INVALID_CONFIDENCE",
+    "STRUCTURAL_SCOPE_MISMATCH",
+    "UNSUPPORTED_RECEPTOR_CLAIM",
+    "SEMANTIC_OR_HASH_MISMATCH"
+  ],
+  "random_policy": "NONE",
+  "neural_dynamics": "NOT_IMPLEMENTED",
+  "body_actuation": "NOT_DEFINED",
+  "chronology": "POLICY_DEFINED_AFTER_READ_ONLY_SOURCE_SCHEMA_PREFLIGHT_BEFORE_CLASSIFICATION_IMPLEMENTATION_NO_INDEPENDENT_PROSPECTIVE_TIMESTAMP_CLAIM"
+}

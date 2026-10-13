@@ -1,0 +1,1092 @@
+{
+  "reference": {
+    "artifact_files": {
+      "dynamics.json": {
+        "bytes": 58193411,
+        "sha256": "04623387c16c36ddff45d94d1e25b7935d52ca66951d29d6e89e21b4be3aa65c"
+      }
+    },
+    "artifact_id": "f73fe0f167f5ef2a2a90c4142017f39ee4b9138ecf7ab5347395d79f13fabfb4",
+    "biological_signs": "ALL_15_UNKNOWN",
+    "body_actuation": "NONE",
+    "config_sha256": "a938c56f7eeb7339f69cf29d93d8b495540fc78d6ab9855d9d1d9afda6676e18",
+    "experiment_id": "DNG100_T1_SIGN_UNCERTAINTY_DYNAMICS_V0",
+    "posthoc_diagnostics": {
+      "artifact_id": "f73fe0f167f5ef2a2a90c4142017f39ee4b9138ecf7ab5347395d79f13fabfb4",
+      "body_id": 903216,
+      "cell_metric_comparison": [
+        {
+          "amplitude_relative_difference": 2.011082230390926e-05,
+          "body_id": 800173,
+          "coarse_period_s": 0.0692857142857143,
+          "coarse_spectral_fraction": 0.55242617550873,
+          "coarse_sustained": false,
+          "refined_period_s": 0.0692857142857143,
+          "refined_spectral_fraction": 0.5526911206984477,
+          "refined_sustained": false
+        },
+        {
+          "amplitude_relative_difference": 8.985969865960008e-05,
+          "body_id": 800863,
+          "coarse_period_s": 0.06923076923076922,
+          "coarse_spectral_fraction": 0.6034125364000923,
+          "coarse_sustained": true,
+          "refined_period_s": 0.06923076923076922,
+          "refined_spectral_fraction": 0.6036483418388604,
+          "refined_sustained": true
+        },
+        {
+          "amplitude_relative_difference": 0.0005633061366445702,
+          "body_id": 801884,
+          "coarse_period_s": 0.0693076923076923,
+          "coarse_spectral_fraction": 0.7987109604544868,
+          "coarse_sustained": true,
+          "refined_period_s": 0.0693076923076923,
+          "refined_spectral_fraction": 0.7989400137477828,
+          "refined_sustained": true
+        },
+        {
+          "amplitude_relative_difference": 2.8938616465024047e-05,
+          "body_id": 800288,
+          "coarse_period_s": 0.06914285714285714,
+          "coarse_spectral_fraction": 0.5674784527061215,
+          "coarse_sustained": false,
+          "refined_period_s": 0.06914285714285714,
+          "refined_spectral_fraction": 0.5675039075102978,
+          "refined_sustained": false
+        },
+        {
+          "amplitude_relative_difference": 0.0003035136547331341,
+          "body_id": 903216,
+          "coarse_period_s": 0.06914285714285714,
+          "coarse_spectral_fraction": 0.6183106221440652,
+          "coarse_sustained": true,
+          "refined_period_s": 0.06914285714285714,
+          "refined_spectral_fraction": 0.6184567451185008,
+          "refined_sustained": true
+        },
+        {
+          "amplitude_relative_difference": 0.00010555005926127237,
+          "body_id": 803183,
+          "coarse_period_s": 0.06915384615384615,
+          "coarse_spectral_fraction": 0.8021740225107534,
+          "coarse_sustained": true,
+          "refined_period_s": 0.06915384615384615,
+          "refined_spectral_fraction": 0.8023293177277322,
+          "refined_sustained": true
+        }
+      ],
+      "classification": "POST_HOC_DIAGNOSTIC_NOT_PRIMARY_RESULT",
+      "coarse_dt_s": 0.00025,
+      "coarse_state": 13.96653208362032,
+      "condition": {
+        "point": "double_weight",
+        "role": "primary",
+        "schedule": "constant",
+        "variant": "A_PUBLISHED_LIKE"
+      },
+      "max_error": 0.28221829111123853,
+      "per_component_max_error": {
+        "800173": 0.0501127099095493,
+        "800288": 0.08546300430060327,
+        "800863": 0.16460106923063478,
+        "801884": 0.05736850178013597,
+        "803183": 0.09624677149457916,
+        "903216": 0.28221829111123853
+      },
+      "phase_diagnostics": [
+        {
+          "best_interpolated_lag_s": 1.09999999999994e-05,
+          "diagnostic_lag_grid_s": [
+            -0.0002,
+            0.0002,
+            1e-06
+          ],
+          "interpretation": "Post-hoc interpolation alignment only; no shift applied to primary comparison or artifact.",
+          "shifted_rms": 0.010512048253517373,
+          "side": "L",
+          "unshifted_rms": 0.01467314844484243,
+          "window_s": [
+            1.5,
+            1.999
+          ]
+        },
+        {
+          "best_interpolated_lag_s": 5.399999999999928e-05,
+          "diagnostic_lag_grid_s": [
+            -0.0002,
+            0.0002,
+            1e-06
+          ],
+          "interpretation": "Post-hoc interpolation alignment only; no shift applied to primary comparison or artifact.",
+          "shifted_rms": 0.010392340032236266,
+          "side": "R",
+          "unshifted_rms": 0.04639104917886359,
+          "window_s": [
+            1.5,
+            1.999
+          ]
+        }
+      ],
+      "refined_dt_s": 0.000125,
+      "refined_state": 13.684313792509082,
+      "time_and_input_alignment": "EXACT",
+      "time_s": 1.922
+    },
+    "preregistration_history": {
+      "adopted_id": "80e57ffdc0756c1afdbd57db6d066bc4e99b250dcd9ec1a9b112494be5a59a2b",
+      "adopted_path": "docs/science/dng100_t1_dynamics_preregistration.json",
+      "difference": "Only metrics.residual_time_semantics added before model implementation and sweep; defines final residual using last completed interval input. No equation, sign, parameter, tolerance, grid or outcome change.",
+      "independently_verified_prospective_timestamp": false,
+      "initial_complete_definition": {
+        "assumption_classification": "COUNTERFACTUAL_MODEL_ASSUMPTION",
+        "biological_sign_status": "UNKNOWN_FOR_ALL_15_CONNECTIONS",
+        "controls": "Zero drive and source_off zero state exact zero; sham identical; feedback_disabled no recurrence; pulse tests postwithdrawal activity; uniform initial perturbation; paired dt refinement each primary; sides measured separately, no coupling fabricated.",
+        "dataset_uuid": "4b2087c0fbe046bfaf0d60bc970e3e5d",
+        "design": "5 points x 6 variants x 3 schedules x (primary,half_dt,initial_2)=270; central A sham constant repeat, source_off constant, feedback_disabled each of 3 schedules =5; total275",
+        "duration_s": 2.0,
+        "edges": [
+          {
+            "annotation_sha256": "2177e246113e4cfbf1e7772ec37c6da1955ff22e8063d0b1f833101f99a9a3b2",
+            "confidence_policy": "SERVER_STANDARD_WEIGHT_NO_ADDITIONAL_SYNAPSE_FILTER",
+            "dataset": "male-cns:v1.0",
+            "post": 800288,
+            "post_anatomy": {
+              "somaNeuromere": "T1",
+              "somaSide": "R",
+              "superclass": "vnc_intrinsic",
+              "type": "IN17A001"
+            },
+            "pre": 10045,
+            "pre_anatomy": {
+              "somaNeuromere": null,
+              "somaSide": "L",
+              "superclass": "descending_neuron",
+              "type": "DNg100"
+            },
+            "roi_counts": {
+              "LegNp(T1)(R)": {
+                "post": 96
+              },
+              "VNC": {
+                "post": 100
+              },
+              "VNC-unspecified": {
+                "post": 4
+              }
+            },
+            "source_references": [
+              {
+                "file": "prior_source.json",
+                "query": "outputs",
+                "row": 737,
+                "row_sha256": "64f4451fbad2f299732f303d7fa437e7ffeea04529688c023c0dcf9bb51f38ea"
+              },
+              {
+                "file": "source.json",
+                "query": "dng_intermediate_inputs",
+                "row": 1,
+                "row_sha256": "64f4451fbad2f299732f303d7fa437e7ffeea04529688c023c0dcf9bb51f38ea"
+              }
+            ],
+            "synapse_count": 100
+          },
+          {
+            "annotation_sha256": "2177e246113e4cfbf1e7772ec37c6da1955ff22e8063d0b1f833101f99a9a3b2",
+            "confidence_policy": "SERVER_STANDARD_WEIGHT_NO_ADDITIONAL_SYNAPSE_FILTER",
+            "dataset": "male-cns:v1.0",
+            "post": 800173,
+            "post_anatomy": {
+              "somaNeuromere": "T1",
+              "somaSide": "L",
+              "superclass": "vnc_intrinsic",
+              "type": "IN17A001"
+            },
+            "pre": 10056,
+            "pre_anatomy": {
+              "somaNeuromere": null,
+              "somaSide": "R",
+              "superclass": "descending_neuron",
+              "type": "DNg100"
+            },
+            "roi_counts": {
+              "LegNp(T1)(L)": {
+                "post": 155
+              },
+              "VNC": {
+                "post": 155
+              }
+            },
+            "source_references": [
+              {
+                "file": "prior_source.json",
+                "query": "outputs",
+                "row": 2528,
+                "row_sha256": "56acfee6b029c2d333e6944ee1a6b68bc1b240d92c34fcea8908ad6a43601ef8"
+              },
+              {
+                "file": "source.json",
+                "query": "dng_intermediate_inputs",
+                "row": 9,
+                "row_sha256": "56acfee6b029c2d333e6944ee1a6b68bc1b240d92c34fcea8908ad6a43601ef8"
+              }
+            ],
+            "synapse_count": 155
+          },
+          {
+            "annotation_sha256": "2177e246113e4cfbf1e7772ec37c6da1955ff22e8063d0b1f833101f99a9a3b2",
+            "confidence_policy": "SERVER_STANDARD_WEIGHT_NO_ADDITIONAL_SYNAPSE_FILTER",
+            "dataset": "male-cns:v1.0",
+            "post": 800863,
+            "post_anatomy": {
+              "somaNeuromere": "T1",
+              "somaSide": "L",
+              "superclass": "vnc_intrinsic",
+              "type": "INXXX466"
+            },
+            "pre": 10056,
+            "pre_anatomy": {
+              "somaNeuromere": null,
+              "somaSide": "R",
+              "superclass": "descending_neuron",
+              "type": "DNg100"
+            },
+            "roi_counts": {
+              "LegNp(T1)(L)": {
+                "post": 1
+              },
+              "VNC": {
+                "post": 1
+              }
+            },
+            "source_references": [
+              {
+                "file": "prior_source.json",
+                "query": "outputs",
+                "row": 2622,
+                "row_sha256": "dfd66688b1f40886fd91ebc30431b30b9b6546524702ea8a8c7f48d1a9f09ab0"
+              },
+              {
+                "file": "source.json",
+                "query": "dng_intermediate_inputs",
+                "row": 10,
+                "row_sha256": "dfd66688b1f40886fd91ebc30431b30b9b6546524702ea8a8c7f48d1a9f09ab0"
+              }
+            ],
+            "synapse_count": 1
+          },
+          {
+            "annotation_sha256": "2177e246113e4cfbf1e7772ec37c6da1955ff22e8063d0b1f833101f99a9a3b2",
+            "confidence_policy": "SERVER_STANDARD_WEIGHT_NO_ADDITIONAL_SYNAPSE_FILTER",
+            "dataset": "male-cns:v1.0",
+            "post": 800863,
+            "post_anatomy": {
+              "somaNeuromere": "T1",
+              "somaSide": "L",
+              "superclass": "vnc_intrinsic",
+              "type": "INXXX466"
+            },
+            "pre": 800173,
+            "pre_anatomy": {
+              "somaNeuromere": "T1",
+              "somaSide": "L",
+              "superclass": "vnc_intrinsic",
+              "type": "IN17A001"
+            },
+            "roi_counts": {
+              "LegNp(T1)(L)": {
+                "post": 465
+              },
+              "VNC": {
+                "post": 465
+              }
+            },
+            "source_references": [
+              {
+                "file": "source.json",
+                "query": "induced",
+                "row": 6,
+                "row_sha256": "728d0ff5d34908ad8db90067334762181057177542b93bcc1ca01c8f6a9f7e65"
+              },
+              {
+                "file": "source.json",
+                "query": "dng_intermediate_inputs",
+                "row": 519,
+                "row_sha256": "728d0ff5d34908ad8db90067334762181057177542b93bcc1ca01c8f6a9f7e65"
+              },
+              {
+                "file": "source.json",
+                "query": "primary_outputs",
+                "row": 70,
+                "row_sha256": "728d0ff5d34908ad8db90067334762181057177542b93bcc1ca01c8f6a9f7e65"
+              }
+            ],
+            "synapse_count": 465
+          },
+          {
+            "annotation_sha256": "2177e246113e4cfbf1e7772ec37c6da1955ff22e8063d0b1f833101f99a9a3b2",
+            "confidence_policy": "SERVER_STANDARD_WEIGHT_NO_ADDITIONAL_SYNAPSE_FILTER",
+            "dataset": "male-cns:v1.0",
+            "post": 801884,
+            "post_anatomy": {
+              "somaNeuromere": "T1",
+              "somaSide": "L",
+              "superclass": "vnc_intrinsic",
+              "type": "IN16B036"
+            },
+            "pre": 800173,
+            "pre_anatomy": {
+              "somaNeuromere": "T1",
+              "somaSide": "L",
+              "superclass": "vnc_intrinsic",
+              "type": "IN17A001"
+            },
+            "roi_counts": {
+              "LegNp(T1)(L)": {
+                "post": 6
+              },
+              "VNC": {
+                "post": 6
+              }
+            },
+            "source_references": [
+              {
+                "file": "source.json",
+                "query": "induced",
+                "row": 7,
+                "row_sha256": "af25a7fecf3429b4ca6c26c554aca2947a5e5cb96bba9c80d499c277940df7bc"
+              },
+              {
+                "file": "source.json",
+                "query": "dng_intermediate_inputs",
+                "row": 520,
+                "row_sha256": "af25a7fecf3429b4ca6c26c554aca2947a5e5cb96bba9c80d499c277940df7bc"
+              },
+              {
+                "file": "source.json",
+                "query": "primary_outputs",
+                "row": 92,
+                "row_sha256": "af25a7fecf3429b4ca6c26c554aca2947a5e5cb96bba9c80d499c277940df7bc"
+              }
+            ],
+            "synapse_count": 6
+          },
+          {
+            "annotation_sha256": "2177e246113e4cfbf1e7772ec37c6da1955ff22e8063d0b1f833101f99a9a3b2",
+            "confidence_policy": "SERVER_STANDARD_WEIGHT_NO_ADDITIONAL_SYNAPSE_FILTER",
+            "dataset": "male-cns:v1.0",
+            "post": 803183,
+            "post_anatomy": {
+              "somaNeuromere": "T1",
+              "somaSide": "R",
+              "superclass": "vnc_intrinsic",
+              "type": "IN16B036"
+            },
+            "pre": 800288,
+            "pre_anatomy": {
+              "somaNeuromere": "T1",
+              "somaSide": "R",
+              "superclass": "vnc_intrinsic",
+              "type": "IN17A001"
+            },
+            "roi_counts": {
+              "LegNp(T1)(R)": {
+                "post": 1
+              },
+              "VNC": {
+                "post": 1
+              }
+            },
+            "source_references": [
+              {
+                "file": "source.json",
+                "query": "induced",
+                "row": 8,
+                "row_sha256": "b2a8ef49b3c0ea8c9f8594647ea6a88d8d06dafad9dc0bcd281dbc3460306f5f"
+              },
+              {
+                "file": "source.json",
+                "query": "dng_intermediate_inputs",
+                "row": 554,
+                "row_sha256": "b2a8ef49b3c0ea8c9f8594647ea6a88d8d06dafad9dc0bcd281dbc3460306f5f"
+              },
+              {
+                "file": "source.json",
+                "query": "primary_outputs",
+                "row": 454,
+                "row_sha256": "b2a8ef49b3c0ea8c9f8594647ea6a88d8d06dafad9dc0bcd281dbc3460306f5f"
+              }
+            ],
+            "synapse_count": 1
+          },
+          {
+            "annotation_sha256": "2177e246113e4cfbf1e7772ec37c6da1955ff22e8063d0b1f833101f99a9a3b2",
+            "confidence_policy": "SERVER_STANDARD_WEIGHT_NO_ADDITIONAL_SYNAPSE_FILTER",
+            "dataset": "male-cns:v1.0",
+            "post": 903216,
+            "post_anatomy": {
+              "somaNeuromere": "T1",
+              "somaSide": "R",
+              "superclass": "vnc_intrinsic",
+              "type": "INXXX466"
+            },
+            "pre": 800288,
+            "pre_anatomy": {
+              "somaNeuromere": "T1",
+              "somaSide": "R",
+              "superclass": "vnc_intrinsic",
+              "type": "IN17A001"
+            },
+            "roi_counts": {
+              "LegNp(T1)(R)": {
+                "post": 328
+              },
+              "VNC": {
+                "post": 328
+              }
+            },
+            "source_references": [
+              {
+                "file": "source.json",
+                "query": "induced",
+                "row": 9,
+                "row_sha256": "a90f2a981adfc3c42c9b48159d6699ea103301bad2587da0d3393e291e0fe7f5"
+              },
+              {
+                "file": "source.json",
+                "query": "dng_intermediate_inputs",
+                "row": 555,
+                "row_sha256": "a90f2a981adfc3c42c9b48159d6699ea103301bad2587da0d3393e291e0fe7f5"
+              },
+              {
+                "file": "source.json",
+                "query": "primary_outputs",
+                "row": 590,
+                "row_sha256": "a90f2a981adfc3c42c9b48159d6699ea103301bad2587da0d3393e291e0fe7f5"
+              }
+            ],
+            "synapse_count": 328
+          },
+          {
+            "annotation_sha256": "2177e246113e4cfbf1e7772ec37c6da1955ff22e8063d0b1f833101f99a9a3b2",
+            "confidence_policy": "SERVER_STANDARD_WEIGHT_NO_ADDITIONAL_SYNAPSE_FILTER",
+            "dataset": "male-cns:v1.0",
+            "post": 800173,
+            "post_anatomy": {
+              "somaNeuromere": "T1",
+              "somaSide": "L",
+              "superclass": "vnc_intrinsic",
+              "type": "IN17A001"
+            },
+            "pre": 800863,
+            "pre_anatomy": {
+              "somaNeuromere": "T1",
+              "somaSide": "L",
+              "superclass": "vnc_intrinsic",
+              "type": "INXXX466"
+            },
+            "roi_counts": {
+              "LegNp(T1)(L)": {
+                "post": 11
+              },
+              "VNC": {
+                "post": 11
+              }
+            },
+            "source_references": [
+              {
+                "file": "source.json",
+                "query": "induced",
+                "row": 10,
+                "row_sha256": "6facd6ed1a299f723379e92a7a1855cef093748ab056b0abe438b60e9bd397a4"
+              },
+              {
+                "file": "source.json",
+                "query": "dng_intermediate_inputs",
+                "row": 758,
+                "row_sha256": "6facd6ed1a299f723379e92a7a1855cef093748ab056b0abe438b60e9bd397a4"
+              },
+              {
+                "file": "source.json",
+                "query": "primary_outputs",
+                "row": 713,
+                "row_sha256": "6facd6ed1a299f723379e92a7a1855cef093748ab056b0abe438b60e9bd397a4"
+              }
+            ],
+            "synapse_count": 11
+          },
+          {
+            "annotation_sha256": "2177e246113e4cfbf1e7772ec37c6da1955ff22e8063d0b1f833101f99a9a3b2",
+            "confidence_policy": "SERVER_STANDARD_WEIGHT_NO_ADDITIONAL_SYNAPSE_FILTER",
+            "dataset": "male-cns:v1.0",
+            "post": 801884,
+            "post_anatomy": {
+              "somaNeuromere": "T1",
+              "somaSide": "L",
+              "superclass": "vnc_intrinsic",
+              "type": "IN16B036"
+            },
+            "pre": 800863,
+            "pre_anatomy": {
+              "somaNeuromere": "T1",
+              "somaSide": "L",
+              "superclass": "vnc_intrinsic",
+              "type": "INXXX466"
+            },
+            "roi_counts": {
+              "LegNp(T1)(L)": {
+                "post": 38
+              },
+              "VNC": {
+                "post": 38
+              }
+            },
+            "source_references": [
+              {
+                "file": "source.json",
+                "query": "induced",
+                "row": 11,
+                "row_sha256": "370464a3d44ed6a77c9f68160e46696c48da5f4368b8a36bd7ae3edf70e1be3b"
+              },
+              {
+                "file": "source.json",
+                "query": "dng_intermediate_inputs",
+                "row": 759,
+                "row_sha256": "370464a3d44ed6a77c9f68160e46696c48da5f4368b8a36bd7ae3edf70e1be3b"
+              },
+              {
+                "file": "source.json",
+                "query": "primary_outputs",
+                "row": 750,
+                "row_sha256": "370464a3d44ed6a77c9f68160e46696c48da5f4368b8a36bd7ae3edf70e1be3b"
+              }
+            ],
+            "synapse_count": 38
+          },
+          {
+            "annotation_sha256": "2177e246113e4cfbf1e7772ec37c6da1955ff22e8063d0b1f833101f99a9a3b2",
+            "confidence_policy": "SERVER_STANDARD_WEIGHT_NO_ADDITIONAL_SYNAPSE_FILTER",
+            "dataset": "male-cns:v1.0",
+            "post": 800173,
+            "post_anatomy": {
+              "somaNeuromere": "T1",
+              "somaSide": "L",
+              "superclass": "vnc_intrinsic",
+              "type": "IN17A001"
+            },
+            "pre": 801884,
+            "pre_anatomy": {
+              "somaNeuromere": "T1",
+              "somaSide": "L",
+              "superclass": "vnc_intrinsic",
+              "type": "IN16B036"
+            },
+            "roi_counts": {
+              "LegNp(T1)(L)": {
+                "post": 525
+              },
+              "VNC": {
+                "post": 526
+              },
+              "VNC-unspecified": {
+                "post": 1
+              }
+            },
+            "source_references": [
+              {
+                "file": "source.json",
+                "query": "induced",
+                "row": 20,
+                "row_sha256": "ad4c5fe817d5662baaa120292c9941592733768a34c286e4507a7432d97d99eb"
+              },
+              {
+                "file": "source.json",
+                "query": "primary_outputs",
+                "row": 995,
+                "row_sha256": "ad4c5fe817d5662baaa120292c9941592733768a34c286e4507a7432d97d99eb"
+              }
+            ],
+            "synapse_count": 526
+          },
+          {
+            "annotation_sha256": "2177e246113e4cfbf1e7772ec37c6da1955ff22e8063d0b1f833101f99a9a3b2",
+            "confidence_policy": "SERVER_STANDARD_WEIGHT_NO_ADDITIONAL_SYNAPSE_FILTER",
+            "dataset": "male-cns:v1.0",
+            "post": 800863,
+            "post_anatomy": {
+              "somaNeuromere": "T1",
+              "somaSide": "L",
+              "superclass": "vnc_intrinsic",
+              "type": "INXXX466"
+            },
+            "pre": 801884,
+            "pre_anatomy": {
+              "somaNeuromere": "T1",
+              "somaSide": "L",
+              "superclass": "vnc_intrinsic",
+              "type": "IN16B036"
+            },
+            "roi_counts": {
+              "LegNp(T1)(L)": {
+                "post": 121
+              },
+              "VNC": {
+                "post": 121
+              }
+            },
+            "source_references": [
+              {
+                "file": "source.json",
+                "query": "induced",
+                "row": 21,
+                "row_sha256": "df42ad17ed2197f5abbe6a2c009bd3ff2e93c9173a9155b9787cb436bb8e8878"
+              },
+              {
+                "file": "source.json",
+                "query": "primary_outputs",
+                "row": 1015,
+                "row_sha256": "df42ad17ed2197f5abbe6a2c009bd3ff2e93c9173a9155b9787cb436bb8e8878"
+              }
+            ],
+            "synapse_count": 121
+          },
+          {
+            "annotation_sha256": "2177e246113e4cfbf1e7772ec37c6da1955ff22e8063d0b1f833101f99a9a3b2",
+            "confidence_policy": "SERVER_STANDARD_WEIGHT_NO_ADDITIONAL_SYNAPSE_FILTER",
+            "dataset": "male-cns:v1.0",
+            "post": 800288,
+            "post_anatomy": {
+              "somaNeuromere": "T1",
+              "somaSide": "R",
+              "superclass": "vnc_intrinsic",
+              "type": "IN17A001"
+            },
+            "pre": 803183,
+            "pre_anatomy": {
+              "somaNeuromere": "T1",
+              "somaSide": "R",
+              "superclass": "vnc_intrinsic",
+              "type": "IN16B036"
+            },
+            "roi_counts": {
+              "LegNp(T1)(R)": {
+                "post": 439
+              },
+              "VNC": {
+                "post": 439
+              }
+            },
+            "source_references": [
+              {
+                "file": "source.json",
+                "query": "induced",
+                "row": 26,
+                "row_sha256": "4468c018c648cfa223a335a69ce7b5942c52e0e25448873ac50f87e9a06c512d"
+              },
+              {
+                "file": "source.json",
+                "query": "primary_outputs",
+                "row": 1253,
+                "row_sha256": "4468c018c648cfa223a335a69ce7b5942c52e0e25448873ac50f87e9a06c512d"
+              }
+            ],
+            "synapse_count": 439
+          },
+          {
+            "annotation_sha256": "2177e246113e4cfbf1e7772ec37c6da1955ff22e8063d0b1f833101f99a9a3b2",
+            "confidence_policy": "SERVER_STANDARD_WEIGHT_NO_ADDITIONAL_SYNAPSE_FILTER",
+            "dataset": "male-cns:v1.0",
+            "post": 903216,
+            "post_anatomy": {
+              "somaNeuromere": "T1",
+              "somaSide": "R",
+              "superclass": "vnc_intrinsic",
+              "type": "INXXX466"
+            },
+            "pre": 803183,
+            "pre_anatomy": {
+              "somaNeuromere": "T1",
+              "somaSide": "R",
+              "superclass": "vnc_intrinsic",
+              "type": "IN16B036"
+            },
+            "roi_counts": {
+              "LegNp(T1)(R)": {
+                "post": 96
+              },
+              "VNC": {
+                "post": 96
+              }
+            },
+            "source_references": [
+              {
+                "file": "source.json",
+                "query": "induced",
+                "row": 27,
+                "row_sha256": "7359d08cae8fc2e2a86605ebf0d0cc1c6cd576a17f3455ade0f0b8ce2818c00c"
+              },
+              {
+                "file": "source.json",
+                "query": "primary_outputs",
+                "row": 1405,
+                "row_sha256": "7359d08cae8fc2e2a86605ebf0d0cc1c6cd576a17f3455ade0f0b8ce2818c00c"
+              }
+            ],
+            "synapse_count": 96
+          },
+          {
+            "annotation_sha256": "2177e246113e4cfbf1e7772ec37c6da1955ff22e8063d0b1f833101f99a9a3b2",
+            "confidence_policy": "SERVER_STANDARD_WEIGHT_NO_ADDITIONAL_SYNAPSE_FILTER",
+            "dataset": "male-cns:v1.0",
+            "post": 800288,
+            "post_anatomy": {
+              "somaNeuromere": "T1",
+              "somaSide": "R",
+              "superclass": "vnc_intrinsic",
+              "type": "IN17A001"
+            },
+            "pre": 903216,
+            "pre_anatomy": {
+              "somaNeuromere": "T1",
+              "somaSide": "R",
+              "superclass": "vnc_intrinsic",
+              "type": "INXXX466"
+            },
+            "roi_counts": {
+              "LegNp(T1)(R)": {
+                "post": 5
+              },
+              "VNC": {
+                "post": 5
+              }
+            },
+            "source_references": [
+              {
+                "file": "source.json",
+                "query": "induced",
+                "row": 32,
+                "row_sha256": "a6e83c49095ee22de3f5978338d181d7349ca19fa024b664ca2f23f9970f8a4a"
+              },
+              {
+                "file": "source.json",
+                "query": "primary_outputs",
+                "row": 1475,
+                "row_sha256": "a6e83c49095ee22de3f5978338d181d7349ca19fa024b664ca2f23f9970f8a4a"
+              }
+            ],
+            "synapse_count": 5
+          },
+          {
+            "annotation_sha256": "2177e246113e4cfbf1e7772ec37c6da1955ff22e8063d0b1f833101f99a9a3b2",
+            "confidence_policy": "SERVER_STANDARD_WEIGHT_NO_ADDITIONAL_SYNAPSE_FILTER",
+            "dataset": "male-cns:v1.0",
+            "post": 803183,
+            "post_anatomy": {
+              "somaNeuromere": "T1",
+              "somaSide": "R",
+              "superclass": "vnc_intrinsic",
+              "type": "IN16B036"
+            },
+            "pre": 903216,
+            "pre_anatomy": {
+              "somaNeuromere": "T1",
+              "somaSide": "R",
+              "superclass": "vnc_intrinsic",
+              "type": "INXXX466"
+            },
+            "roi_counts": {
+              "LegNp(T1)(R)": {
+                "post": 27
+              },
+              "VNC": {
+                "post": 27
+              }
+            },
+            "source_references": [
+              {
+                "file": "source.json",
+                "query": "induced",
+                "row": 33,
+                "row_sha256": "cf79f766ff5389213e5a0ac98304e55963c8c94d9d975653dbc93cf65cad9924"
+              },
+              {
+                "file": "source.json",
+                "query": "primary_outputs",
+                "row": 1532,
+                "row_sha256": "cf79f766ff5389213e5a0ac98304e55963c8c94d9d975653dbc93cf65cad9924"
+              }
+            ],
+            "synapse_count": 27
+          }
+        ],
+        "experiment_id": "DNG100_T1_SIGN_UNCERTAINTY_DYNAMICS_V0",
+        "integration_dt_s": 0.00025,
+        "limitations": [
+          "NO_BIOLOGICAL_SIGN_IDENTIFICATION",
+          "NO_VALIDATED_CPG",
+          "NO_WALKING_OR_BODY_STATE",
+          "NO_MOTOR_OUTPUT",
+          "NO_FULL_NETWORK_REPRODUCTION",
+          "FINITE_WINDOW_AND_BOUNDED_PARAMETER_GRID",
+          "NO_INDEPENDENT_PROSPECTIVE_TIMESTAMP_CLAIM"
+        ],
+        "metrics": {
+          "amplitude_floor": 0.0001,
+          "autocorrelation_min": 0.7,
+          "classification": "All gates on a cell required for SUSTAINED_MODEL_OSCILLATION; all cells small tail amplitude and residual -> STABLE_FIXED_POINT; nonrhythmic decay with tail/early amplitude<.5 -> TRANSIENT; otherwise INCONCLUSIVE; nonfinite/outside invariant bounds -> NUMERICAL_DIVERGENCE",
+          "fixed_residual_max": 0.01,
+          "half_amplitude_ratio_max": 1.25,
+          "half_amplitude_ratio_min": 0.8,
+          "justification": "Engineering detector, not biological thresholds: five cycles permit period CV; tail split rejects decaying overshoot; PSD and lag recurrence cross-check peaks. Amplitude floor is 5e-7 of source cap. Observable periods limited by tail/window and sampling. No claim outside that band. Refinement .1% cap and5% metrics are declared numerical tolerances.",
+          "min_complete_cycles": 5,
+          "period_cv_max": 0.1,
+          "period_max_s": 0.2,
+          "period_min_s": 0.01,
+          "refinement_amplitude_relative_max": 0.05,
+          "refinement_max_error_cap_fraction": 0.001,
+          "refinement_period_relative_max": 0.05,
+          "spectral_fraction_min": 0.6,
+          "tail_start_s": 1.0
+        },
+        "model": {
+          "a": 1.0,
+          "b": 0.03,
+          "equation": "tau*dR_i/dt = max(200*tanh((a/200)*(sum_j W_ij*R_j + sum_d B_id*D_d(t)-theta)),0)-R_i",
+          "initial": "ZERO or uniform 2 model-rate units (0.01*cap) as declared perturbation",
+          "input": "Both DNg100 states held externally at 20 model-rate units when active; 0.1*source cap, engineering amplitude not fitted or generated by brain",
+          "matrix_convention": "ROW_POST_COLUMN_PRE",
+          "noise": "NONE",
+          "numerics": "FLOAT64_FIXED_STEP_RK4_SIMULTANEOUS_COUPLED_STATES; sample-aligned input held per interval; no source NaN-to-zero or clipping",
+          "rate_cap": 200.0,
+          "seed": null,
+          "size_scaling": "NONE_UNIFORM_PARAMETERS; source per-neuron relative-size scaling omitted, not claiming exact paper reproduction",
+          "state_units": "SOURCE_MODEL_RATE_HZ_PROXY_NOT_MEASURED_FIRING_RATE",
+          "tau_s": 0.02,
+          "theta": 7.5,
+          "weights": "W_ij=b*structural_count(pre=j,post=i)*counterfactual_source_sign; same for B; no count normalization"
+        },
+        "motif_artifact_id": "baae20599455c2a7acb3271e6eeb6b73326d17185b6e705022b74818ff0f8934",
+        "neurons": [
+          800173,
+          800863,
+          801884,
+          800288,
+          903216,
+          803183
+        ],
+        "nt_artifact_id": "38dc667d74acc3c6691b95659f38a1beab2f6208b5c592341f024f61d31bc526",
+        "parameter_points": [
+          {
+            "b": 0.03,
+            "id": "central",
+            "tau_s": 0.02
+          },
+          {
+            "b": 0.015,
+            "id": "half_weight",
+            "tau_s": 0.02
+          },
+          {
+            "b": 0.06,
+            "id": "double_weight",
+            "tau_s": 0.02
+          },
+          {
+            "b": 0.03,
+            "id": "short_tau",
+            "tau_s": 0.018
+          },
+          {
+            "b": 0.03,
+            "id": "long_tau",
+            "tau_s": 0.022
+          }
+        ],
+        "parameter_rationale": "b factor-two engineering sensitivity around source 0.03; tau mean +/- source one SD .002. Gain/threshold/cap fixed source means: their uncertainty acknowledged, not exhaustively swept. No random parameter sampling.",
+        "postsynaptic_review_id": "4c29057f3a069e26ac5604754c304408c48bc511a564c3dc5595e7ac305cacf9",
+        "publication": {
+          "commit": "10e7661bf414ba7b4c2edf795cd36d0f878c17c0",
+          "doi": "10.1101/2025.09.12.675944",
+          "files": {
+            "configs/experiment/DNg100_Stim.yaml": {
+              "sha256": "67be92277a234e0dbc4af64069d5e4a711d47067e35ccffc1c256dd4a1b2017d",
+              "url": "https://raw.githubusercontent.com/smpuglie/Pugliese_2026/10e7661bf414ba7b4c2edf795cd36d0f878c17c0/configs/experiment/DNg100_Stim.yaml"
+            },
+            "configs/experiment/DNg100_Stim_Sweep.yaml": {
+              "sha256": "fc22b3c62583e27abf35c0d24a3538da91e47a1b151c80a25abf751408329abc",
+              "url": "https://raw.githubusercontent.com/smpuglie/Pugliese_2026/10e7661bf414ba7b4c2edf795cd36d0f878c17c0/configs/experiment/DNg100_Stim_Sweep.yaml"
+            },
+            "configs/neuron_params/default.yaml": {
+              "sha256": "b63a37b84e056035d638bb8a36baf53e199d37feb4ddca9d044af3c521247298",
+              "url": "https://raw.githubusercontent.com/smpuglie/Pugliese_2026/10e7661bf414ba7b4c2edf795cd36d0f878c17c0/configs/neuron_params/default.yaml"
+            },
+            "configs/sim/default.yaml": {
+              "sha256": "29ed6f0d860276a1ff5136cf798b31997f8ec388dabf5a268ef566ae25c1b02a",
+              "url": "https://raw.githubusercontent.com/smpuglie/Pugliese_2026/10e7661bf414ba7b4c2edf795cd36d0f878c17c0/configs/sim/default.yaml"
+            },
+            "src/simulation/vnc_sim.py": {
+              "sha256": "58518185d43cd1a723f4ad1278753bc6e54fc5c086575206e82e493e9d960a5c",
+              "url": "https://raw.githubusercontent.com/smpuglie/Pugliese_2026/10e7661bf414ba7b4c2edf795cd36d0f878c17c0/src/simulation/vnc_sim.py"
+            },
+            "src/utils/sim_utils.py": {
+              "sha256": "c8f58e2d77c50325d785c6d707ddba6608e774cbfd10203ed3488ea3320b6653",
+              "url": "https://raw.githubusercontent.com/smpuglie/Pugliese_2026/10e7661bf414ba7b4c2edf795cd36d0f878c17c0/src/utils/sim_utils.py"
+            }
+          },
+          "repository": "https://github.com/smpuglie/Pugliese_2026",
+          "version": "2026_04_30_REVISED_PREPRINT",
+          "xml_sha256": "8601d675a0284d631dfbd65bae9e834c3332e0f11808b81a5136ff2d75078143"
+        },
+        "question": "Sensitivity of six-neuron model activity to counterfactual signs; not identification of physiological signs or a biological CPG.",
+        "refinement_dt_s": 0.000125,
+        "reproducibility": "Canonical sorted compact ASCII JSON; complete config and sampled states+input+metrics; RK4 integration replay from config; result and logical identity; Python/NumPy+implementation hashes; external content-addressed atomic outputs",
+        "sample_dt_s": 0.001,
+        "schedule_semantics": "[start,end) old interval drive; boundary telemetry at t=end has withdrawn drive; no periodic forcing.",
+        "schedules": {
+          "constant": [
+            0.02,
+            2.0
+          ],
+          "pulse": [
+            0.02,
+            0.5
+          ],
+          "zero": [
+            0.0,
+            0.0
+          ]
+        },
+        "schema": "dng100_t1_sign_uncertainty_preregistration_v0",
+        "sign_limitations": "Grouped-source hypotheses cover remaining ACh and DNg100 sign uncertainty but not 2^15 independent-edge possibilities; no full biological sign identifiability or robust CPG claim. C disables both I1 outgoing edge pairs, not anatomical ablation.",
+        "sign_variants": {
+          "A_PUBLISHED_LIKE": {
+            "DNg100": 1,
+            "E1": 1,
+            "E2": 1,
+            "I1": -1
+          },
+          "B_I1_POSITIVE": {
+            "DNg100": 1,
+            "E1": 1,
+            "E2": 1,
+            "I1": 1
+          },
+          "C_I1_ZERO": {
+            "DNg100": 1,
+            "E1": 1,
+            "E2": 1,
+            "I1": 0
+          },
+          "D_E1_NEGATIVE": {
+            "DNg100": 1,
+            "E1": -1,
+            "E2": 1,
+            "I1": -1
+          },
+          "D_E2_NEGATIVE": {
+            "DNg100": 1,
+            "E1": 1,
+            "E2": -1,
+            "I1": -1
+          },
+          "D_SOURCE_NEGATIVE": {
+            "DNg100": -1,
+            "E1": 1,
+            "E2": 1,
+            "I1": -1
+          }
+        },
+        "source_commit": "a5d6eba840486439de847138133ad17ffc59c0a2",
+        "sources": [
+          10045,
+          10056
+        ],
+        "stop_conditions": [
+          "SOURCE_AUTHORITY_CONTRADICTION",
+          "UNVERIFIABLE_MODEL_METHOD",
+          "FROZEN_KERNEL_CHANGE",
+          "FAILED_ANALYTIC_NUMERICAL_TEST",
+          "FROZEN_HASH_CHANGE",
+          "PARAMETER_TUNING_FOR_RHYTHM"
+        ],
+        "termination": "Complete2s or immediate numerical divergence; no silent clamps, tuning, retries or parameter replacement"
+      },
+      "initial_id": "13e9b2da6c2acf23201ac944fd651f6c4ba24413e615f8c07249e2c34cc37bb2"
+    },
+    "reproduction": "Use existing generate/replay CLI with genuine pinned authorities and these source files. Do not overwrite original output. Reference logical hash is canonical_sha256(reference); distinct from raw file checksum.",
+    "result_sha256": "ec37fee0a6097d98f94560a3e17986872e7ac0ecb1a23c585385c3a13ea5f225",
+    "schema": "dng100_t1_dynamics_reference_v0",
+    "software": {
+      "implementation_sha256": {
+        "dng100_t1_counterfactual_dynamics.py": "5955af5d7b682dc3a86b6aa59cdb1d401e8d2baddbbbfcf3107e1d661499a4a3",
+        "dng100_t1_dynamics_sensitivity.py": "190261634ebfe4bfd30db0bba83a367d92ff2a35ff175345e39d5ed76dcd0ebc"
+      },
+      "numpy": "2.5.3",
+      "python": "3.12.3",
+      "source_parent_commit": "a5d6eba840486439de847138133ad17ffc59c0a2"
+    },
+    "source_parent_commit": "a5d6eba840486439de847138133ad17ffc59c0a2",
+    "validation": {
+      "actual_artifact_negative_controls": "Recomputed hashes with altered initial state and body-actuation metadata rejected. POST_HOC_VALIDATION_NEGATIVE_CONTROL, original untouched.",
+      "boundaries_per_run": 2001,
+      "classification_counts": {
+        "STABLE_FIXED_POINT": 256,
+        "SUSTAINED_MODEL_OSCILLATION": 16,
+        "TRANSIENT": 3
+      },
+      "evidence_logs": {
+        "frozen-integrity.log": {
+          "bytes": 875,
+          "sha256": "0b7080c72039f56c9208992cbc463be915adbc1e7b60143a750dc08a95801ac9"
+        },
+        "full-pytest.log": {
+          "bytes": 9073,
+          "sha256": "4efeb22903c16286db2ab402312935b1380d99ecd7162124493be1bc74da8862"
+        },
+        "generate.log": {
+          "bytes": 449,
+          "sha256": "75fdca1069d92055c4fff5ce428535c41d31b3ca5aebe60f12f7fe9a1331baab"
+        },
+        "posthoc_diagnostics.json": {
+          "bytes": 3908,
+          "sha256": "1435f653ae2f9b66456a70893bb339b54487fc7dbac0f0c4bf233418641876ee"
+        },
+        "replay.log": {
+          "bytes": 260,
+          "sha256": "aa4d22efecdb75980c3d2a4ddeb85eda1b6e319fc09eb1397df304b6151f0c2d"
+        },
+        "resume_diagnostics.py": {
+          "bytes": 3613,
+          "sha256": "90f141a81219b8f7772739db334080993603eeb40229e2a1492d5e1015e5c990"
+        },
+        "tamper_diagnostic.log": {
+          "bytes": 232,
+          "sha256": "08ae965432d59385bd0786bf0aba92f0a14dfe42e9c86b6316d28927e3b57270"
+        },
+        "tamper_diagnostic.py": {
+          "bytes": 851,
+          "sha256": "1d5eb80c73a6b169183e00b661c8dbd7d134f074ae98f1bd2e969da56622a9e7"
+        }
+      },
+      "focused_tests_passed": 30,
+      "full_python_suite": {
+        "deselected": 1,
+        "passed": 1516,
+        "process_exit_code": 0,
+        "reused_completed_log": true,
+        "seconds": 1076.43,
+        "warnings": 2
+      },
+      "initial_classification_matches": 90,
+      "primary_outcome": "DNG100_T1_DYNAMICS_NUMERIC_ONLY",
+      "publication": "NO_GO_FAILED_PREREGISTERED_NUMERICAL_ACCEPTANCE_CRITERION",
+      "refinement_passed": 89,
+      "refinement_tolerance": 0.2,
+      "refinement_total": 90,
+      "run_count": 275,
+      "scientific_result": "RHYTHM_RESULT_INCONCLUSIVE",
+      "semantic_replay": "EXACT_ALL_275_RUNS_COMPLETED_BEFORE_RESUME"
+    }
+  },
+  "reference_id": "707d6ea4fda5a823604222258996fa95bacbd0dfd751c8fbb6c2da4cf46ad30f"
+}

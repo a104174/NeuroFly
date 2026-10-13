@@ -1,0 +1,147 @@
+{
+  "condition": {
+    "point": "double_weight",
+    "role": "primary",
+    "schedule": "constant",
+    "variant": "A_PUBLISHED_LIKE"
+  },
+  "dataset_uuid": "4b2087c0fbe046bfaf0d60bc970e3e5d",
+  "existing_steps": "Reuse original recorded .25/.125ms, never rerun275-grid. New steps use original RK4 kernel with unchanged model.",
+  "experiment_id": "DNG100_T1_NUMERICAL_CONVERGENCE_V1",
+  "metrics": {
+    "amplitude_relative_max": 0.01,
+    "criteria_justification": "Separate v1 numerical tolerances: .002 reference disagreement =1% of old .200 limit; new fine .050 =quarter of old limit and2.5e-4 of cap; RMS.010 adds integrated check.1% period/amplitude and.050 mean are declared engineering numerical thresholds, not biological boundaries. Strict monotonicity relaxed only by independently required reference discrepancy ceiling.",
+    "fine_max_error": 0.05,
+    "fine_rms_error": 0.01,
+    "mean_absolute_max": 0.05,
+    "monotonic_error_slack": 0.002,
+    "period_relative_max": 0.01,
+    "phase_secondary": "Per-side interpolation lag[-.0002,.0002]s at1us resolution over[1.5,1.999]s; record unshifted/shifted RMS; never used in acceptance.",
+    "properties": "Reuse unchanged v0 detector on all traces; period, peak-to-peak amplitude, mean and cycle count for each cell. Both sides need a qualifying cell; sustained masks identical between reference,tight and two fine steps. Period/amplitude comparisons on every cell with defined period; mean on every cell.",
+    "property_window_s": [
+      1.0,
+      2.0
+    ],
+    "raw": "max absolute and RMS across all2001 identical timestamps and six states; per-state maximum/RMS and time/body at maximum; original failure remains .28221829111123853>.200",
+    "reference_max_difference": 0.002,
+    "reference_rms_difference": 0.0005,
+    "successive_fine_difference_max": 0.2
+  },
+  "model": {
+    "b": 0.06,
+    "cap": 200.0,
+    "duration_s": 2.0,
+    "equation": "dR_i/dt=(max(200*tanh((sum_j W_ij*R_j + sum_d B_id*D_d -7.5)/200),0)-R_i)/0.02",
+    "gain": 1.0,
+    "initial": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "input": "DNg100 sources externally prescribed20units each on[.02,2)s; not brain-generated",
+    "matrix": "POST_BY_PRE; independently rebuild b*count*source sign from pinned edges, then compare original matrices",
+    "normalization": "NONE; original structural counts unchanged",
+    "sample_dt_s": 0.001,
+    "signs": "E1,E2,DNg100:+1; I1:-1; COUNTERFACTUAL_MODEL_ASSUMPTION; all15 biological signs remainUNKNOWN",
+    "tau_s": 0.02,
+    "threshold": 7.5
+  },
+  "new_steps_s": [
+    6.25e-05,
+    3.125e-05
+  ],
+  "non_goals": [
+    "BIOLOGICAL_SIGN_INFERENCE",
+    "CPG_VALIDATION",
+    "BODY_OR_MOTOR_ACTUATION",
+    "NEW_MODEL_OR_BROAD_SWEEP",
+    "FRONTEND_API_PROVIDER_CHANGE"
+  ],
+  "outcomes": {
+    "DNG100_T1_CONVERGENCE_INCONCLUSIVE": "Reference/trajectory/property evidence insufficient; no parameter/threshold changes.",
+    "DNG100_T1_CONVERGENCE_VERIFIED": "Reference validated/agrees; both new fine steps meet raw criteria; all-step errors nonincrease within declared slack; consecutive fine comparison passes; oscillation properties pass.",
+    "DNG100_T1_NUMERICAL_DEFECT_IDENTIFIED": "Only upon demonstrated implementation defect with independent reference/regression evidence; no silent correction or v0 rewrite.",
+    "DNG100_T1_OSCILLATION_PROPERTIES_ONLY": "Reference validated/agrees and properties pass, but raw trajectory criteria fail."
+  },
+  "publication": "Permitted for verified or explicitly limited/negative numerical result when source, independent-reference validation, semantic reproduction and canonical tests pass. No publication on numerical integrity or untrustworthy-reference failure. Originalv0NO_GO/outcomes not reversed; original6 files may accompany v1publication as historical reproducible source.",
+  "reference": {
+    "discontinuities": "Separate solve_ivp solves on[0,.02] and[.02,2], carrying endpoint state; constant held drive within each solve. Continuous state at .02; input right-continuous, final boundary withdrawn. Never interpolate across discontinuity.",
+    "documentation": "https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.solve_ivp.html",
+    "documentation_version_observed": "1.18.0; runtime1.18.1 independently identified",
+    "rhs": "Separate scalar accumulation/math.tanh implementation; no call to production derivative or rk4_step",
+    "runs": [
+      {
+        "atol": 1e-12,
+        "id": "reference",
+        "max_step_s": 0.00025,
+        "rtol": 1e-10
+      },
+      {
+        "atol": 1e-14,
+        "id": "reference_tight",
+        "max_step_s": 0.000125,
+        "rtol": 1e-12
+      }
+    ],
+    "scipy_version": "1.18.1",
+    "solver": "SCIPY_DOP853_ORDER8_DENSE_ORDER7",
+    "source_hashes": {
+      "dop853_coefficients.py": "3ab62f5b41eee97eec3a1dfb154e7c80d9200bbeca56961c95ec2ffc04463001",
+      "ivp.py": "b952d024de4bfe1aefd4702e934b773a27679772ce3c27b60b2917aaf8b39f1e",
+      "rk.py": "2a6b9eec1914e8b1dd57d2214f0f6f17900319dac9ae94a47577879211f0250b"
+    },
+    "validation": "Closed-form exponential decay, sinusoid/integral and piecewise driven first-order response; RHS comparison on declared independent states; solver success, endpoint and finite bounds required; tighter tolerance comparison is corroboration, not a rigorous absolute-error bound"
+  },
+  "reproducibility": {
+    "artifacts": "New external content-addressed atomic directory; never overwrite originalv0; complete config/sample traces/metrics and logical/raw identities; deterministic replay only new4 solves",
+    "numpy_version": "2.5.3",
+    "preregistration_chronology": "Written before new numerical trajectories; no independently certified prospective timestamp claimed",
+    "random": "NONE",
+    "seed": null,
+    "serialization": "CANONICAL_SORTED_COMPACT_ASCII_FINITE_JSON"
+  },
+  "schema": "dng100_t1_numerical_convergence_preregistration_v1",
+  "source_6_file_sha256": {
+    "docs/science/dng100_t1_dynamics_preregistration.json": "2b1a24a74b799fb4c2f577a678d6c372ce6a25cf4bdee035f36b7c2ba7489ddf",
+    "docs/science/dng100_t1_dynamics_reference.json": "32ebb5cb302575476a322bbd3944e00e981df7954506dc6e529488270968741d",
+    "docs/science/dng100_t1_dynamics_sensitivity.md": "c371c21a1741f7f2946ef0b9803b07791ebb01a2e16c8bf53c7909f88096567a",
+    "src/neurofly/dng100_t1_counterfactual_dynamics.py": "5955af5d7b682dc3a86b6aa59cdb1d401e8d2baddbbbfcf3107e1d661499a4a3",
+    "src/neurofly/dng100_t1_dynamics_sensitivity.py": "190261634ebfe4bfd30db0bba83a367d92ff2a35ff175345e39d5ed76dcd0ebc",
+    "tests/test_dng100_t1_dynamics_sensitivity.py": "78e43f4bb700ce0ac07e68581041e369891096c519bd55293c6c5cdc1030b4f2"
+  },
+  "source_artifact_id": "f73fe0f167f5ef2a2a90c4142017f39ee4b9138ecf7ab5347395d79f13fabfb4",
+  "source_config_sha256": "a938c56f7eeb7339f69cf29d93d8b495540fc78d6ab9855d9d1d9afda6676e18",
+  "source_parent_commit": "a5d6eba840486439de847138133ad17ffc59c0a2",
+  "source_raw_sha256": "04623387c16c36ddff45d94d1e25b7935d52ca66951d29d6e89e21b4be3aa65c",
+  "source_result_sha256": "ec37fee0a6097d98f94560a3e17986872e7ac0ecb1a23c585385c3a13ea5f225",
+  "sources": [
+    10045,
+    10056
+  ],
+  "state_order": [
+    800173,
+    800863,
+    801884,
+    800288,
+    903216,
+    803183
+  ],
+  "steps_s": [
+    0.00025,
+    0.000125,
+    6.25e-05,
+    3.125e-05
+  ],
+  "stop_conditions": [
+    "SOURCE_HASH_OR_IDENTITY_CONFLICT",
+    "MATHEMATICAL_MODEL_UNVERIFIABLE",
+    "INDEPENDENT_SOLVER_ANALYTIC_TEST_FAIL",
+    "RHS_DISAGREEMENT",
+    "FAILED_INTEGRITY_OR_CANONICAL_TEST",
+    "UNRELATED_FROZEN_KERNEL_CHANGE",
+    "POSTHOC_CRITERIA_TUNING"
+  ]
+}

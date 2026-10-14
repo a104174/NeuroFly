@@ -44,7 +44,14 @@
 .arena-science-limit { margin-top: 0; color: var(--ink); font-size: 13px; line-height: 1.6; }
 .arena-replay-identity, .arena-replay-note, .arena-replay-panel label { color: var(--muted); font-size: 11px; line-height: 1.6; }
 .arena-replay-controls output { color: var(--ink); font: 12px monospace; }
-#arena-course-boundary { display: block; width: 100%; margin: 12px 0; accent-color: var(--cyan); }
+#arena-course-boundary, #arena-locomotion-time { display: block; width: 100%; margin: 12px 0; accent-color: var(--cyan); }
 .arena-course-telemetry { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr)); gap: 12px; margin: 14px 0; }
 .arena-course-telemetry dt { color: var(--muted); font-size: 11px; }
 .arena-course-telemetry dd { margin: 5px 0 0; font: 12px monospace; color: var(--ink); }
+
+.arena-artifact-id { overflow-wrap: anywhere; font-size: .8rem; }
+.arena-replay-panel select { display: block; margin: .3rem 0 .8rem; max-width: 100%; padding: .6rem; background: #17242e; color: inherit; border: 1px solid #52616b; border-radius: .4rem; }
+
+.fly-viewer-playback { position: absolute; top: 70px; left: 20px; right: 20px; }
+.fly-viewer-playback .arena-replay-controls { width: fit-content; padding: 8px; border-radius: 8px; background: #101b22ed; }
+@media (max-width: 600px) { .fly-viewer-playback { top: 72px; left: 10px; right: 10px; } .fly-viewer-playback .arena-replay-controls { gap: 6px; } .fly-viewer-playback button { padding: 8px 10px; } .locomotion-viewer-stage .fly-viewer-stats { top: 165px; } }

@@ -4,14 +4,14 @@ import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { ARENA, arenaCamera, arenaCameraLimits, constrainArenaInspectionCamera, type ArenaCameraView } from "@/lib/experimentalArena";
 import { ExperimentalArena } from "./ExperimentalArena";
 import { Component, useEffect, useRef, useState, type ReactNode } from "react";
-import { AgXToneMapping, PMREMGenerator, PerspectiveCamera } from "three";
+import { AgXToneMapping, PMREMGenerator, PerspectiveCamera, Vector3 } from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { RoomEnvironment } from "three/examples/jsm/environments/RoomEnvironment.js";
 import { GLTFLoader, type GLTF } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { flyPresentationFit, prepareFlyVisual } from "@/lib/flyVisualInstance";
 import { FLY_VIEWER_ASSET, flyViewerCamera, verifyFlyViewerBytes } from "@/lib/flyViewer";
 
-export type ViewerStats = { fps: number; calls: number; triangles: number; geometries: number; textures: number; cameraPosition: number[]; cameraTarget: number[] };
+export type ViewerStats = { fps: number; calls: number; triangles: number; geometries: number; textures: number; cameraPosition: number[]; cameraTarget: number[]; bodyPosition?: number[] };
 type Status = { state: "loading" | "ready" | "error"; detail?: string };
 // Loader result is cached read-only. Only the cloned instance owns mutable materials.
 let assetPromise: Promise<GLTF> | undefined;
@@ -44,7 +44,7 @@ function Fly({ onStatus }: { onStatus: (value: Status) => void }) {
   return instance ? <group position={fit.position} rotation={fit.rotation} scale={fit.scale} dispose={null}><primitive object={instance.scene} dispose={null} /></group> : null;
 }
 
-function Studio({ view, reset, diagnostics, onStats, onFailure, arena }: { arena: boolean; view: ArenaCameraView; reset: number; diagnostics: boolean; onStats: (value: ViewerStats) => void; onFailure: (message: string) => void }) {
+function Studio({ view, reset, diagnostics, onStats, onFailure, arena, locomotion }: { locomotion: boolean; arena: boolean; view: ArenaCameraView; reset: number; diagnostics: boolean; onStats: (value: ViewerStats) => void; onFailure: (message: string) => void }) {
   const { gl, size } = useThree();
   const get = useThree(state => state.get);
   const controls = useRef<OrbitControls | null>(null);
@@ -78,11 +78,15 @@ function Studio({ view, reset, diagnostics, onStats, onFailure, arena }: { arena
     camera.updateProjectionMatrix();
     controls.current.target.fromArray(initial.target); controls.current.update();
     controls.current.saveState(); controls.current.enableDamping = true;
-  }, [get, size.width, size.height, view, reset, arena]);
+  }, [get, size.width, size.height, view, reset, arena, locomotion]);
   useFrame(() => {
     controls.current?.update();
     if (arena && view === "inspect" && controls.current) {
-      const camera = get().camera;
+      const { camera, scene } = get();
+      if (locomotion) {
+        const body = scene.getObjectByName("RecordedBodyTransform");
+        if (body) { const target = body.getWorldPosition(new Vector3()); camera.position.add(target.clone().sub(controls.current.target)); controls.current.target.copy(target); }
+      }
       constrainArenaInspectionCamera(camera.position);
       camera.lookAt(controls.current.target);
     }
@@ -91,7 +95,7 @@ function Studio({ view, reset, diagnostics, onStats, onFailure, arena }: { arena
     if (!sample.current.start) sample.current.start = now;
     sample.current.frames++;
     if (now - sample.current.start >= 1000) {
-      onStats({ fps: sample.current.frames * 1000 / (now - sample.current.start), calls: gl.info.render.calls, triangles: gl.info.render.triangles, geometries: gl.info.memory.geometries, textures: gl.info.memory.textures, cameraPosition: get().camera.position.toArray(), cameraTarget: controls.current?.target.toArray() ?? [] });
+      onStats({ fps: sample.current.frames * 1000 / (now - sample.current.start), calls: gl.info.render.calls, triangles: gl.info.render.triangles, geometries: gl.info.memory.geometries, textures: gl.info.memory.textures, bodyPosition: get().scene.getObjectByName("RecordedBodyTransform")?.getWorldPosition(new Vector3()).toArray(), cameraPosition: get().camera.position.toArray(), cameraTarget: controls.current?.target.toArray() ?? [] });
       sample.current = { start: now, frames: 0 };
     }
   });
@@ -111,7 +115,7 @@ class ViewerBoundary extends Component<{ children: ReactNode; onFailure: (messag
   render() { return this.state.failed ? null : this.props.children; }
 }
 
-export default function FlyViewerCanvas({ view, reset, diagnostics, onStatus, onStats, onFailure, arena = false, onTableReady, replayPose }: { replayPose?: import("@/lib/arenaCourseReplay").ArenaCoursePose; arena?: boolean; onTableReady?: () => void; view: ArenaCameraView; reset: number; diagnostics: boolean; onStatus: (value: Status) => void; onStats: (value: ViewerStats) => void; onFailure: (message: string) => void }) {
+export default function FlyViewerCanvas({ view, reset, diagnostics, onStatus, onStats, onFailure, arena = false, onTableReady, replayPose, locomotion = false }: { locomotion?: boolean; replayPose?: import("@/lib/arenaCourseReplay").ArenaCoursePose; arena?: boolean; onTableReady?: () => void; view: ArenaCameraView; reset: number; diagnostics: boolean; onStatus: (value: Status) => void; onStats: (value: ViewerStats) => void; onFailure: (message: string) => void }) {
   const [webGLAvailable] = useState(() => {
     try {
       const probe = document.createElement("canvas").getContext("webgl2");
@@ -124,8 +128,8 @@ export default function FlyViewerCanvas({ view, reset, diagnostics, onStatus, on
   if (!webGLAvailable) return null;
   return <ViewerBoundary onFailure={onFailure}><Canvas dpr={[1, 1.5]} camera={{ position: [1.5, 1, 2], fov: 35 }} gl={{ antialias: true, alpha: false, toneMapping: AgXToneMapping, toneMappingExposure: 1 }} fallback={null}>
     <color attach="background" args={["#182129"]} />
-    <Studio view={view} reset={reset} diagnostics={diagnostics} onStats={onStats} onFailure={onFailure} arena={arena} />
-    {arena && replayPose ? <group position={replayPose.anchor} rotation={[0, replayPose.rotation, 0]} scale={ARENA.flyScale}><group position={replayPose.assetOffset}><Fly onStatus={onStatus} /></group></group> : <group position={arena ? ARENA.flyOffset : [0, 0, 0]} scale={arena ? ARENA.flyScale : 1}><Fly onStatus={onStatus} /></group>}
-    {arena && onTableReady ? <ExperimentalArena onReady={onTableReady} onFailure={onFailure} /> : null}
+    <Studio view={view} reset={reset} diagnostics={diagnostics} onStats={onStats} onFailure={onFailure} arena={arena} locomotion={locomotion} />
+    {arena && replayPose ? <group name="RecordedBodyTransform" userData={{ replayAnchor: replayPose.anchor }} position={replayPose.anchor} rotation={[0, replayPose.rotation, 0]} scale={ARENA.flyScale}><group position={replayPose.assetOffset}><Fly onStatus={onStatus} /></group></group> : <group position={arena ? ARENA.flyOffset : [0, 0, 0]} scale={arena ? ARENA.flyScale : 1}><Fly onStatus={onStatus} /></group>}
+    {arena && onTableReady ? <ExperimentalArena shadowAnchor={locomotion ? replayPose?.anchor : undefined} onReady={onTableReady} onFailure={onFailure} /> : null}
   </Canvas></ViewerBoundary>;
 }

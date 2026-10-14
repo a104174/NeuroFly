@@ -51,7 +51,7 @@ function Solid({ position, size, color = "#34454e", roughness = .8, metalness = 
 }
 
 /** Original in-house enclosure and backdrop. No behavioral apparatus or data implied. */
-export function ExperimentalArena({ onReady, onFailure }: { onReady: () => void; onFailure: (message: string) => void }) {
+export function ExperimentalArena({ onReady, onFailure, shadowAnchor }: { shadowAnchor?: [number, number, number]; onReady: () => void; onFailure: (message: string) => void }) {
   const { width: w, depth: d, height: h, floor: f } = ARENA.chamber;
   const panels = arenaPanels();
   return <>
@@ -63,7 +63,7 @@ export function ExperimentalArena({ onReady, onFailure }: { onReady: () => void;
     {[-w / 2, w / 2].flatMap(x => [-d / 2, d / 2].map(z => <Solid key={`${x}:${z}`} position={[x, h / 2, z]} size={[.014, h, .014]} color="#52616b" roughness={.42} metalness={.65} />))}
     {[0, h].flatMap(y => [<Solid key={`front${y}`} position={[0, y, d / 2]} size={[w, .012, .012]} color="#52616b" roughness={.42} metalness={.65} />, <Solid key={`back${y}`} position={[0, y, -d / 2]} size={[w, .012, .012]} color="#52616b" roughness={.42} metalness={.65} />])}
     {[-w / 2, w / 2].map(x => <Solid key={`lid${x}`} position={[x, h, 0]} size={[.012, .012, d]} color="#52616b" roughness={.42} metalness={.65} />)}
-    <mesh position={[ARENA.flyOffset[0], .0008, ARENA.flyOffset[2] - .018]} rotation={[-Math.PI / 2, 0, 0]}>
+    <mesh position={[shadowAnchor?.[0] ?? ARENA.flyOffset[0], .0008, shadowAnchor ? shadowAnchor[2] - .018 : ARENA.flyOffset[2] - .018]} rotation={[-Math.PI / 2, 0, 0]}>
       <planeGeometry args={[.22, .34]} />
       <shaderMaterial transparent depthWrite={false}
         vertexShader="varying vec2 uvPosition; void main() { uvPosition = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }"

@@ -5,10 +5,14 @@ import { loadScenarioPlayback } from "@/app/scenarios/actions";
 import { advanceScenarioCursor } from "@/lib/scenarioPlayback";
 import { courseScene, type CoursePlaybackResult } from "@/lib/courseControlPlayback";
 import { ARENA_COURSE_ID, arenaCoursePose, validateArenaCourseReplay } from "@/lib/arenaCourseReplay";
+import { advanceLocomotion, loadLocomotion, locomotionScene, type LocomotionReplay } from "@/lib/experimentalLocomotion";
 import { FlyViewer } from "./FlyViewer";
 
 export function ArenaCourseViewer() {
-  const [mode, setMode] = useState<"static" | "course">("static");
+  const [mode, setMode] = useState<"static" | "course" | "locomotion">("static");
+  const [locomotion, setLocomotion] = useState<LocomotionReplay | null>(null);
+  const [runIndex, setRunIndex] = useState(0);
+  const [time, setTime] = useState(0);
   const [replay, setReplay] = useState<CoursePlaybackResult | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -17,6 +21,8 @@ export function ArenaCourseViewer() {
   const request = useRef(0);
   useEffect(() => () => { request.current++; }, []);
   const active = mode === "course" && replay !== null && !error;
+  const moving = mode === "locomotion" && locomotion !== null && !error;
+  const motionPlaying = moving && playing && time < locomotion.config.duration_s;
   const last = replay ? replay.frames.length - 1 : 0;
   const isPlaying = active && playing && cursor < last;
   useEffect(() => {
@@ -34,11 +40,28 @@ export function ArenaCourseViewer() {
     return () => cancelAnimationFrame(animation);
   }, [isPlaying, last]);
 
-  async function choose(mode: "static" | "course") {
+  useEffect(() => {
+    if (!motionPlaying) return;
+    let animation = 0, previous: number | null = null;
+    const tick = (now: number) => {
+      if (previous !== null) { const elapsed = now - previous; setTime(t => advanceLocomotion(t, elapsed, true)); }
+      previous = now;
+      animation = requestAnimationFrame(tick);
+    };
+    animation = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(animation);
+  }, [motionPlaying]);
+
+  async function choose(mode: "static" | "course" | "locomotion") {
     const generation = ++request.current;
-    setMode(mode); setPlaying(false); setCursor(0); setReplay(null); setError(null); setLoading(mode === "course");
+    setMode(mode); setTime(0); setLocomotion(null); setRunIndex(0); setPlaying(false); setCursor(0); setReplay(null); setError(null); setLoading(mode !== "static");
     if (mode === "static") return;
     try {
+      if (mode === "locomotion") {
+        const data = await loadLocomotion();
+        if (generation === request.current) setLocomotion(data);
+        return;
+      }
       const response = await loadScenarioPlayback(ARENA_COURSE_ID);
       if (generation !== request.current) return;
       if ("error" in response) throw new Error(response.error);
@@ -48,14 +71,41 @@ export function ArenaCourseViewer() {
     } finally { if (generation === request.current) setLoading(false); }
   }
   const scene = active ? courseScene(replay, cursor) : null;
-  const pose = active ? arenaCoursePose(replay, cursor) : undefined;
+  const motion = moving ? locomotionScene(locomotion, runIndex, time) : null;
+  const pose = motion ? motion.pose : active ? arenaCoursePose(replay, cursor) : undefined;
   const frame = scene?.frame;
   const unavailable = "Não disponível neste boundary";
   return <>
     <div className="arena-mode-controls" aria-label="Modo da arena">
       <button aria-pressed={mode === "static"} onClick={() => void choose("static")}>Arena estática</button>
       <button aria-pressed={mode === "course"} onClick={() => void choose("course")}>Course Replay</button>
+      <button aria-pressed={mode === "locomotion"} onClick={() => void choose("locomotion")}>Experimental Locomotion v0</button>
     </div>
+    {mode === "locomotion" && <section className="arena-replay-panel" aria-label="Experimental Locomotion v0">
+      <p className="arena-replay-identity">Precomputed simulation replay · Engineering kinematic locomotion</p>
+      <p className="arena-science-limit">Propulsão de engenharia em unidades da arena. Sem steering neural ou gait biológico. Pára na parede; não a deteta nem evita.</p>
+      {loading && <p role="status">A verificar a simulação Python…</p>}
+      {error && <p role="alert">{error} A vista permanece estática.</p>}
+      {motion && locomotion && <>
+        <label htmlFor="arena-locomotion-run">Condição experimental</label>
+        <select id="arena-locomotion-run" value={runIndex} onChange={event => { setRunIndex(Number(event.target.value)); setTime(0); setPlaying(false); }}>
+          <option value={0}>A — Propulsão de engenharia</option><option value={1}>B — Propulsão desligada (controlo)</option>
+        </select>
+
+        <label htmlFor="arena-locomotion-time">Tempo simulado</label>
+        <input id="arena-locomotion-time" type="range" min={0} max={8} step={.02} value={time} onChange={event => { setPlaying(false); setTime(Number(event.target.value)); }} />
+        <p className="arena-replay-note">Distância: {motion.distance.toFixed(3)} · Velocidade: {motion.speed.toFixed(2)} unidades/s · Contacto: {motion.frame.contact ?? "nenhum"}</p>
+        <details><summary>Telemetria e pressupostos de engenharia</summary>
+        <dl className="arena-course-telemetry">
+          <div><dt>Posição X / Y / Z (unidades de apresentação)</dt><dd>{motion.pose.anchor.map(v => v.toFixed(4)).join(" / ")}</dd></div>
+          <div><dt>Distância percorrida</dt><dd>{motion.distance.toFixed(4)} unidades</dd></div>
+          <div><dt>Velocidade / propulsão</dt><dd>{motion.speed.toFixed(2)} / {motion.frame.propulsion_model_value.toFixed(2)} unidades/s</dd></div>
+          <div><dt>Orientação / velocidade angular</dt><dd>{motion.pose.rotation.toFixed(4)} rad / 0 rad/s</dd></div>
+          <div><dt>Contacto / steering neural</dt><dd>{motion.frame.contact ?? "Sem contacto"} / Não modelado</dd></div>
+        </dl>
+        <p>Python · passo fixo 0.02 s · duração 8 s · random policy NONE · EXPERIMENTAL_KINEMATIC_ONLY. Pose interpolada entre boundaries; velocidade/contacto do boundary anterior. Y fixo sobre o piso; footprint circular conservador. A câmara não influencia a simulação.</p><p className="arena-artifact-id">Artifact: {locomotion.artifact_id}</p></details>
+      </>}
+    </section>}
     {mode === "course" && <section className="arena-replay-panel" aria-label="Replay canónico Course">
       <p className="arena-science-limit">Replay canónico de orientação de modelo, apresentado numa visualização laboratorial. Posição fixa de apresentação; translação não modelada. A câmara não participou na simulação. Não são simuladas colisões.</p>
       {loading && <p role="status">A validar o replay canónico… O espécime permanece numa apresentação estática.</p>}
@@ -80,6 +130,10 @@ export function ArenaCourseViewer() {
         <p className="arena-replay-note">Estados de modelo sobre evidência estrutural MaleCNS; não são ângulos biológicos calibrados nem velocidades físicas. O espécime é um asset visual, não anatomia MaleCNS reconstruída.</p>
       </>}
     </section>}
-    <FlyViewer arena replayPose={pose} />
+    <FlyViewer arena replayPose={pose} locomotion={Boolean(motion)} playbackControls={motion ? <div className="arena-replay-controls">
+          <button onClick={() => { if (time >= 8) setTime(0); setPlaying(!motionPlaying); }}>{motionPlaying ? "Pause" : "Play"}</button>
+          <button onClick={() => { setPlaying(false); setTime(0); }}>Reset Experiment</button>
+          <output data-simulation-time={time} data-world-position={JSON.stringify(motion.pose.anchor)} data-contact={motion.frame.contact ?? "NONE"}>{time.toFixed(2)} / 8.00 s{time >= 8 ? " · Fim da simulação" : ""}</output>
+        </div> : undefined} />
   </>;
 }

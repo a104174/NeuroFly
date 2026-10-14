@@ -4,6 +4,7 @@ import {loadNeuralLocomotion,type NeuralArtifact} from "@/lib/neuralLocomotion";
 import {FixedStepClock,type Plane,type StimulusEvent} from "@/lib/interactiveNeuralLocomotion";
 import {ContinuousNavigationEngine,replayNavigation,validateNavigation,type NavigationSnapshot} from "@/lib/continuousArenaNavigation";
 import {generatePair,type PairArtifact,type NavigationSession} from "@/lib/neuralContributionComparison";
+import {ExperimentSessionLibrary} from "./ExperimentSessionLibrary";
 import {NeuralContributionComparison} from "./NeuralContributionComparison";
 
 export function ContinuousNavigationArena(){
@@ -38,6 +39,8 @@ export function ContinuousNavigationArena(){
  async function compare(){if(!authority||!engine.current)return;suspended.current=true;setPlaying(false);clock.current.reset();setState(engine.current.snapshot());setPath(engine.current.trajectory());setGenerating(true);setPairError(null);setProgress(0);const start=performance.now();try{const source=importedSource.current??await engine.current.exportNavigation();const next=await generatePair(authority,source,n=>{if(alive.current)setProgress(n);});if(alive.current){setPair(next);setPairCost(performance.now()-start);}}catch(e){if(alive.current){setPairError(String(e));suspended.current=false;}}finally{if(alive.current)setGenerating(false);}}
  function back(){setPair(null);suspended.current=false;clock.current.reset();setPlaying(false);}
 
+ async function captureLibrary(){if(!engine.current)throw new Error("Sessão não disponível");setPlaying(false);clock.current.reset();if(pair)return {session:pair.parent,hasComparison:true};return {session:importedSource.current??await engine.current.exportNavigation(),hasComparison:false};}
+ const library=authority?<ExperimentSessionLibrary authority={authority} disabled={generating||Boolean(error)} capture={captureLibrary} onOpen={(next,session)=>{setPair(null);suspended.current=false;setNeuralEnabled(session.log.config.mode==="neural");synchronize(next);importedSource.current=session;setError(null);}} onCompare={(next,elapsed)=>{setPlaying(false);clock.current.reset();suspended.current=true;synchronize(replayNavigation(authority,next.parent.log));importedSource.current=next.parent;setNeuralEnabled(next.parent.log.config.mode==="neural");setPair(next);setPairCost(elapsed);}}/>:null;
  const pose=state&&authority?{anchor:state.position,rotation:state.heading,assetOffset:authority.config.body.asset_offset}:undefined;
  const livePanel=(
   <section className="arena-replay-panel" aria-label="Continuous Arena Navigation v3">
@@ -45,6 +48,7 @@ export function ContinuousNavigationArena(){
    <p className="arena-science-limit">CONNECTOME_INFORMED_NEURAL_STEERING_WITH_ENGINEERING_BOUNDARY_NAVIGATION · ENGINEERING_PROPULSION. Computação local no browser; o estímulo altera a observação, não o heading diretamente. Sem gait, músculos ou velocidade biológica calibrados.</p>
    {!state&&!error?<p role="status">A verificar a autoridade Python HS/DNp15…</p>:null}
    {error?<p role="alert">{error} Simulação parada; nenhum movimento de substituição foi criado.</p>:null}
+   {library}
    {state?<>
     <button disabled={Boolean(error)||generating||state.step<1} onClick={()=>void compare()}>Compare Neural Contribution</button>
     {generating?<p role="status">Reconstruindo ON/OFF… {Math.round(progress*100)}% · sessão original suspensa e preservada.</p>:null}
@@ -70,5 +74,5 @@ export function ContinuousNavigationArena(){
    </>:null}
   </section>
  );
- return <NeuralContributionComparison pair={pair} authority={authority} onReturn={back} onImport={(next,elapsed)=>{setPair(next);setPairCost(elapsed);}} generationMs={pairCost} livePanel={livePanel} liveViewerProps={{arena:true,locomotion:Boolean(state),locomotionVersion:"v3",replayPose:pose,liveTrajectory:path,stimulusPlane:state?.plane,playbackControls:state?<div className="arena-replay-controls"><button disabled={Boolean(error)||generating} onClick={()=>{if(state.step===1500){reset();setPlaying(true);}else{clock.current.reset();setPlaying(!playing);}}}>{playing?"Pause":"Play"}</button><button disabled={generating} onClick={reset}>Reset Experiment</button><button disabled={state.step===1500||Boolean(error)||generating} onClick={()=>planeChange((pending??state.plane)===.4?-.4:.4)}>Switch visual plane</button><output data-live-time={state.time}>{state.time.toFixed(2)} / 30.00 s{state.step===1500?" · Fim":playing?" · Live":" · Pausado"}</output></div>:undefined}}/>;
+ return <NeuralContributionComparison pair={pair} authority={authority} onReturn={back} onImport={(next,elapsed)=>{setPair(next);setPairCost(elapsed);}} generationMs={pairCost} libraryPanel={library} livePanel={livePanel} liveViewerProps={{arena:true,locomotion:Boolean(state),locomotionVersion:"v3",replayPose:pose,liveTrajectory:path,stimulusPlane:state?.plane,playbackControls:state?<div className="arena-replay-controls"><button disabled={Boolean(error)||generating} onClick={()=>{if(state.step===1500){reset();setPlaying(true);}else{clock.current.reset();setPlaying(!playing);}}}>{playing?"Pause":"Play"}</button><button disabled={generating} onClick={reset}>Reset Experiment</button><button disabled={state.step===1500||Boolean(error)||generating} onClick={()=>planeChange((pending??state.plane)===.4?-.4:.4)}>Switch visual plane</button><output data-live-time={state.time}>{state.time.toFixed(2)} / 30.00 s{state.step===1500?" · Fim":playing?" · Live":" · Pausado"}</output></div>:undefined}}/>;
 }

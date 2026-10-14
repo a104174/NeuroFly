@@ -55,3 +55,17 @@
 .fly-viewer-playback { position: absolute; top: 70px; left: 20px; right: 20px; }
 .fly-viewer-playback .arena-replay-controls { width: fit-content; padding: 8px; border-radius: 8px; background: #101b22ed; }
 @media (max-width: 600px) { .fly-viewer-playback { top: 72px; left: 10px; right: 10px; } .fly-viewer-playback .arena-replay-controls { gap: 6px; } .fly-viewer-playback button { padding: 8px 10px; } .locomotion-viewer-stage .fly-viewer-stats { top: 165px; } }
+
+.experiment-library { margin: .8rem 0; padding: .75rem; border: 1px solid rgba(103,211,224,.25); border-radius: .5rem; }
+.experiment-library summary { cursor: pointer; font-weight: 600; }
+.experiment-library-list { list-style: none; padding: 0; max-height: 24rem; overflow: auto; }
+.experiment-library-list li { padding: .65rem 0; border-top: 1px solid rgba(255,255,255,.12); overflow-wrap: anywhere; }
+.experiment-library input:not([type=file]) { max-width: 100%; width: 16rem; }
+.experiment-library input[type=file] { max-width: 100%; }
+.experiment-library button { margin: .2rem; }
+.experiment-library button, .experiment-library input { font: inherit; color: #d8e6ec; background: #13232b; border: 1px solid #38505c; border-radius: .3rem; padding: .4rem .55rem; }
+.experiment-library button { cursor: pointer; }
+.experiment-library button:hover:not(:disabled) { border-color: #67d3e0; }
+.experiment-library button:disabled { opacity: .5; cursor: default; }
+.experiment-library label { display: flex; flex-wrap: wrap; align-items: center; gap: .45rem; margin: .5rem 0; }
+.experiment-library button:focus-visible, .experiment-library input:focus-visible { outline: 2px solid #67d3e0; outline-offset: 2px; }

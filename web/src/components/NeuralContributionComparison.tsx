@@ -6,8 +6,11 @@ import {advanceLocomotion} from '@/lib/experimentalLocomotion';
 import {wrappedAngle} from '@/lib/neuralSteeringComparison';
 import {FlyViewer} from './FlyViewer';
 
-export function NeuralContributionComparison({pair,authority,onReturn,onImport,generationMs,livePanel,liveViewerProps}:{pair:PairArtifact|null;authority:NeuralArtifact|null;livePanel:ReactNode;liveViewerProps:ComponentProps<typeof FlyViewer>;onReturn:()=>void;onImport:(p:PairArtifact,elapsed:number)=>void;generationMs:number}){
- const [time,setTime]=useState(0),[playing,setPlaying]=useState(false),[focus,setFocus]=useState<PairKey>('ON'),[error,setError]=useState<string|null>(null),[importNotice,setImportNotice]=useState("");
+export function NeuralContributionComparison({pair,authority,onReturn,onImport,generationMs,livePanel,liveViewerProps,libraryPanel}:{pair:PairArtifact|null;authority:NeuralArtifact|null;livePanel:ReactNode;libraryPanel?:ReactNode;liveViewerProps:ComponentProps<typeof FlyViewer>;onReturn:()=>void;onImport:(p:PairArtifact,elapsed:number)=>void;generationMs:number}){
+ const [storedTime,setTime]=useState(0),[shownId,setShownId]=useState<string|null>(null),[playing,setPlaying]=useState(false),[focus,setFocus]=useState<PairKey>('ON'),[error,setError]=useState<string|null>(null),[importNotice,setImportNotice]=useState("");
+ const identity=pair?.artifact_id??null;
+ if(shownId!==identity){setShownId(identity);setTime(0);setPlaying(false);setFocus('ON');}
+ const time=shownId===identity?Math.min(storedTime,pair?.config.duration_s??30):0;
  const duration=pair?.config.duration_s??30,running=Boolean(pair&&playing&&time<duration);
  useEffect(()=>{if(!running)return;let handle=0,previous:number|null=null;const tick=(now:number)=>{if(previous!==null){const elapsed=now-previous;setTime(t=>advanceLocomotion(t,elapsed,true,duration));}previous=now;handle=requestAnimationFrame(tick);};handle=requestAnimationFrame(tick);return()=>cancelAnimationFrame(handle);},[running,duration]);
  const base=useMemo(()=>pair&&authority?pairOverview(pair,authority.config.policy.landmark_x):null,[pair,authority]);
@@ -41,6 +44,7 @@ export function NeuralContributionComparison({pair,authority,onReturn,onImport,g
     <p>Estados e contactos recomputados, não trajetórias fornecidas pelo import. 200 substeps de 0.1 ms por intervalo de 20 ms, {pair.parent.log.stop_step*200} por condição. Recalculadas com os mesmos parâmetros e eventos; apenas NEURAL_TO_HEADING_ENABLED difere. Mais distância não demonstra melhor navegação biológica.</p>
     <p className="arena-artifact-id">Parent: {pair.config.parent_session_id} · comparação: {pair.artifact_id} · config: {pair.config_sha256} · result: {pair.result_sha256}</p>
    </details>
+   {libraryPanel}
    <button onClick={()=>void exportPair()}>Export comparison JSON</button><label htmlFor="pair-import">Import comparison JSON</label><input id="pair-import" type="file" accept="application/json" onChange={e=>void importPair(e.target.files?.[0])}/>
    {importNotice?<p role="status" className="arena-artifact-id">{importNotice}</p>:null}
    {error?<p role="alert">{error}. Comparação anterior preservada; nenhum movimento de substituição.</p>:null}

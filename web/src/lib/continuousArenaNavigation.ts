@@ -64,19 +64,26 @@ export class ContinuousNavigationEngine extends InteractiveNeuralEngine {
  navigationLog():NavigationLog{return {schema:'continuous_arena_navigation_event_log_v3',config:structuredClone(this.navigationConfig),events:super.eventLog().events,stop_step:this.n,pending_plane:this.pendingPlane(),termination:this.n===1500?'DURATION_COMPLETED':'PAUSED'};}
  async exportNavigation(){const log=this.navigationLog(),telemetry={completed_intervals:structuredClone(this.records),final_state:this.snapshot()},log_sha256=await hash(log),result_sha256=await hash(telemetry);return {schema:'continuous_arena_navigation_session_v3',log,telemetry,config_sha256:await hash(log.config),log_sha256,result_sha256,artifact_id:await hash({log_sha256,result_sha256})};}
 }
-export function replayNavigation(authority:NeuralArtifact,value:unknown){
+function* navigationReplay(authority:NeuralArtifact,value:unknown){
  const log=value as NavigationLog;
  if(!log||log.schema!=='continuous_arena_navigation_event_log_v3'||Object.keys(log).sort().join(',')!=='config,events,pending_plane,schema,stop_step,termination'||!log.config||!Number.isInteger(log.stop_step)||log.stop_step<0||log.stop_step>1500||!Array.isArray(log.events)||log.events.length>1500)throw new Error('Invalid navigation log');
  const engine=new ContinuousNavigationEngine(authority,log.config.mode as RuntimeMode,log.config.initial_plane as Plane,log.config.initial_pose as Pose);
  if(stable(engine.navigationLog().config)!==stable(log.config)||log.termination!==(log.stop_step===1500?'DURATION_COMPLETED':'PAUSED')||![null,.4,-.4].includes(log.pending_plane)||(log.stop_step===1500&&log.pending_plane!==null))throw new Error('Navigation provenance mismatch');
  let prev=-1,plane=log.config.initial_plane;
  for(const e of log.events){if(Object.keys(e).sort().join(',')!=='new_plane,old_plane,step,time'||!Number.isInteger(e.step)||e.step<=prev||e.step>=log.stop_step||e.time!==e.step*BODY_DT||e.old_plane!==plane||![.4,-.4].includes(e.new_plane)||e.new_plane===plane)throw new Error('Navigation event mismatch');prev=e.step;plane=e.new_plane;}
- let i=0;while(engine.snapshot().step<log.stop_step){if(log.events[i]?.step===engine.snapshot().step)engine.requestPlane(log.events[i++].new_plane);engine.advance();}if(log.pending_plane!==null)engine.requestPlane(log.pending_plane);return engine;
+ let i=0;while(engine.snapshot().step<log.stop_step){if(log.events[i]?.step===engine.snapshot().step)engine.requestPlane(log.events[i++].new_plane);engine.advance();yield;}if(log.pending_plane!==null)engine.requestPlane(log.pending_plane);return engine;
 }
-export async function validateNavigation(authority:NeuralArtifact,value:unknown){
+/** Same validated transitions, consumed synchronously by historical callers. */
+export function replayNavigation(authority:NeuralArtifact,value:unknown){const steps=navigationReplay(authority,value);let next=steps.next();while(!next.done)next=steps.next();return next.value;}
+/** Scheduling only: no numerical/state/contract change; yield every 50 intervals. */
+export async function replayNavigationInChunks(authority:NeuralArtifact,value:unknown,yieldControl:()=>Promise<void>=()=>new Promise(resolve=>setTimeout(resolve,0))){
+ const steps=navigationReplay(authority,value);let next=steps.next(),count=0;
+ while(!next.done){if(++count%50===0)await yieldControl();next=steps.next();}return next.value;
+}
+export async function validateNavigation(authority:NeuralArtifact,value:unknown,cooperative=false){
  const v=value as Awaited<ReturnType<ContinuousNavigationEngine['exportNavigation']>>;
  if(!v||v.schema!=='continuous_arena_navigation_session_v3'||Object.keys(v).sort().join(',')!=='artifact_id,config_sha256,log,log_sha256,result_sha256,schema,telemetry'||await hash(v.log)!==v.log_sha256||await hash(v.telemetry)!==v.result_sha256||await hash(v.log.config)!==v.config_sha256||await hash({log_sha256:v.log_sha256,result_sha256:v.result_sha256})!==v.artifact_id)throw new Error('Navigation integrity mismatch');
- const expected=await replayNavigation(authority,v.log).exportNavigation();
+ const expected=await (cooperative?await replayNavigationInChunks(authority,v.log):replayNavigation(authority,v.log)).exportNavigation();
  const eq=(a:unknown,b:unknown,key=''):boolean=>typeof b==='number'?typeof a==='number'&&Number.isFinite(a)&&(['step','time','substeps','contacts','recoveries','propulsion_model_value'].includes(key)?a===b:Math.abs(a-b)<=PARITY_TOLERANCE):Array.isArray(b)?Array.isArray(a)&&a.length===b.length&&b.every((x,i)=>eq(a[i],x)):b!==null&&typeof b==='object'?a!==null&&typeof a==='object'&&Object.keys(a).sort().join(',')===Object.keys(b).sort().join(',')&&Object.entries(b).every(([k,x])=>eq((a as Record<string,unknown>)[k],x,k)):a===b;
  if(!eq(v.telemetry,expected.telemetry))throw new Error('Navigation semantic mismatch');return v;
 }

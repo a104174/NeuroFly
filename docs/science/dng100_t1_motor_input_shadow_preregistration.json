@@ -1,0 +1,183 @@
+{
+  "schema": "dng100_t1_motor_input_shadow_preregistration_v0",
+  "experiment_id": "DNG100_T1_SINGLE_MOTOR_INPUT_SHADOW_V0",
+  "source_parent_commit": "77025b8440c3da1513760b547847d0b17664a697",
+  "question": "Does an immutable recorded counterfactual neural-model trace transfer reproducibly to an identified structural target as engineering-only shadow input?",
+  "dataset": "male-cns:v1.0",
+  "dataset_uuid": "4b2087c0fbe046bfaf0d60bc970e3e5d",
+  "motif_artifact_id": "baae20599455c2a7acb3271e6eeb6b73326d17185b6e705022b74818ff0f8934",
+  "annotation_sha256": "2177e246113e4cfbf1e7772ec37c6da1955ff22e8063d0b1f833101f99a9a3b2",
+  "structural_source_sha256": "def753409faa5daa7932ad5c256c644b2b426f44c053b2c40a5b89a17d6b024e",
+  "source_annotation": {
+    "bodyId": 903216,
+    "type": "INXXX466",
+    "instance": "INXXX466_R",
+    "somaSide": "R",
+    "superclass": "vnc_intrinsic",
+    "class": null,
+    "subclass": "IR",
+    "somaNeuromere": "T1",
+    "status": "Traced",
+    "statusLabel": "Reviewed"
+  },
+  "target_annotation": {
+    "bodyId": 804257,
+    "type": "Ti extensor MN",
+    "instance": "Ti extensor MN_R",
+    "somaSide": "R",
+    "superclass": "vnc_motor",
+    "class": null,
+    "subclass": "fl",
+    "somaNeuromere": "T1",
+    "status": "Traced",
+    "statusLabel": "Reviewed"
+  },
+  "edge": {
+    "pre": 903216,
+    "post": 804257,
+    "synapse_count": 23
+  },
+  "edge_evidence": [
+    {
+      "pre": 903216,
+      "post": 804257,
+      "synapse_count": 23,
+      "roi_counts": {
+        "LegNp(T1)(R)": {
+          "post": 23
+        },
+        "VNC": {
+          "post": 23
+        }
+      },
+      "source_reference": {
+        "query": "primary_outputs",
+        "row": 1544,
+        "row_sha256": "e5ff03ee94e0b46ba2827701c1533676b70af16f4d43000a7a29512002aacc6a"
+      }
+    },
+    {
+      "pre": 903216,
+      "post": 804257,
+      "synapse_count": 23,
+      "roi_counts": {
+        "LegNp(T1)(R)": {
+          "post": 23
+        },
+        "VNC": {
+          "post": 23
+        }
+      },
+      "source_reference": {
+        "query": "motor_inputs",
+        "row": 9592,
+        "row_sha256": "e5ff03ee94e0b46ba2827701c1533676b70af16f4d43000a7a29512002aacc6a"
+      }
+    }
+  ],
+  "nt_artifact_id": "38dc667d74acc3c6691b95659f38a1beab2f6208b5c592341f024f61d31bc526",
+  "postsynaptic_review_id": "4c29057f3a069e26ac5604754c304408c48bc511a564c3dc5595e7ac305cacf9",
+  "source_artifact_id": "d0f441ad8e9ebdbf83812dcbf52e86326d76e093632dfe5cbe58607a48d525f8",
+  "source_raw_sha256": "c6f95ae2b1300115492c6e8442867fd31ac47fabb8451bca2927c330595fbe1a",
+  "source_config_sha256": "8399d8f9f222128d49b7b8acc2ba0022ea626a574253c90b253af8e05e2adb36",
+  "source_result_sha256": "90cb7d3dfc2c6f4ace3b34065a371a7796a5cbd9f3936868e1c5349d1dcb2e81",
+  "source_v0_artifact_id": "f73fe0f167f5ef2a2a90c4142017f39ee4b9138ecf7ab5347395d79f13fabfb4",
+  "source_v0_raw_sha256": "04623387c16c36ddff45d94d1e25b7935d52ca66951d29d6e89e21b4be3aa65c",
+  "source_preregistration_id": "ab20411d2abd16d728b3b5eacb3d94c2fe01da772f0056acc955640e8f285254",
+  "source_trace": "3.125e-05",
+  "source_trace_sha256": "06ecf48c997fb007cd02add8875063b8d3f3060a3034a9e48733da8cde4e4e91",
+  "state_order": [
+    800173,
+    800863,
+    801884,
+    800288,
+    903216,
+    803183
+  ],
+  "source_model": {
+    "b": 0.06,
+    "cap": 200.0,
+    "duration_s": 2.0,
+    "equation": "dR_i/dt=(max(200*tanh((sum_j W_ij*R_j + sum_d B_id*D_d -7.5)/200),0)-R_i)/0.02",
+    "gain": 1.0,
+    "initial": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "input": "DNg100 sources externally prescribed20units each on[.02,2)s; not brain-generated",
+    "matrix": "POST_BY_PRE; independently rebuild b*count*source sign from pinned edges, then compare original matrices",
+    "normalization": "NONE; original structural counts unchanged",
+    "sample_dt_s": 0.001,
+    "signs": "E1,E2,DNg100:+1; I1:-1; COUNTERFACTUAL_MODEL_ASSUMPTION; all15 biological signs remainUNKNOWN",
+    "tau_s": 0.02,
+    "threshold": 7.5
+  },
+  "timing": {
+    "samples": 2001,
+    "first_s": 0.0,
+    "last_s": 2.0,
+    "sample_dt_s": 0.001,
+    "integration_dt_s": 3.125e-05,
+    "semantics": "Reuse exact recorded boundaries; no interpolation, integration or filtering"
+  },
+  "transfer": {
+    "equation": "shadow_input[n] = sign_assumption * gain * source_state[n]",
+    "gain": 1.0,
+    "gain_units": "DIMENSIONLESS_ENGINEERING_REFERENCE_NOT_SYNAPTIC_EFFICACY",
+    "output_units": "SOURCE_MODEL_RATE_LIKE_UNITS_NOT_CURRENT_VOLTAGE_SPIKES_OR_FORCE",
+    "structural_count_use": "PROVENANCE_ONLY_NEVER_MULTIPLIED",
+    "clipping": "NONE",
+    "null_policy": "REJECT_MISSING_OR_NONFINITE; route-off defined exactly zero"
+  },
+  "conditions": [
+    {
+      "id": "A_POSITIVE",
+      "sign_assumption": 1
+    },
+    {
+      "id": "B_NEGATIVE",
+      "sign_assumption": -1
+    },
+    {
+      "id": "C_ROUTE_OFF",
+      "sign_assumption": 0
+    },
+    {
+      "id": "D_SHAM",
+      "sign_assumption": 1
+    }
+  ],
+  "semantics": {
+    "output": "COUNTERFACTUAL_MOTOR_INPUT_SHADOW",
+    "application": "SHADOW_ONLY",
+    "target_physiological_recruitment": "NOT_VALIDATED",
+    "target_connection_functional_sign": "UNKNOWN",
+    "existing_15_signs": "UNKNOWN",
+    "motor_neuron_membrane_dynamics": "NOT_MODELLED",
+    "muscle_actuation": "NOT_MODELLED",
+    "body_locomotion": "NOT_MODELLED",
+    "source_feedback": "NONE"
+  },
+  "acceptance": "Exact sample-wise linear transfer; A=-B; C exactly zero; D=A; source states/times immutable across all four conditions; finite complete ordered telemetry; deterministic hashes and source-backed semantic replay; all canonical regression gates pass",
+  "random_policy": "NONE",
+  "seed": null,
+  "chronology": "Defined before transfer execution; no independently certified prospective timestamp claimed",
+  "serialization": "CANONICAL_SORTED_COMPACT_ASCII_FINITE_JSON",
+  "failure_conditions": [
+    "SOURCE_AUTHORITY_MISMATCH",
+    "WRONG_IDENTITY_DIRECTION_OR_COUNT",
+    "MISSING_DUPLICATE_OR_NONFINITE_SAMPLES",
+    "INVALID_SIGN_OR_GAIN",
+    "CONTRADICTORY_METADATA_OR_TELEMETRY",
+    "ANY_MOTOR_OR_BODY_APPLICATION"
+  ],
+  "limitations": [
+    "Computational wiring only; no physiological transmission or motor recruitment",
+    "Source periodic activity conditional on hypothetical signs and externally prescribed drive",
+    "No biological efficacy, receptor, membrane, muscle, gait or propulsion model"
+  ]
+}

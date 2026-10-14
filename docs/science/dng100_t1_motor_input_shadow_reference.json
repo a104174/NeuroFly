@@ -1,0 +1,236 @@
+{
+  "schema": "dng100_t1_motor_input_shadow_reference_v0",
+  "reference": {
+    "experiment_id": "DNG100_T1_SINGLE_MOTOR_INPUT_SHADOW_V0",
+    "source_parent_commit": "77025b8440c3da1513760b547847d0b17664a697",
+    "preregistration_id": "d45a5c1af870a20f75a0248fa1075fff09543ced5d945191d01c0ad38d1c8fad",
+    "policy_file": "docs/science/dng100_t1_motor_input_shadow_preregistration.json",
+    "artifact_id": "7f40609a28662d6b4f61e00e24b6aaed688322b4bbf716bda98bdaba5a93c988",
+    "config_sha256": "b835d478770007a4bb39609ba4ea10a38137736031e1580b69bcb1ecb1cfe919",
+    "result_sha256": "a011d59e5dbaac648c17733109a559a8c6ce7fb479e0acce37a1a1060c9dcb51",
+    "files": {
+      "shadow.json": {
+        "bytes": 1335019,
+        "sha256": "af6d2ee30cf45a9484d9f95a1c66d9d59705635fc7ca9924adf173e2780e94dc"
+      }
+    },
+    "storage": "External neurofly-science/work/dng100-t1-motor-input-shadow-v0/<artifact_id>; source datasets and traces excluded from Git",
+    "source_artifact_id": "d0f441ad8e9ebdbf83812dcbf52e86326d76e093632dfe5cbe58607a48d525f8",
+    "source_raw_sha256": "c6f95ae2b1300115492c6e8442867fd31ac47fabb8451bca2927c330595fbe1a",
+    "source_trace": "3.125e-05",
+    "source_trace_sha256": "06ecf48c997fb007cd02add8875063b8d3f3060a3034a9e48733da8cde4e4e91",
+    "structural_authority": {
+      "motif_artifact_id": "baae20599455c2a7acb3271e6eeb6b73326d17185b6e705022b74818ff0f8934",
+      "annotation_sha256": "2177e246113e4cfbf1e7772ec37c6da1955ff22e8063d0b1f833101f99a9a3b2",
+      "snapshot_sha256": "def753409faa5daa7932ad5c256c644b2b426f44c053b2c40a5b89a17d6b024e",
+      "dataset": "male-cns:v1.0",
+      "dataset_uuid": "4b2087c0fbe046bfaf0d60bc970e3e5d",
+      "edge": {
+        "pre": 903216,
+        "post": 804257,
+        "synapse_count": 23
+      },
+      "edge_evidence": [
+        {
+          "pre": 903216,
+          "post": 804257,
+          "synapse_count": 23,
+          "roi_counts": {
+            "LegNp(T1)(R)": {
+              "post": 23
+            },
+            "VNC": {
+              "post": 23
+            }
+          },
+          "source_reference": {
+            "query": "primary_outputs",
+            "row": 1544,
+            "row_sha256": "e5ff03ee94e0b46ba2827701c1533676b70af16f4d43000a7a29512002aacc6a"
+          }
+        },
+        {
+          "pre": 903216,
+          "post": 804257,
+          "synapse_count": 23,
+          "roi_counts": {
+            "LegNp(T1)(R)": {
+              "post": 23
+            },
+            "VNC": {
+              "post": 23
+            }
+          },
+          "source_reference": {
+            "query": "motor_inputs",
+            "row": 9592,
+            "row_sha256": "e5ff03ee94e0b46ba2827701c1533676b70af16f4d43000a7a29512002aacc6a"
+          }
+        }
+      ]
+    },
+    "source_model_assumption": {
+      "b": 0.06,
+      "cap": 200.0,
+      "duration_s": 2.0,
+      "equation": "dR_i/dt=(max(200*tanh((sum_j W_ij*R_j + sum_d B_id*D_d -7.5)/200),0)-R_i)/0.02",
+      "gain": 1.0,
+      "initial": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "input": "DNg100 sources externally prescribed20units each on[.02,2)s; not brain-generated",
+      "matrix": "POST_BY_PRE; independently rebuild b*count*source sign from pinned edges, then compare original matrices",
+      "normalization": "NONE; original structural counts unchanged",
+      "sample_dt_s": 0.001,
+      "signs": "E1,E2,DNg100:+1; I1:-1; COUNTERFACTUAL_MODEL_ASSUMPTION; all15 biological signs remainUNKNOWN",
+      "tau_s": 0.02,
+      "threshold": 7.5
+    },
+    "summary": {
+      "checks": {
+        "positive_negative_symmetry": true,
+        "route_off_exact_zero": true,
+        "sham_exact_equality": true,
+        "source_invariance": true
+      },
+      "conditions": 4,
+      "decision": "DNG100_T1_MOTOR_INPUT_SHADOW_VALIDATED",
+      "input_range": [
+        0.0,
+        69.56409045138528
+      ],
+      "samples_per_condition": 2001,
+      "semantics": {
+        "application": "SHADOW_ONLY",
+        "body_locomotion": "NOT_MODELLED",
+        "existing_15_signs": "UNKNOWN",
+        "motor_neuron_membrane_dynamics": "NOT_MODELLED",
+        "muscle_actuation": "NOT_MODELLED",
+        "output": "COUNTERFACTUAL_MOTOR_INPUT_SHADOW",
+        "source_feedback": "NONE",
+        "target_connection_functional_sign": "UNKNOWN",
+        "target_physiological_recruitment": "NOT_VALIDATED"
+      },
+      "termination": "COMPLETED"
+    },
+    "condition_ranges": {
+      "A_POSITIVE": [
+        0.0,
+        69.56409045138528
+      ],
+      "B_NEGATIVE": [
+        -69.56409045138528,
+        -0.0
+      ],
+      "C_ROUTE_OFF": [
+        0.0,
+        0.0
+      ],
+      "D_SHAM": [
+        0.0,
+        69.56409045138528
+      ]
+    },
+    "reproduction": {
+      "generate": ".venv/bin/python -m neurofly.dng100_t1_motor_input_shadow generate",
+      "replay": ".venv/bin/python -m neurofly.dng100_t1_motor_input_shadow replay --path <external-root>/<artifact_id>",
+      "input_policy": "Real pinned local authorities only; no neural regeneration"
+    },
+    "validation": {
+      "status": "ALL_GATES_PASS",
+      "focused_tests_passed": 47,
+      "independent_scalar_records_checked": 8004,
+      "new_semantic_replay": "EXACT",
+      "v0_v1": "Pinned hashes/configuration/metrics and preserved exact replay evidence verified; no new neural solves",
+      "frozen_science": "Route/motif/NT/sign UNKNOWN/postsynaptic audit/Planar/five canonical hashes+provenance/D2.2 PASS",
+      "full_python_suite": {
+        "passed": 1585,
+        "deselected": 1,
+        "warnings": 2,
+        "seconds": 929.55,
+        "exit_status": 0
+      },
+      "ruff_check": "PASS",
+      "ruff_format_check": "PASS:382 files",
+      "diff_check": "PASS; explicit new-file whitespace check also PASS",
+      "actual_rehashed_tamper": "OUTPUT_AND_RECRUITMENT_CLAIM_REJECTED_WITH_REAL_SOURCES",
+      "evidence_files": {
+        "d2-verification.log": {
+          "bytes": 223,
+          "sha256": "8cf70635bafe921d51b3cc8d252585af96ab2e2ef83194964028c250ca2c2a7c"
+        },
+        "focused-pytest.log": {
+          "bytes": 100,
+          "sha256": "7e75a42b16bb7371c496a44bafe931086cbe7a631c9f77a8d0639038efa3bf37"
+        },
+        "frozen-integrity.log": {
+          "bytes": 940,
+          "sha256": "7e7e7c7bc28116f882d0faa2a5161db7f0abe3f4dccb0944c7ab50821021dab3"
+        },
+        "frozen_integrity.py": {
+          "bytes": 2226,
+          "sha256": "d58943f842ca5034c82f9f66e8054ca4ab0010d05a4f03baf7b915bc40336c91"
+        },
+        "full-pytest.log": {
+          "bytes": 9313,
+          "sha256": "7c27e8592bd0bd8836adfb338a32c817da16932a9e1d76e4fd82132d000bfaea"
+        },
+        "generate.log": {
+          "bytes": 141,
+          "sha256": "384ef484140dc8509b8ba424aec4de30f2a90afc6a6423d1b1741e0531845354"
+        },
+        "independent-transfer.log": {
+          "bytes": 1316,
+          "sha256": "545945a88aa998e51287b84ba6fbabe8b1bb996ed03be946b9af8e61be53f2ff"
+        },
+        "independent_transfer.py": {
+          "bytes": 1978,
+          "sha256": "5a3a094899422be52af2878cd50342d08bf2154174599c4c612e6943ac0ec026"
+        },
+        "preflight.json": {
+          "bytes": 268,
+          "sha256": "afd62a3e74a21cf5ce9f3f0118b32611d160fe890533650513575129934ac6fb"
+        },
+        "replay.log": {
+          "bytes": 104,
+          "sha256": "22b4af8315ea42ebd61b44e8f949067529ac63c0ce73204e4a9e05e63600b366"
+        },
+        "ruff-check.log": {
+          "bytes": 19,
+          "sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18"
+        },
+        "ruff-format.log": {
+          "bytes": 28,
+          "sha256": "d6f70559dc79d0585640e29e3a2ee6d2bf87ab6d13092f189460d06c2bf68e93"
+        },
+        "runtime-source-integrity.log": {
+          "bytes": 132,
+          "sha256": "b6963bc103b936ac664f7ad32ca1b46e746b6b38862fd344a6f64cd60794223b"
+        },
+        "tamper-diagnostic.log": {
+          "bytes": 175,
+          "sha256": "310acac914ea77a397a90b3ba1edca2b43480698731138595b350e98824a8aa5"
+        },
+        "tamper_diagnostic.py": {
+          "bytes": 642,
+          "sha256": "a429cfab7653729bb6daff4721e40092bda7df69d17f264d02926cd6c096b890"
+        },
+        "v0-v1-readonly-audit.py": {
+          "bytes": 8535,
+          "sha256": "552b6d161a500f1c1ed97ccd8fa57641216f8e63d47799a3b34b43ba49d1fe2a"
+        },
+        "v0-v1-readonly-integrity.log": {
+          "bytes": 1571,
+          "sha256": "4db9215379929d5da8458db7510e11e3edc32a624ba0df10c2fdd989bc562854"
+        }
+      },
+      "publication_gate": "SCIENTIFIC_MOTOR_INPUT_SHADOW_PUBLICATION_GO"
+    }
+  },
+  "reference_id": "5c8834a9a7d092b447b6fdf3b4c227e996914411bd4a70a83db136583674bb10"
+}

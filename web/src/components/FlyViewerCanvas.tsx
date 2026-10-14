@@ -124,7 +124,7 @@ function RecordedTrajectory({ points }: { points: [number, number, number][] }) 
 }
 
 function LiveTrajectory({points}:{points:[number,number,number][]}) {
-  const line=useMemo(()=>new ThreeLine(new BufferGeometry().setAttribute("position",new BufferAttribute(new Float32Array(401*3),3)),new LineBasicMaterial({color:"#67d3e0",transparent:true,opacity:.65})),[]);
+  const line=useMemo(()=>new ThreeLine(new BufferGeometry().setAttribute("position",new BufferAttribute(new Float32Array(1501*3),3)),new LineBasicMaterial({color:"#67d3e0",transparent:true,opacity:.65})),[]);
   useEffect(()=>()=>{line.geometry.dispose();line.material.dispose();},[line]);
   useEffect(()=>{const attr=line.geometry.getAttribute("position");points.forEach((p,i)=>attr.setXYZ(i,p[0],.003,p[2]));attr.needsUpdate=true;line.geometry.setDrawRange(0,points.length);line.geometry.computeBoundingSphere();},[line,points]);
   return <primitive object={line} dispose={null}/>;

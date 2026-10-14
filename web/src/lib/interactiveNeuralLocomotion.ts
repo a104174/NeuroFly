@@ -35,24 +35,24 @@ function stableJSON(value:unknown):string {
 async function hash(value:unknown){const raw=new TextEncoder().encode(stableJSON(value));return Array.from(new Uint8Array(await crypto.subtle.digest("SHA-256",raw)),v=>v.toString(16).padStart(2,"0")).join("");}
 
 export class InteractiveNeuralEngine {
- private readonly body:NeuralArtifact["config"]["body"];
- private readonly limits:readonly number[];
+ protected readonly body:NeuralArtifact["config"]["body"];
+ protected readonly limits:readonly number[];
  private readonly config:EventLog["config"];
- private pose:Pose;
- private previous:Pose|null=null;
+ protected pose:Pose;
+ protected previous:Pose|null=null;
  private hs:number[]=Array(6).fill(0);
  private dn:number[]=Array(2).fill(0);
- private n=0;
+ protected n=0;
  private plane:Plane;
  private pending:Plane|null=null;
- private contact:LocomotionFrame["contact"]=null;
- private distance=0;
+ protected contact:LocomotionFrame["contact"]=null;
+ protected distance=0;
  private readout:number|null=null;
- private omega=0;
+ protected omega=0;
  private executedSubsteps=0;
  private readonly events:StimulusEvent[]=[];
- private readonly records:LocomotionFrame[]=[];
- private readonly path:Vec3[]=[];
+ protected readonly records:LocomotionFrame[]=[];
+ protected readonly path:Vec3[]=[];
  constructor(authority:NeuralArtifact,mode:RuntimeMode="neural",initialPlane:Plane=.4) {
   if(!["neural","baseline","output_disabled"].includes(mode)||!validPlane(initialPlane))throw new Error("Unsupported runtime configuration");
   const c=authority.config, n=c.sources.neural as NeuralContract;
@@ -67,10 +67,11 @@ export class InteractiveNeuralEngine {
   this.config={source_url:NEURAL_LOCOMOTION_URL,body_model:structuredClone(this.body),runtime:RUNTIME_VERSION,source_artifact_id:authority.artifact_id,source_raw_sha256:NEURAL_LOCOMOTION_SHA256,source_config_sha256:authority.config_sha256,dataset_uuid:c.dataset_uuid,model_sources:{...c.source_sha256},mode,initial_plane:initialPlane,body_dt_s:BODY_DT,neural_dt_ms:NEURAL_DT_MS,substeps:SUBSTEPS,duration_s:8,propulsion:.18,gain:2.5,omega_bound:.5,random_policy:"NONE",initial_pose:structuredClone(this.pose),initial_hs:[...this.hs],initial_dn:[...this.dn]};
   this.path.push([...this.pose.position]);
  }
+ protected lastStep=400;
  snapshot():RuntimeSnapshot {return {step:this.n,time:this.n*BODY_DT,position:[...this.pose.position],heading:this.pose.heading,hs:[...this.hs],dn:[...this.dn],plane:this.plane,contact:this.contact,distance:this.distance,omega:this.omega,readout:this.readout,substeps:this.executedSubsteps};}
  trajectory():Vec3[]{return this.path.map(p=>[...p]);}
- eventLog():EventLog {return structuredClone({schema:"interactive_neural_locomotion_event_log_v2",config:this.config,events:this.events,stop_step:this.n,pending_plane:this.pending,termination:this.n===400?"DURATION_COMPLETED":"PAUSED"});}
- requestPlane(plane:Plane){if(!validPlane(plane)||this.n===400)throw new Error("Invalid/finished stimulus intervention");this.pending=plane===this.plane?null:plane;}
+ eventLog():EventLog {return structuredClone({schema:"interactive_neural_locomotion_event_log_v2",config:this.config,events:this.events,stop_step:this.n,pending_plane:this.pending,termination:this.n===this.lastStep?"DURATION_COMPLETED":"PAUSED"});}
+ requestPlane(plane:Plane){if(!validPlane(plane)||this.n===this.lastStep)throw new Error("Invalid/finished stimulus intervention");this.pending=plane===this.plane?null:plane;}
  pendingPlane(){return this.pending;}
  private observation():LocomotionFrame["sensory_summary"] {
   if(!this.previous)return null;
@@ -92,7 +93,7 @@ export class InteractiveNeuralEngine {
  /** Returns the left-boundary telemetry whose outgoing interval was computed.
   * snapshot() is the NEW right-boundary state, never a predicted prerecorded pose. */
  advance():LocomotionFrame {
-  if(this.n>=400)throw new Error("Simulation completed");
+  if(this.n>=this.lastStep)throw new Error("Simulation completed");
   if(this.pending!==null){this.events.push({step:this.n,time:this.n*BODY_DT,old_plane:this.plane,new_plane:this.pending});this.plane=this.pending;this.pending=null;}
   const f=this.calculateBoundary(true);
   this.records.push(f);this.previous=structuredClone(this.pose);
@@ -102,14 +103,14 @@ export class InteractiveNeuralEngine {
   // Resolve the new boundary without advancing neural time.
   this.velocity();return structuredClone(f);
  }
- private velocity():Vec3 {
+ protected velocity():Vec3 {
   const [x,,z]=this.pose.position,[lx,lz]=this.limits;
   const vx=.18*Math.sin(finite(this.pose.heading)),vz=.18*Math.cos(this.pose.heading);
   if(!this.pose.position.every(Number.isFinite))throw new Error("Invalid pose");
   if(!this.contact){if((x>=lx&&vx>0)||(x<=-lx&&vx<0))this.contact="X_WALL";else if((z>=lz&&vz>0)||(z<=-lz&&vz<0))this.contact="Z_WALL";}
   return this.contact?[0,0,0]:[vx,0,vz];
  }
- private calculateBoundary(outgoing:boolean):LocomotionFrame {
+ protected calculateBoundary(outgoing:boolean):LocomotionFrame {
   const sensory=this.observation(),velocity=this.velocity(),oldHS=[...this.hs],oldDN=[...this.dn];
   let increment=0,driveSum=0,omega=0,clipped=false;
   const neural=this.config.mode!=="baseline";
@@ -128,7 +129,7 @@ export class InteractiveNeuralEngine {
   if(outgoing)this.omega=omega;
   return {step:this.n,time:this.n*BODY_DT,position:[...this.pose.position],orientation:this.pose.heading,linear_velocity:velocity,angular_velocity:omega,contact:this.contact,propulsion_model_value:.18,steering_model_value:omega,sensory_summary:sensory,neural_summary:neural?{hs_states:oldHS,dnp15_states:oldDN,substeps:outgoing?SUBSTEPS:0,orientation_increment_eq:outgoing?increment:null,mean_yaw_drive_eq:outgoing?driveSum/SUBSTEPS:null}:null,model_mode:this.config.mode==="neural"?"CONNECTOME_INFORMED_NEURAL_STEERING":"EXPERIMENTAL_KINEMATIC_ONLY",steering_applied:this.config.mode==="neural",steering_clipped:clipped,distance:this.distance};
  }
- finalBoundary(){if(this.n!==400)throw new Error("Not final boundary");return this.calculateBoundary(false);}
+ finalBoundary(){if(this.n!==this.lastStep)throw new Error("Not final boundary");return this.calculateBoundary(false);}
  async exportSession(){const log=this.eventLog(),telemetry={completed_intervals:structuredClone(this.records),final_state:this.snapshot()},log_sha256=await hash(log),result_sha256=await hash(telemetry);return {schema:"interactive_neural_locomotion_session_v2",log,telemetry,config_sha256:await hash(log.config),log_sha256,result_sha256,artifact_id:await hash({log_sha256,result_sha256})};}
 }
 
@@ -165,11 +166,11 @@ export async function validateSession(authority:NeuralArtifact,value:unknown) {
  * scientific dt is never enlarged. Pause discards wall-time debt, not model state. */
 export class FixedStepClock {
  private accumulator=0;
- advance(engine:InteractiveNeuralEngine,elapsedMs:number,playing:boolean) {
-  if(!Number.isFinite(elapsedMs)||elapsedMs<0)throw new Error("Invalid wall-clock interval");
+ advance(engine:Pick<InteractiveNeuralEngine,"snapshot"|"advance">,elapsedMs:number,playing:boolean,durationS=8) {
+  if(!Number.isFinite(elapsedMs)||elapsedMs<0||!Number.isFinite(durationS)||durationS<=0)throw new Error("Invalid wall-clock interval");
   if(!playing){this.accumulator=0;return {steps:0,limited:false};}
   this.accumulator+=elapsedMs;let steps=0;
-  while(this.accumulator>=20&&steps<5&&engine.snapshot().step<400){engine.advance();this.accumulator-=20;steps++;}
+  while(this.accumulator>=20&&steps<5&&engine.snapshot().time<durationS){engine.advance();this.accumulator-=20;steps++;}
   const limited=this.accumulator>=20;if(limited)this.accumulator=0;
   return {steps,limited};
  }

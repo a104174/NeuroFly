@@ -9,10 +9,11 @@ import { advanceLocomotion, loadLocomotion, locomotionScene, type LocomotionRepl
 import { loadNeuralLocomotion, type NeuralArtifact } from "@/lib/neuralLocomotion";
 import { comparisonOverview, comparisonScenes } from "@/lib/neuralSteeringComparison";
 import { NeuralComparisonInspector } from "./NeuralComparisonInspector";
+import { InteractiveNeuralArena } from "./InteractiveNeuralArena";
 import { FlyViewer } from "./FlyViewer";
 
 export function ArenaCourseViewer() {
-  const [mode, setMode] = useState<"static" | "course" | "locomotion" | "neural" | "comparison">("static");
+  const [mode, setMode] = useState<"static" | "course" | "locomotion" | "neural" | "comparison" | "interactive">("static");
   const [neuralAuthority, setNeuralAuthority] = useState<NeuralArtifact | null>(null);
   const [locomotion, setLocomotion] = useState<LocomotionReplay | null>(null);
   const [runIndex, setRunIndex] = useState(0);
@@ -57,10 +58,10 @@ export function ArenaCourseViewer() {
     return () => cancelAnimationFrame(animation);
   }, [motionPlaying]);
 
-  async function choose(mode: "static" | "course" | "locomotion" | "neural" | "comparison") {
+  async function choose(mode: "static" | "course" | "locomotion" | "neural" | "comparison" | "interactive") {
     const generation = ++request.current;
     setMode(mode); setTime(0); setNeuralAuthority(null); setLocomotion(null); setRunIndex(0); setPlaying(false); setCursor(0); setReplay(null); setError(null); setLoading(mode !== "static");
-    if (mode === "static") return;
+    if (mode === "static" || mode === "interactive") { setLoading(false); return; }
     try {
       if (mode === "neural" || mode === "comparison") {
         const data = await loadNeuralLocomotion();
@@ -94,6 +95,7 @@ export function ArenaCourseViewer() {
       <button aria-pressed={mode === "course"} onClick={() => void choose("course")}>Course Replay</button>
       <button aria-pressed={mode === "locomotion"} onClick={() => void choose("locomotion")}>Experimental Locomotion v0</button>
       <button aria-pressed={mode === "neural"} onClick={() => void choose("neural")}>Experimental Locomotion v1</button>
+      <button aria-pressed={mode === "interactive"} onClick={() => void choose("interactive")}>Interactive Neural Locomotion v2</button>
       <button aria-pressed={mode === "comparison"} onClick={() => void choose("comparison")}>Neural Steering Comparison</button>
     </div>
     {(mode === "locomotion" || mode === "neural" || mode === "comparison") && <section className="arena-replay-panel" aria-label={mode === "comparison" ? "Neural Steering Comparison" : neuralMode ? "Experimental Locomotion v1" : "Experimental Locomotion v0"}>
@@ -148,10 +150,10 @@ export function ArenaCourseViewer() {
         <p className="arena-replay-note">Estados de modelo sobre evidência estrutural MaleCNS; não são ângulos biológicos calibrados nem velocidades físicas. O espécime é um asset visual, não anatomia MaleCNS reconstruída.</p>
       </>}
     </section>}
-    <FlyViewer arena replayPose={pose} locomotion={Boolean(motion)} locomotionVersion={neuralAuthority ? "v1" : "v0"} trajectory={comparison ? undefined : trajectory} comparison={comparison} stimulusPlane={neuralAuthority && !comparison ? locomotion?.result.runs[runIndex].condition?.plane_z : undefined} playbackControls={motion ? <div className="arena-replay-controls">
+    {mode === "interactive" ? <InteractiveNeuralArena/> : <FlyViewer arena replayPose={pose} locomotion={Boolean(motion)} locomotionVersion={neuralAuthority ? "v1" : "v0"} trajectory={comparison ? undefined : trajectory} comparison={comparison} stimulusPlane={neuralAuthority && !comparison ? locomotion?.result.runs[runIndex].condition?.plane_z : undefined} playbackControls={motion ? <div className="arena-replay-controls">
           <button onClick={() => { if (time >= 8) setTime(0); setPlaying(!motionPlaying); }}>{motionPlaying ? "Pause" : "Play"}</button>
           <button onClick={() => { setPlaying(false); setTime(0); }}>Reset Experiment</button>
           <output data-simulation-time={time} data-world-position={JSON.stringify(motion.pose.anchor)} data-contact={motion.frame.contact ?? "NONE"} data-render-heading={motion.pose.rotation}>{time.toFixed(2)} / 8.00 s{time >= 8 ? " · Fim da simulação" : ""}</output>
-        </div> : undefined} />
+        </div> : undefined} />}
   </>;
 }

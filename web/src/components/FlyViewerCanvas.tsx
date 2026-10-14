@@ -4,7 +4,7 @@ import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { ARENA, arenaCamera, arenaCameraLimits, constrainArenaInspectionCamera, type ArenaCameraView } from "@/lib/experimentalArena";
 import { ExperimentalArena } from "./ExperimentalArena";
 import { Component, useEffect, useRef, useState, useMemo, type ReactNode } from "react";
-import { AgXToneMapping, PMREMGenerator, PerspectiveCamera, Vector3, BufferGeometry, Line as ThreeLine, LineBasicMaterial } from "three";
+import { AgXToneMapping, PMREMGenerator, PerspectiveCamera, Vector3, BufferAttribute, BufferGeometry, Line as ThreeLine, LineBasicMaterial } from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { RoomEnvironment } from "three/examples/jsm/environments/RoomEnvironment.js";
 import { GLTFLoader, type GLTF } from "three/examples/jsm/loaders/GLTFLoader.js";
@@ -123,7 +123,14 @@ function RecordedTrajectory({ points }: { points: [number, number, number][] }) 
   return <primitive object={line} dispose={null} />;
 }
 
-export default function FlyViewerCanvas({ view, reset, diagnostics, onStatus, onStats, onFailure, arena = false, onTableReady, replayPose, locomotion = false, stimulusPlane, trajectory, comparison }: { comparison?: ArenaComparisonProps; trajectory?: [number, number, number][]; stimulusPlane?: number; locomotion?: boolean; replayPose?: import("@/lib/arenaCourseReplay").ArenaCoursePose; arena?: boolean; onTableReady?: () => void; view: ArenaCameraView; reset: number; diagnostics: boolean; onStatus: (value: Status) => void; onStats: (value: ViewerStats) => void; onFailure: (message: string) => void }) {
+function LiveTrajectory({points}:{points:[number,number,number][]}) {
+  const line=useMemo(()=>new ThreeLine(new BufferGeometry().setAttribute("position",new BufferAttribute(new Float32Array(401*3),3)),new LineBasicMaterial({color:"#67d3e0",transparent:true,opacity:.65})),[]);
+  useEffect(()=>()=>{line.geometry.dispose();line.material.dispose();},[line]);
+  useEffect(()=>{const attr=line.geometry.getAttribute("position");points.forEach((p,i)=>attr.setXYZ(i,p[0],.003,p[2]));attr.needsUpdate=true;line.geometry.setDrawRange(0,points.length);line.geometry.computeBoundingSphere();},[line,points]);
+  return <primitive object={line} dispose={null}/>;
+}
+
+export default function FlyViewerCanvas({ view, reset, diagnostics, onStatus, onStats, onFailure, arena = false, onTableReady, replayPose, locomotion = false, stimulusPlane, trajectory, liveTrajectory, comparison }: { comparison?: ArenaComparisonProps; trajectory?: [number, number, number][]; liveTrajectory?: [number, number, number][]; stimulusPlane?: number; locomotion?: boolean; replayPose?: import("@/lib/arenaCourseReplay").ArenaCoursePose; arena?: boolean; onTableReady?: () => void; view: ArenaCameraView; reset: number; diagnostics: boolean; onStatus: (value: Status) => void; onStats: (value: ViewerStats) => void; onFailure: (message: string) => void }) {
   const [webGLAvailable] = useState(() => {
     try {
       const probe = document.createElement("canvas").getContext("webgl2");
@@ -135,6 +142,7 @@ export default function FlyViewerCanvas({ view, reset, diagnostics, onStatus, on
   useEffect(() => { if (!webGLAvailable) onFailure("WebGL 2 is unavailable. Use a browser with WebGL enabled."); }, [webGLAvailable, onFailure]);
   if (!webGLAvailable) return null;
   return <ViewerBoundary onFailure={onFailure}><Canvas dpr={[1, 1.5]} camera={{ position: [1.5, 1, 2], fov: 35 }} gl={{ antialias: true, alpha: false, toneMapping: AgXToneMapping, toneMappingExposure: 1 }} fallback={null}>
+    {liveTrajectory ? <LiveTrajectory points={liveTrajectory}/> : null}
     {comparison ? <ArenaComparison {...comparison}/> : null}
     {trajectory ? <RecordedTrajectory points={trajectory} /> : null}
     <color attach="background" args={["#182129"]} />

@@ -3,15 +3,15 @@
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { ARENA, arenaCamera, arenaCameraLimits, constrainArenaInspectionCamera, type ArenaCameraView } from "@/lib/experimentalArena";
 import { ExperimentalArena } from "./ExperimentalArena";
-import { Component, useEffect, useRef, useState, type ReactNode } from "react";
-import { AgXToneMapping, PMREMGenerator, PerspectiveCamera, Vector3 } from "three";
+import { Component, useEffect, useRef, useState, useMemo, type ReactNode } from "react";
+import { AgXToneMapping, PMREMGenerator, PerspectiveCamera, Vector3, BufferGeometry, Line as ThreeLine, LineBasicMaterial } from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { RoomEnvironment } from "three/examples/jsm/environments/RoomEnvironment.js";
 import { GLTFLoader, type GLTF } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { flyPresentationFit, prepareFlyVisual } from "@/lib/flyVisualInstance";
 import { FLY_VIEWER_ASSET, flyViewerCamera, verifyFlyViewerBytes } from "@/lib/flyViewer";
 
-export type ViewerStats = { fps: number; calls: number; triangles: number; geometries: number; textures: number; cameraPosition: number[]; cameraTarget: number[]; bodyPosition?: number[] };
+export type ViewerStats = { fps: number; calls: number; triangles: number; geometries: number; textures: number; cameraPosition: number[]; cameraTarget: number[]; bodyPosition?: number[]; bodyYaw?: number };
 type Status = { state: "loading" | "ready" | "error"; detail?: string };
 // Loader result is cached read-only. Only the cloned instance owns mutable materials.
 let assetPromise: Promise<GLTF> | undefined;
@@ -95,7 +95,7 @@ function Studio({ view, reset, diagnostics, onStats, onFailure, arena, locomotio
     if (!sample.current.start) sample.current.start = now;
     sample.current.frames++;
     if (now - sample.current.start >= 1000) {
-      onStats({ fps: sample.current.frames * 1000 / (now - sample.current.start), calls: gl.info.render.calls, triangles: gl.info.render.triangles, geometries: gl.info.memory.geometries, textures: gl.info.memory.textures, bodyPosition: get().scene.getObjectByName("RecordedBodyTransform")?.getWorldPosition(new Vector3()).toArray(), cameraPosition: get().camera.position.toArray(), cameraTarget: controls.current?.target.toArray() ?? [] });
+      onStats({ fps: sample.current.frames * 1000 / (now - sample.current.start), calls: gl.info.render.calls, triangles: gl.info.render.triangles, geometries: gl.info.memory.geometries, textures: gl.info.memory.textures, bodyYaw: get().scene.getObjectByName("RecordedBodyTransform")?.rotation.y, bodyPosition: get().scene.getObjectByName("RecordedBodyTransform")?.getWorldPosition(new Vector3()).toArray(), cameraPosition: get().camera.position.toArray(), cameraTarget: controls.current?.target.toArray() ?? [] });
       sample.current = { start: now, frames: 0 };
     }
   });
@@ -115,7 +115,13 @@ class ViewerBoundary extends Component<{ children: ReactNode; onFailure: (messag
   render() { return this.state.failed ? null : this.props.children; }
 }
 
-export default function FlyViewerCanvas({ view, reset, diagnostics, onStatus, onStats, onFailure, arena = false, onTableReady, replayPose, locomotion = false }: { locomotion?: boolean; replayPose?: import("@/lib/arenaCourseReplay").ArenaCoursePose; arena?: boolean; onTableReady?: () => void; view: ArenaCameraView; reset: number; diagnostics: boolean; onStatus: (value: Status) => void; onStats: (value: ViewerStats) => void; onFailure: (message: string) => void }) {
+function RecordedTrajectory({ points }: { points: [number, number, number][] }) {
+  const line = useMemo(() => new ThreeLine(new BufferGeometry().setFromPoints(points.map(p => new Vector3(p[0], .0025, p[2]))), new LineBasicMaterial({ color: "#67d3e0", transparent: true, opacity: .45 })), [points]);
+  useEffect(() => () => { line.geometry.dispose(); line.material.dispose(); }, [line]);
+  return <primitive object={line} dispose={null} />;
+}
+
+export default function FlyViewerCanvas({ view, reset, diagnostics, onStatus, onStats, onFailure, arena = false, onTableReady, replayPose, locomotion = false, stimulusPlane, trajectory }: { trajectory?: [number, number, number][]; stimulusPlane?: number; locomotion?: boolean; replayPose?: import("@/lib/arenaCourseReplay").ArenaCoursePose; arena?: boolean; onTableReady?: () => void; view: ArenaCameraView; reset: number; diagnostics: boolean; onStatus: (value: Status) => void; onStats: (value: ViewerStats) => void; onFailure: (message: string) => void }) {
   const [webGLAvailable] = useState(() => {
     try {
       const probe = document.createElement("canvas").getContext("webgl2");
@@ -127,9 +133,10 @@ export default function FlyViewerCanvas({ view, reset, diagnostics, onStatus, on
   useEffect(() => { if (!webGLAvailable) onFailure("WebGL 2 is unavailable. Use a browser with WebGL enabled."); }, [webGLAvailable, onFailure]);
   if (!webGLAvailable) return null;
   return <ViewerBoundary onFailure={onFailure}><Canvas dpr={[1, 1.5]} camera={{ position: [1.5, 1, 2], fov: 35 }} gl={{ antialias: true, alpha: false, toneMapping: AgXToneMapping, toneMappingExposure: 1 }} fallback={null}>
+    {trajectory ? <RecordedTrajectory points={trajectory} /> : null}
     <color attach="background" args={["#182129"]} />
     <Studio view={view} reset={reset} diagnostics={diagnostics} onStats={onStats} onFailure={onFailure} arena={arena} locomotion={locomotion} />
     {arena && replayPose ? <group name="RecordedBodyTransform" userData={{ replayAnchor: replayPose.anchor }} position={replayPose.anchor} rotation={[0, replayPose.rotation, 0]} scale={ARENA.flyScale}><group position={replayPose.assetOffset}><Fly onStatus={onStatus} /></group></group> : <group position={arena ? ARENA.flyOffset : [0, 0, 0]} scale={arena ? ARENA.flyScale : 1}><Fly onStatus={onStatus} /></group>}
-    {arena && onTableReady ? <ExperimentalArena shadowAnchor={locomotion ? replayPose?.anchor : undefined} onReady={onTableReady} onFailure={onFailure} /> : null}
+    {arena && onTableReady ? <ExperimentalArena stimulusPlane={stimulusPlane} shadowAnchor={locomotion ? replayPose?.anchor : undefined} onReady={onTableReady} onFailure={onFailure} /> : null}
   </Canvas></ViewerBoundary>;
 }

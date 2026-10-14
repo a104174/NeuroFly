@@ -112,6 +112,32 @@ def validate_config(c):
         raise ValueError("incomplete configuration") from exc
 
 
+def body_velocity(position, heading, speed, contact, limits):
+    """Shared v0/v1 plant: latch outward contact; never add a wall reflex."""
+    lx, lz = limits
+    vx, vz = speed * math.sin(heading), speed * math.cos(heading)
+    if contact is None and speed > 0:
+        if (position[0] >= lx and vx > 0) or (position[0] <= -lx and vx < 0):
+            contact = "X_WALL"
+        elif (position[2] >= lz and vz > 0) or (position[2] <= -lz and vz < 0):
+            contact = "Z_WALL"
+    return ([0.0, 0.0, 0.0] if contact else [vx, 0.0, vz]), contact
+
+
+def advance_position(position, velocity, dt, limits):
+    """Explicit left-boundary translation followed by the existing clamp."""
+    lx, lz = limits
+    proposed = [
+        position[0] + velocity[0] * dt,
+        position[1],
+        position[2] + velocity[2] * dt,
+    ]
+    proposed[0] = max(-lx, min(lx, proposed[0]))
+    proposed[2] = max(-lz, min(lz, proposed[2]))
+    distance = math.hypot(proposed[0] - position[0], proposed[2] - position[2])
+    return proposed, distance
+
+
 def simulate(c, run_id, speed):
     """Closed boundary state: contact latches; no artificial wall turn."""
     params = {**c, "speed": speed}
@@ -119,17 +145,12 @@ def simulate(c, run_id, speed):
     p = c["initial_position"].copy()
     heading, dt = c["initial_heading_rad"], c["dt_s"]
     count = round(c["duration_s"] / dt)
-    vx, vz = speed * math.sin(heading), speed * math.cos(heading)
     contact, distance, frames, events = None, 0.0, [], []
     for n in range(count + 1):
-        if contact is None and speed > 0:
-            if (p[0] >= lx and vx > 0) or (p[0] <= -lx and vx < 0):
-                contact = "X_WALL"
-            elif (p[2] >= lz and vz > 0) or (p[2] <= -lz and vz < 0):
-                contact = "Z_WALL"
-            if contact:
-                events.append({"step": n, "time": n * dt, "wall": contact})
-        velocity = [0.0, 0.0, 0.0] if contact else [vx, 0.0, vz]
+        previous_contact = contact
+        velocity, contact = body_velocity(p, heading, speed, contact, (lx, lz))
+        if contact and previous_contact is None:
+            events.append({"step": n, "time": n * dt, "wall": contact})
         frames.append(
             {
                 "step": n,
@@ -151,11 +172,8 @@ def simulate(c, run_id, speed):
             break  # Final boundary has no outgoing interval.
         if contact:
             continue
-        proposed = [p[0] + vx * dt, p[1], p[2] + vz * dt]
-        proposed[0] = max(-lx, min(lx, proposed[0]))
-        proposed[2] = max(-lz, min(lz, proposed[2]))
-        distance += math.hypot(proposed[0] - p[0], proposed[2] - p[2])
-        p = proposed
+        p, increment = advance_position(p, velocity, dt, (lx, lz))
+        distance += increment
     return {
         "id": run_id,
         "speed": speed,

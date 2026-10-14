@@ -51,10 +51,11 @@ function Solid({ position, size, color = "#34454e", roughness = .8, metalness = 
 }
 
 /** Original in-house enclosure and backdrop. No behavioral apparatus or data implied. */
-export function ExperimentalArena({ onReady, onFailure, shadowAnchor }: { shadowAnchor?: [number, number, number]; onReady: () => void; onFailure: (message: string) => void }) {
+export function ExperimentalArena({ onReady, onFailure, shadowAnchor, stimulusPlane }: { stimulusPlane?: number; shadowAnchor?: [number, number, number]; onReady: () => void; onFailure: (message: string) => void }) {
   const { width: w, depth: d, height: h, floor: f } = ARENA.chamber;
   const panels = arenaPanels();
   return <>
+    {stimulusPlane !== undefined && [.6, -.6].map((x,i)=><mesh key={`stimulus-${i}`} position={[x,.0015,stimulusPlane]} rotation={[-Math.PI/2,0,0]}><ringGeometry args={[.015,.027,24]} /><meshBasicMaterial color={i===0?"#67d3e0":"#f3bd6c"} side={DoubleSide} /></mesh>)}
     <LabTable onReady={onReady} onFailure={onFailure} />
     <Solid position={[0, -f / 2, 0]} size={[w + .08, f, d + .08]} color="#555c61" roughness={.95} metalness={0} />
     {panels.map(panel => <mesh key={panel.id} position={panel.position} renderOrder={2}>

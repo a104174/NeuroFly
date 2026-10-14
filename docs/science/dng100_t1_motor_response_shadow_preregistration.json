@@ -1,0 +1,162 @@
+{
+  "schema": "dng100_t1_motor_response_shadow_preregistration_v0",
+  "experiment_id": "DNG100_T1_SINGLE_MOTOR_RESPONSE_SHADOW_V0",
+  "parent_commit": "4fd52eb1d47c6b67c3516dacda5fb598ee175618",
+  "question": "How do prescribed engineering response timescales and input-sign hypotheses affect a one-state causal receiver of the immutable validated shadow input?",
+  "dataset": "male-cns:v1.0",
+  "dataset_uuid": "4b2087c0fbe046bfaf0d60bc970e3e5d",
+  "edge": {
+    "pre": 903216,
+    "post": 804257,
+    "synapse_count": 23
+  },
+  "source_annotation": {
+    "bodyId": 903216,
+    "type": "INXXX466",
+    "instance": "INXXX466_R",
+    "somaSide": "R",
+    "superclass": "vnc_intrinsic",
+    "class": null,
+    "subclass": "IR",
+    "somaNeuromere": "T1",
+    "status": "Traced",
+    "statusLabel": "Reviewed"
+  },
+  "target_annotation": {
+    "bodyId": 804257,
+    "type": "Ti extensor MN",
+    "instance": "Ti extensor MN_R",
+    "somaSide": "R",
+    "superclass": "vnc_motor",
+    "class": null,
+    "subclass": "fl",
+    "somaNeuromere": "T1",
+    "status": "Traced",
+    "statusLabel": "Reviewed"
+  },
+  "motif_artifact_id": "baae20599455c2a7acb3271e6eeb6b73326d17185b6e705022b74818ff0f8934",
+  "structural_source_sha256": "def753409faa5daa7932ad5c256c644b2b426f44c053b2c40a5b89a17d6b024e",
+  "annotation_sha256": "2177e246113e4cfbf1e7772ec37c6da1955ff22e8063d0b1f833101f99a9a3b2",
+  "input_artifact_id": "7f40609a28662d6b4f61e00e24b6aaed688322b4bbf716bda98bdaba5a93c988",
+  "input_raw_sha256": "af6d2ee30cf45a9484d9f95a1c66d9d59705635fc7ca9924adf173e2780e94dc",
+  "input_config_sha256": "b835d478770007a4bb39609ba4ea10a38137736031e1580b69bcb1ecb1cfe919",
+  "input_result_sha256": "a011d59e5dbaac648c17733109a559a8c6ce7fb479e0acce37a1a1060c9dcb51",
+  "input_preregistration_id": "d45a5c1af870a20f75a0248fa1075fff09543ced5d945191d01c0ad38d1c8fad",
+  "neural_source_artifact_id": "d0f441ad8e9ebdbf83812dcbf52e86326d76e093632dfe5cbe58607a48d525f8",
+  "neural_source_raw_sha256": "c6f95ae2b1300115492c6e8442867fd31ac47fabb8451bca2927c330595fbe1a",
+  "neural_trace": "3.125e-05",
+  "neural_trace_sha256": "06ecf48c997fb007cd02add8875063b8d3f3060a3034a9e48733da8cde4e4e91",
+  "method_preflight": {
+    "decision": "GO_ENGINEERING_TEMPORAL_RESPONSE_ONLY",
+    "existing_proxy": "g1_proxy_passive_electrical.py uses event-boundary increments and virtual G1 voltage semantics; not appropriate for this held-input motor target; no reuse of its biological/parameter mappings",
+    "mathematical_basis": "Stable scalar linear relaxation is analytically identifiable for prescribed input; its convolution and exact zero-order-hold update follow directly by integrating factor",
+    "source_context": [
+      {
+        "publication": "Pugliese et al. revised 2026 preprint",
+        "doi": "10.1101/2025.09.12.675944",
+        "url": "https://raw.githubusercontent.com/smpuglie/Pugliese_2026/10e7661bf414ba7b4c2edf795cd36d0f878c17c0/src/simulation/vnc_sim.py",
+        "resolution": "Published half-tanh rate equation contains first-order relaxation; new receiver replaces nonlinear activation with linear engineering input, not a reproduction or biological motor model"
+      },
+      {
+        "publication": "Rotstein and Nadim, J Comput Neurosci 37:9-28 (2014)",
+        "doi": "10.1007/s10827-013-0483-3",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/24254440/",
+        "resolution": "Primary abstract describes amplitude/phase analysis of linearized neuronal models; context only. Full text blocked via PMC and Europe PMC retrieval failed. No equation or parameter imported from unavailable full text"
+      }
+    ],
+    "parameter_authority": "ENGINEERING_ONLY_NONE_MEASURED_FOR_804257"
+  },
+  "model": {
+    "equation": "tau_s * dy/dt = -y + gain * u(t)",
+    "update": "y[n+1] = y[n] + (-expm1(-(t[n+1]-t[n])/tau_s)) * (gain*u[n]-y[n])",
+    "gain": 1.0,
+    "initial_state": 0.0,
+    "state_classification": "ENGINEERING_RECEIVER_STATE",
+    "units": "UNITS_INHERITED_FROM_UNCALIBRATED_MODEL_INPUT_NOT_VOLTAGE_CURRENT_FIRING_OR_ACTIVATION",
+    "integration_method": "ANALYTIC_EXACT_ZOH_FLOAT64",
+    "clipping": "NONE",
+    "noise": "NONE"
+  },
+  "timescales": [
+    {
+      "id": "TAU_1MS",
+      "tau_s": 0.001
+    },
+    {
+      "id": "TAU_10MS",
+      "tau_s": 0.01
+    },
+    {
+      "id": "TAU_100MS",
+      "tau_s": 0.1
+    }
+  ],
+  "timescale_basis": "Three engineering decades anchored to 1ms source sampling: tau/dt=1,10,100. Largest tau=.1s leaves20 timescales in2s and10 in final1s. Not selected from observed oscillation period, fitted amplitudes or measured target physiology.",
+  "conditions": [
+    {
+      "id": "A_POSITIVE",
+      "sign_assumption": 1
+    },
+    {
+      "id": "B_NEGATIVE",
+      "sign_assumption": -1
+    },
+    {
+      "id": "C_ROUTE_OFF",
+      "sign_assumption": 0
+    },
+    {
+      "id": "D_SHAM",
+      "sign_assumption": 1
+    }
+  ],
+  "timing": {
+    "samples": 2001,
+    "duration_s": 2.0,
+    "sample_dt_s": 0.001,
+    "input_hold": "u[n] on[t[n],t[n+1]); state y[n] before consuming u[n]; y[0]=0; exactly2000 completed intervals",
+    "final_boundary": "u[2000] recorded but not consumed; no interval beyond2s",
+    "interpolation": "NONE"
+  },
+  "metrics": {
+    "ranges": "Full input/output ranges, initial/final state, maximum absolute output and earliest absolute peak time",
+    "peak_time_offset": "Time of earliest full-window |output| maximum minus earliest |input| maximum; descriptive/transient-dependent, not a synaptic latency or unique oscillatory phase delay; null for zero input",
+    "tail_window_s": [
+      1.0,
+      2.0
+    ],
+    "temporal_attenuation": "Tail centered RMS(output)/centered RMS(input), sampled at matched boundaries; null if input centered RMS==0; not a physiological transfer coefficient",
+    "controls": "A=-B, route-off exactly zero, D=A for each timescale; source samples/times identical across all12 runs",
+    "analytical_reference": "y(t_n)=exp(-t_n/tau)*y0 + gain*sum_{k<n}u[k]*(exp(-(t_n-t[k+1])/tau)-exp(-(t_n-t[k])/tau)); independently sum all previous held intervals, never call production recurrence",
+    "reference_max_absolute_tolerance": 1e-10,
+    "tolerance_basis": "Conservative floating-point summation allowance for2000 terms and states of order100; not biological accuracy",
+    "comparison": "Report timescale dependence without arbitrary minimum amplitudes or lag-success criteria"
+  },
+  "semantics": {
+    "output": "COUNTERFACTUAL_POSTSYNAPTIC_RESPONSE",
+    "application": "SHADOW_ONLY",
+    "physiological_motor_recruitment": "NOT_VALIDATED",
+    "motor_neuron_spiking": "NOT_MODELLED",
+    "receptors": "NOT_MODELLED",
+    "muscle": "NOT_MODELLED",
+    "body_movement": "NOT_MODELLED",
+    "source_feedback": "NONE",
+    "all_15_neural_functional_signs": "UNKNOWN",
+    "target_connection_functional_sign": "UNKNOWN",
+    "structural_count_use": "PROVENANCE_ONLY_NOT_WEIGHT"
+  },
+  "random_policy": "NONE",
+  "seed": null,
+  "reproducibility": "Canonical sorted compact ASCII finite JSON; complete policy, source pins, telemetry and metrics; semantic replay recomputes only isolated receiver and scalar parent transfer; original neural sources never regenerated",
+  "chronology": "Defined and content-addressed before receiver trajectories; no independently certified prospective timestamp claimed",
+  "failure_conditions": [
+    "SOURCE_OR_STRUCTURAL_MISMATCH",
+    "INVALID_SIGN_TIMESCALE_GAIN_OR_INITIAL_STATE",
+    "MISSING_NONFINITE_OR_UNORDERED_SAMPLES",
+    "ANALYTICAL_ERROR_EXCEEDS_DECLARED_TOLERANCE",
+    "REHASHED_CONTRADICTORY_METADATA",
+    "ANY_NEURAL_MOTOR_MUSCLE_OR_BODY_FEEDBACK"
+  ],
+  "interpretation": "Forced response of an assumed stable linear filter only; no endogenous oscillator, receptor activation, motor recruitment or biological timescale claim",
+  "publication": "One focused commit and non-force push only after analytic, semantic, isolation, full Python regression, Ruff and frozen-integrity gates pass"
+}

@@ -1,0 +1,623 @@
+{
+  "schema": "dng100_t1_motor_response_shadow_reference_v0",
+  "reference": {
+    "experiment_id": "DNG100_T1_SINGLE_MOTOR_RESPONSE_SHADOW_V0",
+    "parent_commit": "4fd52eb1d47c6b67c3516dacda5fb598ee175618",
+    "preregistration_id": "133ab02e77008fbf1720deaa40a746cbcbef6adef923271222023cecdbfff4b4",
+    "policy_file": "docs/science/dng100_t1_motor_response_shadow_preregistration.json",
+    "artifact_id": "deba097e484fa45675e2f5ab30add960bef141015af7344dc704d94444b9adad",
+    "config_sha256": "a226cd32d9fb6ec5aa9bbf22791a15c03bf7a521f0de7d2be0aa8138f0b967da",
+    "result_sha256": "e1fe8291dedc86e2858a2e9ba4873fde0c25b8b32f155d4f09f9ffced7178e3c",
+    "files": {
+      "response.json": {
+        "bytes": 7855371,
+        "sha256": "27da13861cc44d9cfc440573f037c4579e9f05da23bb3034ac35533566ec397f"
+      }
+    },
+    "storage": "External neurofly-science/work/dng100-t1-motor-response-shadow-v0/<artifact_id>; trajectories and upstream datasets excluded from Git",
+    "source": {
+      "input_artifact_id": "7f40609a28662d6b4f61e00e24b6aaed688322b4bbf716bda98bdaba5a93c988",
+      "input_raw_sha256": "af6d2ee30cf45a9484d9f95a1c66d9d59705635fc7ca9924adf173e2780e94dc",
+      "input_config_sha256": "b835d478770007a4bb39609ba4ea10a38137736031e1580b69bcb1ecb1cfe919",
+      "input_result_sha256": "a011d59e5dbaac648c17733109a559a8c6ce7fb479e0acce37a1a1060c9dcb51",
+      "input_preregistration_id": "d45a5c1af870a20f75a0248fa1075fff09543ced5d945191d01c0ad38d1c8fad",
+      "neural_source_artifact_id": "d0f441ad8e9ebdbf83812dcbf52e86326d76e093632dfe5cbe58607a48d525f8",
+      "neural_source_raw_sha256": "c6f95ae2b1300115492c6e8442867fd31ac47fabb8451bca2927c330595fbe1a",
+      "neural_trace": "3.125e-05",
+      "neural_trace_sha256": "06ecf48c997fb007cd02add8875063b8d3f3060a3034a9e48733da8cde4e4e91",
+      "dataset": "male-cns:v1.0",
+      "dataset_uuid": "4b2087c0fbe046bfaf0d60bc970e3e5d",
+      "edge": {
+        "pre": 903216,
+        "post": 804257,
+        "synapse_count": 23
+      },
+      "source_annotation": {
+        "bodyId": 903216,
+        "type": "INXXX466",
+        "instance": "INXXX466_R",
+        "somaSide": "R",
+        "superclass": "vnc_intrinsic",
+        "class": null,
+        "subclass": "IR",
+        "somaNeuromere": "T1",
+        "status": "Traced",
+        "statusLabel": "Reviewed"
+      },
+      "target_annotation": {
+        "bodyId": 804257,
+        "type": "Ti extensor MN",
+        "instance": "Ti extensor MN_R",
+        "somaSide": "R",
+        "superclass": "vnc_motor",
+        "class": null,
+        "subclass": "fl",
+        "somaNeuromere": "T1",
+        "status": "Traced",
+        "statusLabel": "Reviewed"
+      },
+      "motif_artifact_id": "baae20599455c2a7acb3271e6eeb6b73326d17185b6e705022b74818ff0f8934",
+      "structural_source_sha256": "def753409faa5daa7932ad5c256c644b2b426f44c053b2c40a5b89a17d6b024e",
+      "annotation_sha256": "2177e246113e4cfbf1e7772ec37c6da1955ff22e8063d0b1f833101f99a9a3b2"
+    },
+    "model": {
+      "equation": "tau_s * dy/dt = -y + gain * u(t)",
+      "update": "y[n+1] = y[n] + (-expm1(-(t[n+1]-t[n])/tau_s)) * (gain*u[n]-y[n])",
+      "gain": 1.0,
+      "initial_state": 0.0,
+      "state_classification": "ENGINEERING_RECEIVER_STATE",
+      "units": "UNITS_INHERITED_FROM_UNCALIBRATED_MODEL_INPUT_NOT_VOLTAGE_CURRENT_FIRING_OR_ACTIVATION",
+      "integration_method": "ANALYTIC_EXACT_ZOH_FLOAT64",
+      "clipping": "NONE",
+      "noise": "NONE"
+    },
+    "timing": {
+      "samples": 2001,
+      "duration_s": 2.0,
+      "sample_dt_s": 0.001,
+      "input_hold": "u[n] on[t[n],t[n+1]); state y[n] before consuming u[n]; y[0]=0; exactly2000 completed intervals",
+      "final_boundary": "u[2000] recorded but not consumed; no interval beyond2s",
+      "interpolation": "NONE"
+    },
+    "timescales": [
+      {
+        "id": "TAU_1MS",
+        "tau_s": 0.001
+      },
+      {
+        "id": "TAU_10MS",
+        "tau_s": 0.01
+      },
+      {
+        "id": "TAU_100MS",
+        "tau_s": 0.1
+      }
+    ],
+    "conditions": [
+      {
+        "id": "A_POSITIVE",
+        "sign_assumption": 1
+      },
+      {
+        "id": "B_NEGATIVE",
+        "sign_assumption": -1
+      },
+      {
+        "id": "C_ROUTE_OFF",
+        "sign_assumption": 0
+      },
+      {
+        "id": "D_SHAM",
+        "sign_assumption": 1
+      }
+    ],
+    "summary": {
+      "boundaries_per_run": 2001,
+      "completed_intervals_per_run": 2000,
+      "controls": [
+        {
+          "parameter_id": "TAU_1MS",
+          "positive_negative_symmetry": true,
+          "route_off_exact_zero": true,
+          "sham_exact_equality": true
+        },
+        {
+          "parameter_id": "TAU_10MS",
+          "positive_negative_symmetry": true,
+          "route_off_exact_zero": true,
+          "sham_exact_equality": true
+        },
+        {
+          "parameter_id": "TAU_100MS",
+          "positive_negative_symmetry": true,
+          "route_off_exact_zero": true,
+          "sham_exact_equality": true
+        }
+      ],
+      "decision": "DNG100_T1_MOTOR_RESPONSE_SHADOW_VALIDATED",
+      "run_count": 12,
+      "semantics": {
+        "all_15_neural_functional_signs": "UNKNOWN",
+        "application": "SHADOW_ONLY",
+        "body_movement": "NOT_MODELLED",
+        "motor_neuron_spiking": "NOT_MODELLED",
+        "muscle": "NOT_MODELLED",
+        "output": "COUNTERFACTUAL_POSTSYNAPTIC_RESPONSE",
+        "physiological_motor_recruitment": "NOT_VALIDATED",
+        "receptors": "NOT_MODELLED",
+        "source_feedback": "NONE",
+        "structural_count_use": "PROVENANCE_ONLY_NOT_WEIGHT",
+        "target_connection_functional_sign": "UNKNOWN"
+      },
+      "source_invariance": true,
+      "termination": "COMPLETED"
+    },
+    "condition_metrics": [
+      {
+        "condition": "A_POSITIVE",
+        "parameter_id": "TAU_1MS",
+        "metrics": {
+          "final_state": 28.703587211128248,
+          "initial_state": 0.0,
+          "input_peak_time_s": 0.033,
+          "input_range": [
+            0.0,
+            69.56409045138528
+          ],
+          "maximum_absolute_response": 69.01299299105172,
+          "offset_interpretation": "DESCRIPTIVE_GLOBAL_PEAK_NOT_SYNAPTIC_LATENCY",
+          "output_range": [
+            0.0,
+            69.01299299105172
+          ],
+          "peak_time_offset_s": 0.0020000000000000018,
+          "peak_time_s": 0.035,
+          "tail_attenuation_rms_ratio": 0.9882798688363524,
+          "tail_input_centered_rms": 8.609388587601135,
+          "tail_input_mean": 11.101943272937557,
+          "tail_output_centered_rms": 8.508485424115639,
+          "tail_output_mean": 11.065074768117977
+        }
+      },
+      {
+        "condition": "B_NEGATIVE",
+        "parameter_id": "TAU_1MS",
+        "metrics": {
+          "final_state": -28.703587211128248,
+          "initial_state": 0.0,
+          "input_peak_time_s": 0.033,
+          "input_range": [
+            -69.56409045138528,
+            -0.0
+          ],
+          "maximum_absolute_response": 69.01299299105172,
+          "offset_interpretation": "DESCRIPTIVE_GLOBAL_PEAK_NOT_SYNAPTIC_LATENCY",
+          "output_range": [
+            -69.01299299105172,
+            0.0
+          ],
+          "peak_time_offset_s": 0.0020000000000000018,
+          "peak_time_s": 0.035,
+          "tail_attenuation_rms_ratio": 0.9882798688363524,
+          "tail_input_centered_rms": 8.609388587601135,
+          "tail_input_mean": -11.101943272937557,
+          "tail_output_centered_rms": 8.508485424115639,
+          "tail_output_mean": -11.065074768117977
+        }
+      },
+      {
+        "condition": "C_ROUTE_OFF",
+        "parameter_id": "TAU_1MS",
+        "metrics": {
+          "final_state": 0.0,
+          "initial_state": 0.0,
+          "input_peak_time_s": null,
+          "input_range": [
+            0.0,
+            0.0
+          ],
+          "maximum_absolute_response": 0.0,
+          "offset_interpretation": "DESCRIPTIVE_GLOBAL_PEAK_NOT_SYNAPTIC_LATENCY",
+          "output_range": [
+            0.0,
+            0.0
+          ],
+          "peak_time_offset_s": null,
+          "peak_time_s": 0.0,
+          "tail_attenuation_rms_ratio": null,
+          "tail_input_centered_rms": 0.0,
+          "tail_input_mean": 0.0,
+          "tail_output_centered_rms": 0.0,
+          "tail_output_mean": 0.0
+        }
+      },
+      {
+        "condition": "D_SHAM",
+        "parameter_id": "TAU_1MS",
+        "metrics": {
+          "final_state": 28.703587211128248,
+          "initial_state": 0.0,
+          "input_peak_time_s": 0.033,
+          "input_range": [
+            0.0,
+            69.56409045138528
+          ],
+          "maximum_absolute_response": 69.01299299105172,
+          "offset_interpretation": "DESCRIPTIVE_GLOBAL_PEAK_NOT_SYNAPTIC_LATENCY",
+          "output_range": [
+            0.0,
+            69.01299299105172
+          ],
+          "peak_time_offset_s": 0.0020000000000000018,
+          "peak_time_s": 0.035,
+          "tail_attenuation_rms_ratio": 0.9882798688363524,
+          "tail_input_centered_rms": 8.609388587601135,
+          "tail_input_mean": 11.101943272937557,
+          "tail_output_centered_rms": 8.508485424115639,
+          "tail_output_mean": 11.065074768117977
+        }
+      },
+      {
+        "condition": "A_POSITIVE",
+        "parameter_id": "TAU_10MS",
+        "metrics": {
+          "final_state": 16.633611285943342,
+          "initial_state": 0.0,
+          "input_peak_time_s": 0.033,
+          "input_range": [
+            0.0,
+            69.56409045138528
+          ],
+          "maximum_absolute_response": 48.51900174689791,
+          "offset_interpretation": "DESCRIPTIVE_GLOBAL_PEAK_NOT_SYNAPTIC_LATENCY",
+          "output_range": [
+            0.0,
+            48.51900174689791
+          ],
+          "peak_time_offset_s": 0.009000000000000001,
+          "peak_time_s": 0.042,
+          "tail_attenuation_rms_ratio": 0.6685925920144472,
+          "tail_input_centered_rms": 8.609388587601135,
+          "tail_input_mean": 11.101943272937557,
+          "tail_output_centered_rms": 5.756173431443844,
+          "tail_output_mean": 10.999861899811899
+        }
+      },
+      {
+        "condition": "B_NEGATIVE",
+        "parameter_id": "TAU_10MS",
+        "metrics": {
+          "final_state": -16.633611285943342,
+          "initial_state": 0.0,
+          "input_peak_time_s": 0.033,
+          "input_range": [
+            -69.56409045138528,
+            -0.0
+          ],
+          "maximum_absolute_response": 48.51900174689791,
+          "offset_interpretation": "DESCRIPTIVE_GLOBAL_PEAK_NOT_SYNAPTIC_LATENCY",
+          "output_range": [
+            -48.51900174689791,
+            0.0
+          ],
+          "peak_time_offset_s": 0.009000000000000001,
+          "peak_time_s": 0.042,
+          "tail_attenuation_rms_ratio": 0.6685925920144472,
+          "tail_input_centered_rms": 8.609388587601135,
+          "tail_input_mean": -11.101943272937557,
+          "tail_output_centered_rms": 5.756173431443844,
+          "tail_output_mean": -10.999861899811899
+        }
+      },
+      {
+        "condition": "C_ROUTE_OFF",
+        "parameter_id": "TAU_10MS",
+        "metrics": {
+          "final_state": 0.0,
+          "initial_state": 0.0,
+          "input_peak_time_s": null,
+          "input_range": [
+            0.0,
+            0.0
+          ],
+          "maximum_absolute_response": 0.0,
+          "offset_interpretation": "DESCRIPTIVE_GLOBAL_PEAK_NOT_SYNAPTIC_LATENCY",
+          "output_range": [
+            0.0,
+            0.0
+          ],
+          "peak_time_offset_s": null,
+          "peak_time_s": 0.0,
+          "tail_attenuation_rms_ratio": null,
+          "tail_input_centered_rms": 0.0,
+          "tail_input_mean": 0.0,
+          "tail_output_centered_rms": 0.0,
+          "tail_output_mean": 0.0
+        }
+      },
+      {
+        "condition": "D_SHAM",
+        "parameter_id": "TAU_10MS",
+        "metrics": {
+          "final_state": 16.633611285943342,
+          "initial_state": 0.0,
+          "input_peak_time_s": 0.033,
+          "input_range": [
+            0.0,
+            69.56409045138528
+          ],
+          "maximum_absolute_response": 48.51900174689791,
+          "offset_interpretation": "DESCRIPTIVE_GLOBAL_PEAK_NOT_SYNAPTIC_LATENCY",
+          "output_range": [
+            0.0,
+            48.51900174689791
+          ],
+          "peak_time_offset_s": 0.009000000000000001,
+          "peak_time_s": 0.042,
+          "tail_attenuation_rms_ratio": 0.6685925920144472,
+          "tail_input_centered_rms": 8.609388587601135,
+          "tail_input_mean": 11.101943272937557,
+          "tail_output_centered_rms": 5.756173431443844,
+          "tail_output_mean": 10.999861899811899
+        }
+      },
+      {
+        "condition": "A_POSITIVE",
+        "parameter_id": "TAU_100MS",
+        "metrics": {
+          "final_state": 10.9169801376824,
+          "initial_state": 0.0,
+          "input_peak_time_s": 0.033,
+          "input_range": [
+            0.0,
+            69.56409045138528
+          ],
+          "maximum_absolute_response": 13.369334574922826,
+          "offset_interpretation": "DESCRIPTIVE_GLOBAL_PEAK_NOT_SYNAPTIC_LATENCY",
+          "output_range": [
+            0.0,
+            13.369334574922826
+          ],
+          "peak_time_offset_s": 0.035,
+          "peak_time_s": 0.068,
+          "tail_attenuation_rms_ratio": 0.09678921676799343,
+          "tail_input_centered_rms": 8.609388587601135,
+          "tail_input_mean": 11.101943272937557,
+          "tail_output_centered_rms": 0.8332959782452151,
+          "tail_output_mean": 11.126950145212223
+        }
+      },
+      {
+        "condition": "B_NEGATIVE",
+        "parameter_id": "TAU_100MS",
+        "metrics": {
+          "final_state": -10.9169801376824,
+          "initial_state": 0.0,
+          "input_peak_time_s": 0.033,
+          "input_range": [
+            -69.56409045138528,
+            -0.0
+          ],
+          "maximum_absolute_response": 13.369334574922826,
+          "offset_interpretation": "DESCRIPTIVE_GLOBAL_PEAK_NOT_SYNAPTIC_LATENCY",
+          "output_range": [
+            -13.369334574922826,
+            0.0
+          ],
+          "peak_time_offset_s": 0.035,
+          "peak_time_s": 0.068,
+          "tail_attenuation_rms_ratio": 0.09678921676799343,
+          "tail_input_centered_rms": 8.609388587601135,
+          "tail_input_mean": -11.101943272937557,
+          "tail_output_centered_rms": 0.8332959782452151,
+          "tail_output_mean": -11.126950145212223
+        }
+      },
+      {
+        "condition": "C_ROUTE_OFF",
+        "parameter_id": "TAU_100MS",
+        "metrics": {
+          "final_state": 0.0,
+          "initial_state": 0.0,
+          "input_peak_time_s": null,
+          "input_range": [
+            0.0,
+            0.0
+          ],
+          "maximum_absolute_response": 0.0,
+          "offset_interpretation": "DESCRIPTIVE_GLOBAL_PEAK_NOT_SYNAPTIC_LATENCY",
+          "output_range": [
+            0.0,
+            0.0
+          ],
+          "peak_time_offset_s": null,
+          "peak_time_s": 0.0,
+          "tail_attenuation_rms_ratio": null,
+          "tail_input_centered_rms": 0.0,
+          "tail_input_mean": 0.0,
+          "tail_output_centered_rms": 0.0,
+          "tail_output_mean": 0.0
+        }
+      },
+      {
+        "condition": "D_SHAM",
+        "parameter_id": "TAU_100MS",
+        "metrics": {
+          "final_state": 10.9169801376824,
+          "initial_state": 0.0,
+          "input_peak_time_s": 0.033,
+          "input_range": [
+            0.0,
+            69.56409045138528
+          ],
+          "maximum_absolute_response": 13.369334574922826,
+          "offset_interpretation": "DESCRIPTIVE_GLOBAL_PEAK_NOT_SYNAPTIC_LATENCY",
+          "output_range": [
+            0.0,
+            13.369334574922826
+          ],
+          "peak_time_offset_s": 0.035,
+          "peak_time_s": 0.068,
+          "tail_attenuation_rms_ratio": 0.09678921676799343,
+          "tail_input_centered_rms": 8.609388587601135,
+          "tail_input_mean": 11.101943272937557,
+          "tail_output_centered_rms": 0.8332959782452151,
+          "tail_output_mean": 11.126950145212223
+        }
+      }
+    ],
+    "independent_analytical_validation": [
+      {
+        "tau_s": 0.001,
+        "max_reference_errors_by_condition": [
+          1.4210854715202004e-14,
+          1.4210854715202004e-14,
+          0.0,
+          1.4210854715202004e-14
+        ],
+        "maximum_absolute_response": 69.01299299105172,
+        "peak_time_s": 0.035,
+        "peak_time_offset_s": 0.0020000000000000018,
+        "final_state": 28.703587211128248,
+        "tail_output_mean": 11.065074768117977,
+        "tail_attenuation_rms_ratio": 0.9882798688363524
+      },
+      {
+        "tau_s": 0.01,
+        "max_reference_errors_by_condition": [
+          1.4210854715202004e-14,
+          1.4210854715202004e-14,
+          0.0,
+          1.4210854715202004e-14
+        ],
+        "maximum_absolute_response": 48.51900174689791,
+        "peak_time_s": 0.042,
+        "peak_time_offset_s": 0.009000000000000001,
+        "final_state": 16.633611285943342,
+        "tail_output_mean": 10.999861899811899,
+        "tail_attenuation_rms_ratio": 0.6685925920144472
+      },
+      {
+        "tau_s": 0.1,
+        "max_reference_errors_by_condition": [
+          1.0658141036401503e-14,
+          1.0658141036401503e-14,
+          0.0,
+          1.0658141036401503e-14
+        ],
+        "maximum_absolute_response": 13.369334574922826,
+        "peak_time_s": 0.068,
+        "peak_time_offset_s": 0.035,
+        "final_state": 10.9169801376824,
+        "tail_output_mean": 11.126950145212223,
+        "tail_attenuation_rms_ratio": 0.09678921676799343
+      }
+    ],
+    "reproduction": {
+      "generate": ".venv/bin/python -m neurofly.dng100_t1_motor_response_shadow generate",
+      "replay": ".venv/bin/python -m neurofly.dng100_t1_motor_response_shadow replay --path <external-root>/<artifact_id>",
+      "source_policy": "Real pinned source only; scalar input shadow replay allowed; no original neural solves"
+    },
+    "validation": {
+      "status": "ALL_GATES_PASS",
+      "focused_tests_passed": 40,
+      "independent_boundary_comparisons": 24012,
+      "analytical_reference_tolerance": 1e-10,
+      "maximum_reference_error": 1.4210854715202004e-14,
+      "semantic_replay": "EXACT",
+      "original_neural_sources": "Raw/config/metric integrity and preserved exact semantic replay evidence verified; not regenerated",
+      "full_python_suite": {
+        "passed": 1625,
+        "deselected": 1,
+        "warnings": 2,
+        "seconds": 962.94,
+        "exit_status": 0
+      },
+      "ruff_check": "PASS",
+      "ruff_format_check": "PASS",
+      "diff_check": "PASS; new-file whitespace/EOF also verified",
+      "real_source_rehashed_tamper": "STATE_AND_RECRUITMENT_CLAIM_REJECTED",
+      "frozen_science": "Parent input shadow exact semantic replay; V0/V1 raw/config/metric identity; route/motif/NT/postsynaptic UNKNOWN; Planar SHADOW_ONLY exact semantic replay; five canonical hashes+provenance; D2.2 strict archive and74 authorized member hashes PASS",
+      "publication_gate": "SCIENTIFIC_MOTOR_RESPONSE_SHADOW_PUBLICATION_GO",
+      "evidence_files": {
+        "d2-verification.log": {
+          "bytes": 223,
+          "sha256": "53ef729efab9971b6f84ba5bc9ef91b2d96a04c4ed7ea7a2edb2e8e5f010784e"
+        },
+        "focused-pytest.log": {
+          "bytes": 100,
+          "sha256": "814fc66eae352b89b5efc021e230c0bdda987caf84b66e9c1b5818172f8e4a8e"
+        },
+        "frozen-integrity.log": {
+          "bytes": 940,
+          "sha256": "7e7e7c7bc28116f882d0faa2a5161db7f0abe3f4dccb0944c7ab50821021dab3"
+        },
+        "frozen_integrity.py": {
+          "bytes": 2226,
+          "sha256": "d58943f842ca5034c82f9f66e8054ca4ab0010d05a4f03baf7b915bc40336c91"
+        },
+        "full-pytest.log": {
+          "bytes": 9473,
+          "sha256": "2826f4159a1c110b67005d64ce18f21c015cdb110ab3c0341750bc3190fd7814"
+        },
+        "generate.log": {
+          "bytes": 144,
+          "sha256": "07dbed639bdcd9a8920bbfea514979e4e944460589cd7879b7cddc82f196f6d9"
+        },
+        "independent-reference.json": {
+          "bytes": 1917,
+          "sha256": "fd31e6d7d92d9adb2243af4fef2014cf7a6a3cb49d4d2e3256e7d3c77bc776ad"
+        },
+        "independent-reference.log": {
+          "bytes": 1176,
+          "sha256": "88659b5f417b4e99130643e39b429d1640cd5f7374e4a524d1b4c40884300387"
+        },
+        "independent_reference.py": {
+          "bytes": 3732,
+          "sha256": "7fa2babb3a8ab9b3c99893d5386ed79c8e6f76a0e165ce4d6cf688632b7cd623"
+        },
+        "preflight.json": {
+          "bytes": 374,
+          "sha256": "93b7fa64e2e302bc52f63735b01a83793d17d888efcc27e2a3549c7172e3d0de"
+        },
+        "preregistration-capture.json": {
+          "bytes": 173,
+          "sha256": "7fb4fc52066bdbd24b9f6ae7121fe0fc5bfc3c1fab6bcafee71f1a819835037d"
+        },
+        "replay.log": {
+          "bytes": 107,
+          "sha256": "6d1b96087473ed7708c8107bffa5b8f7db8f5e8e06773be4b80bb61e9f848c84"
+        },
+        "ruff-check.log": {
+          "bytes": 19,
+          "sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18"
+        },
+        "ruff-format.log": {
+          "bytes": 28,
+          "sha256": "59bfabfcbb96102b6043e724434acc6cfc86ca2f11fb074c12b301695b13d211"
+        },
+        "runtime-source-integrity.log": {
+          "bytes": 141,
+          "sha256": "98af9245fa12b3e70e64b64e1989140cf6d072c2031599e7951d007114767254"
+        },
+        "tamper-diagnostic.log": {
+          "bytes": 176,
+          "sha256": "e9ce9744aba693606c12d97d01205380e5814cdd40e1f45a7dc86b019ffa7ecd"
+        },
+        "tamper_diagnostic.py": {
+          "bytes": 692,
+          "sha256": "154f5fcc28837380f9069256e4c13b9a2964a1096ab0f05a70065194ecf889ae"
+        },
+        "v0-v1-readonly-audit.py": {
+          "bytes": 8535,
+          "sha256": "552b6d161a500f1c1ed97ccd8fa57641216f8e63d47799a3b34b43ba49d1fe2a"
+        },
+        "v0-v1-readonly-integrity.log": {
+          "bytes": 1571,
+          "sha256": "4db9215379929d5da8458db7510e11e3edc32a624ba0df10c2fdd989bc562854"
+        }
+      }
+    }
+  },
+  "reference_id": "3cfced3e62ea9c820f929539093adcfe7649ad82ea98d100a6d78cae865d2978"
+}

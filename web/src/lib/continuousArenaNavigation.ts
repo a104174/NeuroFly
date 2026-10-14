@@ -80,3 +80,6 @@ export async function validateNavigation(authority:NeuralArtifact,value:unknown)
  const eq=(a:unknown,b:unknown,key=''):boolean=>typeof b==='number'?typeof a==='number'&&Number.isFinite(a)&&(['step','time','substeps','contacts','recoveries','propulsion_model_value'].includes(key)?a===b:Math.abs(a-b)<=PARITY_TOLERANCE):Array.isArray(b)?Array.isArray(a)&&a.length===b.length&&b.every((x,i)=>eq(a[i],x)):b!==null&&typeof b==='object'?a!==null&&typeof a==='object'&&Object.keys(a).sort().join(',')===Object.keys(b).sort().join(',')&&Object.entries(b).every(([k,x])=>eq((a as Record<string,unknown>)[k],x,k)):a===b;
  if(!eq(v.telemetry,expected.telemetry))throw new Error('Navigation semantic mismatch');return v;
 }
+
+/** Shared finite canonical serialization for versioned navigation evidence. */
+export const navigationHash=hash;

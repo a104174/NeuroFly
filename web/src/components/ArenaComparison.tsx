@@ -8,6 +8,8 @@ export type ArenaComparisonProps = {
   time: number;
   focus?: string;
 };
+/** Rendering shape only; the historical B/C/D scientific contract stays intact. */
+export type ArenaOverlayProps={overview:{tracks:{key:string;points:[number,number,number][];color:string;label:string;symbol:string;plane:number}[];landmarkX:number[]};states:{key:string;color:string;symbol:string;label:string;scene:ReturnType<typeof comparisonScenes>[number]['scene']}[];time:number;focus?:string};
 function Trail({ points, color, index, time }: { points: [number,number,number][]; color:string; index:number; time:number }) {
   const line=useMemo(()=> {
     const result=new ThreeLine(new BufferGeometry().setFromPoints(points.map(p=>new Vector3(p[0], .003+index*.001, p[2]))),new LineDashedMaterial({color,transparent:true,opacity:.8,dashSize:index===0?10:index===1?.025:.008,gapSize:index===0?0:.012}));
@@ -18,7 +20,7 @@ function Trail({ points, color, index, time }: { points: [number,number,number][
   line.geometry.setDrawRange(0,Math.floor(time/.02)+1);
   return <primitive object={line} dispose={null}/>;
 }
-export function ArenaComparison({overview,states,time}:ArenaComparisonProps) {
+export function ArenaComparison({overview,states,time}:ArenaOverlayProps) {
   return <>
     {overview.tracks.map((track,index)=><Trail key={track.key} points={track.points} color={track.color} index={index} time={time}/>)}
     {states.map((s,index)=><group key={s.key} name={`ComparisonMarker${s.key}`} position={[s.scene.pose.anchor[0],.009+index*.002,s.scene.pose.anchor[2]]} rotation={[0,s.scene.pose.rotation,0]}>

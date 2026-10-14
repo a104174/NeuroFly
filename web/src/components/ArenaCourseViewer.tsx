@@ -7,10 +7,12 @@ import { courseScene, type CoursePlaybackResult } from "@/lib/courseControlPlayb
 import { ARENA_COURSE_ID, arenaCoursePose, validateArenaCourseReplay } from "@/lib/arenaCourseReplay";
 import { advanceLocomotion, loadLocomotion, locomotionScene, type LocomotionReplay } from "@/lib/experimentalLocomotion";
 import { loadNeuralLocomotion, type NeuralArtifact } from "@/lib/neuralLocomotion";
+import { comparisonOverview, comparisonScenes } from "@/lib/neuralSteeringComparison";
+import { NeuralComparisonInspector } from "./NeuralComparisonInspector";
 import { FlyViewer } from "./FlyViewer";
 
 export function ArenaCourseViewer() {
-  const [mode, setMode] = useState<"static" | "course" | "locomotion" | "neural">("static");
+  const [mode, setMode] = useState<"static" | "course" | "locomotion" | "neural" | "comparison">("static");
   const [neuralAuthority, setNeuralAuthority] = useState<NeuralArtifact | null>(null);
   const [locomotion, setLocomotion] = useState<LocomotionReplay | null>(null);
   const [runIndex, setRunIndex] = useState(0);
@@ -22,8 +24,9 @@ export function ArenaCourseViewer() {
   const [playing, setPlaying] = useState(false);
   const request = useRef(0);
   useEffect(() => () => { request.current++; }, []);
+  const neuralMode = mode === "neural" || mode === "comparison";
   const active = mode === "course" && replay !== null && !error;
-  const moving = (mode === "locomotion" || mode === "neural") && locomotion !== null && !error;
+  const moving = (mode === "locomotion" || mode === "neural" || mode === "comparison") && locomotion !== null && !error;
   const motionPlaying = moving && playing && time < locomotion.config.duration_s;
   const last = replay ? replay.frames.length - 1 : 0;
   const isPlaying = active && playing && cursor < last;
@@ -54,12 +57,12 @@ export function ArenaCourseViewer() {
     return () => cancelAnimationFrame(animation);
   }, [motionPlaying]);
 
-  async function choose(mode: "static" | "course" | "locomotion" | "neural") {
+  async function choose(mode: "static" | "course" | "locomotion" | "neural" | "comparison") {
     const generation = ++request.current;
     setMode(mode); setTime(0); setNeuralAuthority(null); setLocomotion(null); setRunIndex(0); setPlaying(false); setCursor(0); setReplay(null); setError(null); setLoading(mode !== "static");
     if (mode === "static") return;
     try {
-      if (mode === "neural") {
+      if (mode === "neural" || mode === "comparison") {
         const data = await loadNeuralLocomotion();
         if (generation === request.current) { setLocomotion(data.replay); setNeuralAuthority(data.authority); setRunIndex(1); }
         return;
@@ -79,6 +82,8 @@ export function ArenaCourseViewer() {
   }
   const scene = active ? courseScene(replay, cursor) : null;
   const motion = moving ? locomotionScene(locomotion, runIndex, time) : null;
+  const overview = useMemo(() => neuralAuthority ? comparisonOverview(neuralAuthority) : null, [neuralAuthority]);
+  const comparison = mode === "comparison" && moving && overview ? {overview, states: comparisonScenes(locomotion, time), time, focus: overview.tracks.find(t => t.index === runIndex)?.key} : undefined;
   const trajectory = useMemo(() => neuralAuthority && locomotion ? locomotion.result.runs[runIndex].frames.map(f => f.position) : undefined, [neuralAuthority, locomotion, runIndex]);
   const pose = motion ? motion.pose : active ? arenaCoursePose(replay, cursor) : undefined;
   const frame = scene?.frame;
@@ -89,22 +94,24 @@ export function ArenaCourseViewer() {
       <button aria-pressed={mode === "course"} onClick={() => void choose("course")}>Course Replay</button>
       <button aria-pressed={mode === "locomotion"} onClick={() => void choose("locomotion")}>Experimental Locomotion v0</button>
       <button aria-pressed={mode === "neural"} onClick={() => void choose("neural")}>Experimental Locomotion v1</button>
+      <button aria-pressed={mode === "comparison"} onClick={() => void choose("comparison")}>Neural Steering Comparison</button>
     </div>
-    {(mode === "locomotion" || mode === "neural") && <section className="arena-replay-panel" aria-label={mode === "neural" ? "Experimental Locomotion v1" : "Experimental Locomotion v0"}>
-      <p className="arena-replay-identity">Precomputed simulation replay · {mode === "neural" ? "Connectome-informed neural steering + engineering propulsion" : "Engineering kinematic locomotion"}</p>
-      <p className="arena-science-limit">{mode === "neural" ? "HS/DNp15 influencia o heading através de uma conversão de engenharia. Landmarks geométricos, não uma retina calibrada. Linha: projeção no piso da trajetória registada completa. Propulsão de engenharia; sem gait biológico ou wall avoidance." : "Propulsão de engenharia em unidades da arena. Sem steering neural ou gait biológico. Pára na parede; não a deteta nem evita."}</p>
+    {(mode === "locomotion" || mode === "neural" || mode === "comparison") && <section className="arena-replay-panel" aria-label={mode === "comparison" ? "Neural Steering Comparison" : neuralMode ? "Experimental Locomotion v1" : "Experimental Locomotion v0"}>
+      <p className="arena-replay-identity">Precomputed simulation replay · {neuralMode ? "Connectome-informed neural steering + engineering propulsion" : "Engineering kinematic locomotion"}</p>
+      <p className="arena-science-limit">{neuralMode ? "HS/DNp15 influencia o heading através de uma conversão de engenharia. Landmarks geométricos, não uma retina calibrada. Trilhos: projeção no piso dos resultados Python. Propulsão de engenharia; sem gait biológico ou wall avoidance." : "Propulsão de engenharia em unidades da arena. Sem steering neural ou gait biológico. Pára na parede; não a deteta nem evita."}</p>
       {loading && <p role="status">A verificar a simulação Python…</p>}
       {error && <p role="alert">{error} A vista permanece estática.</p>}
       {motion && locomotion && <>
-        <label htmlFor="arena-locomotion-run">Condição experimental</label>
-        <select id="arena-locomotion-run" value={runIndex} onChange={event => { setRunIndex(Number(event.target.value)); setTime(0); setPlaying(false); }}>
-          {mode === "neural" ? <><option value={0}>A — Baseline de engenharia</option><option value={1}>B — Steering neural ativo</option><option value={2}>C — Saída neural desligada</option><option value={3}>D — Plano visual alterado</option></> : <><option value={0}>A — Propulsão de engenharia</option><option value={1}>B — Propulsão desligada (controlo)</option></>}
+        <label htmlFor="arena-locomotion-run">{comparison ? "Fly em foco (mantém o tempo)" : "Condição experimental"}</label>
+        <select id="arena-locomotion-run" value={runIndex} onChange={event => { setRunIndex(Number(event.target.value)); if (!comparison) { setTime(0); setPlaying(false); } }}>
+          {neuralAuthority ? <>{!comparison && <option value={0}>A — Baseline de engenharia</option>}<option value={1}>B — Steering neural ativo</option><option value={2}>C — Saída neural desligada</option><option value={3}>D — Plano visual alterado</option></> : <><option value={0}>A — Propulsão de engenharia</option><option value={1}>B — Propulsão desligada (controlo)</option></>}
         </select>
 
         <label htmlFor="arena-locomotion-time">Tempo simulado</label>
         <input id="arena-locomotion-time" type="range" min={0} max={8} step={.02} value={time} onChange={event => { setPlaying(false); setTime(Number(event.target.value)); }} />
         <p className="arena-replay-note">Distância: {motion.distance.toFixed(3)} · Velocidade: {motion.speed.toFixed(2)} unidades/s · Contacto: {motion.frame.contact ?? "nenhum"}</p>
         {neuralAuthority && <p className="arena-replay-note" data-neural-readout={motion.frame.neural_summary?.mean_yaw_drive_eq ?? "UNAVAILABLE"} data-heading={motion.pose.rotation} data-steering-mode={motion.frame.steering_applied ? "ACTIVE" : "DISABLED"}>Heading {motion.pose.rotation.toFixed(4)} rad · Drive neural {motion.frame.neural_summary?.mean_yaw_drive_eq?.toExponential(4) ?? "indisponível"} yaw_drive_eq · {motion.frame.steering_applied ? "Steering ativo" : "Saída para steering desligada"} · Landmarks Z={locomotion.result.runs[runIndex].condition?.plane_z}</p>}
+        {comparison && <NeuralComparisonInspector {...comparison} />}
         <details><summary>Telemetria e pressupostos de engenharia</summary>
         <dl className="arena-course-telemetry">
           <div><dt>Posição X / Y / Z (unidades de apresentação)</dt><dd>{motion.pose.anchor.map(v => v.toFixed(4)).join(" / ")}</dd></div>
@@ -114,7 +121,7 @@ export function ArenaCourseViewer() {
           <div><dt>Contacto / steering neural</dt><dd>{motion.frame.contact ?? "Sem contacto"} / {motion.frame.steering_applied ? "HS/DNp15 + conversão de engenharia" : "Desligado"}</dd></div>
         </dl>
         {neuralAuthority && <><p>MaleCNS v1.0 · HS R 10015/10016/10023, L 10034/10181/10419 → DNp15 R 11215 / L 12069. Estados proxy, sem calibração de firing rate ou velocidade biológica. 200 substeps de 0.1 ms por intervalo de 20 ms; observação do movimento já concluído, mantida constante no intervalo seguinte. Os três HS de cada hemisfério partilham o mesmo input/dinâmica.</p><p>Ganho: 2.5 rad/orientation_eq · limite: ±0.5 rad/s. A contribuição angular soma incrementos do kernel, não multiplica dt duas vezes. Contacto trava translação; neural/heading continuam. Não há reflexo de parede nem controlador de targets. Receptores, gait e músculos não modelados.</p><p>HS: {motion.frame.neural_summary?.hs_states.map(v=>v.toExponential(3)).join(" / ") ?? "não calculado"}<br/>DNp15: {motion.frame.neural_summary?.dnp15_states.map(v=>v.toExponential(3)).join(" / ") ?? "não calculado"}<br/>Observação R/L: {motion.frame.sensory_summary ? `${motion.frame.sensory_summary.right.toExponential(4)} / ${motion.frame.sensory_summary.left.toExponential(4)}` : "nenhum intervalo concluído"} · substeps: {motion.frame.neural_summary?.substeps ?? 0}</p><p className="arena-artifact-id">Policy: {neuralAuthority.config.policy_sha256} · Resultado: {neuralAuthority.result_sha256}</p></>}
-        <p>Python · passo fixo 0.02 s · duração 8 s · random policy NONE · {mode === "neural" ? motion.frame.model_mode : "EXPERIMENTAL_KINEMATIC_ONLY"}. Pose interpolada entre boundaries; velocidade/contacto do boundary anterior. Y fixo sobre o piso; footprint circular conservador. A câmara não influencia a simulação.</p><p className="arena-artifact-id">Artifact: {locomotion.artifact_id}</p></details>
+        <p>Python · passo fixo 0.02 s · duração 8 s · random policy NONE · {neuralAuthority ? motion.frame.model_mode : "EXPERIMENTAL_KINEMATIC_ONLY"}. Pose interpolada entre boundaries; velocidade/contacto do boundary anterior. Y fixo sobre o piso; footprint circular conservador. A câmara não influencia a simulação.</p><p className="arena-artifact-id">Artifact: {locomotion.artifact_id}</p></details>
       </>}
     </section>}
     {mode === "course" && <section className="arena-replay-panel" aria-label="Replay canónico Course">
@@ -141,7 +148,7 @@ export function ArenaCourseViewer() {
         <p className="arena-replay-note">Estados de modelo sobre evidência estrutural MaleCNS; não são ângulos biológicos calibrados nem velocidades físicas. O espécime é um asset visual, não anatomia MaleCNS reconstruída.</p>
       </>}
     </section>}
-    <FlyViewer arena replayPose={pose} locomotion={Boolean(motion)} locomotionVersion={mode === "neural" ? "v1" : "v0"} trajectory={trajectory} stimulusPlane={neuralAuthority ? locomotion?.result.runs[runIndex].condition?.plane_z : undefined} playbackControls={motion ? <div className="arena-replay-controls">
+    <FlyViewer arena replayPose={pose} locomotion={Boolean(motion)} locomotionVersion={neuralAuthority ? "v1" : "v0"} trajectory={comparison ? undefined : trajectory} comparison={comparison} stimulusPlane={neuralAuthority && !comparison ? locomotion?.result.runs[runIndex].condition?.plane_z : undefined} playbackControls={motion ? <div className="arena-replay-controls">
           <button onClick={() => { if (time >= 8) setTime(0); setPlaying(!motionPlaying); }}>{motionPlaying ? "Pause" : "Play"}</button>
           <button onClick={() => { setPlaying(false); setTime(0); }}>Reset Experiment</button>
           <output data-simulation-time={time} data-world-position={JSON.stringify(motion.pose.anchor)} data-contact={motion.frame.contact ?? "NONE"} data-render-heading={motion.pose.rotation}>{time.toFixed(2)} / 8.00 s{time >= 8 ? " · Fim da simulação" : ""}</output>

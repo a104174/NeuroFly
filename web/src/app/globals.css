@@ -292,3 +292,15 @@ dd { margin: 7px 0 0; color: var(--ink); font-size: 12px; line-height: 1.5; over
   .playback-legend { grid-template-columns: 1fr; }
   .visual-asset-provenance dl, .data-presentation-legend > div { grid-template-columns: 1fr; }
 }
+
+.comparison-legend { display: flex; flex-wrap: wrap; gap: .6rem; margin: .8rem 0; }
+.comparison-legend span { border-left: 3px solid; padding: .35rem .65rem; background: #16232a; font-size: .8rem; }
+.neural-comparison { border-top: 1px solid #36434b; margin-top: .8rem; padding-top: .4rem; }
+.neural-comparison summary { cursor: pointer; padding: .5rem 0; }
+.comparison-table-scroll { overflow-x: auto; }
+.neural-comparison table { width: 100%; border-collapse: collapse; font-size: .8rem; font-variant-numeric: tabular-nums; }
+.neural-comparison th, .neural-comparison td { text-align: left; padding: .55rem; border-bottom: 1px solid #35434b; white-space: nowrap; }
+.neural-comparison p { font-size: .8rem; line-height: 1.6; }
+@media (max-width: 600px) { .comparison-legend { gap: .35rem; } .comparison-legend span { flex: 1 1 100%; } }
+.comparison-stage-legend { position: absolute; right: 1.25rem; bottom: 5rem; display: flex; gap: 1rem; padding: .6rem .8rem; border-radius: .4rem; background: #101b23e8; pointer-events: none; font-size: .8rem; font-weight: 600; }
+@media (max-width: 600px) { .comparison-stage-legend { right: .7rem; top: 8rem; bottom: auto; gap: .65rem; font-size: .7rem; } }

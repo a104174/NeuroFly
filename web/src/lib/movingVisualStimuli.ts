@@ -33,6 +33,8 @@ export class MovingVisualEngine extends ContinuousNavigationEngine {
  requestPlane():never{throw new Error('v4 uses motion events, not binary plane switches');}
  advance():MovingFrame {if(this.n>=1500)throw new Error('Simulation completed');if(this.motionPending!==null){this.motionEvents.push({step:this.n,time:this.n*BODY_DT,old_motion:this.motion,new_motion:this.motionPending});this.motion=this.motionPending;this.motionPending=null;}const f=super.advance() as MovingFrame;this.lastObservation=f.sensory_summary as ReturnType<typeof relativeObservation>|null;this.previousPhase=this.phase;this.phase+=this.motion*2*Math.PI*BODY_DT/MOVING_POLICY.period_s;return f;}
  snapshot():MovingSnapshot{return {...super.snapshot(),stimulus:movingWorld(this.phase,this.motion),observation:this.lastObservation};}
+ /** Read-only presentation copy; no integration or new authoritative storage. */
+ timelineFrames(from=0):MovingFrame[]{if(!Number.isInteger(from)||from<0||from>this.records.length)throw new Error('Invalid telemetry prefix');return structuredClone(this.records.slice(from)) as MovingFrame[];}
  sampleBoundary(){return this.calculateBoundary(false);}
  movingLog():MovingLog{return {schema:'moving_visual_stimulus_event_log_v4',config:structuredClone(this.movingConfig),events:structuredClone(this.motionEvents),stop_step:this.n,pending_motion:this.motionPending,termination:this.n===1500?'DURATION_COMPLETED':'PAUSED'};}
  navigationLog():never{throw new Error('Use versioned movingLog');}

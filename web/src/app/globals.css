@@ -304,3 +304,13 @@ dd { margin: 7px 0 0; color: var(--ink); font-size: 12px; line-height: 1.5; over
 @media (max-width: 600px) { .comparison-legend { gap: .35rem; } .comparison-legend span { flex: 1 1 100%; } }
 .comparison-stage-legend { position: absolute; right: 1.25rem; bottom: 5rem; display: flex; gap: 1rem; padding: .6rem .8rem; border-radius: .4rem; background: #101b23e8; pointer-events: none; font-size: .8rem; font-weight: 600; }
 @media (max-width: 600px) { .comparison-stage-legend { right: .7rem; top: 8rem; bottom: auto; gap: .65rem; font-size: .7rem; } }
+
+.neural-timeline { border:1px solid #41545d; border-radius:8px; padding:10px 12px; margin:12px 0; background:#101d26; color:#cfdee6; }
+.neural-timeline summary { cursor:pointer; font-weight:600; }
+.neural-timeline p { font-size:11px; line-height:1.5; overflow-wrap:anywhere; }
+.neural-timeline svg { display:block; width:100%; min-height:66px; cursor:crosshair; }
+.neural-timeline input[type="range"] { width:100%; accent-color:#6ee7da; }
+.neural-timeline-plots { overflow-x:auto; max-width:100%; }
+.neural-timeline-lane { min-width:600px; border-top:1px solid #31434f; }
+
+.neural-timeline button { border:1px solid #52616b; border-radius:4px; padding:6px 9px; background:#17242e; color:inherit; font-size:11px; }

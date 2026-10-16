@@ -25,3 +25,10 @@ export function timelineState(frames:readonly MovingFrame[],end:MovingSnapshot,k
  return {...end,step:k,time:k*BODY_DT,position:[...f.position],heading:f.orientation,hs:[...f.neural_summary!.hs_states],dn:[...f.neural_summary!.dnp15_states],readout:prev?.neural_summary?.mean_yaw_drive_eq??null,substeps:k*200,distance:f.distance,contact:f.contact,omega:prev?.angular_velocity??0,neuralOmega:prev?.boundary_summary.neural_omega??0,boundaryOmega:prev?.boundary_summary.omega??0,proximity:Math.min(...f.boundary_summary.distances),contacts,recoveries,contactSeconds:seconds,maxStallSeconds:maxStall,neuralHeadingChange:neuralChange,boundaryHeadingChange:boundaryChange,stimulus:f.stimulus_summary,observation:prev?.sensory_summary as Observation|null??null};
 }
 export function timelineEvents(events:readonly MotionEvent[],last:number){return events.filter(e=>e.step<=last).map(e=>({...e,label:`${e.time.toFixed(2)} s · movimento ${e.old_motion} → ${e.new_motion} · A=0.08, T=4 s; posição contínua`}));}
+/** Drawing coordinates only (0.01 SVG pixel); source values/timestamps stay full precision.
+ * Exact flat runs are coalesced without removing any extrema or crossing a gap. */
+export function timelinePath(samples:readonly TimelineSample[],value:(s:TimelineSample)=>number|null,extent:number){
+ let path='',previous:number|null=null,lastX='';
+ for(const s of samples){const v=value(s);if(v===null){if(previous!==null)path+=`H${lastX}`;previous=null;continue;}const x=(50+820*s.time/30).toFixed(2),y=(44-30*v/extent).toFixed(2);if(previous===null)path+=`M${x},${y}`;else if(v!==previous)path+=`H${x}V${y}`;previous=v;lastX=x;}
+ if(previous!==null)path+=`H${lastX}`;return path;
+}

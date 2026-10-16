@@ -56,10 +56,10 @@ instrument is attached to the original v4 session, not to a different clock.
 - Context: unwrapped body heading in rad, in its own lane. This is not wrapped
   angular separation and does not imply biological frequency or muscle action.
 
-The SVG has five aligned lanes, explicit signed scales, zero references, distinct
+The instrument has five aligned lanes, explicit signed scales, zero references, distinct
 colors and line patterns, event tooltips and boundary-contact markers. Scales
 are numeric in original model units, never per-signal amplitude normalization.
-Paths preserve all completed samples, use steps without smoothing, and are
+Canvas curves retain the complete sampled signal, use steps without smoothing, and are
 memoized independently of cursor movement. The instrument is collapsible and
 uses no chart dependency, second GLB, neural-substep React update or chart clock.
 
@@ -81,7 +81,7 @@ physiological wall avoidance. Forward propulsion and boundary recovery remain
 engineering assumptions. The chart creates no new scientific evidence about
 biological locomotion; it makes the existing computational causal chain inspectable.
 
-Pre-publication gates passed: 201 frontend tests, frontend lint/typecheck/production
+Initial pre-publication gates passed: 201 frontend tests, frontend lint/typecheck/production
 build, Ruff lint/format and diff checks. With no Python model changes, the existing
 1702-test full baseline was supplemented by 192 targeted Python checks rather
 than another full scientific sweep. All 74 frozen D2.2 files and the raw external
@@ -106,3 +106,27 @@ Import, save/reload, ON/OFF comparison, resume and reset passed on desktop and
 4 FPS; diagnostic-transform sampling itself updates at 1 Hz and was awaited
 separately from scientific cursor/inspector updates. Browser evidence is external
 to Git; the protected deployment is verified independently after publication.
+
+
+A protected-browser performance follow-up found extra SwiftShader rendering cost
+with the SVG curves open (approximately 3 versus 4–5 FPS closed). A focused
+presentation correction rasterizes the same step paths in Canvas, with a separate
+SVG cursor/annotation layer. Drawing occurs before paint only when the data paths
+change. Seeking cannot redraw the cached curves. Exact flat runs coalesce;
+drawing coordinates alone round to 0.01 SVG pixel, well below the display's
+pixel resolution. Extrema, event timestamps, all original telemetry and inspected
+values remain unchanged. This is graphical encoding, not scientific downsampling.
+The software renderer remains a limitation: it must not be represented as a
+physical-GPU benchmark or as proof of zero chart overhead. No neural, body,
+event-log, storage or source-authority semantics were changed by this correction.
+
+The correction passed 203 frontend tests, lint/typecheck/build and local browser
+acceptance. The browser additionally instrumented the five scientific Canvas
+contexts and observed **zero curve strokes during ten historical seeks**. Canvas
+bitmaps reconstructed identically after import and same-origin library reload;
+the numerical inspector still matched all exported source samples. Local seek
+inspection took about 28–36 ms (renderer diagnostics are separately sampled at
+1 Hz). The isolated view-model timings above remain distinct from rendering cost.
+Software-renderer samples vary with visible content: a controlled local profile
+reported approximately 3–4 FPS open and 4–5 FPS closed; no zero-overhead or
+physical-GPU performance claim is made. This correction is limited to presentation.

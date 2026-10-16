@@ -73,7 +73,7 @@ export class InteractiveNeuralEngine {
  eventLog():EventLog {return structuredClone({schema:"interactive_neural_locomotion_event_log_v2",config:this.config,events:this.events,stop_step:this.n,pending_plane:this.pending,termination:this.n===this.lastStep?"DURATION_COMPLETED":"PAUSED"});}
  requestPlane(plane:Plane){if(!validPlane(plane)||this.n===this.lastStep)throw new Error("Invalid/finished stimulus intervention");this.pending=plane===this.plane?null:plane;}
  pendingPlane(){return this.pending;}
- private observation():LocomotionFrame["sensory_summary"] {
+ protected observation():LocomotionFrame["sensory_summary"] {
   if(!this.previous)return null;
   const before=this.previous, after=this.pose, dx=after.position[0]-before.position[0],dz=after.position[2]-before.position[2];
   const dh=after.heading/(2*Math.PI)-before.heading/(2*Math.PI);

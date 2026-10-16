@@ -1,0 +1,54 @@
+{
+  "schema": "moving_visual_stimuli_reference_manifest_v4",
+  "baseline_commit": "b931922e7ce58cc0bd193cd4936e4578f00b63c0",
+  "policy_sha256": "65c334f0ddd3c769824d0449ed33da5e00c04c71fa56043091ebf2e23ff0a28b",
+  "python_reference_identity": "7972f0247041b19296b71d42884e508ca4bb2f6eb80ec7599fe2a9a00c7bf805",
+  "selected_fixture_raw_sha256": "75f7791b20a57a40b3d74cbec2f80ea4226984aaf57a9d0a28cd02601fbc9abc",
+  "external_directory": "../neurofly-science/work/moving-visual-stimuli-v4",
+  "cases": {
+    "static": {
+      "artifact_id": "ab113b45770b662bed627bebc6d2716e1cb88ad6eed9cb0e811e2ef3c04de2e8",
+      "result_sha256": "f451b118f8b30303a20a9a0c15858b5f016c901194afe09a0572d8855cc1d0e6",
+      "config_sha256": "3153eff1bc77967236bb87ce61b5a148cec725f27171b940ede5511998d72b76"
+    },
+    "moving": {
+      "artifact_id": "572e4f056ec2928526c1ca32d97ca69239e0f2d3dcee0b94ccac4f990b40f666",
+      "result_sha256": "f8480a9129a71c4eee4883ec5e13994a3cb31ba4a3cc3e902bf823c42ffe8471",
+      "config_sha256": "4877f007435cdcd16a7224c28e0844c0ad70febebbb18479944f90266cc3680f"
+    },
+    "reverse": {
+      "artifact_id": "5f54688215012929ad8ad0001ee24e365cecca6e6af44585e642a66fc79ad2ca",
+      "result_sha256": "1434af0f8ef469f3cb26e01638e57e4adb76297dff7ae6a8dc4340ab25bf388e",
+      "config_sha256": "8730892aa0f8ab0c1c05ded90af5dbfa1b5b157d3a0705ed289d15f29f98fb92"
+    },
+    "off": {
+      "artifact_id": "e5495f99cedde1c7b1d7fb33fe3396d8fa0f6ae57f077b397f4e4686cbd381dc",
+      "result_sha256": "99c03c7447931d94710bc7d5c8f12de61f9ed677eee43006e71647d5f33bcd63",
+      "config_sha256": "04d8d968896d560f5f3835636c153199bca0a9a10e535e742907c088103ac63f"
+    }
+  },
+  "limitations": "Numerically evaluated proxy response; engineering stimulus, propulsion and recovery; not calibrated retina, gait or physiological sign evidence",
+  "reproduction": "Create output directory; .venv/bin/python -m neurofly.moving_visual_stimuli_reference --output <external-directory>/reference.json; cd web && npm test",
+  "random_policy": "NONE",
+  "parity_tolerance": 1e-08,
+  "sources": {
+    "dataset_uuid": "4b2087c0fbe046bfaf0d60bc970e3e5d",
+    "source_artifact_id": "4d7c791224f21ecf677df81d2127a6f8b753974694b6b324afc1948da3fb9064",
+    "source_raw_sha256": "17d335358a4f5cf4ed98b9682b103a81419cf82504203ce1bc72a7d76285d748",
+    "source_config_sha256": "a916769c730174b3d631ccda9df0dd89479cd1b12f43be250b856c1782736e2d",
+    "model_sources": {
+      "neural": "371926570df00d88efb8e40aa8f6c64b757a420364143d42c9fb727722bfe074",
+      "observation": "49e91a10fa49c5d7004f28249b63f334a0e23767c20108f5578a0e2586c9767a",
+      "yaw": "1be0f6364070a5a5536f4c772bd47abb3be2f08357b439a51e03f034f8b2a654"
+    }
+  },
+  "software": {
+    "python": "3.12.3 (main, Aug 31 2026, 10:18:26) [GCC 13.3.0]",
+    "node": "v24.11.1",
+    "platform": "Linux-6.6.87.2-microsoft-standard-WSL2-x86_64-with-glibc2.39"
+  },
+  "implementation_sha256": {
+    "web/src/lib/movingVisualStimuli.ts": "dd207058692d4a4bba03843fac38df6c3c56ebba4d2534a49f6a85c7efb5b0bc",
+    "src/neurofly/moving_visual_stimuli_reference.py": "652a782139ec63599d464aadc66b1edb5e05d78e022ff23eeaa98eeb5bbc259a"
+  }
+}

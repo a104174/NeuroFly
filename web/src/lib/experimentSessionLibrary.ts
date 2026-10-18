@@ -7,8 +7,8 @@ export const LIBRARY_DB='neurofly-experiment-library';
 export const LIBRARY_STORE='sessions';
 export const LIBRARY_VERSION=1;
 type Inputs={log:ArenaSession['log'];config_sha256:string;log_sha256:string;result_sha256:string;artifact_id:string};
-export type ComparisonReference={schema:'neural_contribution_comparison_v3_1'|'moving_visual_stimulus_comparison_v4';parent_session_id:string;config_sha256:string;artifact_id:string};
-export type LibraryRecord={schema:'experiment_session_library_v3_2'|'experiment_session_library_v4';id:string;revision:string;name:string;created_at:string;modified_at:string;source_session_id:string;inputs:Inputs;summary:{duration_s:number;interventions:number;distance:number;status:'RECORDED_PREFIX'|'DURATION_COMPLETED';mode:string};comparison:ComparisonReference|null;record_sha256:string};
+export type ComparisonReference={schema:'neural_contribution_comparison_v3_1'|'moving_visual_stimulus_comparison_v4'|'independent_visual_stimulus_comparison_v5';parent_session_id:string;config_sha256:string;artifact_id:string};
+export type LibraryRecord={schema:'experiment_session_library_v3_2'|'experiment_session_library_v4'|'experiment_session_library_v5';id:string;revision:string;name:string;created_at:string;modified_at:string;source_session_id:string;inputs:Inputs;summary:{duration_s:number;interventions:number;distance:number;status:'RECORDED_PREFIX'|'DURATION_COMPLETED';mode:string};comparison:ComparisonReference|null;record_sha256:string};
 export type LibraryEntry={id:string;record:LibraryRecord|null;error:string|null};
 const keys=(value:object,names:string)=>{if(Object.keys(value).sort().join(',')!==names.split(',').sort().join(','))throw new Error('Unsupported local record fields');};
 const digest=(x:unknown)=>typeof x==='string'&&/^[a-f0-9]{64}$/.test(x);
@@ -16,16 +16,16 @@ export function experimentName(value:string){const name=value.trim();if(!name||n
 async function seal(record:Omit<LibraryRecord,'record_sha256'>):Promise<LibraryRecord>{const body={...record} as Partial<LibraryRecord>;delete body.record_sha256;return {...body,record_sha256:await navigationHash(body)} as LibraryRecord;}
 export async function inspectRecord(value:unknown):Promise<LibraryRecord>{
  const r=value as LibraryRecord;
- if(!r||typeof r!=='object'||!['experiment_session_library_v3_2','experiment_session_library_v4'].includes(r.schema))throw new Error('Versão de biblioteca não suportada; nenhum dado foi migrado.');
+ if(!r||typeof r!=='object'||!['experiment_session_library_v3_2','experiment_session_library_v4','experiment_session_library_v5'].includes(r.schema))throw new Error('Versão de biblioteca não suportada; nenhum dado foi migrado.');
  keys(r,'schema,id,revision,name,created_at,modified_at,source_session_id,inputs,summary,comparison,record_sha256');
  if(typeof r.id!=='string'||! /^[a-f0-9-]{36}$/.test(r.id)||typeof r.revision!=='string'||! /^[a-f0-9-]{36}$/.test(r.revision)||experimentName(r.name)!==r.name||![r.created_at,r.modified_at].every(t=>typeof t==='string'&&Number.isFinite(Date.parse(t))&&new Date(t).toISOString()===t)||r.modified_at<r.created_at||!digest(r.source_session_id))throw new Error('Metadados locais inválidos.');
  keys(r.inputs,'log,config_sha256,log_sha256,result_sha256,artifact_id');keys(r.summary,'duration_s,interventions,distance,status,mode');
  const {record_sha256,...body}=r;
  if(!digest(record_sha256)||await navigationHash(body)!==record_sha256||![r.inputs.config_sha256,r.inputs.log_sha256,r.inputs.result_sha256,r.inputs.artifact_id].every(digest)||await navigationHash(r.inputs.log)!==r.inputs.log_sha256||await navigationHash(r.inputs.log.config)!==r.inputs.config_sha256||await navigationHash({log_sha256:r.inputs.log_sha256,result_sha256:r.inputs.result_sha256})!==r.inputs.artifact_id)throw new Error('Integridade local inválida.');
  const s=r.summary,l=r.inputs.log;
- if(l.schema!==(r.schema==='experiment_session_library_v4'?'moving_visual_stimulus_event_log_v4':'continuous_arena_navigation_event_log_v3'))throw new Error('Library/session version mismatch');
+ if(l.schema!==(r.schema==='experiment_session_library_v5'?'independent_visual_stimulus_event_log_v5':r.schema==='experiment_session_library_v4'?'moving_visual_stimulus_event_log_v4':'continuous_arena_navigation_event_log_v3'))throw new Error('Library/session version mismatch');
  if(!Number.isFinite(s.distance)||s.distance<0||s.duration_s!==l.stop_step*BODY_DT||!Number.isInteger(l.stop_step)||l.stop_step<1||l.stop_step>1500||s.interventions!==l.events.length||s.mode!==l.config.mode||s.status!==(l.stop_step===1500?'DURATION_COMPLETED':'RECORDED_PREFIX'))throw new Error('Resumo local contraditório.');
- if(r.comparison){keys(r.comparison,'schema,parent_session_id,config_sha256,artifact_id');if(r.comparison.schema!==(r.schema==='experiment_session_library_v4'?'moving_visual_stimulus_comparison_v4':'neural_contribution_comparison_v3_1')||r.comparison.parent_session_id!==r.inputs.artifact_id||!digest(r.comparison.config_sha256)||!digest(r.comparison.artifact_id))throw new Error('Referência de comparação inválida.');}
+ if(r.comparison){keys(r.comparison,'schema,parent_session_id,config_sha256,artifact_id');if(r.comparison.schema!==(r.schema==='experiment_session_library_v5'?'independent_visual_stimulus_comparison_v5':r.schema==='experiment_session_library_v4'?'moving_visual_stimulus_comparison_v4':'neural_contribution_comparison_v3_1')||r.comparison.parent_session_id!==r.inputs.artifact_id||!digest(r.comparison.config_sha256)||!digest(r.comparison.artifact_id))throw new Error('Referência de comparação inválida.');}
  return structuredClone(r);
 }
 const yieldUI=()=>new Promise<void>(resolve=>setTimeout(resolve,0));
@@ -37,7 +37,7 @@ export async function createRecord(authority:NeuralArtifact,value:unknown,name:s
  if(session.log.stop_step<1)throw new Error('Execute pelo menos um intervalo antes de guardar.');
  const {schema:unused,telemetry,...inputs}=session;void unused;
  const now=new Date().toISOString();
- return seal({schema:session.schema==='moving_visual_stimulus_session_v4'?'experiment_session_library_v4':'experiment_session_library_v3_2',id:crypto.randomUUID(),revision:crypto.randomUUID(),name:safeName,created_at:now,modified_at:now,source_session_id:original.artifact_id,inputs,summary:{duration_s:session.log.stop_step*BODY_DT,interventions:session.log.events.length,distance:telemetry.final_state.distance,status:session.log.stop_step===1500?'DURATION_COMPLETED':'RECORDED_PREFIX',mode:String(session.log.config.mode)},comparison:null});
+ return seal({schema:session.schema==='independent_visual_stimulus_session_v5'?'experiment_session_library_v5':session.schema==='moving_visual_stimulus_session_v4'?'experiment_session_library_v4':'experiment_session_library_v3_2',id:crypto.randomUUID(),revision:crypto.randomUUID(),name:safeName,created_at:now,modified_at:now,source_session_id:original.artifact_id,inputs,summary:{duration_s:session.log.stop_step*BODY_DT,interventions:session.log.events.length,distance:telemetry.final_state.distance,status:session.log.stop_step===1500?'DURATION_COMPLETED':'RECORDED_PREFIX',mode:String(session.log.config.mode)},comparison:null});
 }
 export async function restoreRecord(authority:NeuralArtifact,value:unknown):Promise<{record:LibraryRecord;session:ArenaSession;engine:ContinuousNavigationEngine}>{
  await yieldUI();const record=await inspectRecord(value),engine=await replayArenaSession(authority,record.inputs.log),session=await exportArenaSession(engine);

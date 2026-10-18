@@ -1,0 +1,18 @@
+{
+  "version": "INDEPENDENT_SINUSOIDAL_LANDMARKS_V5",
+  "stimuli": [{"id":"A","anchor_x":0.6},{"id":"B","anchor_x":-0.6}],
+  "amplitude": 0.08,
+  "period_s": 4,
+  "initial_phase": 0,
+  "z": 0.4,
+  "axis": "X",
+  "units": "PRESENTATION_WORLD_UNITS_SECONDS_RADIANS",
+  "observation": "V4_RELATIVE_GEOMETRY_A_TO_R_B_TO_L_MODEL_ENCODING_NOT_RETINAL_EVIDENCE",
+  "events": "REQUEST_ORDER_AT_NEXT_BODY_BOUNDARY_PHASE_CONTINUOUS",
+  "presets": {
+    "stationary": [{"enabled":false,"direction":1},{"enabled":false,"direction":1}],
+    "synchronized": [{"enabled":true,"direction":1},{"enabled":true,"direction":1}],
+    "opposing": [{"enabled":true,"direction":1},{"enabled":true,"direction":-1}],
+    "single": [{"enabled":true,"direction":1},{"enabled":false,"direction":1}]
+  }
+}

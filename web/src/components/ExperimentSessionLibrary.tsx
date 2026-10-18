@@ -30,11 +30,11 @@ export function ExperimentSessionLibrary({authority,capture,onOpen,onCompare,dis
   <ul className="experiment-library-list">{entries.map(entry=><li key={entry.id} data-library-id={entry.id}>
    {entry.record?<>
     <strong data-library-name={entry.record.name}>{entry.record.name}</strong>
-    <p>{new Date(entry.record.created_at).toLocaleString()} · {entry.record.schema==='experiment_session_library_v4'?'v4':'v3'} {entry.record.summary.mode} · {entry.record.summary.duration_s.toFixed(2)} s {entry.record.summary.status==='RECORDED_PREFIX'?'(prefixo pausado)':'(completa)'} · {entry.record.summary.interventions} intervenções · {entry.record.summary.distance.toFixed(4)} unidades (verificado ao guardar; recalculado ao abrir). {entry.record.comparison?'Comparação referenciada.':'Comparação disponível por reconstrução.'}</p>
+    <p>{new Date(entry.record.created_at).toLocaleString()} · {entry.record.schema==='experiment_session_library_v5'?'v5':entry.record.schema==='experiment_session_library_v4'?'v4':'v3'} {entry.record.summary.mode} · {entry.record.summary.duration_s.toFixed(2)} s {entry.record.summary.status==='RECORDED_PREFIX'?'(prefixo pausado)':'(completa)'} · {entry.record.summary.interventions} intervenções · {entry.record.summary.distance.toFixed(4)} unidades (verificado ao guardar; recalculado ao abrir). {entry.record.comparison?'Comparação referenciada.':'Comparação disponível por reconstrução.'}</p>
     <button disabled={locked} onClick={()=>void run('Abrir',()=>handleLoad(entry.id))}>Abrir</button>
     <button disabled={locked} onClick={()=>void run('Comparar',()=>handleLoad(entry.id,true))}>Compare Neural Contribution</button>
     <button disabled={locked} onClick={()=>setRename({id:entry.id,name:entry.record!.name,revision:entry.record!.revision})}>Renomear</button>
-    <button disabled={locked} onClick={()=>void run('Exportar',async()=>{const {session}=await restoreRecord(authority,await store.current.get(entry.id));download(session,session.schema==='moving_visual_stimulus_session_v4'?'neurofly-moving-visual-stimuli-v4.json':'neurofly-navigation-v3.json');})}>Exportar JSON</button>
+    <button disabled={locked} onClick={()=>void run('Exportar',async()=>{const {session}=await restoreRecord(authority,await store.current.get(entry.id));download(session,session.schema==='independent_visual_stimulus_session_v5'?'neurofly-independent-visual-stimuli-v5.json':session.schema==='moving_visual_stimulus_session_v4'?'neurofly-moving-visual-stimuli-v4.json':'neurofly-navigation-v3.json');})}>Exportar JSON</button>
    </>:<p role="alert">Registo indisponível: {entry.error} · {entry.id}. Não será reproduzido.</p>}
    <button disabled={locked} onClick={()=>setDeleting(entry)}>Eliminar</button>
   </li>)}</ul>

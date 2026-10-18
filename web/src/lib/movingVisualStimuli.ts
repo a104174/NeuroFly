@@ -12,7 +12,7 @@ const clip=(v:number,a:number,b:number)=>Math.max(a,Math.min(b,v));
 const validMotion=(v:unknown):v is Motion=>v===-1||v===0||v===1;
 export function movingWorld(phase:number,motion:Motion):MovingWorld {if(!Number.isFinite(phase)||!validMotion(motion))throw new Error('Invalid moving stimulus');return {phase,motion,x:MOVING_POLICY.anchor_x.map(x=>x+MOVING_POLICY.amplitude*Math.sin(phase)),z:.4,velocity_x:motion*MOVING_POLICY.amplitude*2*Math.PI/MOVING_POLICY.period_s*Math.cos(phase)};}
 function bearing(bx:number,bz:number,ax:number,az:number){const dx=bx-ax,dz=bz-az,squared=dx*dx+dz*dz,fraction=squared?clip((bx*dx+bz*dz)/squared,0,1):0;if(Math.hypot(bx-fraction*dx,bz-fraction*dz)<=1e-9)throw new Error('Singular relative visual geometry');const shift=Math.atan2(bz*ax-bx*az,bx*ax+bz*az);if(Math.abs(shift)>=Math.PI)throw new Error('Ambiguous bearing');return shift;}
-export function relativeObservation(before:Pose,after:Pose,oldWorld:MovingWorld,world:MovingWorld,n:number){
+export function relativeObservation(before:Pose,after:Pose,oldWorld:Pick<MovingWorld,'x'|'z'>,world:Pick<MovingWorld,'x'|'z'>,n:number){
  if(!Number.isInteger(n)||n<1||![...before.position,...after.position,before.heading,after.heading,...oldWorld.x,...world.x,oldWorld.z,world.z].every(Number.isFinite)||oldWorld.x.length!==2||world.x.length!==2)throw new Error('Invalid relative observation');
  const interval=n*BODY_DT*1000-(n-1)*BODY_DT*1000,dh=after.heading/(2*Math.PI)-before.heading/(2*Math.PI);if(Math.abs(dh)>=.5)throw new Error('Ambiguous heading interval');
  const shifts:number[]=[],raw:number[]=[],self:number[]=[],external:number[]=[];

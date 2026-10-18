@@ -1,0 +1,414 @@
+{
+  "schema": "independent_visual_stimuli_reference_manifest_v5",
+  "baseline_commit": "9bd2fac60fbde4803fcdf0635ae9a4396adfc0fc",
+  "policy_sha256": "8a273ccd822c88c95a2f7383632385cfdb919c4f3c349eebc046bead19889296",
+  "python_reference_identity": "4856abaed3f732826a389db4eaae2604d491058b1afe0fed044e475c8b5c8442",
+  "selected_fixture_raw_sha256": "ef01f9854bfda1ddb044b7cfc521e4e06f763cb65c16fd6d3e5ea34b6ea74c7a",
+  "external_directory": "../neurofly-science/work/independent-visual-stimuli-v5",
+  "sources": {
+    "dataset_uuid": "4b2087c0fbe046bfaf0d60bc970e3e5d",
+    "source_artifact_id": "4d7c791224f21ecf677df81d2127a6f8b753974694b6b324afc1948da3fb9064",
+    "source_raw_sha256": "17d335358a4f5cf4ed98b9682b103a81419cf82504203ce1bc72a7d76285d748",
+    "source_config_sha256": "a916769c730174b3d631ccda9df0dd89479cd1b12f43be250b856c1782736e2d",
+    "model_sources": {
+      "neural": "371926570df00d88efb8e40aa8f6c64b757a420364143d42c9fb727722bfe074",
+      "observation": "49e91a10fa49c5d7004f28249b63f334a0e23767c20108f5578a0e2586c9767a",
+      "yaw": "1be0f6364070a5a5536f4c772bd47abb3be2f08357b439a51e03f034f8b2a654"
+    }
+  },
+  "parity_tolerance": 1e-08,
+  "random_policy": "NONE",
+  "timebase": {
+    "body_step_s": 0.02,
+    "neural_step_ms": 0.1,
+    "neural_substeps_per_interval": 200,
+    "duration_s": 30
+  },
+  "presets": {
+    "stationary": [
+      {
+        "enabled": false,
+        "direction": 1
+      },
+      {
+        "enabled": false,
+        "direction": 1
+      }
+    ],
+    "synchronized": [
+      {
+        "enabled": true,
+        "direction": 1
+      },
+      {
+        "enabled": true,
+        "direction": 1
+      }
+    ],
+    "opposing": [
+      {
+        "enabled": true,
+        "direction": 1
+      },
+      {
+        "enabled": true,
+        "direction": -1
+      }
+    ],
+    "single": [
+      {
+        "enabled": true,
+        "direction": 1
+      },
+      {
+        "enabled": false,
+        "direction": 1
+      }
+    ]
+  },
+  "cases": {
+    "stationary": {
+      "initial_preset": "stationary",
+      "neural_to_heading_enabled": true,
+      "initial_phases": [
+        0,
+        0
+      ],
+      "logical_result_id": "080a4336d7cfe477d0d7513a04d6914010f1724f446fee8b9fea1158a5f13a14",
+      "raw_sha256": "00618942aeb21e9d96bbe71e68311212cd2bd170ee3b3ea34afd4a462f57cfab",
+      "bytes": 2826722,
+      "events": []
+    },
+    "synchronized": {
+      "initial_preset": "synchronized",
+      "neural_to_heading_enabled": true,
+      "initial_phases": [
+        0,
+        0
+      ],
+      "logical_result_id": "9cffe96924c9e2e9c93b61c5cfe34847144165a71f462fc7bbcfc2ff797464c7",
+      "raw_sha256": "68a10a4514adbb21f18da0349d74ba9588b84cb9481ed97b37d7c6d4a0b17af5",
+      "bytes": 3158696,
+      "events": []
+    },
+    "opposing": {
+      "initial_preset": "opposing",
+      "neural_to_heading_enabled": true,
+      "initial_phases": [
+        0,
+        0
+      ],
+      "logical_result_id": "fda28f596a83106cd91f0218a309c9809965d923939ae31249c29b3a66dcad10",
+      "raw_sha256": "b1d2fef315446d829f1b07bd710ba900f4cb7d536c7856cc7c7313553792fed4",
+      "bytes": 3162497,
+      "events": []
+    },
+    "single": {
+      "initial_preset": "single",
+      "neural_to_heading_enabled": true,
+      "initial_phases": [
+        0,
+        0
+      ],
+      "logical_result_id": "050dbd6013a7e61561b09effd6b5c7696d1a3eaa1960edc860356ccf527d14c8",
+      "raw_sha256": "d643e290b6a1d01940f7f29e84e369143ef00f5fd68b83a519ce23b8b00b062e",
+      "bytes": 2994393,
+      "events": []
+    },
+    "off": {
+      "initial_preset": "opposing",
+      "neural_to_heading_enabled": false,
+      "initial_phases": [
+        0,
+        0
+      ],
+      "logical_result_id": "d4ed559cbcea193b732344ee309c3ca68298cb338106a56b90658b2742b3f98e",
+      "raw_sha256": "d637f6f2c868d3dd18c05021410d99ceecbbf08d6ff9f94324ab828f2af10bd3",
+      "bytes": 3075706,
+      "events": []
+    },
+    "events": {
+      "initial_preset": "opposing",
+      "neural_to_heading_enabled": true,
+      "initial_phases": [
+        0,
+        0
+      ],
+      "logical_result_id": "dd739b9c1fabd686226ad34865b30cea047c689ae438b7b065879e2c9e8cbef7",
+      "raw_sha256": "b4e215f0fe2bfce4772646468edee8851a3f3f43ee3a4fd76e2f5a76a6d918b8",
+      "bytes": 3159339,
+      "events": [
+        {
+          "sequence": 0,
+          "step": 100,
+          "time": 2.0,
+          "stimulus_id": "A",
+          "kind": "STOP",
+          "old_state": {
+            "enabled": true,
+            "direction": 1
+          },
+          "new_state": {
+            "enabled": false,
+            "direction": 1
+          }
+        },
+        {
+          "sequence": 1,
+          "step": 100,
+          "time": 2.0,
+          "stimulus_id": "B",
+          "kind": "REVERSE",
+          "old_state": {
+            "enabled": true,
+            "direction": -1
+          },
+          "new_state": {
+            "enabled": true,
+            "direction": 1
+          }
+        },
+        {
+          "sequence": 2,
+          "step": 200,
+          "time": 4.0,
+          "stimulus_id": "A",
+          "kind": "START",
+          "old_state": {
+            "enabled": false,
+            "direction": 1
+          },
+          "new_state": {
+            "enabled": true,
+            "direction": 1
+          }
+        },
+        {
+          "sequence": 3,
+          "step": 200,
+          "time": 4.0,
+          "stimulus_id": "A",
+          "kind": "REVERSE",
+          "old_state": {
+            "enabled": true,
+            "direction": 1
+          },
+          "new_state": {
+            "enabled": true,
+            "direction": -1
+          }
+        },
+        {
+          "sequence": 4,
+          "step": 350,
+          "time": 7.0,
+          "stimulus_id": "B",
+          "kind": "STOP",
+          "old_state": {
+            "enabled": true,
+            "direction": 1
+          },
+          "new_state": {
+            "enabled": false,
+            "direction": 1
+          }
+        },
+        {
+          "sequence": 5,
+          "step": 450,
+          "time": 9.0,
+          "stimulus_id": "B",
+          "kind": "START",
+          "old_state": {
+            "enabled": false,
+            "direction": 1
+          },
+          "new_state": {
+            "enabled": true,
+            "direction": 1
+          }
+        },
+        {
+          "sequence": 6,
+          "step": 450,
+          "time": 9.0,
+          "stimulus_id": "B",
+          "kind": "REVERSE",
+          "old_state": {
+            "enabled": true,
+            "direction": 1
+          },
+          "new_state": {
+            "enabled": true,
+            "direction": -1
+          }
+        }
+      ]
+    }
+  },
+  "sampled_control_metrics": {
+    "stationary": {
+      "distance": 4.391116853974237,
+      "heading": 2.086267368859661,
+      "position": [
+        -0.36676831726254566,
+        0.11032208074629306,
+        -0.2351005523846065
+      ],
+      "contacts": 3,
+      "recoveries": 3,
+      "contact_seconds": 5.6000000000000005,
+      "neural_substeps": 300000,
+      "raw_sha256": "00618942aeb21e9d96bbe71e68311212cd2bd170ee3b3ea34afd4a462f57cfab"
+    },
+    "synchronized": {
+      "distance": 4.449383247812905,
+      "heading": 2.0705528988849924,
+      "position": [
+        -0.3248105356463632,
+        0.11032208074629306,
+        -0.2702255697384164
+      ],
+      "contacts": 3,
+      "recoveries": 3,
+      "contact_seconds": 5.26,
+      "neural_substeps": 300000,
+      "raw_sha256": "68a10a4514adbb21f18da0349d74ba9588b84cb9481ed97b37d7c6d4a0b17af5"
+    },
+    "opposing": {
+      "distance": 4.445580681167282,
+      "heading": 2.084998240985451,
+      "position": [
+        -0.3303704231896053,
+        0.11032208074629306,
+        -0.27607384416221054
+      ],
+      "contacts": 3,
+      "recoveries": 3,
+      "contact_seconds": 5.28,
+      "neural_substeps": 300000,
+      "raw_sha256": "b1d2fef315446d829f1b07bd710ba900f4cb7d536c7856cc7c7313553792fed4"
+    },
+    "single": {
+      "distance": 4.447151751782375,
+      "heading": 2.076449006703205,
+      "position": [
+        -0.3279167016016804,
+        0.11032208074629306,
+        -0.27257475337421017
+      ],
+      "contacts": 3,
+      "recoveries": 3,
+      "contact_seconds": 5.28,
+      "neural_substeps": 300000,
+      "raw_sha256": "d643e290b6a1d01940f7f29e84e369143ef00f5fd68b83a519ce23b8b00b062e"
+    },
+    "off": {
+      "distance": 5.175043400565383,
+      "heading": 1.2270289533226684,
+      "position": [
+        0.22474391464837362,
+        0.11032208074629306,
+        0.3551033132056208
+      ],
+      "contacts": 2,
+      "recoveries": 2,
+      "contact_seconds": 1.24,
+      "neural_substeps": 300000,
+      "raw_sha256": "d637f6f2c868d3dd18c05021410d99ceecbbf08d6ff9f94324ab828f2af10bd3"
+    },
+    "events": {
+      "distance": 4.4394761351842025,
+      "heading": 2.096702390107231,
+      "position": [
+        -0.34338863811278497,
+        0.11032208074629306,
+        -0.28216431488774385
+      ],
+      "contacts": 3,
+      "recoveries": 3,
+      "contact_seconds": 5.32,
+      "neural_substeps": 300000,
+      "raw_sha256": "b4e215f0fe2bfce4772646468edee8851a3f3f43ee3a4fd76e2f5a76a6d918b8"
+    },
+    "stationary_vs_synchronized": {
+      "spatial": {
+        "value": 0.059943252569249116,
+        "time": 25.12
+      },
+      "heading_wrapped": {
+        "value": 0.19194801579912202,
+        "time": 25.16
+      },
+      "readout": {
+        "value": 0.01270012514992179,
+        "time": 21.2
+      },
+      "combined_input": {
+        "value": 0.006863629543748717,
+        "time": 21.16
+      }
+    },
+    "synchronized_vs_opposing": {
+      "spatial": {
+        "value": 0.03380208824336314,
+        "time": 22.64
+      },
+      "heading_wrapped": {
+        "value": 0.10005759499301624,
+        "time": 20.72
+      },
+      "readout": {
+        "value": 0.005892145286537332,
+        "time": 21.5
+      },
+      "combined_input": {
+        "value": 0.005490716305563147,
+        "time": 21.48
+      }
+    },
+    "opposing_vs_single": {
+      "spatial": {
+        "value": 0.018457322924796286,
+        "time": 22.62
+      },
+      "heading_wrapped": {
+        "value": 0.057827170158270214,
+        "time": 20.76
+      },
+      "readout": {
+        "value": 0.004464985037274013,
+        "time": 21.52
+      },
+      "combined_input": {
+        "value": 0.005116233427624066,
+        "time": 21.5
+      }
+    },
+    "opposing_vs_off": {
+      "spatial": {
+        "value": 0.8405572747030591,
+        "time": 30.0
+      },
+      "heading_wrapped": {
+        "value": 2.9570608097966398,
+        "time": 21.6
+      },
+      "readout": {
+        "value": 0.023810549190268204,
+        "time": 17.38
+      },
+      "combined_input": {
+        "value": 0.017982402544136626,
+        "time": 17.86
+      }
+    }
+  },
+  "implementation_sha256": {
+    "src/neurofly/independent_visual_stimuli_reference.py": "e91538f272ed1bdb5a0a21417e6bdc6f3a8a782982f7fb2b78e2f122fa478459",
+    "web/src/lib/independentVisualStimuli.ts": "50eb04bdd31353892fa57ecf5a5d8b7011080ec4d698001d09fefedd1055ef6e"
+  },
+  "reproduction": ".venv/bin/python -m neurofly.independent_visual_stimuli_reference --output <external-directory>/reference.json; cd web && npm test",
+  "limitations": "Independent engineering world inputs; A/R and B/L proxy encoding is not retinal evidence. No new physiological sign, gait or muscle validation.",
+  "reference_id": "01b1758cb594c2dbad5740eb1bf982495e53deaa61c4b951a738c92a6fc9ac79"
+}

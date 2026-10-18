@@ -130,7 +130,7 @@ function LiveTrajectory({points}:{points:[number,number,number][]}) {
   return <primitive object={line} dispose={null}/>;
 }
 
-export default function FlyViewerCanvas({ view, reset, diagnostics, onStatus, onStats, onFailure, arena = false, onTableReady, replayPose, locomotion = false, stimulusPlane, stimulusX, trajectory, liveTrajectory, comparison }: { comparison?: ArenaOverlayProps; trajectory?: [number, number, number][]; liveTrajectory?: [number, number, number][]; stimulusPlane?: number; stimulusX?: number[]; locomotion?: boolean; replayPose?: import("@/lib/arenaCourseReplay").ArenaCoursePose; arena?: boolean; onTableReady?: () => void; view: ArenaCameraView; reset: number; diagnostics: boolean; onStatus: (value: Status) => void; onStats: (value: ViewerStats) => void; onFailure: (message: string) => void }) {
+export default function FlyViewerCanvas({ view, reset, diagnostics, onStatus, onStats, onFailure, arena = false, onTableReady, replayPose, locomotion = false, stimulusPlane, stimulusX, stimulusIds, trajectory, liveTrajectory, comparison }: { comparison?: ArenaOverlayProps; trajectory?: [number, number, number][]; liveTrajectory?: [number, number, number][]; stimulusPlane?: number; stimulusX?: number[]; stimulusIds?: string[]; locomotion?: boolean; replayPose?: import("@/lib/arenaCourseReplay").ArenaCoursePose; arena?: boolean; onTableReady?: () => void; view: ArenaCameraView; reset: number; diagnostics: boolean; onStatus: (value: Status) => void; onStats: (value: ViewerStats) => void; onFailure: (message: string) => void }) {
   const [webGLAvailable] = useState(() => {
     try {
       const probe = document.createElement("canvas").getContext("webgl2");
@@ -148,6 +148,6 @@ export default function FlyViewerCanvas({ view, reset, diagnostics, onStatus, on
     <color attach="background" args={["#182129"]} />
     <Studio view={view} reset={reset} diagnostics={diagnostics} onStats={onStats} onFailure={onFailure} arena={arena} locomotion={locomotion} />
     {arena && replayPose ? <group name="RecordedBodyTransform" userData={{ replayAnchor: replayPose.anchor }} position={replayPose.anchor} rotation={[0, replayPose.rotation, 0]} scale={ARENA.flyScale}><group position={replayPose.assetOffset}><Fly onStatus={onStatus} /></group></group> : <group position={arena ? ARENA.flyOffset : [0, 0, 0]} scale={arena ? ARENA.flyScale : 1}><Fly onStatus={onStatus} /></group>}
-    {arena && onTableReady ? <ExperimentalArena stimulusPlane={stimulusPlane} stimulusX={stimulusX} shadowAnchor={locomotion ? replayPose?.anchor : undefined} onReady={onTableReady} onFailure={onFailure} /> : null}
+    {arena && onTableReady ? <ExperimentalArena stimulusPlane={stimulusPlane} stimulusX={stimulusX} stimulusIds={stimulusIds} shadowAnchor={locomotion ? replayPose?.anchor : undefined} onReady={onTableReady} onFailure={onFailure} /> : null}
   </Canvas></ViewerBoundary>;
 }

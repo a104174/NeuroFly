@@ -317,3 +317,10 @@ dd { margin: 7px 0 0; color: var(--ink); font-size: 12px; line-height: 1.5; over
 
 .neural-timeline-plot { position:relative; height:94px; contain:layout paint; }
 .neural-timeline-plot canvas, .neural-timeline-plot svg { position:absolute; inset:0; display:block; width:100%; height:94px; min-height:0; }
+
+/* Independent controls: identity is encoded by shape and label as well as colour. */
+.independent-stimulus-controls{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.75rem;margin-block:.75rem}
+.independent-stimulus-controls fieldset{min-width:0;border:1px solid var(--border,#40535a);border-radius:.5rem;padding:.65rem}
+.independent-stimulus-controls legend{font-size:.8rem;padding-inline:.3rem}
+.independent-stimulus-controls p{overflow-wrap:anywhere}
+@media(max-width:600px){.independent-stimulus-controls{grid-template-columns:1fr}}

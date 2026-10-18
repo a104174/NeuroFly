@@ -1,4 +1,5 @@
 "use client";
+import {VisualStimulusComparison} from "./VisualStimulusComparison";
 import {NeuralResponseTimeline} from "./NeuralResponseTimeline";
 import {timelineState,timelineStep,type TimelineFrame,type TimelineSnapshot,type TimelineEvent} from "@/lib/neuralResponseTimeline";
 import {IndependentVisualEngine,type IndependentEvent,type Preset,type StimulusId,type Action} from "@/lib/independentVisualStimuli";
@@ -11,11 +12,12 @@ import {MovingVisualEngine,type Motion,type MotionEvent} from "@/lib/movingVisua
 import {ExperimentSessionLibrary} from "./ExperimentSessionLibrary";
 import {NeuralContributionComparison} from "./NeuralContributionComparison";
 
-export function ContinuousNavigationArena({initialMoving=false,initialIndependent=false,onVersionLoaded}:{initialMoving?:boolean;initialIndependent?:boolean;onVersionLoaded?:(moving:boolean,independent:boolean)=>void}){
+export function ContinuousNavigationArena({initialMoving=false,initialIndependent=false,initialVisualComparison=false,onVersionLoaded}:{initialMoving?:boolean;initialIndependent?:boolean;initialVisualComparison?:boolean;onVersionLoaded?:(moving:boolean,independent:boolean,visual:boolean)=>void}){
  const [independent,setIndependent]=useState(initialIndependent),[initialPreset,setInitialPreset]=useState<Preset>("synchronized");
  const [moving,setMoving]=useState(initialMoving||initialIndependent),[initialMotion,setInitialMotion]=useState<Motion>(1);
- function selectVersion(next:ContinuousNavigationEngine){const i=next instanceof IndependentVisualEngine,m=i||next instanceof MovingVisualEngine;setMoving(m);setIndependent(i);onVersionLoaded?.(m,i);if(i)setInitialPreset(next.independentLog().config.initial_preset as Preset);else if(next instanceof MovingVisualEngine)setInitialMotion(next.movingLog().config.initial_motion as Motion);}
+ function selectVersion(next:ContinuousNavigationEngine){const i=next instanceof IndependentVisualEngine,m=i||next instanceof MovingVisualEngine;setMoving(m);setIndependent(i);onVersionLoaded?.(m,i,false);if(i)setInitialPreset(next.independentLog().config.initial_preset as Preset);else if(next instanceof MovingVisualEngine)setInitialMotion(next.movingLog().config.initial_motion as Motion);}
  const makeEngine=(a:NeuralArtifact,enabled:boolean,m= moving,direction=initialMotion)=>independent?new IndependentVisualEngine(a,enabled?"neural":"output_disabled",initialPreset):m?new MovingVisualEngine(a,enabled?"neural":"output_disabled",direction):new ContinuousNavigationEngine(a,enabled?"neural":"output_disabled");
+ const [visualSource,setVisualSource]=useState<string|null>(initialVisualComparison?"":null);
  const [cursor,setCursor]=useState<number|null>(null);
  const [timelineFrames,setTimelineFrames]=useState<TimelineFrame[]>([]);
  const recorded=useRef<TimelineFrame[]>([]);
@@ -54,7 +56,7 @@ export function ContinuousNavigationArena({initialMoving=false,initialIndependen
  function back(){setPair(null);suspended.current=false;clock.current.reset();setPlaying(false);}
 
  async function captureLibrary(){if(!engine.current)throw new Error("Sessão não disponível");setPlaying(false);clock.current.reset();if(pair)return {session:pair.parent,hasComparison:true};return {session:importedSource.current??await exportArenaSession(engine.current),hasComparison:false};}
- const library=authority?<ExperimentSessionLibrary authority={authority} disabled={generating||Boolean(error)} capture={captureLibrary} onOpen={(next,session)=>{setPair(null);suspended.current=false;setNeuralEnabled(session.log.config.mode==="neural");selectVersion(next);synchronize(next);importedSource.current=session;setError(null);}} onCompare={async(next,elapsed)=>{setPlaying(false);clock.current.reset();suspended.current=true;const restored=await replayArenaSession(authority,next.parent.log);selectVersion(restored);synchronize(restored);importedSource.current=next.parent;setNeuralEnabled(next.parent.log.config.mode==="neural");setPair(next);setPairCost(elapsed);}}/>:null;
+ const library=authority?<ExperimentSessionLibrary authority={authority} onVisualCompare={id=>{setPlaying(false);clock.current.reset();suspended.current=true;setVisualSource(id);onVersionLoaded?.(moving,independent,true);}} disabled={generating||Boolean(error)} capture={captureLibrary} onOpen={(next,session)=>{setPair(null);suspended.current=false;setNeuralEnabled(session.log.config.mode==="neural");selectVersion(next);synchronize(next);importedSource.current=session;setError(null);}} onCompare={async(next,elapsed)=>{setPlaying(false);clock.current.reset();suspended.current=true;const restored=await replayArenaSession(authority,next.parent.log);selectVersion(restored);synchronize(restored);importedSource.current=next.parent;setNeuralEnabled(next.parent.log.config.mode==="neural");setPair(next);setPairCost(elapsed);}}/>:null;
  const actualState=state;
  const shownState=cursor!==null&&actualState&&'stimulus' in actualState?timelineState(timelineFrames,actualState as TimelineSnapshot,Math.min(cursor,actualState.step)):actualState;
  const worldState=shownState&&'stimulus' in shownState?shownState as TimelineSnapshot:null;
@@ -106,5 +108,6 @@ export function ContinuousNavigationArena({initialMoving=false,initialIndependen
    </>:null}
   </section>
  );
+ if(visualSource!==null&&authority)return <VisualStimulusComparison authority={authority} initialPId={visualSource||undefined} onReturn={()=>{onVersionLoaded?.(moving,independent,false);setVisualSource(null);suspended.current=false;clock.current.reset();setPlaying(false);}} onOpenOriginal={(next,session)=>{setVisualSource(null);setPair(null);suspended.current=false;setNeuralEnabled(true);selectVersion(next);synchronize(next);importedSource.current=session;setError(null);}}/>;
  return <NeuralContributionComparison pair={pair} authority={authority} onReturn={back} onImport={(next,elapsed)=>{setPair(next);setPairCost(elapsed);}} generationMs={pairCost} libraryPanel={library} livePanel={livePanel} liveViewerProps={{scientificTimeline:timeline,arena:true,locomotion:Boolean(displayState),locomotionVersion:independent?"v5":moving?"v4":"v3",stimulusIds:independent?["A","B"]:undefined,stimulusX:worldState?.stimulus.x,replayPose:pose,liveTrajectory:cursor===null?path:path.slice(0,cursor+1),stimulusPlane:displayState?.plane,playbackControls:displayState?<div className="arena-replay-controls"><button disabled={Boolean(error)||generating} onClick={()=>{setCursor(null);if(actualState?.step===1500){reset();setPlaying(true);}else{clock.current.reset();setPlaying(!playing);}}}>{playing?"Pause":"Play"}</button><button disabled={generating} onClick={reset}>Reset Experiment</button>{independent?null:moving?<button disabled={cursor!==null||displayState.step===1500||Boolean(error)||generating} onClick={()=>motionChange((pendingMotion??movingWorld?.motion??1)===-1?1:-1)}>Reverse stimulus motion</button>:<button disabled={cursor!==null||displayState.step===1500||Boolean(error)||generating} onClick={()=>planeChange((pending??displayState.plane)===.4?-.4:.4)}>Switch visual plane</button>}<output data-live-time={displayState.time}>{displayState.time.toFixed(2)} / 30.00 s{displayState.step===1500?" · Fim":playing?" · Live":" · Pausado"}</output></div>:undefined}}/>;
 }

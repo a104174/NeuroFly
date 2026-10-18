@@ -69,3 +69,10 @@
 .experiment-library button:disabled { opacity: .5; cursor: default; }
 .experiment-library label { display: flex; flex-wrap: wrap; align-items: center; gap: .45rem; margin: .5rem 0; }
 .experiment-library button:focus-visible, .experiment-library input:focus-visible { outline: 2px solid #67d3e0; outline-offset: 2px; }
+
+/* Matched P/Q inspection: readable scientific columns on narrow screens. */
+.visual-program-comparison button { font: inherit; font-size: 12px; min-height: 42px; margin: 4px; padding: 10px 14px; color: var(--ink); border: 1px solid var(--line); border-radius: 6px; background: #14232b; cursor: pointer; }
+.visual-program-comparison button:disabled { opacity: .5; cursor: default; }
+.visual-program-comparison button:focus-visible { outline: 2px solid var(--cyan); outline-offset: 3px; }
+.visual-program-comparison input[type=file] { max-width: 100%; }
+#visual-time { display: block; width: 100%; margin: 12px 0; accent-color: var(--cyan); }

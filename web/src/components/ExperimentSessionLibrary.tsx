@@ -4,7 +4,7 @@ import type {NeuralArtifact} from '@/lib/neuralLocomotion';
 import type {ContinuousNavigationEngine} from '@/lib/continuousArenaNavigation';
 import {ExperimentLibrary,createRecord,restoreRecord,compareRecord,renameRecord,type LibraryEntry,type LibraryRecord} from '@/lib/experimentSessionLibrary';
 import type {ArenaSession,ArenaPair} from '@/lib/arenaSessionDispatch';
-export function ExperimentSessionLibrary({authority,capture,onOpen,onCompare,disabled}:{authority:NeuralArtifact;capture:()=>Promise<{session:ArenaSession;hasComparison:boolean}>;onOpen:(engine:ContinuousNavigationEngine,session:ArenaSession)=>void;onCompare:(pair:ArenaPair,elapsed:number)=>void;disabled:boolean}){
+export function ExperimentSessionLibrary({authority,capture,onOpen,onCompare,onVisualCompare,disabled}:{authority:NeuralArtifact;capture:()=>Promise<{session:ArenaSession;hasComparison:boolean}>;onOpen:(engine:ContinuousNavigationEngine,session:ArenaSession)=>void;onCompare:(pair:ArenaPair,elapsed:number)=>void;disabled:boolean;onVisualCompare?:(id:string)=>void}){
  const store=useRef(new ExperimentLibrary()),mounted=useRef(true);
  const [entries,setEntries]=useState<LibraryEntry[]>([]),[name,setName]=useState(''),[rename,setRename]=useState<{id:string;name:string;revision:string}|null>(null),[deleting,setDeleting]=useState<LibraryEntry|null>(null);
  const [busy,setBusy]=useState(false),[error,setError]=useState<string|null>(null),[notice,setNotice]=useState(''),[cost,setCost]=useState<{operation:string;ms:number;bytes?:number}|null>(null);
@@ -32,6 +32,7 @@ export function ExperimentSessionLibrary({authority,capture,onOpen,onCompare,dis
     <strong data-library-name={entry.record.name}>{entry.record.name}</strong>
     <p>{new Date(entry.record.created_at).toLocaleString()} · {entry.record.schema==='experiment_session_library_v5'?'v5':entry.record.schema==='experiment_session_library_v4'?'v4':'v3'} {entry.record.summary.mode} · {entry.record.summary.duration_s.toFixed(2)} s {entry.record.summary.status==='RECORDED_PREFIX'?'(prefixo pausado)':'(completa)'} · {entry.record.summary.interventions} intervenções · {entry.record.summary.distance.toFixed(4)} unidades (verificado ao guardar; recalculado ao abrir). {entry.record.comparison?'Comparação referenciada.':'Comparação disponível por reconstrução.'}</p>
     <button disabled={locked} onClick={()=>void run('Abrir',()=>handleLoad(entry.id))}>Abrir</button>
+    {entry.record.schema==='experiment_session_library_v5'&&onVisualCompare?<button disabled={locked} onClick={()=>onVisualCompare(entry.id)}>Compare Visual Programs</button>:null}
     <button disabled={locked} onClick={()=>void run('Comparar',()=>handleLoad(entry.id,true))}>Compare Neural Contribution</button>
     <button disabled={locked} onClick={()=>setRename({id:entry.id,name:entry.record!.name,revision:entry.record!.revision})}>Renomear</button>
     <button disabled={locked} onClick={()=>void run('Exportar',async()=>{const {session}=await restoreRecord(authority,await store.current.get(entry.id));download(session,session.schema==='independent_visual_stimulus_session_v5'?'neurofly-independent-visual-stimuli-v5.json':session.schema==='moving_visual_stimulus_session_v4'?'neurofly-moving-visual-stimuli-v4.json':'neurofly-navigation-v3.json');})}>Exportar JSON</button>

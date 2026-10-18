@@ -4,7 +4,7 @@ import {timelineSamples,timelineEvents,timelinePath,type TimelineSample,type Tim
 const lanes=[{name:'Self / external R/L · raw normalized proxy',keys:['self','external']},{name:'Input combinado R/L · clipped proxy [−1,1]',keys:['combined']},{name:'HS/DNp15 mean readout · yaw_drive_eq',keys:['readout']},{name:'Neural / boundary · rad/s',keys:['neural','boundary']},{name:'Heading · rad (unwrapped)',keys:['heading']}] as const;
 const colors=['#6ee7da','#f4bd73','#a5bcff','#e7a3d5'];
 /** Rasterize full-resolution curves only when recorded data changes. Cursor stays separate. */
-function SignalCanvas({paths}:{paths:readonly string[]}){
+export function SignalCanvas({paths}:{paths:readonly string[]}){
  const canvas=useRef<HTMLCanvasElement>(null);
  useLayoutEffect(()=>{const ctx=canvas.current?.getContext('2d');if(!ctx)throw new Error('Timeline Canvas indisponível');ctx.clearRect(0,0,900,94);paths.forEach((path,i)=>{ctx.strokeStyle=colors[i];ctx.lineWidth=1.3;ctx.setLineDash(i%2?[4,3]:[]);ctx.stroke(new Path2D(path));});},[paths]);
  return <canvas ref={canvas} width={900} height={94} aria-label="Curvas científicas, todas as amostras"/>;

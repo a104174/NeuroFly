@@ -8,12 +8,12 @@ export type PairKey='ON'|'OFF';
 export type ContactEvent={step:number;time:number;kind:'CONTACT'|'RECOVERY'|'WALL_CHANGE';wall:NavigationFrame['contact'];previous_wall?:NavigationFrame['contact']};
 export type PairTrack={key:PairKey;NEURAL_TO_HEADING_ENABLED:boolean;frames:NavigationFrame[];contact_events:ContactEvent[];final_state:NavigationSnapshot};
 class SamplingEngine extends ContinuousNavigationEngine {boundary(){return this.calculateBoundary(false);}}
-export function contactEvents(frames:NavigationFrame[]):ContactEvent[]{
+export function contactEvents(frames:readonly Pick<NavigationFrame,'step'|'time'|'contact'>[]):ContactEvent[]{
  const events:ContactEvent[]=[];let previous:NavigationFrame['contact']=null;
  for(const f of frames){if(f.contact!==previous){if(previous&&f.contact)events.push({step:f.step,time:f.time,kind:'WALL_CHANGE',wall:f.contact,previous_wall:previous});else if(previous)events.push({step:f.step,time:f.time,kind:'RECOVERY',wall:previous});else if(f.contact)events.push({step:f.step,time:f.time,kind:'CONTACT',wall:f.contact});previous=f.contact;}}
  return events;
 }
-export function pairedMetrics(a:NavigationFrame[],b:NavigationFrame[]){
+export function pairedMetrics(a:readonly Pick<NavigationFrame,'step'|'time'|'position'|'orientation'|'distance'>[],b:readonly Pick<NavigationFrame,'step'|'time'|'position'|'orientation'|'distance'>[]){
  if(!a.length||a.length!==b.length)throw new Error('Unaligned pair');
  let separation={value:-1,time:0},heading={value:-1,time:0};
  for(let i=0;i<a.length;i++){

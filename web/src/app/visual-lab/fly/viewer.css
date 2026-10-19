@@ -76,3 +76,13 @@
 .visual-program-comparison button:focus-visible { outline: 2px solid var(--cyan); outline-offset: 3px; }
 .visual-program-comparison input[type=file] { max-width: 100%; }
 #visual-time { display: block; width: 100%; margin: 12px 0; accent-color: var(--cyan); }
+
+/* External visual-program authoring; scientific clocks remain in the simulator. */
+.visual-protocol-panel button { font: inherit; font-size: 12px; min-height: 42px; margin: 4px; padding: 10px 14px; color: var(--ink); border: 1px solid var(--line); border-radius: 6px; background: #14232b; cursor: pointer; }
+.visual-protocol-panel button:disabled { opacity: .5; cursor: default; }
+.visual-protocol-panel button:focus-visible { outline: 2px solid var(--cyan); outline-offset: 3px; }
+.visual-protocol-panel input { max-width: 100%; padding: .5rem; }
+.visual-protocol-panel fieldset { min-width: 0; border: 1px solid var(--line); border-radius: 6px; }
+.protocol-event-editor { display: flex; flex-wrap: wrap; gap: .7rem; align-items: end; }
+.protocol-event-editor label { flex: 1 1 130px; }
+.protocol-event-editor input { width: 100%; }

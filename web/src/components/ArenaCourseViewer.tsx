@@ -12,10 +12,11 @@ import { NeuralComparisonInspector } from "./NeuralComparisonInspector";
 import {ContinuousNavigationArena} from "./ContinuousNavigationArena";
 import { InteractiveNeuralArena } from "./InteractiveNeuralArena";
 import { MotorGaitBridgeArena } from "./MotorGaitBridgeArena";
+import { FlightVisualPreview } from "./FlightVisualPreview";
 import { FlyViewer } from "./FlyViewer";
 
 export function ArenaCourseViewer() {
-  const [mode, setMode] = useState<"static" | "course" | "locomotion" | "neural" | "comparison" | "interactive" | "navigation" | "moving" | "independent" | "visual-programs" | "scheduler" | "motor-bridge">("static");
+  const [mode, setMode] = useState<"static" | "course" | "locomotion" | "neural" | "comparison" | "interactive" | "navigation" | "moving" | "independent" | "visual-programs" | "scheduler" | "motor-bridge" | "flight-preview">("static");
   const [loadedProtocol,setLoadedProtocol]=useState(false);
   const [loadedVisual,setLoadedVisual]=useState(false);
   const [loadedIndependent,setLoadedIndependent] = useState(false);
@@ -64,10 +65,10 @@ export function ArenaCourseViewer() {
     return () => cancelAnimationFrame(animation);
   }, [motionPlaying]);
 
-  async function choose(mode: "static" | "course" | "locomotion" | "neural" | "comparison" | "interactive" | "navigation" | "moving" | "independent" | "visual-programs" | "scheduler" | "motor-bridge") {
+  async function choose(mode: "static" | "course" | "locomotion" | "neural" | "comparison" | "interactive" | "navigation" | "moving" | "independent" | "visual-programs" | "scheduler" | "motor-bridge" | "flight-preview") {
     const generation = ++request.current;
     setMode(mode); setLoadedProtocol(mode === "scheduler"); setLoadedVisual(mode === "visual-programs"); setLoadedMoving(mode === "moving" || mode === "independent" || mode === "visual-programs" || mode === "scheduler"); setLoadedIndependent(mode === "independent" || mode === "visual-programs" || mode === "scheduler"); setTime(0); setNeuralAuthority(null); setLocomotion(null); setRunIndex(0); setPlaying(false); setCursor(0); setReplay(null); setError(null); setLoading(mode !== "static");
-    if (mode === "motor-bridge" || mode === "static" || mode === "interactive" || mode === "navigation" || mode === "moving" || mode === "independent" || mode === "visual-programs" || mode === "scheduler") { setLoading(false); return; }
+    if (mode === "flight-preview" || mode === "motor-bridge" || mode === "static" || mode === "interactive" || mode === "navigation" || mode === "moving" || mode === "independent" || mode === "visual-programs" || mode === "scheduler") { setLoading(false); return; }
     try {
       if (mode === "neural" || mode === "comparison") {
         const data = await loadNeuralLocomotion();
@@ -97,6 +98,7 @@ export function ArenaCourseViewer() {
   const unavailable = "Não disponível neste boundary";
   return <>
     <div className="arena-mode-controls" aria-label="Modo da arena">
+      <button aria-pressed={mode === "flight-preview"} onClick={()=>void choose("flight-preview")}>Flight Visual Preview v7.1</button>
       <button aria-pressed={mode === "motor-bridge"} onClick={()=>void choose("motor-bridge")}>Motor-to-Gait Bridge v7</button>
       <button aria-pressed={mode === "static"} onClick={() => void choose("static")}>Arena estática</button>
       <button aria-pressed={mode === "course"} onClick={() => void choose("course")}>Course Replay</button>
@@ -162,7 +164,7 @@ export function ArenaCourseViewer() {
         <p className="arena-replay-note">Estados de modelo sobre evidência estrutural MaleCNS; não são ângulos biológicos calibrados nem velocidades físicas. O espécime é um asset visual, não anatomia MaleCNS reconstruída.</p>
       </>}
     </section>}
-    {mode === "motor-bridge" ? <MotorGaitBridgeArena/> : (mode === "navigation" || mode === "moving" || mode === "independent" || mode === "visual-programs" || mode === "scheduler") ? <ContinuousNavigationArena key={mode} initialMoving={mode === "moving" || mode === "independent" || mode === "visual-programs" || mode === "scheduler"} initialIndependent={mode === "independent" || mode === "visual-programs" || mode === "scheduler"} initialVisualComparison={mode === "visual-programs"} initialProtocol={mode === "scheduler"} onProtocolLoaded={setLoadedProtocol} onVersionLoaded={(m,i,v)=>{setLoadedMoving(m);setLoadedIndependent(i);setLoadedVisual(v);setLoadedProtocol(false);}}/> : mode === "interactive" ? <InteractiveNeuralArena/> : <FlyViewer arena replayPose={pose} locomotion={Boolean(motion)} locomotionVersion={neuralAuthority ? "v1" : "v0"} trajectory={comparison ? undefined : trajectory} comparison={comparison} stimulusPlane={neuralAuthority && !comparison ? locomotion?.result.runs[runIndex].condition?.plane_z : undefined} playbackControls={motion ? <div className="arena-replay-controls">
+    {mode === "flight-preview" ? <FlightVisualPreview/> : mode === "motor-bridge" ? <MotorGaitBridgeArena/> : (mode === "navigation" || mode === "moving" || mode === "independent" || mode === "visual-programs" || mode === "scheduler") ? <ContinuousNavigationArena key={mode} initialMoving={mode === "moving" || mode === "independent" || mode === "visual-programs" || mode === "scheduler"} initialIndependent={mode === "independent" || mode === "visual-programs" || mode === "scheduler"} initialVisualComparison={mode === "visual-programs"} initialProtocol={mode === "scheduler"} onProtocolLoaded={setLoadedProtocol} onVersionLoaded={(m,i,v)=>{setLoadedMoving(m);setLoadedIndependent(i);setLoadedVisual(v);setLoadedProtocol(false);}}/> : mode === "interactive" ? <InteractiveNeuralArena/> : <FlyViewer arena replayPose={pose} locomotion={Boolean(motion)} locomotionVersion={neuralAuthority ? "v1" : "v0"} trajectory={comparison ? undefined : trajectory} comparison={comparison} stimulusPlane={neuralAuthority && !comparison ? locomotion?.result.runs[runIndex].condition?.plane_z : undefined} playbackControls={motion ? <div className="arena-replay-controls">
           <button onClick={() => { if (time >= 8) setTime(0); setPlaying(!motionPlaying); }}>{motionPlaying ? "Pause" : "Play"}</button>
           <button onClick={() => { setPlaying(false); setTime(0); }}>Reset Experiment</button>
           <output data-simulation-time={time} data-world-position={JSON.stringify(motion.pose.anchor)} data-contact={motion.frame.contact ?? "NONE"} data-render-heading={motion.pose.rotation}>{time.toFixed(2)} / 8.00 s{time >= 8 ? " · Fim da simulação" : ""}</output>

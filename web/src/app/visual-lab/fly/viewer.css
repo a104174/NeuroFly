@@ -87,3 +87,11 @@ section[aria-label="Motor-to-Gait Bridge v7"] > details { overflow-wrap: anywher
 .protocol-event-editor { display: flex; flex-wrap: wrap; gap: .7rem; align-items: end; }
 .protocol-event-editor label { flex: 1 1 130px; }
 .protocol-event-editor input { width: 100%; }
+
+/* Engineering-only wing preview; long contract identifiers remain fully readable. */
+.flight-preview { overflow-wrap: anywhere; }
+.flight-preview input[type="range"] { max-width: 100%; }
+.flight-preview .arena-replay-controls > label { min-width: 0; }
+@media (max-width: 600px) {
+  .flight-preview .fly-viewer-stats { top: auto; bottom: 7.5rem; left: .75rem; right: .75rem; pointer-events: none; }
+}

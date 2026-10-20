@@ -1,0 +1,78 @@
+{
+  "schema": "articulated_wing_motion_v7_1",
+  "source_glb_sha256": "0502cb995d25b2f9d7b57eff0cf95a0c9cfd7f838e212e95b3895bb69c7e5238",
+  "generator": "tools/exports/build_wing_rig.py",
+  "classification": "ENGINEERING_FLIGHT_VISUAL_DEMO",
+  "axes": "Y_UP_Z_FORWARD",
+  "wings": [
+    {
+      "id": "Wing.L",
+      "sign": -1,
+      "pivot": [
+        -0.10884314849972725,
+        0.14274334758520127,
+        0.12851065173745155
+      ],
+      "vertices": 1252,
+      "rest_matrix": [
+        1,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        1
+      ]
+    },
+    {
+      "id": "Wing.R",
+      "sign": 1,
+      "pivot": [
+        0.11000030338764191,
+        0.14124780744314194,
+        0.13248637095093727
+      ],
+      "vertices": 1252,
+      "rest_matrix": [
+        1,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        1
+      ]
+    }
+  ],
+  "animation": {
+    "frequency_hz": 2,
+    "stroke_rad": 0.45,
+    "spread_rad": 0.95,
+    "duration_s": 8,
+    "takeoff_s": 1,
+    "hover_s": 2.25,
+    "landing_s": 5.75,
+    "grounded_s": 7,
+    "height": 0.18
+  },
+  "attribution": "Wildtype Male Drosophila Melanogaster by mlykouretzos, CC BY 4.0; original V2-F surfaces and materials preserved. Engineering hinges only.",
+  "license_url": "https://creativecommons.org/licenses/by/4.0/"
+}

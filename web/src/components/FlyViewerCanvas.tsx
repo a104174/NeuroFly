@@ -1,10 +1,11 @@
 "use client";
 
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
+import {articulateFly,type GaitState} from "@/lib/articulatedGait";
 import { ARENA, arenaCamera, arenaCameraLimits, constrainArenaInspectionCamera, type ArenaCameraView } from "@/lib/experimentalArena";
 import { ExperimentalArena } from "./ExperimentalArena";
 import { Component, useEffect, useRef, useState, useMemo, type ReactNode } from "react";
-import { AgXToneMapping, PMREMGenerator, PerspectiveCamera, Vector3, BufferAttribute, BufferGeometry, Line as ThreeLine, LineBasicMaterial } from "three";
+import { AgXToneMapping, PMREMGenerator, PerspectiveCamera, Vector3, BufferAttribute, BufferGeometry, Line as ThreeLine, LineBasicMaterial, type Object3D } from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { RoomEnvironment } from "three/examples/jsm/environments/RoomEnvironment.js";
 import { GLTFLoader, type GLTF } from "three/examples/jsm/loaders/GLTFLoader.js";
@@ -13,7 +14,7 @@ import { FLY_VIEWER_ASSET, flyViewerCamera, verifyFlyViewerBytes } from "@/lib/f
 
 import { ArenaComparison, type ArenaOverlayProps } from "./ArenaComparison";
 
-export type ViewerStats = { stimulusPositions?: (number[]|undefined)[]; fps: number; calls: number; triangles: number; geometries: number; textures: number; cameraPosition: number[]; cameraTarget: number[]; bodyPosition?: number[]; bodyYaw?: number; comparisonMarkers?: Record<string, number[] | undefined> };
+export type ViewerStats = { gait?:unknown; stimulusPositions?: (number[]|undefined)[]; fps: number; calls: number; triangles: number; geometries: number; textures: number; cameraPosition: number[]; cameraTarget: number[]; bodyPosition?: number[]; bodyYaw?: number; comparisonMarkers?: Record<string, number[] | undefined> };
 type Status = { state: "loading" | "ready" | "error"; detail?: string };
 // Loader result is cached read-only. Only the cloned instance owns mutable materials.
 let assetPromise: Promise<GLTF> | undefined;
@@ -30,7 +31,11 @@ function loadAsset() {
   return assetPromise;
 }
 
-function Fly({ onStatus }: { onStatus: (value: Status) => void }) {
+function Fly({ onStatus,gaitState,onGaitFailure }: { onGaitFailure:(message:string|null)=>void; gaitState?:GaitState; onStatus: (value: Status) => void }) {
+  const enabled=Boolean(gaitState);
+  const articulation=useRef<ReturnType<typeof articulateFly>|null>(null);
+  const previousGait=useRef<GaitState|undefined>(undefined);
+  const ownedScene=useRef<Object3D|null>(null);
   const [instance, setInstance] = useState<ReturnType<typeof prepareFlyVisual> | null>(null);
   useEffect(() => {
     let active = true;
@@ -38,10 +43,12 @@ function Fly({ onStatus }: { onStatus: (value: Status) => void }) {
     loadAsset().then(gltf => {
       if (!active) return;
       owned = prepareFlyVisual(gltf.scene, FLY_VIEWER_ASSET, "historical", gltf.animations.length, gltf.parser);
-      setInstance(owned); onStatus({ state: "ready" });
+      if(enabled){try{articulation.current=articulateFly(owned.scene,owned.nodeIdentities!);onGaitFailure(null);}catch(error){owned.dispose();owned=prepareFlyVisual(gltf.scene,FLY_VIEWER_ASSET,"historical",gltf.animations.length,gltf.parser);onGaitFailure(String(error));}}
+      ownedScene.current=owned.scene;setInstance(owned); onStatus({ state: "ready" });
     }).catch(error => { if (active) onStatus({ state: "error", detail: error instanceof Error ? error.message : "The fly asset could not be validated." }); });
-    return () => { active = false; owned?.dispose(); };
-  }, [onStatus]);
+    return () => { active = false; ownedScene.current=null;articulation.current?.dispose();articulation.current=null;previousGait.current=undefined;owned?.dispose(); };
+  }, [onStatus,enabled,onGaitFailure]);
+  useFrame(()=>{const scene=ownedScene.current;if(scene&&gaitState&&articulation.current&&previousGait.current!==gaitState){const start=performance.now();scene.userData.gait={...articulation.current.apply(gaitState),bones:18,meshes:articulation.current.meshes,update_ms:performance.now()-start};previousGait.current=gaitState;}});
   const fit = flyPresentationFit(FLY_VIEWER_ASSET, "historical");
   return instance ? <group position={fit.position} rotation={fit.rotation} scale={fit.scale} dispose={null}><primitive object={instance.scene} dispose={null} /></group> : null;
 }
@@ -97,7 +104,7 @@ function Studio({ view, reset, diagnostics, onStats, onFailure, arena, locomotio
     if (!sample.current.start) sample.current.start = now;
     sample.current.frames++;
     if (now - sample.current.start >= 1000) {
-      onStats({ stimulusPositions:[0,1].map(i=>get().scene.getObjectByName(`VisualStimulus${i}`)?.getWorldPosition(new Vector3()).toArray()), comparisonMarkers: Object.fromEntries(["B","C","D","ON","OFF","P","Q"].map(key=>[key,get().scene.getObjectByName(`ComparisonMarker${key}`)?.getWorldPosition(new Vector3()).toArray()])), fps: sample.current.frames * 1000 / (now - sample.current.start), calls: gl.info.render.calls, triangles: gl.info.render.triangles, geometries: gl.info.memory.geometries, textures: gl.info.memory.textures, bodyYaw: get().scene.getObjectByName("RecordedBodyTransform")?.rotation.y, bodyPosition: get().scene.getObjectByName("RecordedBodyTransform")?.getWorldPosition(new Vector3()).toArray(), cameraPosition: get().camera.position.toArray(), cameraTarget: controls.current?.target.toArray() ?? [] });
+      onStats({ stimulusPositions:[0,1].map(i=>get().scene.getObjectByName(`VisualStimulus${i}`)?.getWorldPosition(new Vector3()).toArray()), gait: (()=>{let result:unknown;get().scene.traverse(n=>{if(n.userData.gait)result=n.userData.gait;});return result;})(), comparisonMarkers: Object.fromEntries(["B","C","D","ON","OFF","P","Q"].map(key=>[key,get().scene.getObjectByName(`ComparisonMarker${key}`)?.getWorldPosition(new Vector3()).toArray()])), fps: sample.current.frames * 1000 / (now - sample.current.start), calls: gl.info.render.calls, triangles: gl.info.render.triangles, geometries: gl.info.memory.geometries, textures: gl.info.memory.textures, bodyYaw: get().scene.getObjectByName("RecordedBodyTransform")?.rotation.y, bodyPosition: get().scene.getObjectByName("RecordedBodyTransform")?.getWorldPosition(new Vector3()).toArray(), cameraPosition: get().camera.position.toArray(), cameraTarget: controls.current?.target.toArray() ?? [] });
       sample.current = { start: now, frames: 0 };
     }
   });
@@ -130,7 +137,7 @@ function LiveTrajectory({points}:{points:[number,number,number][]}) {
   return <primitive object={line} dispose={null}/>;
 }
 
-export default function FlyViewerCanvas({ view, reset, diagnostics, onStatus, onStats, onFailure, arena = false, onTableReady, replayPose, locomotion = false, stimulusPlane, stimulusX, stimulusIds, trajectory, liveTrajectory, comparison }: { comparison?: ArenaOverlayProps; trajectory?: [number, number, number][]; liveTrajectory?: [number, number, number][]; stimulusPlane?: number; stimulusX?: number[]; stimulusIds?: string[]; locomotion?: boolean; replayPose?: import("@/lib/arenaCourseReplay").ArenaCoursePose; arena?: boolean; onTableReady?: () => void; view: ArenaCameraView; reset: number; diagnostics: boolean; onStatus: (value: Status) => void; onStats: (value: ViewerStats) => void; onFailure: (message: string) => void }) {
+export default function FlyViewerCanvas({ view, reset, diagnostics, onStatus, onStats, onFailure, arena = false, onTableReady, replayPose, locomotion = false, stimulusPlane, stimulusX, stimulusIds, trajectory, liveTrajectory, comparison, gaitState, onGaitFailure }: { onGaitFailure:(message:string|null)=>void; gaitState?:GaitState; comparison?: ArenaOverlayProps; trajectory?: [number, number, number][]; liveTrajectory?: [number, number, number][]; stimulusPlane?: number; stimulusX?: number[]; stimulusIds?: string[]; locomotion?: boolean; replayPose?: import("@/lib/arenaCourseReplay").ArenaCoursePose; arena?: boolean; onTableReady?: () => void; view: ArenaCameraView; reset: number; diagnostics: boolean; onStatus: (value: Status) => void; onStats: (value: ViewerStats) => void; onFailure: (message: string) => void }) {
   const [webGLAvailable] = useState(() => {
     try {
       const probe = document.createElement("canvas").getContext("webgl2");
@@ -147,7 +154,7 @@ export default function FlyViewerCanvas({ view, reset, diagnostics, onStatus, on
     {trajectory ? <RecordedTrajectory points={trajectory} /> : null}
     <color attach="background" args={["#182129"]} />
     <Studio view={view} reset={reset} diagnostics={diagnostics} onStats={onStats} onFailure={onFailure} arena={arena} locomotion={locomotion} />
-    {arena && replayPose ? <group name="RecordedBodyTransform" userData={{ replayAnchor: replayPose.anchor }} position={replayPose.anchor} rotation={[0, replayPose.rotation, 0]} scale={ARENA.flyScale}><group position={replayPose.assetOffset}><Fly onStatus={onStatus} /></group></group> : <group position={arena ? ARENA.flyOffset : [0, 0, 0]} scale={arena ? ARENA.flyScale : 1}><Fly onStatus={onStatus} /></group>}
+    {arena && replayPose ? <group name="RecordedBodyTransform" userData={{ replayAnchor: replayPose.anchor }} position={replayPose.anchor} rotation={[0, replayPose.rotation, 0]} scale={ARENA.flyScale}><group position={replayPose.assetOffset}><Fly onGaitFailure={onGaitFailure} gaitState={gaitState} onStatus={onStatus} /></group></group> : <group position={arena ? ARENA.flyOffset : [0, 0, 0]} scale={arena ? ARENA.flyScale : 1}><Fly onGaitFailure={onGaitFailure} gaitState={gaitState} onStatus={onStatus} /></group>}
     {arena && onTableReady ? <ExperimentalArena stimulusPlane={stimulusPlane} stimulusX={stimulusX} stimulusIds={stimulusIds} shadowAnchor={locomotion ? replayPose?.anchor : undefined} onReady={onTableReady} onFailure={onFailure} /> : null}
   </Canvas></ViewerBoundary>;
 }

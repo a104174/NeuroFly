@@ -3,14 +3,23 @@
 import Link from "next/link";
 import { ARENA, ARENA_RESET_VIEW, type ArenaCameraView } from "@/lib/experimentalArena";
 import dynamic from "next/dynamic";
-import { useCallback, useState, type ReactNode } from "react";
+import { useCallback, useMemo, useState, type ReactNode } from "react";
 import type { ArenaOverlayProps } from "./ArenaComparison";
 import type { ViewerStats } from "./FlyViewerCanvas";
 import { FLY_VIEWER_ASSET, type FlyViewerView } from "@/lib/flyViewer";
 
+import {presentationGaitHistory,gaitAt,type GaitMotion} from "@/lib/articulatedGait";
+
 const FlyViewerCanvas = dynamic(() => import("./FlyViewerCanvas"), { ssr: false, loading: () => <p className="fly-viewer-message">Preparing the studio…</p> });
 const views: { id: FlyViewerView; label: string }[] = [{ id: "three-quarter", label: "Overview" }, { id: "lateral", label: "Side" }, { id: "head", label: "Front" }, { id: "dorsal", label: "Top" }];
-export function FlyViewer({ arena = false, replayPose, locomotion = false, locomotionVersion = "v0", stimulusPlane, stimulusX, stimulusIds, trajectory, liveTrajectory, comparison, playbackControls, scientificTimeline }: { arena?: boolean; locomotion?: boolean; locomotionVersion?: "v0" | "v1" | "v2" | "v3" | "v3.1" | "v4" | "v5" | "v5.1"; stimulusPlane?: number; stimulusX?: number[]; stimulusIds?: string[]; trajectory?: [number, number, number][]; liveTrajectory?: [number, number, number][]; comparison?: ArenaOverlayProps; playbackControls?: ReactNode; scientificTimeline?: ReactNode; replayPose?: import("@/lib/arenaCourseReplay").ArenaCoursePose }) {
+export function FlyViewer({ arena = false, replayPose, locomotion = false, locomotionVersion = "v0", stimulusPlane, stimulusX, stimulusIds, trajectory, liveTrajectory, comparison, playbackControls, scientificTimeline, gaitMotion }: { gaitMotion?:GaitMotion; arena?: boolean; locomotion?: boolean; locomotionVersion?: "v0" | "v1" | "v2" | "v3" | "v3.1" | "v4" | "v5" | "v5.1"; stimulusPlane?: number; stimulusX?: number[]; stimulusIds?: string[]; trajectory?: [number, number, number][]; liveTrajectory?: [number, number, number][]; comparison?: ArenaOverlayProps; playbackControls?: ReactNode; scientificTimeline?: ReactNode; replayPose?: import("@/lib/arenaCourseReplay").ArenaCoursePose }) {
+  const [gait,setGait]=useState(false);
+  const gaitFrames=gaitMotion?.frames,endPosition=gaitMotion?.end.position,endTime=gaitMotion?.end.time,endHeading=gaitMotion?.end.heading;
+  const gaitData=useMemo(()=>{try{return {states:gait&&gaitFrames&&endPosition&&endTime!==undefined&&endHeading!==undefined?presentationGaitHistory({frames:gaitFrames,end:{time:endTime,position:endPosition,heading:endHeading},time:endTime}):[],error:null};}catch(e){return {states:[],error:String(e)};}},[gait,gaitFrames,endPosition,endTime,endHeading]);
+  const gaitStates=gaitData.states;
+  const [gaitProblem,setGaitProblem]=useState<string|null>(null);
+  const onGaitFailure=useCallback((message:string|null)=>setGaitProblem(message),[]);
+  const gaitState=gaitStates.length&&gaitMotion?gaitAt(gaitStates,gaitMotion.time):undefined;
   const [tableReady, setTableReady] = useState(false);
   const onTableReady = useCallback(() => setTableReady(true), []);
   const [view, setView] = useState<ArenaCameraView>("three-quarter");
@@ -23,7 +32,7 @@ export function FlyViewer({ arena = false, replayPose, locomotion = false, locom
   const provenance = FLY_VIEWER_ASSET.provenance;
   return <>
     <section className={`fly-viewer-stage${arena ? " arena-viewer-stage" : ""}${locomotion ? " locomotion-viewer-stage" : ""}`} aria-label={arena ? "Controlled chamber visual prototype" : "Interactive male Drosophila visual asset"}>
-      <FlyViewerCanvas arena={arena} replayPose={arena ? replayPose : undefined} locomotion={locomotion} stimulusPlane={stimulusPlane} stimulusX={stimulusX} stimulusIds={stimulusIds} trajectory={trajectory} liveTrajectory={liveTrajectory} comparison={comparison} onTableReady={onTableReady} view={view} reset={reset} diagnostics={diagnostics} onStatus={onStatus} onStats={setStats} onFailure={onFailure} />
+      <FlyViewerCanvas onGaitFailure={onGaitFailure} gaitState={gaitState} arena={arena} replayPose={arena ? replayPose : undefined} locomotion={locomotion} stimulusPlane={stimulusPlane} stimulusX={stimulusX} stimulusIds={stimulusIds} trajectory={trajectory} liveTrajectory={liveTrajectory} comparison={comparison} onTableReady={onTableReady} view={view} reset={reset} diagnostics={diagnostics} onStatus={onStatus} onStats={setStats} onFailure={onFailure} />
       <div className="fly-viewer-caption"><span>V2-F / MALE DROSOPHILA</span><small>{arena ? locomotion ? locomotionVersion === "v5.1" ? "Visual stimulus P/Q / Reconstructed browser model" : locomotionVersion === "v5" ? comparison ? "Independent stimuli v5 / Recomputed counterfactual replay" : "Independent stimuli v5 / Live browser model" : locomotionVersion === "v4" ? comparison ? "Moving stimulus v4 / Recomputed counterfactual replay" : "Moving stimulus v4 / Live browser model" : locomotionVersion === "v3.1" ? "Neural ON/OFF / Recomputed counterfactual replay" : locomotionVersion === "v3" ? "Continuous v3 / Live neural + engineering navigation" : locomotionVersion === "v2" ? "Interactive v2 / Live browser model" : `Experimental Locomotion ${locomotionVersion} / Precomputed replay` : replayPose ? "A+C v0.2 / Course orientation replay" : "A+C v0.1 / Controlled chamber" : "Static visual specimen"}</small></div>
       {comparison ? <div className="comparison-stage-legend" aria-label="Comparison condition legend">{comparison.states.map(s=><span key={s.key} style={{color:s.color}}>{s.symbol} {s.key}{comparison.focus === s.key ? " · focus" : ""}</span>)}</div> : null}
       {playbackControls ? <div className="fly-viewer-playback">{playbackControls}</div> : null}
@@ -36,8 +45,10 @@ export function FlyViewer({ arena = false, replayPose, locomotion = false, locom
         <div className="fly-viewer-views">{(arena ? [...views, { id: "inspect" as const, label: "Inspect Fly" }] : views).map(item => <button key={item.id} aria-pressed={view === item.id} onClick={() => { setView(item.id); setReset(n => n + 1); }}>{item.label}</button>)}</div>
         <button onClick={() => { setView(ARENA_RESET_VIEW); setReset(n => n + 1); }} title="Return to the default overview">Reset view</button>
       </div>
-      {diagnostics && stats ? <output data-render-stimulus={JSON.stringify(stats.stimulusPositions)} data-comparison-marker-positions={JSON.stringify(stats.comparisonMarkers)} data-render-body-yaw={stats.bodyYaw} data-render-body-position={JSON.stringify(stats.bodyPosition)} data-camera-position={JSON.stringify(stats.cameraPosition)} data-camera-target={JSON.stringify(stats.cameraTarget)} className="fly-viewer-stats" aria-label="Measured renderer statistics">{stats.fps.toFixed(0)} FPS (approx.) · {stats.calls} calls · {stats.triangles.toLocaleString()} rendered triangles<br />{stats.geometries} geometries · {stats.textures} textures · renderer counters, not GPU memory</output> : null}
+      {diagnostics && stats ? <output data-gait={JSON.stringify(stats.gait)} data-render-stimulus={JSON.stringify(stats.stimulusPositions)} data-comparison-marker-positions={JSON.stringify(stats.comparisonMarkers)} data-render-body-yaw={stats.bodyYaw} data-render-body-position={JSON.stringify(stats.bodyPosition)} data-camera-position={JSON.stringify(stats.cameraPosition)} data-camera-target={JSON.stringify(stats.cameraTarget)} className="fly-viewer-stats" aria-label="Measured renderer statistics">{stats.fps.toFixed(0)} FPS (approx.) · {stats.calls} calls · {stats.triangles.toLocaleString()} rendered triangles<br />{stats.geometries} geometries · {stats.textures} textures · renderer counters, not GPU memory</output> : null}
     </section>
+    {arena?<div className="fly-viewer-notes"><label><input type="checkbox" checked={gait} disabled={!gaitMotion} onChange={e=>setGait(e.target.checked)}/> Articulated Gait v6</label><span> Engineering kinematic gait — not connectome-derived leg control{!gaitMotion?" · Sem histórico de movimento: apresentação original.":""}</span></div>:null}
+    {gaitProblem||gaitData.error?<p role="alert">Articulated gait unavailable: {gaitProblem??gaitData.error}. Original V2-F presentation retained.</p>:null}
     {scientificTimeline}
     <div className="fly-viewer-notes"><p>Drag to orbit · Scroll or pinch to zoom · Camera pivots around the visual thoracic anchor.{arena ? " Inspect Fly moves the camera only. Reset returns to Overview." : ""}</p><label><input type="checkbox" checked={diagnostics} onChange={event => setDiagnostics(event.target.checked)} /> Render diagnostics</label></div>
     <p className="fly-viewer-notes"><Link href={arena ? "/visual-lab/fly" : "/visual-lab/arena"}>{arena ? "Inspect the specimen in the studio →" : "Explore the experimental chamber prototype →"}</Link></p>

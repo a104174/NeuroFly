@@ -1,0 +1,326 @@
+{
+  "schema": "engineering_fly_gait_rig_v6",
+  "source_glb_sha256": "0502cb995d25b2f9d7b57eff0cf95a0c9cfd7f838e212e95b3895bb69c7e5238",
+  "source_url": "/assets/fly/fly_visual_v2f.glb",
+  "generator": "tools/blender/derive_fly_gait_rig.py",
+  "axes": "Y_UP_Z_FORWARD",
+  "anchor": [
+    0,
+    0.06168119236826897,
+    0.12187743186950684
+  ],
+  "legs": [
+    {
+      "id": "Leg.L.Front",
+      "tripod": 1,
+      "pivots": [
+        [
+          -0.035,
+          -0.023,
+          0.163
+        ],
+        [
+          -0.075,
+          0.055,
+          0.215
+        ],
+        [
+          -0.184,
+          -0.218,
+          0.303
+        ],
+        [
+          -0.21,
+          -0.245,
+          0.361
+        ]
+      ],
+      "vertices": 359,
+      "details": [
+        "Detail.135",
+        "Detail.136",
+        "Detail.137",
+        "Detail.138",
+        "Detail.139",
+        "Detail.140",
+        "Detail.141",
+        "Detail.142",
+        "Detail.147",
+        "Detail.148",
+        "Detail.149",
+        "Detail.150",
+        "Detail.151",
+        "Detail.158",
+        "Detail.159",
+        "Detail.160",
+        "Detail.163",
+        "Detail.166",
+        "Detail.229",
+        "Detail.230",
+        "Detail.231",
+        "Detail.232",
+        "Detail.233",
+        "Detail.234",
+        "Detail.235",
+        "Detail.236",
+        "Detail.241",
+        "Detail.242",
+        "Detail.243",
+        "Detail.244",
+        "Detail.245",
+        "Detail.246",
+        "Detail.247",
+        "Detail.248",
+        "Detail.249",
+        "Detail.250",
+        "Detail.251",
+        "Detail.252",
+        "Detail.253"
+      ]
+    },
+    {
+      "id": "Leg.L.Middle",
+      "tripod": 0,
+      "pivots": [
+        [
+          -0.071,
+          0.018,
+          0.128
+        ],
+        [
+          -0.169,
+          0.055,
+          0.113
+        ],
+        [
+          -0.238,
+          -0.158,
+          0.09
+        ],
+        [
+          -0.31,
+          -0.237,
+          0.067
+        ]
+      ],
+      "vertices": 353,
+      "details": [
+        "Detail.186",
+        "Detail.187",
+        "Detail.188",
+        "Detail.189",
+        "Detail.190",
+        "Detail.191",
+        "Detail.192",
+        "Detail.193",
+        "Detail.194"
+      ]
+    },
+    {
+      "id": "Leg.L.Rear",
+      "tripod": 1,
+      "pivots": [
+        [
+          -0.029,
+          -0.012,
+          0.06
+        ],
+        [
+          -0.158,
+          0.06,
+          -0.055
+        ],
+        [
+          -0.256,
+          -0.222,
+          -0.238
+        ],
+        [
+          -0.313,
+          -0.281,
+          -0.287
+        ]
+      ],
+      "vertices": 428,
+      "details": [
+        "Detail.207",
+        "Detail.208",
+        "Detail.209",
+        "Detail.210",
+        "Detail.211",
+        "Detail.212",
+        "Detail.213",
+        "Detail.214",
+        "Detail.215",
+        "Detail.216",
+        "Detail.217",
+        "Detail.218"
+      ]
+    },
+    {
+      "id": "Leg.R.Front",
+      "tripod": 0,
+      "pivots": [
+        [
+          0.035,
+          -0.023,
+          0.163
+        ],
+        [
+          0.075,
+          0.055,
+          0.215
+        ],
+        [
+          0.184,
+          -0.218,
+          0.303
+        ],
+        [
+          0.21,
+          -0.245,
+          0.361
+        ]
+      ],
+      "vertices": 356,
+      "details": [
+        "Detail.143",
+        "Detail.144",
+        "Detail.145",
+        "Detail.146",
+        "Detail.152",
+        "Detail.153",
+        "Detail.154",
+        "Detail.155",
+        "Detail.156",
+        "Detail.157",
+        "Detail.161",
+        "Detail.162",
+        "Detail.164",
+        "Detail.165",
+        "Detail.167",
+        "Detail.168",
+        "Detail.169",
+        "Detail.220",
+        "Detail.221",
+        "Detail.222",
+        "Detail.223",
+        "Detail.224",
+        "Detail.225",
+        "Detail.226",
+        "Detail.227",
+        "Detail.228",
+        "Detail.254",
+        "Detail.255",
+        "Detail.256",
+        "Detail.257",
+        "Detail.258",
+        "Detail.259",
+        "Detail.260",
+        "Detail.261",
+        "Detail.262",
+        "Detail.263",
+        "Detail.264",
+        "Detail.265",
+        "Detail.266"
+      ]
+    },
+    {
+      "id": "Leg.R.Middle",
+      "tripod": 1,
+      "pivots": [
+        [
+          0.071,
+          0.018,
+          0.128
+        ],
+        [
+          0.169,
+          0.055,
+          0.113
+        ],
+        [
+          0.238,
+          -0.158,
+          0.09
+        ],
+        [
+          0.31,
+          -0.237,
+          0.067
+        ]
+      ],
+      "vertices": 352,
+      "details": [
+        "Detail.177",
+        "Detail.178",
+        "Detail.179",
+        "Detail.180",
+        "Detail.181",
+        "Detail.182",
+        "Detail.183",
+        "Detail.184",
+        "Detail.185"
+      ]
+    },
+    {
+      "id": "Leg.R.Rear",
+      "tripod": 0,
+      "pivots": [
+        [
+          0.029,
+          -0.012,
+          0.06
+        ],
+        [
+          0.158,
+          0.06,
+          -0.055
+        ],
+        [
+          0.256,
+          -0.222,
+          -0.238
+        ],
+        [
+          0.313,
+          -0.281,
+          -0.287
+        ]
+      ],
+      "vertices": 429,
+      "details": [
+        "Detail.195",
+        "Detail.196",
+        "Detail.197",
+        "Detail.198",
+        "Detail.199",
+        "Detail.200",
+        "Detail.201",
+        "Detail.202",
+        "Detail.203",
+        "Detail.204",
+        "Detail.205",
+        "Detail.206",
+        "Detail.237",
+        "Detail.238"
+      ]
+    }
+  ],
+  "animation": {
+    "stride": 0.055,
+    "swing_height": 0.012,
+    "stance_fraction": 0.62,
+    "turn_radius": 0.065,
+    "motion_threshold": 1e-07,
+    "settle_s": 0.18,
+    "floor_y": 0.006,
+    "joint_blend_asset": 0.018,
+    "reach_fraction": 0.998,
+    "max_hip_deviation_rad": 1.8,
+    "max_knee_bend_rad": 2.65
+  },
+  "classification": "ENGINEERING_KINEMATIC_GAIT_NOT_CONNECTOME_DERIVED_LEG_CONTROL",
+  "attribution": "Wildtype Male Drosophila Melanogaster by mlykouretzos, CC BY 4.0. V2-F surfaces/materials preserved; NeuroFly adds artist-selected pivots and procedural skinning.",
+  "license_url": "https://creativecommons.org/licenses/by/4.0/"
+}

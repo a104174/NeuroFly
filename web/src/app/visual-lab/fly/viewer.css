@@ -50,6 +50,7 @@
 .arena-course-telemetry dd { margin: 5px 0 0; font: 12px monospace; color: var(--ink); }
 
 .arena-artifact-id { overflow-wrap: anywhere; font-size: .8rem; }
+section[aria-label="Motor-to-Gait Bridge v7"] > details { overflow-wrap: anywhere; }
 .arena-replay-panel select { display: block; margin: .3rem 0 .8rem; max-width: 100%; padding: .6rem; background: #17242e; color: inherit; border: 1px solid #52616b; border-radius: .4rem; }
 
 .fly-viewer-playback { position: absolute; top: 70px; left: 20px; right: 20px; }

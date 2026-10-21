@@ -139,3 +139,12 @@ section[aria-label="Motor-to-Gait Bridge v7"] > details { overflow-wrap: anywher
   .flight-trajectory-legend { align-items: flex-start; }
   .flight-trajectory-events { max-height: 6rem; }
 }
+
+.neural-flight { min-width: 0; overflow-wrap: anywhere; }
+.neural-flight select, .neural-flight input[type="file"] { max-width: 100%; min-width: 0; }
+.neural-flight .arena-replay-controls > label { min-width: 0; max-width: 100%; }
+.neural-flight > label { display: grid; gap: .5rem; margin-block: 1rem; }
+.neural-flight > label input[type="range"] { width: 100%; min-width: 0; }
+.neural-flight-timeline { margin: 1rem 0; }
+.neural-flight-timeline svg { display: block; width: 100%; height: auto; }
+.neural-flight-legend { color: var(--text-secondary); font-size: .85rem; }

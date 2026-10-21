@@ -91,6 +91,7 @@ export class FlightEngine {
   private readonly input: FlightTrial;
   private readonly history: FlightFrame[];
   private command: FlightCommand = { id: '', step: 0, forward: 0, turn: 0, vertical: 0, intent: 'HOLD' };
+  private adaptedTurn = false;
   constructor(trial = createFlightTrial()) { this.input = validateFlightTrial(trial); this.history = [structuredClone(this.input.initial)]; }
   trial() { return structuredClone(this.input); }
   snapshot() { return structuredClone(this.history.at(-1)!); }
@@ -98,7 +99,15 @@ export class FlightEngine {
   events() { return structuredClone(this.history.flatMap(f => f.events)); }
   get stopStep() { return this.input.stop_step; }
   frame(step: number) { if (!Number.isInteger(step) || step < 0 || step >= this.history.length) throw new Error('Seek outside recorded flight boundaries'); return structuredClone(this.history[step]); }
-  advance() {
+  get hasExternalTurn() { return this.adaptedTurn; }
+  advance() { return this.advanceInterval(); }
+  /** Versioned downstream experiments may supply only a normalized turn input.
+   * Such runs require their own artifact; they cannot be exported as legacy v8. */
+  advanceWithTurn(turn: number) {
+    if (!Number.isFinite(turn) || Math.abs(turn) > 1) throw new Error('Invalid external flight turn');
+    return this.advanceInterval(turn);
+  }
+  private advanceInterval(turn?: number) {
     const old = this.history.at(-1)!;
     if (old.step >= this.input.stop_step) throw new Error('Flight trial completed');
     const c = FLIGHT_MODEL, dt = c.dt_s, next = structuredClone(old);
@@ -114,7 +123,7 @@ export class FlightEngine {
       if (due.intent === 'TAKEOFF') { if (next.state === 'grounded') transition('takeoff'); else event('REJECTED_COMMAND', 'TAKEOFF requires grounded'); }
       if (due.intent === 'LAND') { if (next.state === 'flying' || next.state === 'takeoff') transition('landing'); else event('REJECTED_COMMAND', 'LAND requires takeoff/flying'); }
     }
-    const cmd = this.command;
+    const cmd = turn === undefined ? this.command : { ...this.command, turn };
     if (next.state === 'grounded') {
       if (due && (cmd.forward || cmd.turn || cmd.vertical)) event('REJECTED_COMMAND', 'Grounded motion requires TAKEOFF');
       next.velocity = [0, 0, 0];
@@ -144,7 +153,7 @@ export class FlightEngine {
       }
       if (next.state === 'takeoff' && next.position[1] - c.ground_y >= c.airborne_altitude) transition('flying', next.step);
     }
-    this.history.push(next); return this.snapshot();
+    this.history.push(next); if (turn !== undefined) this.adaptedTurn = true; return this.snapshot();
   }
 }
 /** Bounded cooperative scheduler. Rendering delays affect pacing, never dt or command boundaries. */
@@ -177,6 +186,7 @@ export async function flightHash(value: unknown) {
   return [...new Uint8Array(digest)].map(n => n.toString(16).padStart(2, '0')).join('');
 }
 export async function exportFlight(engine: FlightEngine, preset: WingbeatPreset) {
+  if (engine.hasExternalTurn) throw new Error('Externally steered flight requires its own versioned artifact');
   const trial = engine.trial(); trial.presentation.preset = preset; validateFlightTrial(trial);
   const frames = engine.frames(), termination = frames.length - 1 === trial.stop_step ? 'DURATION_COMPLETED' : 'RECORDED_PREFIX';
   return { schema: 'engineering_flight_result_v8', classification: 'ENGINEERING_ONLY_NOT_A_NEURAL_EXPERIMENT', trial, frames, termination,

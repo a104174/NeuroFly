@@ -59,7 +59,7 @@ function Fly({ onStatus,gaitState,onGaitFailure,flightPresentation }: { flightPr
   return instance ? <group position={fit.position} rotation={fit.rotation} scale={fit.scale} dispose={null}><primitive object={instance.scene} dispose={null} /></group> : null;
 }
 
-function Studio({ view, reset, diagnostics, onStats, onFailure, arena, locomotion, flight }: { flight:boolean; locomotion: boolean; arena: boolean; view: ArenaCameraView; reset: number; diagnostics: boolean; onStats: (value: ViewerStats) => void; onFailure: (message: string) => void }) {
+function Studio({ view, reset, diagnostics, onStats, onFailure, arena, locomotion, flight, flight3D }: { flight3D:boolean; flight:boolean; locomotion: boolean; arena: boolean; view: ArenaCameraView; reset: number; diagnostics: boolean; onStats: (value: ViewerStats) => void; onFailure: (message: string) => void }) {
   const { gl, size } = useThree();
   const get = useThree(state => state.get);
   const controls = useRef<OrbitControls | null>(null);
@@ -90,16 +90,19 @@ function Studio({ view, reset, diagnostics, onStats, onFailure, arena, locomotio
     controls.current.enableDamping = false; controls.current.update();
     camera.position.fromArray(initial.position); camera.up.set(0, 1, 0);
     // Wider portrait inspection frames deployed wings; original modes keep their camera.
-    camera.fov = flight && view === "inspect" && size.width / size.height < .75 ? 75 : initial.fov; camera.near = arena && view === "inspect" ? .005 : .01; camera.far = 30;
+    camera.fov = flight && view === "inspect" && (flight3D || size.width / size.height < .75) ? 75 : initial.fov; camera.near = arena && view === "inspect" ? .005 : .01; camera.far = 30;
     camera.updateProjectionMatrix();
     controls.current.target.fromArray(initial.target); controls.current.update();
     controls.current.saveState(); controls.current.enableDamping = true;
-  }, [get, size.width, size.height, view, reset, arena, locomotion, flight]);
+  }, [get, size.width, size.height, view, reset, arena, locomotion, flight, flight3D]);
   useFrame(() => {
     controls.current?.update();
     if (arena && view === "inspect" && controls.current) {
       const { camera, scene } = get();
-      if (flight) {
+      if (flight && scene.getObjectByName("RecordedBodyTransform")) {
+        const target = scene.getObjectByName("RecordedBodyTransform")!.getWorldPosition(new Vector3());
+        camera.position.add(target.clone().sub(controls.current.target)); controls.current.target.copy(target);
+      } else if (flight) {
         const offset = scene.getObjectByName("FlightPresentationTransform")?.position.y ?? 0;
         const target = new Vector3(...ARENA.flyOffset).addScaledVector(new Vector3(0,.06168119236826897,.12187743186950684),ARENA.flyScale); target.y+=offset;
         camera.position.add(target.clone().sub(controls.current.target)); controls.current.target.copy(target);
@@ -164,10 +167,10 @@ export default function FlyViewerCanvas({ view, reset, diagnostics, onStatus, on
     {comparison ? <ArenaComparison {...comparison}/> : null}
     {trajectory ? <RecordedTrajectory points={trajectory} /> : null}
     <color attach="background" args={["#182129"]} />
-    <Studio flight={Boolean(flightPresentation)} view={view} reset={reset} diagnostics={diagnostics} onStats={onStats} onFailure={onFailure} arena={arena} locomotion={locomotion} />
+    <Studio flight3D={flightPresentation?.source === 'ENGINEERING_3D_FLIGHT_V8'} flight={Boolean(flightPresentation)} view={view} reset={reset} diagnostics={diagnostics} onStats={onStats} onFailure={onFailure} arena={arena} locomotion={locomotion} />
     <group name="FlightPresentationTransform" position={[0,flightPresentation?.offset??0,0]}>
     {arena && replayPose ? <group name="RecordedBodyTransform" userData={{ replayAnchor: replayPose.anchor }} position={replayPose.anchor} rotation={[0, replayPose.rotation, 0]} scale={ARENA.flyScale}><group position={replayPose.assetOffset}><Fly flightPresentation={flightPresentation} onGaitFailure={onGaitFailure} gaitState={gaitState} onStatus={onStatus} /></group></group> : <group position={arena ? ARENA.flyOffset : [0, 0, 0]} scale={arena ? ARENA.flyScale : 1}><Fly flightPresentation={flightPresentation} onGaitFailure={onGaitFailure} gaitState={gaitState} onStatus={onStatus} /></group>}
     </group>
-    {arena && onTableReady ? <ExperimentalArena stimulusPlane={stimulusPlane} stimulusX={stimulusX} stimulusIds={stimulusIds} shadowAnchor={locomotion ? replayPose?.anchor : undefined} onReady={onTableReady} onFailure={onFailure} /> : null}
+    {arena && onTableReady ? <ExperimentalArena stimulusPlane={stimulusPlane} stimulusX={stimulusX} stimulusIds={stimulusIds} shadowAnchor={locomotion || flightPresentation?.source === 'ENGINEERING_3D_FLIGHT_V8' ? replayPose?.anchor : undefined} onReady={onTableReady} onFailure={onFailure} /> : null}
   </Canvas></ViewerBoundary>;
 }

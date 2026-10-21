@@ -90,8 +90,13 @@ section[aria-label="Motor-to-Gait Bridge v7"] > details { overflow-wrap: anywher
 
 /* Engineering-only wing preview; long contract identifiers remain fully readable. */
 .flight-preview { overflow-wrap: anywhere; }
+.engineering-flight { overflow-wrap: anywhere; }
+.engineering-flight select, .engineering-flight input { max-width: 100%; }
+.engineering-flight > label { display: inline-block; margin-bottom: .75rem; }
+.engineering-flight .arena-replay-controls > label { min-width: 0; }
 .flight-preview input[type="range"] { max-width: 100%; }
 .flight-preview .arena-replay-controls > label { min-width: 0; }
 @media (max-width: 600px) {
   .flight-preview .fly-viewer-stats { top: auto; bottom: 7.5rem; left: .75rem; right: .75rem; pointer-events: none; }
+  .engineering-flight .fly-viewer-stats { top: auto; bottom: 7.5rem; left: .75rem; right: .75rem; pointer-events: none; }
 }

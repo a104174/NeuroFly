@@ -1,10 +1,12 @@
 import { Group, Mesh, Matrix4, Quaternion, Vector3, type Object3D } from 'three';
 import descriptor from '@/assets/fly_wings_v7_1.json';
+import { validateFlightWingsV8, type WingbeatPreset } from './flightWingsV8';
 
 export const WING_RIG = descriptor;
 export type FlightState = 'grounded' | 'takeoff' | 'flying' | 'landing';
 export type WingPose = {
-  source: 'ENGINEERING_FLIGHT_VISUAL_DEMO'; time: number; state: FlightState;
+  source: 'ENGINEERING_FLIGHT_VISUAL_DEMO' | 'ENGINEERING_3D_FLIGHT_V8'; time: number; state: FlightState;
+  altitude?: number; preset?: WingbeatPreset;
   envelope: number; offset: number; phase: number; stroke: number; spread: number;
 };
 const smooth = (x: number) => x * x * (3 - 2 * x);
@@ -69,7 +71,9 @@ export function articulateWings(scene: Object3D, identities: ReadonlyMap<string,
   return {
     apply(pose: WingPose) {
       // Do not accept externally invented states/angles disguised as a valid pose.
-      if (disposed || JSON.stringify(pose) !== JSON.stringify(flightPose(pose.time))) throw new Error('Invalid flight presentation state');
+      if (disposed) throw new Error('Disposed wing rig');
+      if (pose.source === 'ENGINEERING_3D_FLIGHT_V8') validateFlightWingsV8(pose);
+      else if (JSON.stringify(pose) !== JSON.stringify(flightPose(pose.time))) throw new Error('Invalid flight presentation state');
       for (const e of entries) {
         stroke.setFromAxisAngle(z, e.config.sign * pose.stroke);
         spread.setFromAxisAngle(y, -e.config.sign * pose.spread);

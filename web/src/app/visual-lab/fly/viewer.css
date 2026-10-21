@@ -122,3 +122,20 @@ section[aria-label="Motor-to-Gait Bridge v7"] > details { overflow-wrap: anywher
 .flight-program-editor button:focus-visible, .flight-program-editor input:focus-visible { outline: 2px solid var(--cyan); outline-offset: 2px; }
 .flight-program-editor fieldset > label { display: inline-flex; flex-direction: column; margin: .3rem; }
 .flight-program-editor summary { cursor: pointer; font-weight: 600; }
+
+/* Recorded v8 trajectories are read-only world-space views of validated frames. */
+.flight-trajectory-controls { min-width: 0; margin: .85rem 0; padding: .7rem .8rem; border: 1px solid rgba(103,211,224,.24); border-radius: .45rem; overflow-wrap: anywhere; }
+.flight-trajectory-controls > label { display: inline-flex; flex-wrap: wrap; align-items: center; gap: .4rem; margin: .2rem .75rem .45rem 0; color: var(--ink); font-size: 12px; }
+.flight-trajectory-controls input { accent-color: var(--cyan); }
+.flight-trajectory-controls small { color: var(--muted); }
+.flight-trajectory-legend { display: flex; flex-wrap: wrap; gap: .7rem 1rem; align-items: center; color: var(--muted); font-size: 11px; margin: .2rem 0 .45rem; }
+.flight-trajectory-legend span { display: inline-flex; gap: .4rem; align-items: center; }
+.flight-trajectory-swatch { display: inline-block; width: 1.15rem; height: 3px; background: #67d3e0; }
+.flight-trajectory-swatch.reference { background: #f4c777; }
+.flight-trajectory-controls p { margin: .3rem 0; font-size: 11px; line-height: 1.5; }
+.flight-trajectory-events { max-height: 8rem; margin: .35rem 0 0; padding-left: 1.1rem; overflow: auto; color: var(--muted); font: 11px/1.6 monospace; }
+@media (max-width: 600px) {
+  .flight-trajectory-controls > label { display: flex; width: fit-content; max-width: 100%; margin-right: 0; }
+  .flight-trajectory-legend { align-items: flex-start; }
+  .flight-trajectory-events { max-height: 6rem; }
+}

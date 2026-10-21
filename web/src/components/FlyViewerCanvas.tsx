@@ -5,8 +5,8 @@ import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import {articulateFly,type GaitState} from "@/lib/articulatedGait";
 import { ARENA, arenaCamera, arenaCameraLimits, constrainArenaInspectionCamera, type ArenaCameraView } from "@/lib/experimentalArena";
 import { ExperimentalArena } from "./ExperimentalArena";
-import { Component, useEffect, useRef, useState, useMemo, type ReactNode } from "react";
-import { AgXToneMapping, PMREMGenerator, PerspectiveCamera, Vector3, BufferAttribute, BufferGeometry, Line as ThreeLine, LineBasicMaterial, type Object3D } from "three";
+import { Component, useEffect, useLayoutEffect, useRef, useState, useMemo, type ReactNode } from "react";
+import { AgXToneMapping, Color, DynamicDrawUsage, PMREMGenerator, PerspectiveCamera, Points as ThreePoints, PointsMaterial, Vector3, BufferAttribute, BufferGeometry, Line as ThreeLine, LineBasicMaterial, type Object3D } from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { RoomEnvironment } from "three/examples/jsm/environments/RoomEnvironment.js";
 import { GLTFLoader, type GLTF } from "three/examples/jsm/loaders/GLTFLoader.js";
@@ -14,8 +14,9 @@ import { flyPresentationFit, prepareFlyVisual } from "@/lib/flyVisualInstance";
 import { FLY_VIEWER_ASSET, flyViewerCamera, verifyFlyViewerBytes } from "@/lib/flyViewer";
 
 import { ArenaComparison, type ArenaOverlayProps } from "./ArenaComparison";
+import { recordedFlightMarkers, recordedFlightPositions, visibleFlightMarkers, visibleFlightVertexCount, type FlightTrajectoryDisplay, type FlightTrajectoryEventKind, type FlightTrajectoryMarker, type FlightTrajectoryLayer } from "@/lib/flightTrajectory";
 
-export type ViewerStats = { wings?:unknown; gait?:unknown; stimulusPositions?: (number[]|undefined)[]; fps: number; calls: number; triangles: number; geometries: number; textures: number; cameraPosition: number[]; cameraTarget: number[]; bodyPosition?: number[]; bodyYaw?: number; comparisonMarkers?: Record<string, number[] | undefined> };
+export type ViewerStats = { wings?:unknown; gait?:unknown; stimulusPositions?: (number[]|undefined)[]; flightTrajectoryGeometry?: Record<string,{vertices:number;first:number[]|null;last:number[]|null}>; fps: number; calls: number; triangles: number; geometries: number; textures: number; cameraPosition: number[]; cameraTarget: number[]; bodyPosition?: number[]; bodyYaw?: number; comparisonMarkers?: Record<string, number[] | undefined> };
 type Status = { state: "loading" | "ready" | "error"; detail?: string };
 // Loader result is cached read-only. Only the cloned instance owns mutable materials.
 let assetPromise: Promise<GLTF> | undefined;
@@ -118,7 +119,15 @@ function Studio({ view, reset, diagnostics, onStats, onFailure, arena, locomotio
     if (!sample.current.start) sample.current.start = now;
     sample.current.frames++;
     if (now - sample.current.start >= 1000) {
-      onStats({ wings:(()=>{let result:unknown;get().scene.traverse(n=>{if(n.userData.wings)result=n.userData.wings;});return result;})(), stimulusPositions:[0,1].map(i=>get().scene.getObjectByName(`VisualStimulus${i}`)?.getWorldPosition(new Vector3()).toArray()), gait: (()=>{let result:unknown;get().scene.traverse(n=>{if(n.userData.gait)result=n.userData.gait;});return result;})(), comparisonMarkers: Object.fromEntries(["B","C","D","ON","OFF","P","Q"].map(key=>[key,get().scene.getObjectByName(`ComparisonMarker${key}`)?.getWorldPosition(new Vector3()).toArray()])), fps: sample.current.frames * 1000 / (now - sample.current.start), calls: gl.info.render.calls, triangles: gl.info.render.triangles, geometries: gl.info.memory.geometries, textures: gl.info.memory.textures, bodyYaw: get().scene.getObjectByName("RecordedBodyTransform")?.rotation.y, bodyPosition: get().scene.getObjectByName("RecordedBodyTransform")?.getWorldPosition(new Vector3()).toArray(), cameraPosition: get().camera.position.toArray(), cameraTarget: controls.current?.target.toArray() ?? [] });
+      const flightTrajectoryGeometry: NonNullable<ViewerStats['flightTrajectoryGeometry']> = {};
+      for (const name of ['RecordedFlightTrajectoryCurrent', 'RecordedFlightTrajectoryReference']) {
+        const line = get().scene.getObjectByName(name) as ThreeLine | undefined;
+        const position = line?.geometry.getAttribute('position') as BufferAttribute | undefined;
+        const count = Math.min(line?.geometry.drawRange.count ?? 0, position?.count ?? 0);
+        flightTrajectoryGeometry[name] = { vertices: count, first: count ? [position!.getX(0), position!.getY(0), position!.getZ(0)] : null,
+          last: count ? [position!.getX(count - 1), position!.getY(count - 1), position!.getZ(count - 1)] : null };
+      }
+      onStats({ flightTrajectoryGeometry, wings:(()=>{let result:unknown;get().scene.traverse(n=>{if(n.userData.wings)result=n.userData.wings;});return result;})(), stimulusPositions:[0,1].map(i=>get().scene.getObjectByName(`VisualStimulus${i}`)?.getWorldPosition(new Vector3()).toArray()), gait: (()=>{let result:unknown;get().scene.traverse(n=>{if(n.userData.gait)result=n.userData.gait;});return result;})(), comparisonMarkers: Object.fromEntries(["B","C","D","ON","OFF","P","Q"].map(key=>[key,get().scene.getObjectByName(`ComparisonMarker${key}`)?.getWorldPosition(new Vector3()).toArray()])), fps: sample.current.frames * 1000 / (now - sample.current.start), calls: gl.info.render.calls, triangles: gl.info.render.triangles, geometries: gl.info.memory.geometries, textures: gl.info.memory.textures, bodyYaw: get().scene.getObjectByName("RecordedBodyTransform")?.rotation.y, bodyPosition: get().scene.getObjectByName("RecordedBodyTransform")?.getWorldPosition(new Vector3()).toArray(), cameraPosition: get().camera.position.toArray(), cameraTarget: controls.current?.target.toArray() ?? [] });
       sample.current = { start: now, frames: 0 };
     }
   });
@@ -151,7 +160,76 @@ function LiveTrajectory({points}:{points:[number,number,number][]}) {
   return <primitive object={line} dispose={null}/>;
 }
 
-export default function FlyViewerCanvas({ view, reset, diagnostics, onStatus, onStats, onFailure, arena = false, onTableReady, replayPose, locomotion = false, stimulusPlane, stimulusX, stimulusIds, trajectory, liveTrajectory, comparison, gaitState, onGaitFailure, flightPresentation }: { flightPresentation?:WingPose; onGaitFailure:(message:string|null)=>void; gaitState?:GaitState; comparison?: ArenaOverlayProps; trajectory?: [number, number, number][]; liveTrajectory?: [number, number, number][]; stimulusPlane?: number; stimulusX?: number[]; stimulusIds?: string[]; locomotion?: boolean; replayPose?: import("@/lib/arenaCourseReplay").ArenaCoursePose; arena?: boolean; onTableReady?: () => void; view: ArenaCameraView; reset: number; diagnostics: boolean; onStatus: (value: Status) => void; onStats: (value: ViewerStats) => void; onFailure: (message: string) => void }) {
+const markerColors: Record<FlightTrajectoryEventKind, string> = {
+  takeoff: '#67d3e0', airborne: '#a6e5dc', landing: '#f4c777', landed: '#f4c777', contact: '#f08372', endpoint: '#eef3f4',
+};
+
+function RecordedFlightPath({ layer, cursorStep, fullRecorded, color, name }: { layer: FlightTrajectoryLayer; cursorStep: number; fullRecorded: boolean; color: string; name: string }) {
+  const line = useMemo(() => {
+    const geometry = new BufferGeometry();
+    geometry.setAttribute('position', new BufferAttribute(new Float32Array((layer.trial.stop_step + 1) * 3), 3).setUsage(DynamicDrawUsage));
+    const object = new ThreeLine(geometry, new LineBasicMaterial({ color, transparent: true, opacity: .88, depthTest: true }));
+    object.name = name; object.userData.engineeringTrajectorySource = layer.id;
+    return object;
+  }, [layer.id, layer.trial.stop_step, color, name]);
+  const written = useRef(0);
+  useEffect(() => () => { line.geometry.dispose(); (line.material as LineBasicMaterial).dispose(); }, [line]);
+  useLayoutEffect(() => { written.current = 0; }, [line]);
+  useLayoutEffect(() => {
+    if (layer.frames.length < written.current) written.current = 0;
+    const points = recordedFlightPositions(layer.frames);
+    if (points.length > layer.trial.stop_step + 1) throw new Error('Trajectory exceeds its validated trial boundary.');
+    const attribute = line.geometry.getAttribute('position') as BufferAttribute;
+    for (let i = written.current; i < points.length; i++) attribute.setXYZ(i, ...points[i]);
+    written.current = points.length;
+    if (points.length) { attribute.needsUpdate = true; line.geometry.computeBoundingSphere(); }
+  }, [line, layer.frames, layer.trial.stop_step]);
+  useLayoutEffect(() => { line.geometry.setDrawRange(0, visibleFlightVertexCount(layer.frames.length, cursorStep, fullRecorded)); }, [line, layer.frames.length, cursorStep, fullRecorded]);
+  return <primitive object={line} dispose={null} />;
+}
+
+function RecordedFlightEvents({ layers, markers }: { layers: FlightTrajectoryLayer[]; markers: FlightTrajectoryMarker[] }) {
+  const markerCapacity = layers.reduce((sum, layer) => sum + (layer.trial.stop_step + 1) * 4 + 1, 0);
+  const sourceKey = layers.map(layer => layer.id).join('|');
+  const points = useMemo(() => {
+    const geometry = new BufferGeometry();
+    geometry.setAttribute('position', new BufferAttribute(new Float32Array(markerCapacity * 3), 3).setUsage(DynamicDrawUsage));
+    geometry.setAttribute('color', new BufferAttribute(new Float32Array(markerCapacity * 3), 3).setUsage(DynamicDrawUsage));
+    const object = new ThreePoints(geometry, new PointsMaterial({ size: .047, vertexColors: true, transparent: true, opacity: .96, depthTest: true, depthWrite: false, sizeAttenuation: true }));
+    object.name = 'RecordedFlightEventMarkers'; object.userData.engineeringTrajectorySources = sourceKey;
+    return object;
+  }, [sourceKey, markerCapacity]);
+  useEffect(() => () => { points.geometry.dispose(); (points.material as PointsMaterial).dispose(); }, [points]);
+  useLayoutEffect(() => {
+    if (markers.length > markerCapacity) throw new Error('Recorded event markers exceed bounded trajectory capacity.');
+    const positions = points.geometry.getAttribute('position') as BufferAttribute;
+    const colors = points.geometry.getAttribute('color') as BufferAttribute;
+    markers.forEach((marker, index) => {
+      positions.setXYZ(index, ...marker.position);
+      const color = new Color(markerColors[marker.kind]); colors.setXYZ(index, color.r, color.g, color.b);
+    });
+    if (markers.length) { positions.needsUpdate = true; colors.needsUpdate = true; points.geometry.computeBoundingSphere(); }
+  }, [points, markers, markerCapacity]);
+  useLayoutEffect(() => { points.geometry.setDrawRange(0, markers.length); }, [points, markers.length]);
+  return <primitive object={points} dispose={null} />;
+}
+
+function RecordedFlightTrajectories({ display }: { display: FlightTrajectoryDisplay }) {
+  const current = display.current, reference = display.reference;
+  const layers = reference ? [current, reference] : [current];
+  const markers = useMemo(() => visibleFlightMarkers([
+    ...recordedFlightMarkers(current.frames, current.trial, current.id),
+    ...(reference ? recordedFlightMarkers(reference.frames, reference.trial, reference.id) : []),
+  ].sort((a, b) => a.step - b.step || a.source.localeCompare(b.source) || a.kind.localeCompare(b.kind)), display.cursorStep, display.fullRecorded),
+  [current.id, current.frames, current.trial, reference, display.cursorStep, display.fullRecorded]);
+  return <>
+    <RecordedFlightPath layer={display.current} cursorStep={display.cursorStep} fullRecorded={display.fullRecorded} color="#67d3e0" name="RecordedFlightTrajectoryCurrent" />
+    {display.reference ? <RecordedFlightPath layer={display.reference} cursorStep={display.cursorStep} fullRecorded={display.fullRecorded} color="#f4c777" name="RecordedFlightTrajectoryReference" /> : null}
+    <RecordedFlightEvents markers={markers} layers={layers} />
+  </>;
+}
+
+export default function FlyViewerCanvas({ view, reset, diagnostics, onStatus, onStats, onFailure, arena = false, onTableReady, replayPose, locomotion = false, stimulusPlane, stimulusX, stimulusIds, trajectory, liveTrajectory, comparison, gaitState, onGaitFailure, flightPresentation, flightTrajectory }: { flightPresentation?:WingPose; flightTrajectory?:FlightTrajectoryDisplay; onGaitFailure:(message:string|null)=>void; gaitState?:GaitState; comparison?: ArenaOverlayProps; trajectory?: [number, number, number][]; liveTrajectory?: [number, number, number][]; stimulusPlane?: number; stimulusX?: number[]; stimulusIds?: string[]; locomotion?: boolean; replayPose?: import("@/lib/arenaCourseReplay").ArenaCoursePose; arena?: boolean; onTableReady?: () => void; view: ArenaCameraView; reset: number; diagnostics: boolean; onStatus: (value: Status) => void; onStats: (value: ViewerStats) => void; onFailure: (message: string) => void }) {
   const [webGLAvailable] = useState(() => {
     try {
       const probe = document.createElement("canvas").getContext("webgl2");
@@ -166,6 +244,7 @@ export default function FlyViewerCanvas({ view, reset, diagnostics, onStatus, on
     {liveTrajectory ? <LiveTrajectory points={liveTrajectory}/> : null}
     {comparison ? <ArenaComparison {...comparison}/> : null}
     {trajectory ? <RecordedTrajectory points={trajectory} /> : null}
+    {flightTrajectory ? <RecordedFlightTrajectories display={flightTrajectory} /> : null}
     <color attach="background" args={["#182129"]} />
     <Studio flight3D={flightPresentation?.source === 'ENGINEERING_3D_FLIGHT_V8'} flight={Boolean(flightPresentation)} view={view} reset={reset} diagnostics={diagnostics} onStats={onStats} onFailure={onFailure} arena={arena} locomotion={locomotion} />
     <group name="FlightPresentationTransform" position={[0,flightPresentation?.offset??0,0]}>

@@ -1,0 +1,49 @@
+{
+  "schema": "empirical_hs_dnp15_source_v9_2",
+  "doi": "10.1038/s41593-025-01948-9",
+  "figure": "Figure 1h",
+  "url": "https://static-content.springer.com/esm/art%3A10.1038%2Fs41593-025-01948-9/MediaObjects/41593_2025_1948_MOESM6_ESM.xlsx",
+  "sha256": "b5a36e2363279a1bf908bcdcc9da7dda93ce6710487ceb31add0a284d9db9488",
+  "size_bytes": 9402,
+  "access_date": "2026-10-22",
+  "sheet": "1h",
+  "header_cell": "A1",
+  "header": "bFtoB-Yaw Discrimination index",
+  "mapping": {
+    "DNp15": {"label_cell": "A2", "value_cells": "B2:H2", "roi_count": 7, "paper_fly_count": 6},
+    "HS": {"label_cell": "A3", "value_cells": "B3:R3", "roi_count": 17, "paper_fly_count": 13}
+  },
+  "measurement": {
+    "variable": "PUBLISHED_ROI_LEVEL_bFtoB_MINUS_YAW_DISCRIMINATION_INDEX",
+    "units": "dimensionless",
+    "formula": "(OF_bFtoB-OF_yaw)/(abs(OF_bFtoB)+abs(OF_yaw))",
+    "negative_meaning": "greater yaw OF response than bFtoB OF response",
+    "upstream_signal": "processed calcium fluorescence; baseline-subtracted and z-normalized per ROI; repetitions averaged; hemisphere aligned",
+    "response_method": "Authors PaperFiguresImaging.m YawFlipped-Yaw peak block: preferred-minus-nonpreferred epoch means in the final 500 ms (3.5<t<4 s); Methods also describe 2 s AUC for other analyses. Workbook has no component responses or traces to recompute its DI.",
+    "processing_reconstruction_status": "Methods and matching authors-code block inspected; exact workbook generation cannot be rerun or independently certified without component responses and acquisition metadata.",
+    "figure_data_kind": "INDIVIDUAL_DERIVED_ROI_INDICES_NOT_RAW_CALCIUM",
+    "missing": ["raw_fluorescence", "time", "trials", "roi_ids", "fly_ids", "hemisphere", "component_OF_values", "SEM_SD_CI"],
+    "published_p_cell": "A4",
+    "inference_policy": "descriptive_only_no_recomputed_significance_or_CI_without_fly_grouping"
+  },
+  "authors_code": {
+    "repository": "https://github.com/ChiappeLab/Erginkaya_et_al_2025",
+    "commit": "b1b59653a9758335cfff28a81d42010ea6ff082a",
+    "file": "scripts/matlab/PaperFiguresImaging.m",
+    "file_sha256": "19983ab9378bce5ec975be07fe11dfd08ae246c52dd4213338b5e6817b9f7d17",
+    "relevant_lines": [1078, 1589, 2235, 2255, 2383, 2416, 2429],
+    "license": "MIT (code only)"
+  },
+  "zenodo": {
+    "doi": "10.5281/zenodo.14967806",
+    "archive": "data.zip",
+    "size_bytes": 23534730237,
+    "downloaded": false,
+    "license": "CC-BY-4.0 per record metadata and README; separate from publisher article terms"
+  },
+  "storage_and_rights": {
+    "publisher_article_license": "CC-BY-NC-ND-4.0; third-party exclusions may apply",
+    "workbook_separate_license": "No separate license declaration found inside the XLSX; do not assume Zenodo terms apply to the publisher file.",
+    "policy": "Keep workbook and extracted individual values external; repository contains original extraction code, provenance, and factual aggregate analysis only. No publisher figures or source workbook redistributed."
+  }
+}

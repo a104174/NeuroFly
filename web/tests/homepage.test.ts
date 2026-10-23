@@ -124,7 +124,7 @@ const json = (payload: unknown, status = 200) => async () => new Response(
 );
 
 function noCards(markup: string) {
-  assert.doesNotMatch(markup, /class="scenario-card"|Canonical replay available/);
+  assert.doesNotMatch(markup, /class="discovery-card discovery-card--|Canonical replay available/);
 }
 
 test("preserved catalogue route requests the genuine catalogue contract and renders five accessible scenario links", async () => {
@@ -135,9 +135,9 @@ test("preserved catalogue route requests the genuine catalogue contract and rend
     assert.equal(catalogueDynamic, "force-dynamic");
     assert.deepEqual(calls.map(c => c.url), ["https://preview.test/api/v1/scenarios"]);
     assert.equal(calls[0].options?.cache, "no-store");
-    assert.match(markup, /Experiments, not predictions/);
-    assert.match(markup, /CANONICAL EXPERIMENTS/);
-    assert.equal((markup.match(/class="scenario-card"/g) ?? []).length, 5);
+    assert.match(markup, /Explore the/);
+    assert.match(markup, /Look beneath the behaviour/);
+    assert.equal((markup.match(/class="discovery-card discovery-card--/g) ?? []).length, 5);
     for (const scenario of payload) {
       assert.ok(markup.includes(`href="/scenarios/${scenario.id}"`));
       assert.ok(markup.includes(`aria-label="Open ${scenario.title}"`));
@@ -201,12 +201,14 @@ test("scenario HTTP failure and unreachable backend render visible errors withou
   }
 });
 
-test("legacy experiment catalogue and preserved page retain the 409 integrity failure", async () => {
+test("recorded experiment page preserves the 409 integrity failure without replacement results", async () => {
   await withFetch(json({ schema: "experiment_http_error_v1", code: "artifact_integrity_failure" }, 409), async (calls) => {
     await assert.rejects(listExperiments(), (error: unknown) =>
       error instanceof NeuroflyApiError && error.code === "artifact_integrity_failure" && error.status === 409);
     const markup = renderToStaticMarkup(await ExperimentsPage());
-    assert.match(markup, /The catalogue could not load/);
+    assert.match(markup, /Recorded experiments are temporarily unavailable/);
+    assert.match(markup, /The current experiment archive could not be verified/);
+    assert.match(markup, /Technical details/);
     assert.match(markup, /failed integrity validation/);
     assert.match(markup, /role="alert"/);
     assert.ok(calls.every(c => c.url.endsWith("/api/v1/experiments")));
@@ -217,9 +219,9 @@ test("legacy experiment catalogue and preserved page retain the 409 integrity fa
 test("scenarios page preserves its established presentation and shared navigation", async () => {
   await withFetch(json(fixture()), async (calls) => {
     const markup = renderToStaticMarkup(await ScenariosPage());
-    assert.match(markup, /Experiments, not predictions/);
-    assert.match(markup, /CANONICAL EXPERIMENTS/);
-    assert.equal((markup.match(/class="scenario-card"/g) ?? []).length, 5);
+    assert.match(markup, /Explore the/);
+    assert.match(markup, /Look beneath the behaviour/);
+    assert.equal((markup.match(/class="discovery-card discovery-card--/g) ?? []).length, 5);
     assert.deepEqual(calls.map(c => c.url), ["https://preview.test/api/v1/scenarios"]);
     assert.equal((await listScenarios()).length, 5);
   });

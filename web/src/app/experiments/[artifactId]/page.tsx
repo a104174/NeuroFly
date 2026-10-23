@@ -45,7 +45,7 @@ export default async function ExperimentPage({
       <div className="app-shell">
         <AppHeader />
         <main className="main-content main-content-wide">
-          <Link className="back-link" href="/">
+          <Link className="back-link" href="/experiments">
             ← all experiments
           </Link>
           <StateMessage
@@ -62,7 +62,7 @@ export default async function ExperimentPage({
     <div className="app-shell">
       <AppHeader />
       <main className="main-content main-content-wide">
-        <Link className="back-link" href="/">
+        <Link className="back-link" href="/experiments">
           ← all experiments
         </Link>
         <Link className="experiment-cockpit-entry" href={`/experiments/${artifactId}/cockpit`}>

@@ -61,9 +61,11 @@ test("shared logo renders the canonical asset in public header, footer and inter
     assert.match(html, /src="\/assets\/brand\/neurofly-logo-white.png"/);
     assert.doesNotMatch(html, /src="[^\"]*neurofly-logo.png"|brand-mark|nf-brand-dot/);
   }
+  for (const route of ["scenarios", "experiments"]) assert.match(readFileSync(new URL(`../src/app/${route}/page.tsx`, import.meta.url), "utf8"), /DiscoveryShell/);
+  assert.match(readFileSync(new URL("../src/components/discovery/DiscoveryShell.tsx", import.meta.url), "utf8"), /SiteHeader[\s\S]*SiteFooter/);
   const lab = readFileSync(new URL("../src/app/visual-lab/arena/page.tsx", import.meta.url), "utf8");
   assert.match(lab, /<BrandLogo \/>/);
-  for (const route of ["scenarios", "experiments", "morphology", "visual-lab/fly", "visual-lab/arena/research"]) {
+  for (const route of ["morphology", "visual-lab/fly", "visual-lab/arena/research"]) {
     assert.match(readFileSync(new URL(`../src/app/${route}/page.tsx`, import.meta.url), "utf8"), /AppHeader/);
   }
 });

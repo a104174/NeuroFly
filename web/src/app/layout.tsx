@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import "./cockpit.css";
 import "./scenarios.css";
+import "./product.css";
 
 export const metadata: Metadata = {
   title: "NeuroFly · Experiment Browser",

@@ -1,12 +1,11 @@
 import Link from "next/link";
+import { BrandLogo } from "./site/BrandLogo";
 
 export function AppHeader() {
   return (
     <header className="app-header">
       <Link className="brand" href="/" aria-label="NeuroFly home">
-        <span className="brand-mark" aria-hidden="true">
-          NF
-        </span>
+        <BrandLogo />
         <span>
           <span className="brand-name">NeuroFly</span>
           <span className="brand-subtitle">connectome experiment browser</span>

@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { DoubleSide, Mesh, MeshStandardMaterial, type Object3D } from "three";
 import { GLTFLoader, type GLTF } from "three/examples/jsm/loaders/GLTFLoader.js";
+import { EXPLORE_STYLE } from "./lab/explorePresentation";
 import { ARENA, arenaPanels, prepareArenaTable, loadArenaTableBytes } from "@/lib/experimentalArena";
 
 let tablePromise: Promise<GLTF> | undefined;
@@ -51,19 +52,19 @@ function Solid({ position, size, color = "#34454e", roughness = .8, metalness = 
 }
 
 /** Original in-house enclosure and backdrop. No behavioral apparatus or data implied. */
-export function ExperimentalArena({ onReady, onFailure, shadowAnchor, stimulusPlane, stimulusX, stimulusIds }: { stimulusPlane?: number; stimulusX?: number[]; stimulusIds?: string[]; shadowAnchor?: [number, number, number]; onReady: () => void; onFailure: (message: string) => void }) {
+export function ExperimentalArena({ explore = false, showLandmarks = true, onReady, onFailure, shadowAnchor, stimulusPlane, stimulusX, stimulusIds }: { explore?: boolean; showLandmarks?: boolean; stimulusPlane?: number; stimulusX?: number[]; stimulusIds?: string[]; shadowAnchor?: [number, number, number]; onReady: () => void; onFailure: (message: string) => void }) {
   const { width: w, depth: d, height: h, floor: f } = ARENA.chamber;
   const panels = arenaPanels();
   return <>
-    {stimulusPlane !== undefined && (stimulusX??[.6, -.6]).map((x,i)=><mesh name={`VisualStimulus${i}`} userData={{stimulus_id:stimulusIds?.[i]}} key={`stimulus-${i}`} position={[x,.0015,stimulusPlane]} rotation={[-Math.PI/2,0,0]}><ringGeometry args={[.015,.027,stimulusIds&&i===1?4:24]} /><meshBasicMaterial color={i===0?"#67d3e0":"#f3bd6c"} side={DoubleSide} /></mesh>)}
+    {showLandmarks && stimulusPlane !== undefined && (stimulusX??[.6, -.6]).map((x,i)=><mesh name={`VisualStimulus${i}`} userData={{stimulus_id:stimulusIds?.[i]}} key={`stimulus-${i}`} position={[x,.0015,stimulusPlane]} rotation={[-Math.PI/2,0,0]}><ringGeometry args={[.015,.027,stimulusIds&&i===1?4:24]} /><meshBasicMaterial color={i===0?"#67d3e0":"#f3bd6c"} side={DoubleSide} /></mesh>)}
     <LabTable onReady={onReady} onFailure={onFailure} />
-    <Solid position={[0, -f / 2, 0]} size={[w + .08, f, d + .08]} color="#555c61" roughness={.95} metalness={0} />
+    <Solid position={[0, -f / 2, 0]} size={[w + .08, f, d + .08]} color={explore ? EXPLORE_STYLE.floor : "#555c61"} roughness={.95} metalness={0} />
     {panels.map(panel => <mesh key={panel.id} position={panel.position} renderOrder={2}>
-      <boxGeometry args={panel.size} /><meshStandardMaterial color="#f4f5f4" transparent opacity={.018} roughness={.28} metalness={0} side={DoubleSide} forceSinglePass depthWrite={false} />
+      <boxGeometry args={panel.size} /><meshStandardMaterial color={explore ? EXPLORE_STYLE.panel : "#f4f5f4"} transparent opacity={explore ? EXPLORE_STYLE.panelOpacity : .018} roughness={.28} metalness={0} side={DoubleSide} forceSinglePass depthWrite={false} />
     </mesh>)}
-    {[-w / 2, w / 2].flatMap(x => [-d / 2, d / 2].map(z => <Solid key={`${x}:${z}`} position={[x, h / 2, z]} size={[.014, h, .014]} color="#52616b" roughness={.42} metalness={.65} />))}
-    {[0, h].flatMap(y => [<Solid key={`front${y}`} position={[0, y, d / 2]} size={[w, .012, .012]} color="#52616b" roughness={.42} metalness={.65} />, <Solid key={`back${y}`} position={[0, y, -d / 2]} size={[w, .012, .012]} color="#52616b" roughness={.42} metalness={.65} />])}
-    {[-w / 2, w / 2].map(x => <Solid key={`lid${x}`} position={[x, h, 0]} size={[.012, .012, d]} color="#52616b" roughness={.42} metalness={.65} />)}
+    {[-w / 2, w / 2].flatMap(x => [-d / 2, d / 2].map(z => <Solid key={`${x}:${z}`} position={[x, h / 2, z]} size={[.014, h, .014]} color={explore ? EXPLORE_STYLE.frame : "#52616b"} roughness={.42} metalness={.65} />))}
+    {[0, h].flatMap(y => [<Solid key={`front${y}`} position={[0, y, d / 2]} size={[w, .012, .012]} color={explore ? EXPLORE_STYLE.frame : "#52616b"} roughness={.42} metalness={.65} />, <Solid key={`back${y}`} position={[0, y, -d / 2]} size={[w, .012, .012]} color={explore ? EXPLORE_STYLE.frame : "#52616b"} roughness={.42} metalness={.65} />])}
+    {[-w / 2, w / 2].map(x => <Solid key={`lid${x}`} position={[x, h, 0]} size={[.012, .012, d]} color={explore ? EXPLORE_STYLE.frame : "#52616b"} roughness={.42} metalness={.65} />)}
     <mesh position={[shadowAnchor?.[0] ?? ARENA.flyOffset[0], .0008, shadowAnchor ? shadowAnchor[2] - .018 : ARENA.flyOffset[2] - .018]} rotation={[-Math.PI / 2, 0, 0]}>
       <planeGeometry args={[.22, .34]} />
       <shaderMaterial transparent depthWrite={false}
@@ -71,7 +72,7 @@ export function ExperimentalArena({ onReady, onFailure, shadowAnchor, stimulusPl
         fragmentShader="varying vec2 uvPosition; void main() { float shade = 1.0 - smoothstep(0.04, 0.5, length(uvPosition - 0.5)); gl_FragColor = vec4(0.0, 0.0, 0.0, shade * 0.20); }" />
     </mesh>
     <Solid position={[0, -2.5, 0]} size={[10, .08, 9]} color="#151e25" roughness={.94} metalness={0} />
-    <Solid position={[0, .2, -2.4]} size={[12, 5.4, .12]} color="#17242e" roughness={.94} metalness={0} />
+    <Solid position={[0, .2, -2.4]} size={[12, 5.4, .12]} color={explore ? EXPLORE_STYLE.backdrop : "#17242e"} roughness={.94} metalness={0} />
     {[-2.8, -1.4, 0, 1.4, 2.8].map(x => <Solid key={x} position={[x, .3, -2.31]} size={[.016, 4.7, .025]} color="#1a2b35" />)}
     <Solid position={[0, 1.65, -2.29]} size={[6.4, .025, .04]} color="#2b414d" />
     <Solid position={[2.35, -.3, -1.55]} size={[.5, .6, .45]} color="#34464e" />

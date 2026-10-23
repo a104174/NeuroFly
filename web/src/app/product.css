@@ -36,9 +36,8 @@
 .nf-site .nf-skip-link:focus { transform: none; }
 .nf-site .nf-header { position: sticky; top: 0; z-index: 30; border-bottom: 1px solid var(--nf-line); background: #08131fee; backdrop-filter: blur(16px); }
 .nf-site .nf-header-inner { display: flex; align-items: center; justify-content: space-between; gap: 32px; min-height: 88px; }
-.nf-site .nf-wordmark { display: inline-flex; align-items: baseline; white-space: nowrap; color: var(--nf-text); font-size: 27px; font-weight: 700; letter-spacing: -.06em; line-height: 1; }
-.nf-site .nf-wordmark > span:first-child { font-weight: 400; }
-.nf-site .nf-brand-dot { display: inline-block; width: 6px; height: 6px; align-self: center; margin: 9px 0 0 6px; background: var(--nf-cyan); border-radius: 50%; }
+.nf-site .nf-wordmark { display: inline-flex; align-items: center; gap: 10px; white-space: nowrap; color: var(--nf-text); font-size: 27px; font-weight: 700; letter-spacing: -.06em; line-height: 1; }
+.nf-site .nf-wordmark > span > span { font-weight: 400; }
 .nf-site .nf-desktop-nav { display: flex; align-items: center; gap: 34px; }
 .nf-site .nf-desktop-nav a { display: flex; align-items: center; min-height: 44px; color: var(--nf-muted); font-size: 15px; transition: color 160ms ease; }
 .nf-site .nf-desktop-nav a:hover, .nf-site .nf-desktop-nav a[aria-current] { color: var(--nf-text); }

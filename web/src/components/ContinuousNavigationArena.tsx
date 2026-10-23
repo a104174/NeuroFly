@@ -1,4 +1,6 @@
 "use client";
+import {ExploreLabView} from "./lab/ExploreLabView";
+import {FlyViewer} from "./FlyViewer";
 import {VisualProtocolArena} from "./VisualProtocolArena";
 import {ScheduledVisualEngine,validateProtocolExecution,replayProtocol} from "@/lib/visualProtocol";
 import {VisualStimulusComparison} from "./VisualStimulusComparison";
@@ -14,7 +16,7 @@ import {MovingVisualEngine,type Motion,type MotionEvent} from "@/lib/movingVisua
 import {ExperimentSessionLibrary} from "./ExperimentSessionLibrary";
 import {NeuralContributionComparison} from "./NeuralContributionComparison";
 
-export function ContinuousNavigationArena({initialMoving=false,initialIndependent=false,initialVisualComparison=false,initialProtocol=false,onProtocolLoaded,onVersionLoaded}:{initialMoving?:boolean;initialIndependent?:boolean;initialVisualComparison?:boolean;initialProtocol?:boolean;onProtocolLoaded?:(enabled:boolean)=>void;onVersionLoaded?:(moving:boolean,independent:boolean,visual:boolean)=>void}){
+export function ContinuousNavigationArena({presentation="research",initialMoving=false,initialIndependent=false,initialVisualComparison=false,initialProtocol=false,onProtocolLoaded,onVersionLoaded}:{presentation?:"research"|"explore";initialMoving?:boolean;initialIndependent?:boolean;initialVisualComparison?:boolean;initialProtocol?:boolean;onProtocolLoaded?:(enabled:boolean)=>void;onVersionLoaded?:(moving:boolean,independent:boolean,visual:boolean)=>void}){
  const [independent,setIndependent]=useState(initialIndependent),[initialPreset,setInitialPreset]=useState<Preset>("synchronized");
  const [moving,setMoving]=useState(initialMoving||initialIndependent),[initialMotion,setInitialMotion]=useState<Motion>(1);
  function selectVersion(next:ContinuousNavigationEngine){const i=next instanceof IndependentVisualEngine,m=i||next instanceof MovingVisualEngine;setMoving(m);setIndependent(i);onVersionLoaded?.(m,i,false);if(i)setInitialPreset(next.independentLog().config.initial_preset as Preset);else if(next instanceof MovingVisualEngine)setInitialMotion(next.movingLog().config.initial_motion as Motion);}
@@ -73,6 +75,11 @@ export function ContinuousNavigationArena({initialMoving=false,initialIndependen
  const independentWorld=worldState&&'landmarks' in worldState.stimulus?worldState.stimulus:null;
  const movingWorld=worldState&&'motion' in worldState.stimulus?worldState.stimulus:null;
  function independentChange(id:StimulusId,kind:Action){if(!(engine.current instanceof IndependentVisualEngine))return;try{engine.current.requestStimulus(id,kind);importedSource.current=null;setNotice(`${id} ${kind} solicitado para boundary ${engine.current.snapshot().step}; fase, pose e neural preservados.`);}catch(e){setError(String(e));}}
+ function togglePlayback(){setCursor(null);if(actualState?.step===1500){reset();setPlaying(true);}else{clock.current.reset();setPlaying(!playing);}}
+ function changeNeural(active:boolean){importedSource.current=null;setNeuralEnabled(active);if(authority)synchronize(makeEngine(authority,active));setCost({last:0,max:0,limited:0});setNotice("Neural influence changed. A new exploration starts from the initial state.");setError(null);}
+ if(presentation==="explore")return <ExploreLabView state={actualState} playing={playing} error={error} notice={notice} neuralEnabled={neuralEnabled} onPlay={togglePlayback} onReset={reset} onNeuralChange={changeNeural} onExport={()=>void exportRun()} onReplay={()=>void replay()} lagging={cost.limited>0}>
+  <FlyViewer experience initialGait arena locomotion={Boolean(actualState)} locomotionVersion="v3" replayPose={pose} stimulusPlane={actualState?.plane} liveTrajectory={path} gaitMotion={actualState?{frames:gaitBodyFrames,end:{time:actualState.time,position:actualState.position,heading:actualState.heading},time:actualState.time}:undefined}/>
+ </ExploreLabView>;
  const title=independent?"Independent Visual Stimuli v5":moving?"Moving Visual Stimuli v4":"Continuous Arena Navigation v3";
  const livePanel=(
   <section className="arena-replay-panel" aria-label={title}>

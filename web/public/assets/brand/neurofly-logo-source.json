@@ -1,0 +1,66 @@
+{
+  "source": {
+    "path": "files/Emblema Geom\u00e9trico de Inseto Alado.png",
+    "sha256": "3d60e4f3d41cd2266fc70108aa5bad3582e170317e65e508646d450d9fa9d676",
+    "dimensions": [
+      1774,
+      887
+    ],
+    "alpha_bbox": [
+      146,
+      101,
+      1631,
+      869
+    ],
+    "provenance": "User-supplied approved NeuroFly emblem; publication authorized for this project. No third-party licence asserted."
+  },
+  "derivation": "Original alpha retained, cropped to its bounds, Lanczos resized within 480x248, centred in 512x280 transparent canvas; RGB set to white. Source untouched. Pillow 10.2.0; PNG metadata omitted.",
+  "favicon": "Same white mark with a narrow navy contour on transparent pixels for light-tab visibility. No opaque square. Apple icon uses white transparency without a contour.",
+  "excluded_candidate": {
+    "path": "files/neurofly-white.png",
+    "sha256": "222eeb3333e92813261680d0eb47b261395bc27502081a86c8bbcb311a91a46b",
+    "reason": "Alpha residue and dark visible pixels; preserved, not redistributed."
+  },
+  "assets": [
+    {
+      "path": "web/public/assets/brand/neurofly-logo-white.png",
+      "sha256": "46d21076b147420449fa6f5ac1e8505c8f741e9ddd440425039519f81e62c5a9",
+      "bytes": 17927,
+      "dimensions": [
+        512,
+        280
+      ],
+      "mode": "RGBA"
+    },
+    {
+      "path": "web/src/app/icon.png",
+      "sha256": "a02a61a81fd138efd009df7307321ad470e6c5e464cd15079a1ecc7b854cce2b",
+      "bytes": 10583,
+      "dimensions": [
+        192,
+        192
+      ],
+      "mode": "RGBA"
+    },
+    {
+      "path": "web/src/app/apple-icon.png",
+      "sha256": "f8900ec7287c1c91cc2a495d44153b3cf62a19d10d02805df36b4de3a76faf27",
+      "bytes": 4820,
+      "dimensions": [
+        180,
+        180
+      ],
+      "mode": "RGBA"
+    },
+    {
+      "path": "web/src/app/favicon.ico",
+      "sha256": "4590bd87d1ef6a974f41f89996ab069426d30f60ec8bd016c4c4c5d02ee92895",
+      "bytes": 7789,
+      "dimensions": [
+        64,
+        64
+      ],
+      "mode": "RGBA"
+    }
+  ]
+}

@@ -21,7 +21,12 @@ redirects, accounts, analytics or external services are introduced.
 The existing laboratory, experiment, cockpit and scientific styling remain intact.
 The root layout adds only this stylesheet import. Existing global metadata remains
 the fallback for established routes; the homepage defines its own title, description
-and Open Graph text. A typographic `NF` favicon reuses the existing header monogram.
+and Open Graph text. The browser icons and shared header/footer emblem use the approved user-supplied
+NeuroFly mark. The canonical white PNG has real alpha transparency and no backing
+square. Shared navigation renders it directly on dark surfaces. Genuine PNG/ICO
+browser icons replace the former monogram/embedded-raster SVG. See
+[`neurofly_white_branding.md`](neurofly_white_branding.md) for source authentication,
+derivation and the small favicon contour used for light-tab legibility.
 
 | Token | Value / role |
 | --- | --- |

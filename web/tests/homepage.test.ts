@@ -28,13 +28,17 @@ test("product homepage renders one H1, meaningful sections and the genuine labor
     assert.match(markup, /<noscript><style>/);
     assert.deepEqual(calls, []);
     assert.doesNotMatch(markup, /<canvas|<iframe|<video/);
+    assert.equal((markup.match(/class="neurofly-logo"/g) ?? []).length, 2);
+    assert.match(markup, /src="\/assets\/brand\/neurofly-logo-white.png"/);
+    assert.doesNotMatch(markup, /nf-brand-dot/);
   });
 });
 
 test("public links resolve to preserved routes or existing homepage anchors", () => {
   assert.equal(LAB_HREF, "/visual-lab/arena");
   const markup = renderToStaticMarkup(createElement(HomePage));
-  for (const [, href] of markup.matchAll(/href="([^"?#]*)(?:#([^"]*))?"/g)) {
+  // React may emit image preload links; this checks navigation anchors only.
+  for (const [, href] of markup.matchAll(/<a\b[^>]*href="([^"?#]*)(?:#([^"]*))?"/g)) {
     if (!href.startsWith("/") && href !== "") continue;
     const route = href || "/";
     assert.ok(existsSync(new URL(`../src/app${route === "/" ? "" : route}/page.tsx`, import.meta.url)), href);

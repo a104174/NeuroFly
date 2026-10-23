@@ -1,9 +1,10 @@
 "use client";
+import { exploreCamera, EXPLORE_CAMERA_LIMITS, EXPLORE_TARGET_LIFT, EXPLORE_STYLE, type ViewerCameraView } from "./lab/explorePresentation";
 
 import {articulateWings,type WingPose} from "@/lib/articulatedWings";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import {articulateFly,type GaitState} from "@/lib/articulatedGait";
-import { ARENA, arenaCamera, arenaCameraLimits, constrainArenaInspectionCamera, type ArenaCameraView } from "@/lib/experimentalArena";
+import { ARENA, arenaCamera, arenaCameraLimits, constrainArenaInspectionCamera } from "@/lib/experimentalArena";
 import { ExperimentalArena } from "./ExperimentalArena";
 import { Component, useEffect, useLayoutEffect, useRef, useState, useMemo, type ReactNode } from "react";
 import { AgXToneMapping, Color, DynamicDrawUsage, PMREMGenerator, PerspectiveCamera, Points as ThreePoints, PointsMaterial, Vector3, BufferAttribute, BufferGeometry, Line as ThreeLine, LineBasicMaterial, type Object3D } from "three";
@@ -60,7 +61,7 @@ function Fly({ onStatus,gaitState,onGaitFailure,flightPresentation }: { flightPr
   return instance ? <group position={fit.position} rotation={fit.rotation} scale={fit.scale} dispose={null}><primitive object={instance.scene} dispose={null} /></group> : null;
 }
 
-function Studio({ view, reset, diagnostics, onStats, onFailure, arena, locomotion, flight, flight3D }: { flight3D:boolean; flight:boolean; locomotion: boolean; arena: boolean; view: ArenaCameraView; reset: number; diagnostics: boolean; onStats: (value: ViewerStats) => void; onFailure: (message: string) => void }) {
+function Studio({ explore, view, reset, diagnostics, onStats, onFailure, arena, locomotion, flight, flight3D }: { explore:boolean; flight3D:boolean; flight:boolean; locomotion: boolean; arena: boolean; view: ViewerCameraView; reset: number; diagnostics: boolean; onStats: (value: ViewerStats) => void; onFailure: (message: string) => void }) {
   const { gl, size } = useThree();
   const get = useThree(state => state.get);
   const controls = useRef<OrbitControls | null>(null);
@@ -75,15 +76,15 @@ function Studio({ view, reset, diagnostics, onStats, onFailure, arena, locomotio
     gl.domElement.addEventListener("webglcontextlost", lost);
     const pmrem = new PMREMGenerator(gl), room = new RoomEnvironment();
     const environment = pmrem.fromScene(room, .04);
-    scene.environment = environment.texture; scene.environmentIntensity = arena ? .45 : .8;
+    scene.environment = environment.texture; scene.environmentIntensity = arena ? explore ? .28 : .45 : .8;
     room.dispose(); pmrem.dispose();
     return () => { orbit.dispose(); controls.current = null; scene.environment = null; environment.dispose(); gl.domElement.removeEventListener("webglcontextlost", lost); };
-  }, [get, onFailure, arena]);
+  }, [get, onFailure, arena, explore]);
   useEffect(() => {
     const { camera } = get();
     if (!(camera instanceof PerspectiveCamera) || !controls.current) return;
-    const initial = arena ? arenaCamera(size.width / size.height, view) : flyViewerCamera(size.width / size.height, view === "inspect" ? "three-quarter" : view);
-    const limits = arena ? arenaCameraLimits(view) : { minDistance: .18, maxDistance: 12, maxPolarAngle: Math.PI };
+    const initial = explore && view === "explore" ? exploreCamera(size.width / size.height) : arena ? arenaCamera(size.width / size.height, view === "explore" ? "three-quarter" : view) : flyViewerCamera(size.width / size.height, view === "inspect" || view === "explore" ? "three-quarter" : view);
+    const limits = explore && view === "explore" ? EXPLORE_CAMERA_LIMITS : arena ? arenaCameraLimits(view === "explore" ? "three-quarter" : view) : { minDistance: .18, maxDistance: 12, maxPolarAngle: Math.PI };
     controls.current.minDistance = limits.minDistance;
     controls.current.maxDistance = Math.max(limits.maxDistance, initial.distance);
     controls.current.maxPolarAngle = limits.maxPolarAngle;
@@ -95,10 +96,10 @@ function Studio({ view, reset, diagnostics, onStats, onFailure, arena, locomotio
     camera.updateProjectionMatrix();
     controls.current.target.fromArray(initial.target); controls.current.update();
     controls.current.saveState(); controls.current.enableDamping = true;
-  }, [get, size.width, size.height, view, reset, arena, locomotion, flight, flight3D]);
+  }, [get, size.width, size.height, view, reset, arena, locomotion, flight, flight3D, explore]);
   useFrame(() => {
     controls.current?.update();
-    if (arena && view === "inspect" && controls.current) {
+    if (arena && (view === "inspect" || explore && view === "explore") && controls.current) {
       const { camera, scene } = get();
       if (flight && scene.getObjectByName("RecordedBodyTransform")) {
         const target = scene.getObjectByName("RecordedBodyTransform")!.getWorldPosition(new Vector3());
@@ -109,9 +110,9 @@ function Studio({ view, reset, diagnostics, onStats, onFailure, arena, locomotio
         camera.position.add(target.clone().sub(controls.current.target)); controls.current.target.copy(target);
       } else if (locomotion) {
         const body = scene.getObjectByName("RecordedBodyTransform");
-        if (body) { const target = body.getWorldPosition(new Vector3()); camera.position.add(target.clone().sub(controls.current.target)); controls.current.target.copy(target); }
+        if (body) { const target = body.getWorldPosition(new Vector3()); if (explore && view === "explore") target.y += EXPLORE_TARGET_LIFT; camera.position.add(target.clone().sub(controls.current.target)); controls.current.target.copy(target); }
       }
-      constrainArenaInspectionCamera(camera.position);
+      if (view === "inspect") constrainArenaInspectionCamera(camera.position);
       camera.lookAt(controls.current.target);
     }
     if (!diagnostics) { sample.current = { start: 0, frames: 0 }; return; }
@@ -132,10 +133,11 @@ function Studio({ view, reset, diagnostics, onStats, onFailure, arena, locomotio
     }
   });
   if (arena) return <>
-    <hemisphereLight args={["#e6edf3", "#19232d", .22]} />
+    <hemisphereLight args={["#e6edf3", "#19232d", explore ? .3 : .22]} />
     <directionalLight position={[-2, 3.5, 2]} intensity={2} color="#f6f2e9" />
-    <directionalLight position={[3, 1.5, 1]} intensity={.65} color="#c8d9e6" />
+    <directionalLight position={[3, 1.5, 1]} intensity={explore ? .8 : .65} color="#c8d9e6" />
     <directionalLight position={[0, 2, -2]} intensity={1.1} color="#e2e9ef" />
+    {explore ? <pointLight position={[-.35, 1.15, .15]} intensity={2.2} distance={4} decay={2} color="#eaf7f5" /> : null}
   </>;
   return <><hemisphereLight args={["#f3efda", "#23272c", .6]} /><directionalLight position={[-.6, 1.4, 1]} intensity={2.2} color="#ffffff" /><directionalLight position={[2, 1, -2]} intensity={.5} color="#c5dbe5" /></>;
 }
@@ -229,7 +231,7 @@ function RecordedFlightTrajectories({ display }: { display: FlightTrajectoryDisp
   </>;
 }
 
-export default function FlyViewerCanvas({ view, reset, diagnostics, onStatus, onStats, onFailure, arena = false, onTableReady, replayPose, locomotion = false, stimulusPlane, stimulusX, stimulusIds, trajectory, liveTrajectory, comparison, gaitState, onGaitFailure, flightPresentation, flightTrajectory }: { flightPresentation?:WingPose; flightTrajectory?:FlightTrajectoryDisplay; onGaitFailure:(message:string|null)=>void; gaitState?:GaitState; comparison?: ArenaOverlayProps; trajectory?: [number, number, number][]; liveTrajectory?: [number, number, number][]; stimulusPlane?: number; stimulusX?: number[]; stimulusIds?: string[]; locomotion?: boolean; replayPose?: import("@/lib/arenaCourseReplay").ArenaCoursePose; arena?: boolean; onTableReady?: () => void; view: ArenaCameraView; reset: number; diagnostics: boolean; onStatus: (value: Status) => void; onStats: (value: ViewerStats) => void; onFailure: (message: string) => void }) {
+export default function FlyViewerCanvas({ explore = false, showLandmarks = true, view, reset, diagnostics, onStatus, onStats, onFailure, arena = false, onTableReady, replayPose, locomotion = false, stimulusPlane, stimulusX, stimulusIds, trajectory, liveTrajectory, comparison, gaitState, onGaitFailure, flightPresentation, flightTrajectory }: { explore?:boolean; showLandmarks?:boolean; flightPresentation?:WingPose; flightTrajectory?:FlightTrajectoryDisplay; onGaitFailure:(message:string|null)=>void; gaitState?:GaitState; comparison?: ArenaOverlayProps; trajectory?: [number, number, number][]; liveTrajectory?: [number, number, number][]; stimulusPlane?: number; stimulusX?: number[]; stimulusIds?: string[]; locomotion?: boolean; replayPose?: import("@/lib/arenaCourseReplay").ArenaCoursePose; arena?: boolean; onTableReady?: () => void; view: ViewerCameraView; reset: number; diagnostics: boolean; onStatus: (value: Status) => void; onStats: (value: ViewerStats) => void; onFailure: (message: string) => void }) {
   const [webGLAvailable] = useState(() => {
     try {
       const probe = document.createElement("canvas").getContext("webgl2");
@@ -245,11 +247,11 @@ export default function FlyViewerCanvas({ view, reset, diagnostics, onStatus, on
     {comparison ? <ArenaComparison {...comparison}/> : null}
     {trajectory ? <RecordedTrajectory points={trajectory} /> : null}
     {flightTrajectory ? <RecordedFlightTrajectories display={flightTrajectory} /> : null}
-    <color attach="background" args={["#182129"]} />
-    <Studio flight3D={flightPresentation?.source === 'ENGINEERING_3D_FLIGHT_V8'} flight={Boolean(flightPresentation)} view={view} reset={reset} diagnostics={diagnostics} onStats={onStats} onFailure={onFailure} arena={arena} locomotion={locomotion} />
+    <color attach="background" args={[explore ? EXPLORE_STYLE.background : "#182129"]} />
+    <Studio explore={explore} flight3D={flightPresentation?.source === 'ENGINEERING_3D_FLIGHT_V8'} flight={Boolean(flightPresentation)} view={view} reset={reset} diagnostics={diagnostics} onStats={onStats} onFailure={onFailure} arena={arena} locomotion={locomotion} />
     <group name="FlightPresentationTransform" position={[0,flightPresentation?.offset??0,0]}>
     {arena && replayPose ? <group name="RecordedBodyTransform" userData={{ replayAnchor: replayPose.anchor }} position={replayPose.anchor} rotation={[0, replayPose.rotation, 0]} scale={ARENA.flyScale}><group position={replayPose.assetOffset}><Fly flightPresentation={flightPresentation} onGaitFailure={onGaitFailure} gaitState={gaitState} onStatus={onStatus} /></group></group> : <group position={arena ? ARENA.flyOffset : [0, 0, 0]} scale={arena ? ARENA.flyScale : 1}><Fly flightPresentation={flightPresentation} onGaitFailure={onGaitFailure} gaitState={gaitState} onStatus={onStatus} /></group>}
     </group>
-    {arena && onTableReady ? <ExperimentalArena stimulusPlane={stimulusPlane} stimulusX={stimulusX} stimulusIds={stimulusIds} shadowAnchor={locomotion || flightPresentation?.source === 'ENGINEERING_3D_FLIGHT_V8' ? replayPose?.anchor : undefined} onReady={onTableReady} onFailure={onFailure} /> : null}
+    {arena && onTableReady ? <ExperimentalArena explore={explore} showLandmarks={showLandmarks} stimulusPlane={stimulusPlane} stimulusX={stimulusX} stimulusIds={stimulusIds} shadowAnchor={locomotion || flightPresentation?.source === 'ENGINEERING_3D_FLIGHT_V8' ? replayPose?.anchor : undefined} onReady={onTableReady} onFailure={onFailure} /> : null}
   </Canvas></ViewerBoundary>;
 }

@@ -4,7 +4,7 @@ import { SiteHeader, SiteFooter } from "@/components/site/SiteChrome";
 import { ActionLink, Arrow, FeatureIcon, SectionHeading } from "@/components/site/SitePrimitives";
 import { SpecimenVisual } from "@/components/site/SpecimenVisual";
 import { LabPreview } from "@/components/site/LabPreview";
-import { LAB_HREF, SCIENCE_HREF } from "@/components/site/siteContent";
+import { LAB_HREF, SCIENCE_PAGE_HREF } from "@/components/site/siteContent";
 
 export const metadata: Metadata = {
   title: "NeuroFly — A digital fly. A new way to explore behaviour.",
@@ -30,7 +30,7 @@ export default function HomePage() {
             <p className="nf-eyebrow"><span className="nf-small-dot" aria-hidden="true" /> Where biology meets simulation</p>
             <h1 id="hero-title"><span>A digital fly.</span><span>A new way to</span><span className="nf-accent">explore behaviour.</span></h1>
             <p className="nf-hero-description">Step into a laboratory where selected neural circuits meet a digital organism. Change the conditions. Observe the movement. Explore the connection.</p>
-            <div className="nf-actions"><ActionLink href={LAB_HREF}>Enter the Lab</ActionLink><ActionLink href="#science" variant="quiet">Explore the Science</ActionLink></div>
+            <div className="nf-actions"><ActionLink href={LAB_HREF}>Enter the Lab</ActionLink><ActionLink href={SCIENCE_PAGE_HREF} variant="quiet">Explore the Science</ActionLink></div>
             <p className="nf-hero-note">Interactive environments. Traceable experiments.</p>
           </div>
           <SpecimenVisual variant="hero" />
@@ -87,7 +87,7 @@ export default function HomePage() {
         </section>
 
         <section id="science" className="nf-section nf-container nf-science" aria-labelledby="science-title">
-          <div><SectionHeading label="05 / The scientific foundation" id="science-title">Grounded in connectivity.<br /><span className="nf-secondary-heading">Open about the assumptions.</span></SectionHeading><p className="nf-science-intro">The MaleCNS connectome provides structural evidence for selected neural connections. NeuroFly uses that evidence to build bounded, inspectable circuit models.</p><Link prefetch={false} className="nf-text-link" href={SCIENCE_HREF}>Read the scientific documentation <Arrow /></Link></div>
+          <div><SectionHeading label="05 / The scientific foundation" id="science-title">Grounded in connectivity.<br /><span className="nf-secondary-heading">Open about the assumptions.</span></SectionHeading><p className="nf-science-intro">The MaleCNS connectome provides structural evidence for selected neural connections. NeuroFly uses that evidence to build bounded, inspectable circuit models.</p><Link prefetch={false} className="nf-text-link" href={SCIENCE_PAGE_HREF}>Explore the science <Arrow /></Link></div>
           <div className="nf-science-notes"><article><span className="nf-small-dot" aria-hidden="true" /><div><h3>What comes from biology</h3><p>Selected neuron identities and reconstructed connections from MaleCNS.</p></div></article><article><span className="nf-small-dot nf-warm-dot" aria-hidden="true" /><div><h3>What comes from modelling</h3><p>Neural dynamics, sensory reductions and engineering projections into movement. These involve assumptions, not physiological calibration.</p></div></article><p>NeuroFly simulates selected circuits. It is not a whole-fly physiological emulation, and the visual specimen is an artistic 3D asset.</p></div>
         </section>
 

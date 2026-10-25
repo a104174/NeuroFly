@@ -170,7 +170,7 @@ test("shell keeps Explore primary and Recorded experiments in secondary footer n
     else assert.doesNotMatch(nav,/aria-current="page"/);
     const footer=html.match(/<nav aria-label="Footer navigation">[\s\S]*?<\/nav>/)![0];
     assert.match(footer,/href="\/experiments">Recorded experiments<\/a>/);
-    assert.match(html,/href="\/visual-lab\/arena"/);assert.match(html,/href="\/#science"/);assert.match(html,/Skip to content/);
+    assert.match(html,/href="\/visual-lab\/arena"/);assert.match(html,/href="\/science"/);assert.match(html,/Skip to content/);
   }
 });
 

@@ -1,4 +1,4 @@
-"""D3 build authentication, pinned provisioning, and runtime wiring."""
+"""Git-source runtime provisioning and deployed application wiring."""
 
 import json
 import os
@@ -18,32 +18,17 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 @pytest.fixture(autouse=True)
-def preview_environment(monkeypatch):
-    monkeypatch.setenv("VERCEL_ENV", "preview")
-
-
-@pytest.mark.parametrize("environment", [None, "production", "development"])
-def test_only_preview_can_retrieve(monkeypatch, tmp_path, environment):
-    monkeypatch.setenv("VERCEL_OIDC_TOKEN", "synthetic-test-only")
-    if environment is None:
-        monkeypatch.delenv("VERCEL_ENV")
-    else:
-        monkeypatch.setenv("VERCEL_ENV", environment)
-    monkeypatch.setattr(build.subprocess, "run", lambda *a, **k: pytest.fail("network"))
-    with pytest.raises(ValueError, match="Preview build environment is required"):
-        build.retrieve(tmp_path / "archive")
+def git_environment(monkeypatch):
+    monkeypatch.setenv("VERCEL_GIT_COMMIT_SHA", "a" * 40)
+    for name in ("VERCEL_OIDC_TOKEN", "BLOB_STORE_ID", "BLOB_READ_WRITE_TOKEN"):
+        monkeypatch.delenv(name, raising=False)
 
 
 @pytest.fixture
 def build_root(tmp_path):
-    source = ROOT / "docs/neurofly_runtime_bundle_manifest_v1.json"
-    wrapper = bundle.manifest(
-        source, build.MANIFEST_ID, ROOT / "docs/deployment_runtime_inventory_v2.json"
-    )
-    names = [
-        "docs/neurofly_runtime_bundle_manifest_v1.json",
-        "docs/deployment_runtime_inventory_v2.json",
-    ] + [
+    source = ROOT / build.MANIFEST_PATH
+    wrapper = bundle.manifest(source, build.MANIFEST_ID, ROOT / build.INVENTORY_PATH)
+    names = [build.MANIFEST_PATH, build.INVENTORY_PATH, build.ARCHIVE_PATH] + [
         row["repository_relative_path"]
         for row in wrapper["manifest"]["tracked_build_dependencies"][
             "science_documents"
@@ -55,170 +40,54 @@ def build_root(tmp_path):
         shutil.copyfile(ROOT / name, target)
     for name in ("src/neurofly", "data/reference"):
         shutil.copytree(ROOT / name, tmp_path / name)
+    for name in ("tools/vercel_runtime_build.py", "tools/vercel_runtime_entrypoint.py"):
+        target = tmp_path / name
+        target.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copyfile(ROOT / name, target)
     return tmp_path
 
 
-@pytest.mark.parametrize("missing", ["VERCEL_OIDC_TOKEN", "BLOB_STORE_ID"])
-def test_missing_build_auth_fails_before_retrieval(monkeypatch, tmp_path, missing):
-    monkeypatch.setenv("VERCEL_OIDC_TOKEN", "test-only")
-    monkeypatch.setenv("BLOB_STORE_ID", build.STORE_ID)
-    monkeypatch.delenv(missing)
-    monkeypatch.setattr(build.subprocess, "run", lambda *a, **k: pytest.fail("network"))
-    with pytest.raises(ValueError):
-        build.retrieve(tmp_path / "archive")
-
-
-@pytest.mark.parametrize("static", [False, True])
-def test_wrong_store_or_static_auth_rejected(monkeypatch, tmp_path, static):
-    monkeypatch.setenv("VERCEL_OIDC_TOKEN", "test-only")
-    monkeypatch.setenv("BLOB_STORE_ID", build.STORE_ID if static else "wrong")
-    if static:
-        monkeypatch.setenv("BLOB_READ_WRITE_TOKEN", "test-only")
-    monkeypatch.setattr(build.subprocess, "run", lambda *a, **k: pytest.fail("network"))
-    with pytest.raises(ValueError):
-        build.retrieve(tmp_path / "archive")
-
-
-def test_retrieval_failure_has_no_local_fallback(monkeypatch, build_root):
-    def unavailable(_):
-        raise RuntimeError("unavailable")
-
-    monkeypatch.setattr(build, "retrieve", unavailable)
-    monkeypatch.setattr(bundle, "provision", lambda *a: pytest.fail("extraction"))
-    with pytest.raises(RuntimeError):
+def test_missing_committed_archive_fails_closed(build_root):
+    (build_root / build.ARCHIVE_PATH).unlink()
+    with pytest.raises(FileNotFoundError, match="required Git source file"):
         build.build(build_root)
     assert not (build_root / ".neurofly-release").exists()
-
-
-def test_sdk_subprocess_uses_pins_without_credentials_in_arguments(
-    monkeypatch, tmp_path
-):
-    monkeypatch.setenv("VERCEL_OIDC_TOKEN", "synthetic-test-only")
-    monkeypatch.setenv("BLOB_STORE_ID", build.STORE_ID)
-    monkeypatch.delenv("BLOB_READ_WRITE_TOKEN", raising=False)
-
-    def child(args, **kwargs):
-        assert args == [
-            "node",
-            str(ROOT / "tools/vercel_blob/retrieve.mjs"),
-            str(tmp_path / "runtime.tar.gz"),
-            build.PATHNAME,
-            build.STORE_ID,
-        ]
-        assert "synthetic-test-only" not in args
-        assert "env" not in kwargs and "cwd" not in kwargs
-        return subprocess.CompletedProcess(args, 0, b"", b"")
-
-    monkeypatch.setattr(build.subprocess, "run", child)
-    build.retrieve(tmp_path / "runtime.tar.gz")
-
-
-@pytest.mark.parametrize("category", sorted(build.FAILURE_CATEGORIES))
-def test_only_finite_child_failure_protocol_is_exposed(monkeypatch, tmp_path, category):
-    monkeypatch.setenv("VERCEL_OIDC_TOKEN", "synthetic-test-only")
-    monkeypatch.setenv("BLOB_STORE_ID", build.STORE_ID)
-    monkeypatch.delenv("BLOB_READ_WRITE_TOKEN", raising=False)
-    monkeypatch.setattr(
-        build.subprocess,
-        "run",
-        lambda args, **kw: subprocess.CompletedProcess(
-            args, 1, b"", f"NEUROFLY_BLOB_FAILURE {category}\n".encode()
-        ),
-    )
-    with pytest.raises(RuntimeError, match=f"^{category}$"):
-        build.retrieve(tmp_path / "runtime.tar.gz")
-
-
-@pytest.mark.parametrize(
-    "returncode,stdout,stderr",
-    [
-        (
-            1,
-            b"synthetic-private-output",
-            b"NEUROFLY_BLOB_FAILURE BLOB_ACCESS_REJECTED\n",
-        ),
-        (1, b"", b"NEUROFLY_BLOB_FAILURE BLOB_ACCESS_REJECTED\nsynthetic-private-url"),
-        (1, b"", b"NEUROFLY_BLOB_FAILURE UNRECOGNIZED\n"),
-        (0, b"synthetic-private-output", b""),
-        (2, b"", b"synthetic-private-url"),
-    ],
-)
-def test_uncontrolled_child_output_is_never_forwarded(
-    monkeypatch, tmp_path, capsys, returncode, stdout, stderr
-):
-    monkeypatch.setenv("VERCEL_OIDC_TOKEN", "synthetic-test-only")
-    monkeypatch.setenv("BLOB_STORE_ID", build.STORE_ID)
-    monkeypatch.delenv("BLOB_READ_WRITE_TOKEN", raising=False)
-    monkeypatch.setattr(
-        build.subprocess,
-        "run",
-        lambda args, **kw: subprocess.CompletedProcess(
-            args, returncode, stdout, stderr
-        ),
-    )
-    with pytest.raises(RuntimeError, match="^UNKNOWN_REDACTED_FAILURE$"):
-        build.retrieve(tmp_path / "runtime.tar.gz")
-    assert capsys.readouterr() == ("", "")
-
-
-@pytest.mark.parametrize(
-    "error,category",
-    [
-        (FileNotFoundError("synthetic-private-error"), "SDK_DEPENDENCY_MISSING"),
-        (
-            subprocess.TimeoutExpired("synthetic-private-command", 180),
-            "DOWNLOAD_TIMEOUT",
-        ),
-        (OSError("synthetic-private-error"), "UNKNOWN_REDACTED_FAILURE"),
-    ],
-)
-def test_spawn_exceptions_are_sanitized(monkeypatch, tmp_path, error, category):
-    monkeypatch.setenv("VERCEL_OIDC_TOKEN", "synthetic-test-only")
-    monkeypatch.setenv("BLOB_STORE_ID", build.STORE_ID)
-    monkeypatch.delenv("BLOB_READ_WRITE_TOKEN", raising=False)
-
-    def failed(*args, **kwargs):
-        raise error
-
-    monkeypatch.setattr(build.subprocess, "run", failed)
-    with pytest.raises(RuntimeError, match=f"^{category}$") as caught:
-        build.retrieve(tmp_path / "runtime.tar.gz")
-    assert caught.value.__suppress_context__
 
 
 @pytest.mark.parametrize("same_size", [False, True])
-def test_wrong_archive_bytes_or_hash_rejected(monkeypatch, build_root, same_size):
-    monkeypatch.setattr(
-        build,
-        "retrieve",
-        lambda path: path.write_bytes(bytes(3674299 if same_size else 1)),
+def test_wrong_committed_archive_bytes_or_hash_rejected(build_root, same_size):
+    archive = build_root / build.ARCHIVE_PATH
+    archive.write_bytes(bytes(build.COMPRESSED_BYTES if same_size else 1))
+    expected = (
+        "archive integrity failure"
+        if same_size
+        else "pinned runtime v3 archive size mismatch"
     )
-    with pytest.raises(ValueError, match="archive integrity failure"):
+    with pytest.raises(ValueError, match=expected):
         build.build(build_root)
     assert not (build_root / ".neurofly-release").exists()
 
 
-def test_pinned_build_and_runtime_readiness(monkeypatch, build_root, tmp_path):
+def test_committed_runtime_builds_without_blob_access(
+    monkeypatch, build_root, tmp_path, capsys
+):
     monkeypatch.setattr(sys, "path", sys.path.copy())
-    # Reuse D2's deterministic fixture builder only for test input, never deployment.
-    archive, _, _ = bundle.build(
-        ROOT,
-        ROOT / "docs/deployment_runtime_inventory_v2.json",
-        tmp_path / "fixture",
-        "f7baa1db24d2ff6c993894d4edafc33d736a58cd",
-    )
-    monkeypatch.setattr(build, "retrieve", lambda path: shutil.copyfile(archive, path))
+    assert not hasattr(build, "retrieve")
+    for name in ("VERCEL_OIDC_TOKEN", "BLOB_STORE_ID", "BLOB_READ_WRITE_TOKEN"):
+        monkeypatch.delenv(name, raising=False)
     build.build(build_root)
+    logged = json.loads(
+        capsys.readouterr().out.removeprefix("NEUROFLY RUNTIME VERIFIED ")
+    )
+    assert logged["application_commit_sha"] == "a" * 40
+    assert logged["data_source_commit_sha"] != logged["application_commit_sha"]
+    assert logged["archive_sha256"] == build.ARCHIVE_SHA
     # A fresh process cannot use the editable checkout or installed neurofly.
     # This exercises the same module-relative paths as the native bundle.
     native = tmp_path / "native"
     native.mkdir()
     shutil.copytree(build_root / ".neurofly-release", native / ".neurofly-release")
-    shutil.copytree(
-        ROOT / "tools",
-        native / "tools",
-        ignore=shutil.ignore_patterns("__pycache__", "node_modules"),
-    )
+    shutil.copytree(build_root / "tools", native / "tools")
     script = """
 import hashlib
 import importlib.abc
@@ -233,7 +102,7 @@ sys.meta_path.insert(0, RejectAcquisition())
 sys.path.insert(0, str(Path.cwd()))
 from tools.vercel_runtime_entrypoint import application
 assert 'neurofly' not in sys.modules
-app = application(Path.cwd())
+app = application(Path.cwd(), manifest_id=sys.argv[1], inventory_id=sys.argv[2])
 from neurofly import hs_dnp15_neural_validation as neural
 from neurofly import looming_world_experiment as looming
 from neurofly import orientation_to_horizontal_motion as orientation
@@ -252,11 +121,19 @@ with TestClient(app) as client:
     assert client.get('/health').json()['read_only'] is True
     assert client.get('/ready').status_code == 200
     assert len(client.get('/api/v1/scenarios').json()) == 5
-    # Existing v1 discovery treats namespaced scenario directories as v1 runs.
-    # Dependency selection must preserve that explicit failure, not fake a list.
     experiments = client.get('/api/v1/experiments')
-    assert experiments.status_code == 409
-    assert experiments.json()['code'] == 'artifact_integrity_failure'
+    assert experiments.status_code == 200
+    assert experiments.json()['count'] == 1
+    run = experiments.json()['experiments'][0]
+    assert run['artifact_id'] == (
+        '63a73b7ea3ba10a5850b166598f134a2dc0a752bf93c550e2371ee8d5b1bf656')
+    assert run['result_id'] == (
+        '8af5a3f50f0cd9fee65ce62e5421c873e95a48e32333de475545c1be7f133b45')
+    assert run['validation_status'] == 'NOT_EVALUATED'
+    assert client.get('/ready').json()['file_count'] == 79
+    assert client.get('/api/v1/experiments/'+run['artifact_id']).json() == run
+    timeline = client.get('/api/v1/experiments/'+run['artifact_id']+'/timeline')
+    assert len(timeline.json()['times_ms']) == 801
     hashes = {
         'BASELINE_CONTROL':
             '75d1f2856f0d896589a8b1f62fb61016d701045b760e216b7cb5fa70daa30668',
@@ -279,7 +156,15 @@ with TestClient(app) as client:
         assert hashlib.sha256(canonical).hexdigest() == hashes[scenario]
 """
     result = subprocess.run(
-        [sys.executable, "-I", "-B", "-c", script],
+        [
+            sys.executable,
+            "-I",
+            "-B",
+            "-c",
+            script,
+            build.MANIFEST_ID,
+            build.RUNTIME_INVENTORY_ID,
+        ],
         cwd=native,
         capture_output=True,
         text=True,
@@ -296,20 +181,45 @@ with TestClient(app) as client:
         "NEUROFLY_CIRCUIT_CONTRACT_ROOT",
     ):
         monkeypatch.delenv(name, raising=False)
-    with TestClient(application(build_root)) as client:
+    with TestClient(
+        application(
+            build_root,
+            manifest_id=build.MANIFEST_ID,
+            inventory_id=build.RUNTIME_INVENTORY_ID,
+        )
+    ) as client:
         ready = client.get("/ready")
         assert ready.status_code == 200
         assert ready.json()["manifest_id"] == build.MANIFEST_ID
-        assert ready.json()["inventory_id"] == bundle.INVENTORY_ID
+        assert ready.json()["inventory_id"] == build.RUNTIME_INVENTORY_ID
     release = build_root / ".neurofly-release"
     assert Path.cwd() == release
     (release / bundle.RELEASE).write_text("{}")
-    with TestClient(application(build_root)) as client:
+    with TestClient(
+        application(
+            build_root,
+            manifest_id=build.MANIFEST_ID,
+            inventory_id=build.RUNTIME_INVENTORY_ID,
+        )
+    ) as client:
         assert client.get("/ready").status_code == 503
         assert client.get("/health").status_code == 200
         assert (
             client.get("/api/v1/scenarios/BASELINE_CONTROL/playback").status_code == 503
         )
+
+
+@pytest.mark.parametrize("commit", [None, "", "main", "a" * 39, "A" * 40])
+def test_missing_or_invalid_vercel_commit_fails_before_provision(
+    monkeypatch, tmp_path, commit
+):
+    if commit is None:
+        monkeypatch.delenv("VERCEL_GIT_COMMIT_SHA", raising=False)
+    else:
+        monkeypatch.setenv("VERCEL_GIT_COMMIT_SHA", commit)
+    monkeypatch.setattr(bundle, "provision", lambda *a: pytest.fail("provision"))
+    with pytest.raises(ValueError, match="Vercel Git commit SHA is required"):
+        build.build(tmp_path)
 
 
 def test_missing_runtime_never_uses_checkout_data(monkeypatch, tmp_path):
@@ -332,18 +242,15 @@ def test_missing_runtime_never_uses_checkout_data(monkeypatch, tmp_path):
 
 def test_services_route_api_before_frontend_and_bind_remote_backend():
     config = json.loads((ROOT / "vercel.json").read_text())
-    assert config["git"]["deploymentEnabled"] == {
-        "**": False,
-        "d3r-preview": True,
-    }
+    assert config["git"]["deploymentEnabled"]["main"] is True
     assert config["services"]["backend"]["buildCommand"] == (
-        "npm ci --prefix tools/vercel_blob --ignore-scripts --no-audit --no-fund"
-        " && python tools/vercel_runtime_build.py"
+        "python tools/vercel_runtime_build.py"
     )
-    package = json.loads((ROOT / "tools/vercel_blob/package.json").read_text())
-    assert package["dependencies"] == {"@vercel/blob": "2.8.0"}
-    lock = json.loads((ROOT / "tools/vercel_blob/package-lock.json").read_text())
-    assert lock["packages"]["node_modules/@vercel/blob"]["version"] == "2.8.0"
+    assert "npm ci" not in config["services"]["backend"]["buildCommand"]
+    assert build.ARCHIVE_PATH == (
+        "runtime-distributions/v3/"
+        "neurofly-runtime-v3-c5edf9edb0b1f08a0eb3e36808dd6ec25771be1bc575ce07e9cc3063aa6586cf.tar.gz"
+    )
     routes = config["rewrites"]
     assert [row["destination"]["service"] for row in routes] == [
         "backend",

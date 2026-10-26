@@ -10,6 +10,9 @@ import tempfile
 from pathlib import Path, PurePosixPath
 
 INVENTORY_ID = "cf85d5fb1b688857e0af44d7cfe934382cdc9e3588185c87a754f6fa5f24a98b"
+RECORDED_INVENTORY_ID = (
+    "75294376accee5f52261a8cdf922638e7cc17e2aa34963364d1f9b27e6fe4d46"
+)
 SCHEMA = "neurofly_runtime_bundle_manifest_v1"
 RELEASE = ".neurofly-runtime-release.json"
 
@@ -50,11 +53,10 @@ def safe_path(value):
 def inventory(path):
     envelope = json.loads(Path(path).read_bytes())
     value = envelope["inventory"]
-    if (
-        envelope["schema"] != "neurofly_deployment_runtime_inventory_v2"
-        or envelope["inventory_id"] != INVENTORY_ID
-        or identity(value) != INVENTORY_ID
-    ):
+    if (envelope["schema"], envelope["inventory_id"]) not in {
+        ("neurofly_deployment_runtime_inventory_v2", INVENTORY_ID),
+        ("neurofly_deployment_runtime_inventory_v3", RECORDED_INVENTORY_ID),
+    } or identity(value) != envelope["inventory_id"]:
         raise ValueError("frozen inventory mismatch")
     return value
 
@@ -97,6 +99,7 @@ def check_files(root, rows, *, exact=True):
 def build(root, inventory_path, output, source_commit):
     value = inventory(inventory_path)
     rows = value["runtime_files"]
+    version = 3 if identity(value) == RECORDED_INVENTORY_ID else 2
     check_files(root, rows, exact=False)
     output = Path(output)
     output.mkdir(parents=True, exist_ok=True)
@@ -126,7 +129,7 @@ def build(root, inventory_path, output, source_commit):
         ]
         manifest = {
             "schema": SCHEMA,
-            "inventory_id": INVENTORY_ID,
+            "inventory_id": identity(value),
             "source_git_commit": source_commit,
             "bundle_format": "ustar+gzip",
             "creation_format_version": "ustar-gzip-mtime0-level9-v1",
@@ -140,7 +143,8 @@ def build(root, inventory_path, output, source_commit):
                 "data/derived/experiments",
                 "data/derived/malecns",
                 "data/raw/malecns",
-            ],
+            ]
+            + ([value["recorded_collection"]["root"]] if version == 3 else []),
             "tracked_build_dependencies": value["tracked_build_dependencies"],
             "verification_policy": (
                 "pinned manifest; archive and every file SHA256; "
@@ -153,13 +157,17 @@ def build(root, inventory_path, output, source_commit):
             "manifest": manifest,
         }
         verify_archive(archive, wrapper)
-        target = output / f"neurofly-runtime-v2-{archive_sha}.tar.gz"
+        target = output / f"neurofly-runtime-v{version}-{archive_sha}.tar.gz"
         if target.exists() and file_hash(target) != archive_sha:
             raise ValueError("content-addressed output conflict")
         if not target.exists():
             shutil.copyfile(archive, target)
         manifest_path = output / f"{target.name}.manifest.json"
-        manifest_path.write_bytes(canonical(wrapper) + b"\n")
+        metadata = canonical(wrapper) + b"\n"
+        if manifest_path.exists() and manifest_path.read_bytes() != metadata:
+            raise ValueError("content-addressed manifest conflict")
+        if not manifest_path.exists():
+            manifest_path.write_bytes(metadata)
     return target, manifest_path, wrapper
 
 
@@ -176,7 +184,7 @@ def manifest(path, expected_id, inventory_path):
         or value["schema"] != SCHEMA
         or wrapper["manifest_id"] != expected_id
         or identity(value) != expected_id
-        or value["inventory_id"] != INVENTORY_ID
+        or value["inventory_id"] != identity(source)
         or value["files"] != expected_files
         or value["content_id"] != identity(expected_files)
         or value["file_count"] != source["file_count"]

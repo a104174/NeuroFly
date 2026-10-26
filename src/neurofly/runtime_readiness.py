@@ -3,7 +3,13 @@
 import os
 from pathlib import Path
 
-from neurofly.runtime_bundle import INVENTORY_ID, verify_release
+from neurofly.experiment_api import ExperimentApiError, ExperimentArtifactStore
+from neurofly.recorded_experiments_runtime import COLLECTION_ROOT, REQUIRED_ARTIFACT_IDS
+from neurofly.runtime_bundle import (
+    INVENTORY_ID,
+    RECORDED_INVENTORY_ID,
+    verify_release,
+)
 
 
 def startup_readiness():
@@ -16,16 +22,20 @@ def startup_readiness():
         if mode != "provisioned":
             raise ValueError("invalid runtime mode")
         root = Path(os.environ["NEUROFLY_RUNTIME_RELEASE_ROOT"]).resolve()
-        if os.environ["NEUROFLY_RUNTIME_INVENTORY_ID"] != INVENTORY_ID:
+        inventory_id = os.environ["NEUROFLY_RUNTIME_INVENTORY_ID"]
+        if inventory_id not in {INVENTORY_ID, RECORDED_INVENTORY_ID}:
             raise ValueError("inventory authority mismatch")
         if Path.cwd().resolve() != root:
             raise ValueError("frozen relative paths require release working directory")
-        inventory_path = root / "docs/deployment_runtime_inventory_v2.json"
+        recorded = inventory_id == RECORDED_INVENTORY_ID
+        version = 3 if recorded else 2
+        inventory_path = root / f"docs/deployment_runtime_inventory_v{version}.json"
         wrapper = verify_release(
             root, os.environ["NEUROFLY_RUNTIME_MANIFEST_ID"], inventory_path
         )
         expected_roots = {
-            "NEUROFLY_EXPERIMENT_ARTIFACT_ROOT": root / "data/derived/experiments",
+            "NEUROFLY_EXPERIMENT_ARTIFACT_ROOT": root
+            / (COLLECTION_ROOT if recorded else "data/derived/experiments"),
             "NEUROFLY_CIRCUIT_CONTRACT_ROOT": root
             / "data/derived/malecns/looming_giant_fiber_v1",
         }
@@ -35,6 +45,10 @@ def startup_readiness():
                 or not expected.is_dir()
             ):
                 raise ValueError("configured artifact root mismatch")
+        if recorded:
+            ExperimentArtifactStore(
+                root / COLLECTION_ROOT, required_artifact_ids=REQUIRED_ARTIFACT_IDS
+            ).discover_artifact_ids()
         if "NEUROFLY_SCENARIO_ARTIFACT_PATH" in os.environ:
             expected_scenarios = {
                 (root / row["repository_relative_path"]).parent
@@ -59,10 +73,11 @@ def startup_readiness():
         state.update(
             ready=True,
             status="VERIFIED",
-            inventory_id=INVENTORY_ID,
+            inventory_id=inventory_id,
             manifest_id=wrapper["manifest_id"],
+            file_count=wrapper["manifest"]["file_count"],
         )
-    except (OSError, ValueError, KeyError, TypeError):
+    except (OSError, ValueError, KeyError, TypeError, ExperimentApiError):
         # No paths, environment values, storage URLs or secrets in public state.
         pass
     return state

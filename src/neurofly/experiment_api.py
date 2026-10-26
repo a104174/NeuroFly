@@ -811,11 +811,18 @@ def _load_error(path: Path, error: ExperimentArtifactError) -> ExperimentApiErro
 class ExperimentArtifactStore:
     """Read-only artifact discovery and DTO service under one explicit root."""
 
-    def __init__(self, root: str | Path) -> None:
+    def __init__(
+        self, root: str | Path, *, required_artifact_ids: tuple[str, ...] = ()
+    ) -> None:
         configured = Path(root)
+        if configured.is_symlink():
+            raise ArtifactPathError("symlink artifact root is not allowed")
         if not configured.exists() or not configured.is_dir():
             raise ArtifactStoreError(f"artifact root is not a directory: {configured}")
         self._root = configured.resolve()
+        self._required_ids = frozenset(
+            self._validate_id(identity) for identity in required_artifact_ids
+        )
 
     @property
     def root(self) -> Path:
@@ -835,6 +842,10 @@ class ExperimentArtifactStore:
                     f"symlink artifact entry is not allowed: {entry.name}"
                 )
             if not entry.is_dir():
+                if not entry.is_file():
+                    raise ArtifactPathError(
+                        "non-regular collection entry is not allowed"
+                    )
                 continue
             resolved = entry.resolve()
             try:
@@ -857,6 +868,10 @@ class ExperimentArtifactStore:
             raise ArtifactPathError(
                 f"symlink inside artifact is not allowed: {path.name!r}"
             )
+        if any(
+            not entry.is_file() and not entry.is_dir() for entry in internal_entries
+        ):
+            raise ArtifactPathError("non-regular artifact entry is not allowed")
         try:
             return load_experiment_artifact(path)
         except ExperimentArtifactError as exc:
@@ -874,6 +889,8 @@ class ExperimentArtifactStore:
                 )
             seen.add(artifact.artifact_id)
             loaded.append(artifact)
+        if not self._required_ids.issubset(seen):
+            raise ArtifactStoreError("required recorded experiment is unavailable")
         return tuple(sorted(loaded, key=lambda item: item.artifact_id))
 
     @staticmethod

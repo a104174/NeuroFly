@@ -288,6 +288,20 @@ def test_step_rejects_invalid_coordinates(args):
         model.proxy_step(*args)
 
 
+def _assert_no_frontend_proxy_dependency(web_root):
+    for path in web_root.rglob("*.ts"):
+        relative = path.relative_to(web_root)
+        if "node_modules" in relative.parts or ".next" in relative.parts:
+            continue
+        # package.json executes tests/*.test.ts as tests, not frontend code.
+        # Scientific evidence tests may name Python sources without importing them.
+        if relative.parent == Path("tests") and path.name.endswith(".test.ts"):
+            continue
+        assert "hs_dnp15_neural_validation" not in path.read_text(), (
+            f"forbidden neural proxy reference in frontend source: {relative}"
+        )
+
+
 def test_no_motor_frontend_or_body_dependency():
     root = Path(__file__).resolve().parents[1]
     source = (root / "src/neurofly/hs_dnp15_neural_validation.py").read_text()
@@ -299,7 +313,28 @@ def test_no_motor_frontend_or_body_dependency():
         "simulation",
     ):
         assert f"from neurofly.{module}" not in source
-    for folder in ("web",):
-        for path in (root / folder).rglob("*.ts"):
-            if "node_modules" not in path.parts and ".next" not in path.parts:
-                assert "hs_dnp15_neural_validation" not in path.read_text()
+    _assert_no_frontend_proxy_dependency(root / "web")
+
+
+def test_frontend_proxy_guard_accepts_test_evidence_text(tmp_path):
+    evidence = tmp_path / "tests/science-evidence.test.ts"
+    evidence.parent.mkdir()
+    evidence.write_text('const source = "src/neurofly/hs_dnp15_neural_validation.py";')
+    _assert_no_frontend_proxy_dependency(tmp_path)
+
+
+@pytest.mark.parametrize(
+    "name",
+    [
+        "src/lib/proxy.ts",
+        "src/lib/proxy.test.ts",
+        "scripts/proxy.ts",
+        "tests/proxy-helper.ts",
+    ],
+)
+def test_frontend_proxy_guard_still_rejects_source_dependencies(tmp_path, name):
+    source = tmp_path / name
+    source.parent.mkdir(parents=True)
+    source.write_text('import proxy from "hs_dnp15_neural_validation";')
+    with pytest.raises(AssertionError, match="forbidden neural proxy reference"):
+        _assert_no_frontend_proxy_dependency(tmp_path)

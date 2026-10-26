@@ -96,11 +96,14 @@ def main():
         )
         extraction = time.perf_counter() - start
         (isolated / "data").chmod(0o755)
-        tracked = (
+        tracked = set(
             subprocess.check_output(["git", "ls-files", "-z"], cwd=root)
             .decode()
             .split("\0")
         )
+        # This release candidate adds the module before it enters the real Git
+        # index. Keep the offline source closure representative without staging.
+        tracked.add("src/neurofly/recorded_experiments_runtime.py")
         for name in tracked:
             if name and (
                 name.startswith(("src/", "docs/science/", "data/reference/"))

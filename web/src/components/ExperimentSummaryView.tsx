@@ -3,6 +3,7 @@ import type {
   ExperimentSummary,
   PopulationSummary,
 } from "@/lib/neuroflyClient";
+import { recordedRunPurpose } from "@/lib/recordedExperimentPresentation";
 
 function value(value: number | null, unit = "") {
   return value === null ? "None" : `${value}${unit}`;
@@ -95,6 +96,7 @@ export function ExperimentSummaryView({ summary }: { summary: ExperimentSummary 
         <div>
           <p className="eyebrow">MODEL EXPERIMENT</p>
           <h1>{summary.candidate.identifier}</h1>
+          {recordedRunPurpose(summary.experiment_config_id) ? <p>{recordedRunPurpose(summary.experiment_config_id)}</p> : null}
           <p className="hero-copy">
             A reproducible {summary.pathway_condition.toLowerCase()} run across the
             selected LC4/LPLC2 → DNp01 circuit.

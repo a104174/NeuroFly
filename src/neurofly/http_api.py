@@ -102,6 +102,9 @@ def _error_response(status_code: int, code: str, message: str) -> JSONResponse:
 
 def _store(request: Request) -> ExperimentArtifactStore:
     try:
+        readiness = request.app.state.runtime_readiness
+        if readiness["mode"] != "local" and not readiness["ready"]:
+            raise ArtifactStoreError("scientific runtime is not verified")
         return request.app.state.experiment_artifact_store
     except AttributeError as exc:  # pragma: no cover - app factory invariant
         raise RuntimeError("experiment artifact store is not configured") from exc
@@ -495,10 +498,13 @@ def create_app(
     motor_experiment_artifact_root: str | Path | None = None,
     scenario_artifact_path: str | Path = DEFAULT_SCENARIO_PATH,
     runtime_readiness: dict[str, Any] | None = None,
+    required_artifact_ids: tuple[str, ...] = (),
 ) -> FastAPI:
     """Create an isolated read-only API over one configured artifact root."""
 
-    store = ExperimentArtifactStore(artifact_root)
+    store = ExperimentArtifactStore(
+        artifact_root, required_artifact_ids=required_artifact_ids
+    )
     app = FastAPI(
         title="NeuroFly read-only experiment API",
         version=HTTP_API_VERSION,
@@ -529,6 +535,7 @@ def create_app(
         "ready": False,
         "status": "LOCAL_UNVERIFIED",
     }
+    app.state.runtime_readiness = readiness
 
     @app.get("/ready", tags=["system"])
     def scientific_readiness():
@@ -708,10 +715,17 @@ def create_app_from_env() -> FastAPI:
     circuit_contract_root = os.environ.get(CIRCUIT_CONTRACT_ROOT_ENV)
     motor_root = os.environ.get(MOTOR_EXPERIMENT_ARTIFACT_ROOT_ENV)
     readiness = None
+    required_ids = ()
     if os.environ.get("NEUROFLY_RUNTIME_MODE", "local") != "local":
+        from neurofly.recorded_experiments_runtime import (
+            REQUIRED_ARTIFACT_IDS,
+        )
+        from neurofly.runtime_bundle import RECORDED_INVENTORY_ID
         from neurofly.runtime_readiness import startup_readiness
 
         readiness = startup_readiness()
+        if os.environ.get("NEUROFLY_RUNTIME_INVENTORY_ID") == RECORDED_INVENTORY_ID:
+            required_ids = REQUIRED_ARTIFACT_IDS
 
     return create_app(
         configured,
@@ -720,6 +734,7 @@ def create_app_from_env() -> FastAPI:
         motor_root,
         os.environ.get("NEUROFLY_SCENARIO_ARTIFACT_PATH", str(DEFAULT_SCENARIO_PATH)),
         runtime_readiness=readiness,
+        required_artifact_ids=required_ids,
     )
 
 

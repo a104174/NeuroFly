@@ -1,14 +1,14 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "git": {
-    "deploymentEnabled": { "**": false, "d3r-preview": true }
+    "deploymentEnabled": { "main": true }
   },
   "services": {
     "backend": {
       "root": ".",
       "framework": "fastapi",
       "entrypoint": "app:app",
-      "buildCommand": "npm ci --prefix tools/vercel_blob --ignore-scripts --no-audit --no-fund && python tools/vercel_runtime_build.py",
+      "buildCommand": "python tools/vercel_runtime_build.py",
       "functions": {
         "app.py": {
           "includeFiles": ".neurofly-release/**",

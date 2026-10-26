@@ -61,7 +61,7 @@ export async function retrieve({ destination, pathname, storeId }, {
     if (!storeId || env.BLOB_STORE_ID !== storeId) throw new Failure('STORE_METADATA_MISMATCH');
     if (env.BLOB_READ_WRITE_TOKEN) throw new Failure('STATIC_CREDENTIAL_PROHIBITED');
     if (typeof pathname !== 'string' ||
-        !/^neurofly\/runtime\/v2\/([a-f0-9]{64})\/neurofly-runtime-v2-\1\.tar\.gz$/.test(pathname))
+        !/^neurofly\/runtime\/v([23])\/([a-f0-9]{64})\/neurofly-runtime-v\1-\2\.tar\.gz$/.test(pathname))
       throw new Failure('INVALID_ARGUMENT');
     stage = 'output';
     destination = await destinationPath(destination);

@@ -13,6 +13,7 @@ import { CockpitTelemetry } from "@/components/CockpitTelemetry";
 import { MorphologyInspector } from "@/components/MorphologyInspector";
 import { useExperimentPlayback } from "@/hooks/useExperimentPlayback";
 import { deriveActivityStructureProjection } from "@/lib/activityStructure";
+import { recordedRunPurpose } from "@/lib/recordedExperimentPresentation";
 import { toggleCockpitFocus, type CockpitFocusPanel, type CockpitFocusState } from "@/lib/cockpitLayout";
 import { deriveCockpitEvents, deriveCockpitFrame } from "@/lib/cockpitModel";
 import type {
@@ -104,6 +105,7 @@ export function ScientificCockpit({
         <div className="cockpit-masthead-title">
           <p className="eyebrow">NEUROFLY / SCIENTIFIC COCKPIT</p>
           <h1>Persisted experiment <span>{summary.candidate.identifier}</span></h1>
+          {recordedRunPurpose(summary.experiment_config_id) ? <p>{recordedRunPurpose(summary.experiment_config_id)}</p> : null}
         </div>
         <div className="cockpit-masthead-meta" aria-label="Current run status">
           <span title={summary.artifact_id}>RUN {summary.artifact_id.slice(0, 12)}…</span>

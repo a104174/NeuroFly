@@ -47,6 +47,33 @@ test('private pinned request streams bytes with explicit OIDC and no static toke
   assert.deepEqual(await readFile(input.destination), bytes);
   assert.deepEqual(await readdir(input.root), ['runtime.tar.gz']);
 });
+
+test('v3 namespace preserves private OIDC transfer and exact pathname', async t => {
+  const input = await fixture(t);
+  const digest = 'c5edf9edb0b1f08a0eb3e36808dd6ec25771be1bc575ce07e9cc3063aa6586cf';
+  input.pathname = `neurofly/runtime/v3/${digest}/neurofly-runtime-v3-${digest}.tar.gz`;
+  const result = await retrieve(input, options(async (name, opts) => {
+    assert.equal(name, input.pathname);
+    assert.equal(opts.access, 'private');
+    assert.equal(opts.oidcToken, env.VERCEL_OIDC_TOKEN);
+    assert.equal(opts.storeId, storeId);
+    return response();
+  }));
+  assert.deepEqual(result, { ok: true });
+});
+
+test('version/hash mismatch and mutable namespace never reach storage', async t => {
+  const input = await fixture(t);
+  for (const pathname of [
+    `neurofly/runtime/v3/${sha}/neurofly-runtime-v2-${sha}.tar.gz`,
+    `neurofly/runtime/v2/${sha}/neurofly-runtime-v3-${sha}.tar.gz`,
+    `neurofly/runtime/v3/${sha}/neurofly-runtime-v3-${'0'.repeat(64)}.tar.gz`,
+    'neurofly/runtime/v3/latest/runtime.tar.gz',
+  ]) {
+    assert.deepEqual(await retrieve({ ...input, pathname }, options(() => assert.fail('network'))),
+      { ok: false, category: 'INVALID_ARGUMENT' });
+  }
+});
 for (const [name, override, category] of [
   ['missing OIDC', { VERCEL_OIDC_TOKEN: '' }, 'BUILD_OIDC_MISSING'],
   ['Production rejected', { VERCEL_ENV: 'production' }, 'PREVIEW_ENVIRONMENT_REQUIRED'],

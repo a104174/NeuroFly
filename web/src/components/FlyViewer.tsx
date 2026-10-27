@@ -9,7 +9,7 @@ import type { ArenaOverlayProps } from "./ArenaComparison";
 import type { ViewerStats } from "./FlyViewerCanvas";
 import { FLY_VIEWER_ASSET, type FlyViewerView } from "@/lib/flyViewer";
 
-import {presentationGaitHistory,gaitAt,type GaitMotion} from "@/lib/articulatedGait";
+import {presentationGaitHistory,gaitAt,type GaitMotion,type GaitState} from "@/lib/articulatedGait";
 
 import {projectMotorGait,type MotorReference,type BridgeCondition} from "@/lib/motorGaitBridge";
 import type { ViewerCameraView } from "./lab/explorePresentation";
@@ -17,14 +17,14 @@ import type { FlightTrajectoryDisplay } from "@/lib/flightTrajectory";
 
 const FlyViewerCanvas = dynamic(() => import("./FlyViewerCanvas"), { ssr: false, loading: () => <p className="fly-viewer-message">Preparing the studio…</p> });
 const views: { id: FlyViewerView; label: string }[] = [{ id: "three-quarter", label: "Overview" }, { id: "lateral", label: "Side" }, { id: "head", label: "Front" }, { id: "dorsal", label: "Top" }];
-export function FlyViewer({ experience = false, initialGait = false, initialView = experience ? "explore" : "three-quarter", arena = false, replayPose, locomotion = false, locomotionVersion = "v0", stimulusPlane, stimulusX, stimulusIds, trajectory, liveTrajectory, comparison, playbackControls, scientificTimeline, gaitMotion, motorBridge, presentationLabel, flightPresentation, flightTrajectory, flightDisclosure }: { experience?:boolean; initialGait?:boolean; initialView?:ViewerCameraView; flightDisclosure?:string; flightPresentation?:WingPose; flightTrajectory?:FlightTrajectoryDisplay; motorBridge?:{reference:MotorReference;condition:BridgeCondition}; presentationLabel?:string; gaitMotion?:GaitMotion; arena?: boolean; locomotion?: boolean; locomotionVersion?: "v0" | "v1" | "v2" | "v3" | "v3.1" | "v4" | "v5" | "v5.1"; stimulusPlane?: number; stimulusX?: number[]; stimulusIds?: string[]; trajectory?: [number, number, number][]; liveTrajectory?: [number, number, number][]; comparison?: ArenaOverlayProps; playbackControls?: ReactNode; scientificTimeline?: ReactNode; replayPose?: import("@/lib/arenaCourseReplay").ArenaCoursePose }) {
+export function FlyViewer({ experience = false, initialGait = false, initialView = experience ? "explore" : "three-quarter", arena = false, replayPose, locomotion = false, locomotionVersion = "v0", stimulusPlane, stimulusX, stimulusIds, trajectory, liveTrajectory, comparison, playbackControls, scientificTimeline, gaitMotion, liveGaitState, motorBridge, presentationLabel, flightPresentation, flightTrajectory, flightDisclosure }: { experience?:boolean; initialGait?:boolean; initialView?:ViewerCameraView; flightDisclosure?:string; flightPresentation?:WingPose; flightTrajectory?:FlightTrajectoryDisplay; motorBridge?:{reference:MotorReference;condition:BridgeCondition}; presentationLabel?:string; gaitMotion?:GaitMotion; liveGaitState?:GaitState; arena?: boolean; locomotion?: boolean; locomotionVersion?: "v0" | "v1" | "v2" | "v3" | "v3.1" | "v4" | "v5" | "v5.1"; stimulusPlane?: number; stimulusX?: number[]; stimulusIds?: string[]; trajectory?: [number, number, number][]; liveTrajectory?: [number, number, number][]; comparison?: ArenaOverlayProps; playbackControls?: ReactNode; scientificTimeline?: ReactNode; replayPose?: import("@/lib/arenaCourseReplay").ArenaCoursePose }) {
   const [gait,setGait]=useState(initialGait);
   const gaitFrames=gaitMotion?.frames,endPosition=gaitMotion?.end.position,endTime=gaitMotion?.end.time,endHeading=gaitMotion?.end.heading;
   const gaitData=useMemo(()=>{try{return {states:gait&&gaitFrames&&endPosition&&endTime!==undefined&&endHeading!==undefined?presentationGaitHistory({frames:gaitFrames,end:{time:endTime,position:endPosition,heading:endHeading},time:endTime}):[],error:null};}catch(e){return {states:[],error:String(e)};}},[gait,gaitFrames,endPosition,endTime,endHeading]);
   const gaitStates=gaitData.states;
   const [gaitProblem,setGaitProblem]=useState<string|null>(null);
   const onGaitFailure=useCallback((message:string|null)=>setGaitProblem(message),[]);
-  const baseGaitState=gaitStates.length&&gaitMotion?gaitAt(gaitStates,gaitMotion.time):undefined;
+  const baseGaitState=gait ? liveGaitState ?? (gaitStates.length&&gaitMotion?gaitAt(gaitStates,gaitMotion.time):undefined) : undefined;
   const gaitState=baseGaitState&&motorBridge?projectMotorGait(baseGaitState,motorBridge.reference,motorBridge.condition):baseGaitState;
   const [tableReady, setTableReady] = useState(false);
   const onTableReady = useCallback(() => setTableReady(true), []);
@@ -60,7 +60,7 @@ export function FlyViewer({ experience = false, initialGait = false, initialView
   </>;
   function renderNotes(){return <>
     {experience?<div className="fly-viewer-notes"><label><input type="checkbox" checked={showLandmarks} onChange={e=>setShowLandmarks(e.target.checked)}/> Model landmarks (annotations)</label><p>Markers show the observer’s geometric reference points. Visibility does not change sensory inputs.</p></div>:null}
-    {arena&&!flightPresentation?<div className="fly-viewer-notes"><label><input type="checkbox" checked={gait} disabled={!gaitMotion} onChange={e=>setGait(e.target.checked)}/> {experience?"Leg animation":"Articulated Gait v6"}</label><span> Engineering kinematic gait — not connectome-derived leg control{!gaitMotion?" · Sem histórico de movimento: apresentação original.":""}</span></div>:null}
+    {arena&&!flightPresentation?<div className="fly-viewer-notes"><label><input type="checkbox" checked={gait} disabled={!gaitMotion && !liveGaitState} onChange={e=>setGait(e.target.checked)}/> {experience?"Leg animation":"Articulated Gait v6"}</label><span> Engineering kinematic gait — not connectome-derived leg control{!gaitMotion && !liveGaitState?" · Sem histórico de movimento: apresentação original.":""}</span></div>:null}
     {!experience&&(gaitProblem||gaitData.error)?<p role="alert">Articulated gait unavailable: {gaitProblem??gaitData.error}. Original V2-F presentation retained.</p>:null}
     {scientificTimeline}
     <div className="fly-viewer-notes"><p>Drag to orbit · Scroll or pinch to zoom · Camera pivots around the visual thoracic anchor.{arena ? experience ? " Inspect moves the camera only. Reset returns to Explore." : " Inspect Fly moves the camera only. Reset returns to Overview." : ""}</p><label><input type="checkbox" checked={diagnostics} onChange={event => setDiagnostics(event.target.checked)} /> Render diagnostics</label></div>

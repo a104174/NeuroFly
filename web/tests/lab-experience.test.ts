@@ -22,7 +22,7 @@ test("default Lab opens Explore with a real viewer, home navigation and no histo
   assert.match(html, /Explore<span>\.<\/span>/);
   assert.match(page, /href="\/" aria-label="NeuroFly home"/);
   assert.match(html, /Exploration controls/);
-  assert.match(page, /<ContinuousNavigationArena presentation="explore"/);
+  assert.match(page, /<LiveExploreArena/);
   assert.doesNotMatch(page, /ArenaCourseViewer/);
   assert.doesNotMatch(html, /arena-mode-controls|Experimental Locomotion v0|Motor-to-Gait Bridge v7/);
   assert.equal((html.match(/<h1\b/g) ?? []).length, 1);

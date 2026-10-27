@@ -53,6 +53,8 @@ export class InteractiveNeuralEngine {
  private readonly events:StimulusEvent[]=[];
  protected readonly records:LocomotionFrame[]=[];
  protected readonly path:Vec3[]=[];
+ /** Finite experiments retain their full history; live consumers own bounded buffers. */
+ protected retainHistory=true;
  constructor(authority:NeuralArtifact,mode:RuntimeMode="neural",initialPlane:Plane=.4) {
   if(!["neural","baseline","output_disabled"].includes(mode)||!validPlane(initialPlane))throw new Error("Unsupported runtime configuration");
   const c=authority.config, n=c.sources.neural as NeuralContract;
@@ -94,12 +96,12 @@ export class InteractiveNeuralEngine {
   * snapshot() is the NEW right-boundary state, never a predicted prerecorded pose. */
  advance():LocomotionFrame {
   if(this.n>=this.lastStep)throw new Error("Simulation completed");
-  if(this.pending!==null){this.events.push({step:this.n,time:this.n*BODY_DT,old_plane:this.plane,new_plane:this.pending});this.plane=this.pending;this.pending=null;}
+  if(this.pending!==null){if(this.retainHistory)this.events.push({step:this.n,time:this.n*BODY_DT,old_plane:this.plane,new_plane:this.pending});this.plane=this.pending;this.pending=null;}
   const f=this.calculateBoundary(true);
-  this.records.push(f);this.previous=structuredClone(this.pose);
+  if(this.retainHistory)this.records.push(f);this.previous=structuredClone(this.pose);
   const next:Vec3=[clip(this.pose.position[0]+f.linear_velocity[0]*BODY_DT,-this.limits[0],this.limits[0]),this.pose.position[1],clip(this.pose.position[2]+f.linear_velocity[2]*BODY_DT,-this.limits[1],this.limits[1])];
   this.distance+=Math.hypot(next[0]-this.pose.position[0],next[2]-this.pose.position[2]);
-  this.pose={position:next,heading:finite(this.pose.heading+f.angular_velocity*BODY_DT)};this.n++;this.path.push([...next]);
+  this.pose={position:next,heading:finite(this.pose.heading+f.angular_velocity*BODY_DT)};this.n++;if(this.retainHistory)this.path.push([...next]);
   // Resolve the new boundary without advancing neural time.
   this.velocity();return structuredClone(f);
  }

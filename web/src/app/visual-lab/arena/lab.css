@@ -28,6 +28,7 @@
 .lab-shell .fly-viewer-message { font-size:14px; padding:18px; background:#102231ee; }
 .lab-shell .fly-viewer-stats { top:85px; bottom:auto; max-width:calc(100% - 36px); font-size:11px; }
 .lab-controls { order:1; display:flex; align-items:center; gap:12px; padding:18px 0; border-bottom:1px solid #b0d3dc25; }
+.lab-live-window { order:1; margin:8px 0 0; color:var(--lab-muted); font-size:11px; }
 .lab-shell button,.lab-shell select { font:inherit; font-size:13px; color:#e0edf2; background:#142b39; border:1px solid #b0d3dc30; border-radius:7px; min-height:44px; padding:10px 16px; cursor:pointer; }
 .lab-shell button:hover:not(:disabled) { background:#203c49; border-color:#86e5de80; }
 .lab-shell button:disabled { opacity:.45; cursor:not-allowed; }

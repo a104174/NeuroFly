@@ -164,3 +164,14 @@
   .neural-history > span { flex-wrap:wrap; }
   .neural-explorer-canvas-label { max-width:calc(100% - 24px); overflow-wrap:anywhere; }
 }
+
+/* V10.5F-B: selected identity and current state lead the inspector. */
+.neural-selected-state h3 { font-size:23px; margin:7px 0; overflow-wrap:anywhere; }
+.neural-selected-state > p { margin:6px 0 12px; }
+.neural-current-state { display:grid; gap:5px; margin:16px 0 10px; padding-left:12px; border-left:2px solid var(--lab-accent); }
+.neural-current-state > span { color:var(--lab-muted); font-size:11px; overflow-wrap:anywhere; }
+.neural-current-state > strong { font-size:27px; font-weight:400; color:#e0edf2; font-variant-numeric:tabular-nums; overflow-wrap:anywhere; }
+.neural-entity-detail .neural-history { margin:18px 0; padding-top:14px; }
+.neural-history > strong { display:block; font-size:12px; margin-bottom:9px; }
+.neural-history svg { height:120px; }
+.neural-history > span { flex-wrap:wrap; font-size:11px; }

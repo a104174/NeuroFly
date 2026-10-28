@@ -32,3 +32,40 @@ test('activity signs and movement explanation reflect actual values', () => {
   assert.match(turnExplanation(0.1, 0, 0.1), /boundary response contributes no yaw/);
   assert.match(turnExplanation(NaN, 0, 0), /unavailable/);
 });
+
+// Server rendering exercises the same stateless primary inspector used in both modes.
+import { createElement } from 'react';
+import { renderToStaticMarkup } from 'react-dom/server';
+import { SelectedNeuralState, ActivityHistory } from '../src/components/NeuralActivityExplorer3D';
+
+test('primary inspector preserves exact identity and signed proxy semantics in both presentations', () => {
+  for (const value of [0.25, -0.25, 0, null, NaN, Infinity]) {
+    const html = renderToStaticMarkup(createElement(SelectedNeuralState, { name: 'HSN', side: 'R', bodyId: 10015, field: 'hs_states[0]', value }));
+    assert.match(html, /HSN · Right/);
+    assert.match(html, /Body ID 10015/);
+    assert.match(html, /hs_states\[0\]/);
+    assert.ok(html.includes(activitySign(value)));
+    assert.match(html, /not a measured biological response/);
+    if (value !== null && Number.isFinite(value)) {
+      assert.ok(html.includes(value.toFixed(5)));
+      assert.match(html, /dimensionless model units/);
+    } else {
+      assert.match(html, /Unavailable/);
+      assert.doesNotMatch(html, /NaN|Infinity/);
+    }
+  }
+});
+
+test('history renderer identifies the selected structure and retains interval times and gaps', () => {
+  const history = [{ tick: 4, time: 0.08, value: -0.2 }, { tick: 6, time: 0.12, value: 0.4 }];
+  const before = structuredClone(history);
+  const html = renderToStaticMarkup(createElement(ActivityHistory, { history, name: 'HSN R · 10015' }));
+  assert.match(html, /HSN R · 10015/);
+  assert.match(html, /0.08 to 0.12 seconds/);
+  assert.match(html, /interval-start time/);
+  assert.equal((html.match(/<circle/g) ?? []).length, 2);
+  assert.equal((html.match(/<line /g) ?? []).length, 1); // zero reference; no line across missing tick 5
+  assert.deepEqual(history, before);
+  const empty = renderToStaticMarkup(createElement(ActivityHistory, { history: [], name: 'DNp15 L · 12069' }));
+  assert.match(empty, /No recent valid samples/);
+});

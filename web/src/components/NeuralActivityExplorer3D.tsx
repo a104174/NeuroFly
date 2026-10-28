@@ -121,19 +121,37 @@ const NeuralCanvas = memo(function NeuralCanvas({ view, selectedId, values, onCo
   );
 });
 
-const ActivityHistory = memo(function ActivityHistory({ history, name }: {
+export const ActivityHistory = memo(function ActivityHistory({ history, name }: {
   readonly history: ReturnType<typeof activityHistory>;
   readonly name: string;
 }) {
   return (
-            <div className="neural-history"><strong>Recent model activity</strong>
-              {history.length ? <><svg viewBox="0 0 240 70" role="img" aria-label={`Recent ${name} model proxy values from ${history[0].time.toFixed(2)} to ${history[history.length - 1].time.toFixed(2)} seconds`}>
+            <div className="neural-history"><strong>Recent activity · {name}</strong>
+              {history.length ? <><svg viewBox="0 0 240 70" preserveAspectRatio="none" role="img" aria-label={`Recent ${name} model proxy values from ${history[0].time.toFixed(2)} to ${history[history.length - 1].time.toFixed(2)} seconds`}>
                 <line x1="0" x2="240" y1="35" y2="35" stroke="#6c8994" strokeDasharray="3 3" />
                 {history.map((point, i) => { const span = history[history.length - 1].time - history[0].time; const x = span > 0 ? (point.time - history[0].time) * 240 / span : 0; const y = 35 - Math.max(-1, Math.min(1, point.value)) * 30; const previous = history[i - 1]; return <g key={point.tick}>{previous && point.tick === previous.tick + 1 ? <line x1={span > 0 ? (previous.time - history[0].time) * 240 / span : 0} y1={35 - Math.max(-1, Math.min(1, previous.value)) * 30} x2={x} y2={y} stroke="#87e9df" /> : null}<circle cx={x} cy={y} r="1.2" fill="#d6f4f0" /></g>; })}
               </svg><span>{history[0].time.toFixed(2)} s <span>interval-start time</span> {history[history.length - 1].time.toFixed(2)} s</span><small>Rolling window, up to 256 samples; −1 to +1 model units. Not a complete recording.</small></> : <p>No recent valid samples yet. Start a session to see activity.</p>}
             </div>
   );
 });
+
+export function SelectedNeuralState({ name, side, bodyId, field, value }: {
+  readonly name: string; readonly side: string; readonly bodyId: number;
+  readonly field: string; readonly value: number | null;
+}) {
+  const valid = value !== null && Number.isFinite(value);
+  return <header className="neural-selected-state" aria-label="Selected structure and current computational state">
+    <span className="lab-eyebrow">Selected MaleCNS structure</span>
+    <h3>{name} · {side === "R" ? "Right" : side === "L" ? "Left" : side}</h3>
+    <p>Body ID {bodyId} · {field}</p>
+    <div className="neural-current-state" aria-label="Current computational proxy">
+      <span>Current model state</span>
+      <strong>{valid ? value.toFixed(5) : "Unavailable"}</strong>
+      <span>{activitySign(value)}{valid ? " · dimensionless model units" : " · no valid activity available"}</span>
+    </div>
+    <p>Computed whole-structure proxy associated with this anatomy. It is not a measured biological response.</p>
+  </header>;
+}
 
 function activityFor(snapshot: NeuralActivityViewSnapshot | null): ReadonlyMap<number, number> {
   return new Map(snapshot?.values.map((entry) => [entry.body_id, entry.value]) ?? []);
@@ -227,6 +245,23 @@ export const NeuralActivityExplorer3D = memo(function NeuralActivityExplorer3D({
         </div>
 
         <aside className="neural-explorer-inspector" aria-label="Neural entity selection and activity">
+
+          {selected ? <div className="neural-entity-detail">
+            <SelectedNeuralState name={selected.identity.cell_type} side={selected.identity.side} bodyId={selected.identity.body_id} field={selected.identity.model_state.field} value={selectedValue} />
+            <p>{!snapshot ? "Start a session to see the circuit’s current contribution." : !snapshot.neural_enabled ? "Neural influence on movement is off; model states remain computed." : Math.abs(snapshot.neural_yaw_rad_s) < 1e-9 ? "The circuit’s current yaw contribution is zero." : "The circuit contributes to yaw through an engineering projection, not a decision by this individual cell."}</p>
+            {snapshot ? <p>Engineering wall response: {Math.abs(snapshot.boundary_yaw_rad_s) < 1e-9 ? "no yaw contribution in this interval" : "also contributes to yaw in this interval"}.</p> : null}
+            <ActivityHistory history={history} name={`${selected.identity.cell_type} ${selected.identity.side} · ${selected.identity.body_id}`} />
+            {presentation === "detailed" ? <dl>
+              <div><dt>MaleCNS body ID</dt><dd>{selected.identity.body_id}</dd></div>
+              <div><dt>Model state</dt><dd>{selected.identity.model_state.field}</dd></div>
+              <div><dt>Model role</dt><dd>{selected.identity.model} · {selected.identity.role}</dd></div>
+              <div><dt>SWC nodes</dt><dd>{selected.node_count.toLocaleString()}</dd></div>
+              <div><dt>Skeleton sampling</dt><dd>{selected.identity.morphology.source_sampling.downres_level} · ds_intv {selected.identity.morphology.source_sampling.ds_intv.join("/ ")}</dd></div>
+              <div><dt>Selected structural routes</dt><dd>{routes.length ? routes.map((route) => `${route.source_body_id}→${route.target_body_id} (${route.structural_contact_count} contacts)`).join(" · ") : "No selected route in this motif"}</dd></div>
+            </dl> : null}
+            {presentation === "detailed" ? <div className="neural-relationships"><strong>Connections and model</strong><p>MaleCNS structural contacts: {routes.length ? routes.map((route) => `${route.source_body_id} → ${route.target_body_id} (${route.structural_contact_count})`).join(" · ") : "none in this selected motif"}. Contact counts are not model gains.</p><p>The computational model links HS proxies to DNp15 proxies; its yaw projection and the wall response are engineering mappings. Selecting one cell does not establish individual causation.</p></div> : <p>MaleCNS supplies anatomical structure; HS/DNp15 activity and yaw are modeled. Structural contacts are not model gains.</p>}
+          </div> : <p role="status">Select a verified structure to inspect its model state.</p>}
+
           <strong className="neural-list-title">Select a neuron · list or 3D</strong>
           <div className="neural-entity-list" aria-label="Select a modeled neural identity">
             {bundle.view.bodies.map((body) => {
@@ -245,23 +280,6 @@ export const NeuralActivityExplorer3D = memo(function NeuralActivityExplorer3D({
             })}
           </div>
 
-          {selected ? <div className="neural-entity-detail">
-            <span className="lab-eyebrow">{selected.identity.role === "SOURCE" ? "HS MODEL SOURCE" : "DNp15 MODEL TARGET"}</span>
-            <h3>{selected.identity.cell_type} {selected.identity.side}</h3>
-            <p>This verified {selected.identity.cell_type} structure on the {selected.identity.side === "R" ? "right" : "left"} is linked to one computed {selected.identity.model} model state. The highlight does not show measured activity.</p>
-            <p>Current proxy: <strong>{activitySign(selectedValue)}{selectedValue === null ? "" : ` (${selectedValue.toFixed(5)})`}</strong>. {!snapshot ? "Start a session to see the circuit’s current contribution." : !snapshot.neural_enabled ? "Neural influence on movement is off; model states remain computed." : Math.abs(snapshot.neural_yaw_rad_s) < 1e-9 ? "The circuit’s current yaw contribution is zero." : "The circuit contributes to yaw through an engineering projection, not a decision by this individual cell."}</p>
-            {snapshot ? <p>Engineering wall response: {Math.abs(snapshot.boundary_yaw_rad_s) < 1e-9 ? "no yaw contribution in this interval" : "also contributes to yaw in this interval"}.</p> : null}
-            {presentation === "detailed" ? <dl>
-              <div><dt>MaleCNS body ID</dt><dd>{selected.identity.body_id}</dd></div>
-              <div><dt>Model state</dt><dd>{selected.identity.model_state.field}</dd></div>
-              <div><dt>Activity</dt><dd>{selectedValue === null ? "Unavailable" : `${selectedValue >= 0 ? "+" : ""}${selectedValue.toFixed(5)} model units`}</dd></div>
-              <div><dt>SWC nodes</dt><dd>{selected.node_count.toLocaleString()}</dd></div>
-              <div><dt>Skeleton sampling</dt><dd>{selected.identity.morphology.source_sampling.downres_level} · ds_intv {selected.identity.morphology.source_sampling.ds_intv.join("/ ")}</dd></div>
-              <div><dt>Selected structural routes</dt><dd>{routes.length ? routes.map((route) => `${route.source_body_id}→${route.target_body_id} (${route.structural_contact_count} contacts)`).join(" · ") : "No selected route in this motif"}</dd></div>
-            </dl> : <p>Model state: {selected.identity.model_state.field}</p>}
-            <ActivityHistory history={history} name={selected.identity.cell_type} />
-            <div className="neural-relationships"><strong>Connections and model</strong><p>MaleCNS structural contacts: {routes.length ? routes.map((route) => `${route.source_body_id} → ${route.target_body_id} (${route.structural_contact_count})`).join(" · ") : "none in this selected motif"}. Contact counts are not model gains.</p><p>The computational model links HS proxies to DNp15 proxies; its yaw projection and the wall response are engineering mappings. Selecting one cell does not establish individual causation.</p></div>
-          </div> : null}
 
           <div className="neural-activity-legend">
             <strong>Signed proxy state</strong>

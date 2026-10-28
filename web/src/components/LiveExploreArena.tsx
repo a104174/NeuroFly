@@ -1,11 +1,12 @@
 "use client";
 
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { FlyViewer } from './FlyViewer';
 import { ExploreLabView } from './lab/ExploreLabView';
 import { gaitHistory, type GaitState } from '@/lib/articulatedGait';
 import { loadNeuralLocomotion, type NeuralArtifact } from '@/lib/neuralLocomotion';
 import { LiveClock, LiveGroundSession, pauseForVisibility, type LiveSample, type LiveStatus } from '@/lib/liveGroundSession';
+import type { ExplorationMode } from '@/lib/engineeringExploration';
 import type { NavigationSnapshot } from '@/lib/continuousArenaNavigation';
 
 export function LiveExploreArena() {
@@ -19,29 +20,30 @@ export function LiveExploreArena() {
   const [path, setPath] = useState<[number, number, number][]>([]);
   const [sample, setSample] = useState<LiveSample | null>(null);
   const [neural, setNeural] = useState(true);
+  const [mode, setMode] = useState<ExplorationMode>('baseline_v10_5b');
   const [error, setError] = useState<string | null>(null);
   const [notice, setNotice] = useState('');
   const [lagging, setLagging] = useState(false);
 
-  function install(source: NeuralArtifact, enabled: boolean) {
+  const install = useCallback((source: NeuralArtifact, enabled: boolean, selectedMode: ExplorationMode) => {
     session.current?.stop(); clock.current.reset();
-    const next = new LiveGroundSession(source, enabled, crypto.randomUUID());
+    const next = new LiveGroundSession(source, enabled, crypto.randomUUID(), undefined, undefined, selectedMode);
     session.current = next;
     const snapshot = next.snapshot();
     gait.current = gaitHistory([{ time: snapshot.time, position: snapshot.position, heading: snapshot.heading }])[0];
     setGaitState(gait.current); setState(snapshot); setPath(next.trajectory.values());
     setStatus('ready'); setSample(null); setError(null); setLagging(false);
-  }
+  }, []);
 
   useEffect(() => {
     let active = true;
     const mountedClock = clock.current;
     loadNeuralLocomotion().then(({ authority: source }) => {
       if (!active) return;
-      try { install(source, true); setAuthority(source); } catch (e) { setError(String(e)); }
+      try { install(source, true, 'baseline_v10_5b'); setAuthority(source); } catch (e) { setError(String(e)); }
     }).catch(e => { if (active) setError(String(e)); });
     return () => { active = false; session.current?.stop(); mountedClock.reset(); };
-  }, []);
+  }, [install]);
 
   useEffect(() => {
     const onVisibility = () => {
@@ -91,11 +93,16 @@ export function LiveExploreArena() {
     try { current.start(); clock.current.reset(); setStatus('running'); setNotice(''); } catch (e) { setError(String(e)); }
   }
   function stop() { session.current?.stop(); clock.current.reset(); setStatus('stopped'); setNotice('Session stopped. Reset to start a new session.'); }
-  function reset() { if (authority) { install(authority, neural); setNotice('New session from the original initial state.'); } }
-  function changeNeural(enabled: boolean) { setNeural(enabled); if (authority) { install(authority, enabled); setNotice('Neural influence changed. A new session starts from the initial state.'); } }
+  function reset() { if (authority) { install(authority, neural, mode); setNotice('New session from the original initial state.'); } }
+  function changeNeural(enabled: boolean) { setNeural(enabled); if (authority) { install(authority, enabled, mode); setNotice('Neural influence changed. A new session starts from the initial state.'); } }
+  function changeMode(selectedMode: ExplorationMode) {
+    if (!authority || ['running', 'paused'].includes(status)) return;
+    setMode(selectedMode); install(authority, neural, selectedMode);
+    setNotice('Locomotion mode changed. A new session starts from the original initial state.');
+  }
   const pose = state && authority ? { anchor: state.position, rotation: state.heading, assetOffset: authority.config.body.asset_offset } : undefined;
 
-  return <ExploreLabView state={state} playing={status === 'running'} error={error} notice={notice} neuralEnabled={neural} onPlay={play} onStop={stop} onReset={reset} onNeuralChange={changeNeural} lagging={lagging} liveStatus={status} latestSample={sample}>
+  return <ExploreLabView state={state} playing={status === 'running'} error={error} notice={notice} neuralEnabled={neural} onPlay={play} onStop={stop} onReset={reset} onNeuralChange={changeNeural} mode={mode} onModeChange={changeMode} lagging={lagging} liveStatus={status} latestSample={sample}>
     <FlyViewer experience initialGait arena locomotion={Boolean(state)} locomotionVersion="v3" replayPose={pose} stimulusPlane={state?.plane} liveTrajectory={path} liveGaitState={gaitState}/>
   </ExploreLabView>;
 }

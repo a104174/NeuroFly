@@ -59,6 +59,9 @@
 .lab-panel-content p { font-size:13px; color:var(--lab-muted); line-height:1.75; margin:12px 0; }
 .lab-toggle { display:flex; justify-content:space-between; gap:16px; align-items:center; font-size:14px; cursor:pointer; min-height:44px; }
 .lab-toggle input { width:22px; height:22px; accent-color:var(--lab-accent); cursor:pointer; }
+.lab-mode-select { display:grid; gap:8px; color:var(--lab-muted); font-size:12px; }
+.lab-shell .lab-mode-select select { width:100%; padding:10px 12px; background:#102231; }
+.lab-mode-select select:disabled { opacity:.65; cursor:not-allowed; }
 .lab-panel-content .lab-setting-note { color:#e9c291; font-size:12px; }
 .lab-telemetry { font-size:12px; overflow-wrap:anywhere; }
 .lab-telemetry div { margin:16px 0; }

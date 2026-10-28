@@ -2,21 +2,25 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 import type { NavigationSnapshot } from "@/lib/continuousArenaNavigation";
 import type { LiveSample, LiveStatus } from "@/lib/liveGroundSession";
+import { neuralActivityTrace } from "@/lib/neuralActivityTrace";
+import type { ExplorationMode } from "@/lib/engineeringExploration";
 
 export function explorationStatus(state: NavigationSnapshot | null, playing: boolean, error: string | null) {
   return error ? "Unavailable" : !state ? "Preparing" : state.step === 1500 ? "Exploration complete" : playing ? "Exploring" : state.step ? "Paused" : "Ready to explore";
 }
 
-export function ExploreLabView({ state, playing, error, notice, neuralEnabled, onPlay, onReset, onNeuralChange, onExport, onReplay, lagging, liveStatus, latestSample, onStop, children }: {
+export function ExploreLabView({ state, playing, error, notice, neuralEnabled, onPlay, onReset, onNeuralChange, onExport, onReplay, lagging, liveStatus, latestSample, onStop, mode, onModeChange, children }: {
   state: NavigationSnapshot | null; playing: boolean; error: string | null; notice: string;
   neuralEnabled: boolean; onPlay: () => void; onReset: () => void; onNeuralChange: (enabled: boolean) => void;
   onExport?: () => void; onReplay?: () => void; lagging: boolean; children?: ReactNode;
   liveStatus?: LiveStatus; latestSample?: LiveSample | null; onStop?: () => void;
+  mode?: ExplorationMode; onModeChange?: (mode: ExplorationMode) => void;
 }) {
   const complete = !liveStatus && state?.step === 1500;
   const status = error ? "Unavailable" : !state ? "Preparing" : liveStatus ? ({ready:"Ready to explore",running:"Exploring",paused:"Paused",stopped:"Stopped",error:"Unavailable"} as const)[liveStatus] : explorationStatus(state, playing, error);
   const seconds = Math.floor(state?.time ?? 0);
   const liveTime = `${String(Math.floor(seconds / 3600)).padStart(2, "0")}:${String(Math.floor(seconds / 60) % 60).padStart(2, "0")}:${String(seconds % 60).padStart(2, "0")}`;
+  const trace = liveStatus && latestSample ? neuralActivityTrace(latestSample) : null;
   return <div className="lab-experience" data-lab-state={status}>
     <div className="lab-activity"><div><span className="lab-eyebrow">The living question</span><h1>Explore<span>.</span></h1><p>A small organism. A world to move through.</p></div><span className={`lab-status${playing ? " is-running" : ""}`} role="status"><i aria-hidden="true" />{status}</span></div>
     <div className="lab-workspace">
@@ -37,7 +41,9 @@ export function ExploreLabView({ state, playing, error, notice, neuralEnabled, o
       </div>
       <aside className="lab-sidebar" aria-label="Exploration settings and information">
         <div className="lab-introduction"><span className="lab-eyebrow">Your laboratory</span><p>Explore movement.<br />Look closer whenever you like.</p></div>
+        {liveStatus && mode && onModeChange ? <details className="lab-settings" open><summary>Locomotion mode <span aria-hidden="true">⌄</span></summary><div className="lab-panel-content"><label className="lab-mode-select"><span>Controller</span><select aria-label="Locomotion mode" value={mode} disabled={!state || Boolean(error) || liveStatus === "running" || liveStatus === "paused"} onChange={e => onModeChange(e.target.value as ExplorationMode)}><option value="baseline_v10_5b">Baseline · v10.5b</option><option value="engineering_exploration_v1">Engineering exploration · v1</option></select></label><p>{mode === "baseline_v10_5b" ? "Constant engineering propulsion at 0.18 arena units/s, with the existing modeled neural yaw and boundary response." : "Speed decreases deterministically as geometric forward clearance falls; neural yaw and boundary response remain unchanged."}</p><p className="lab-setting-note">Choose before starting. Changing the mode starts a new session from the initial pose.</p></div></details> : null}
         <details className="lab-settings"><summary>Settings <span aria-hidden="true">+</span></summary><div className="lab-panel-content"><label className="lab-toggle"><span>Neural influence</span><input type="checkbox" checked={neuralEnabled} disabled={!state || Boolean(error)} onChange={e => onNeuralChange(e.target.checked)} /></label><p>Allow the selected neural model to influence the fly’s direction. Engineering propulsion and boundary response remain active.</p><p className="lab-setting-note">Changing this starts a new exploration from the initial state.</p></div></details>
+        {liveStatus ? <details><summary>Why did it turn?</summary><div className="lab-panel-content">{trace ? <><p>Interval {trace.tick} → {trace.accepted_tick} ({trace.time_s.toFixed(2)} s). Modelled neural yaw contribution: {trace.neural_yaw_rad_s.toFixed(4)} rad/s; engineering boundary yaw: {trace.boundary_yaw_rad_s.toFixed(4)} rad/s; resulting angular velocity: {trace.angular_velocity_rad_s.toFixed(4)} rad/s.</p><p>Engineering state: <strong>{trace.engineering.behavior_state.replaceAll("_", " ")}</strong>. Forward clearance {trace.engineering.forward_clearance_units.toFixed(3)} arena units; commanded speed {trace.engineering.commanded_speed_units_s.toFixed(3)} units/s; accepted movement {trace.engineering.accepted_speed_units_s.toFixed(3)} units/s{trace.engineering.contact ? ` · ${trace.engineering.contact}` : ""}.</p><p>HS and DNp15 model-space states at interval start (not calibrated fluorescence): {trace.states.map(s => `${s.model} ${s.id}: ${s.value.toFixed(4)}`).join(' · ')}.</p><p>MaleCNS-derived authority supplies structural connectivity. HS/DNp15 values are computed model states; neural yaw is an engineering motor projection. Speed modulation and boundary recovery are engineering rules, not neural decisions.</p></> : <p>Start the session to inspect an accepted interval.</p>}</div></details> : null}
         <details className="lab-details"><summary>Simulation details <span aria-hidden="true">+</span></summary><div className="lab-panel-content">
           {lagging ? <p className="lab-performance-detail">Simulation running slower than real time. The fixed simulation timestep remains unchanged. The timer shows simulation time, not wall-clock time.</p> : null}
           <p>Connectome-informed steering, engineering movement and leg animation. This is a computational model, not physiologically calibrated fly behaviour.</p>

@@ -133,3 +133,34 @@
 .neural-history > span { display:flex; justify-content:space-between; gap:4px; color:#a7bbc8; font-size:10px; }
 .neural-history small { display:block; margin-top:5px; color:#a7bbc8; line-height:1.5; }
 .lab-shell .neural-entity-button:focus-visible,.lab-shell .neural-presentation button:focus-visible,.neural-help summary:focus-visible,.neural-provenance-details summary:focus-visible { outline:2px solid #a3f5e9; outline-offset:2px; }
+
+/* V10.5F-A: size the explorer from its actual Lab column, not the window. */
+.lab-neural-details-content { container: neural-explorer / inline-size; min-width:0; }
+.neural-explorer-layout { grid-template-columns:minmax(0,1.65fr) minmax(320px,.95fr); gap:20px; }
+.neural-explorer-inspector,.neural-entity-detail,.neural-activity-legend { min-width:0; }
+.neural-explorer-canvas-wrap,.neural-history,.neural-history svg { max-width:100%; min-width:0; }
+.neural-entity-button span,.neural-entity-button small,.neural-entity-detail dd { min-width:0; overflow-wrap:anywhere; }
+.neural-entity-detail dl div { grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr); }
+
+@container neural-explorer (max-width: 820px) {
+  .neural-explorer-layout { grid-template-columns:minmax(0,1fr); gap:14px; }
+  .neural-explorer-canvas-wrap { height:clamp(270px,80cqi,390px); }
+  .neural-explorer-inspector { display:grid; grid-template-columns:minmax(0,1fr); gap:12px; }
+  .neural-entity-list { grid-column:auto; grid-template-columns:repeat(2,minmax(0,1fr)); max-height:none; }
+  .neural-entity-button { flex-wrap:wrap; justify-content:flex-start; }
+  .neural-entity-button small { flex:1 1 100%; }
+  .neural-explorer-heading { display:block; }
+  .neural-explorer-clock { display:block; margin-top:8px; text-align:left; white-space:normal; overflow-wrap:anywhere; }
+  .neural-explorer-provenance { grid-template-columns:minmax(0,1fr); }
+  .neural-entity-detail dl div { grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr); }
+}
+
+@container neural-explorer (max-width: 480px) {
+  .neural-explorer-canvas-wrap { height:clamp(250px,80cqi,360px); min-height:250px; }
+  .neural-explorer-heading h2 { font-size:19px; }
+  .neural-entity-list { grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .neural-entity-detail dl div { grid-template-columns:minmax(0,1fr); gap:2px; }
+  .neural-entity-detail dd { padding-bottom:4px; }
+  .neural-history > span { flex-wrap:wrap; }
+  .neural-explorer-canvas-label { max-width:calc(100% - 24px); overflow-wrap:anywhere; }
+}

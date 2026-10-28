@@ -19,6 +19,7 @@ export function LiveExploreArena() {
   const [gaitState, setGaitState] = useState<GaitState | undefined>();
   const [path, setPath] = useState<[number, number, number][]>([]);
   const [sample, setSample] = useState<LiveSample | null>(null);
+  const [history, setHistory] = useState<LiveSample[]>([]);
   const [sessionId, setSessionId] = useState<string | null>(null);
   const [neural, setNeural] = useState(true);
   const [mode, setMode] = useState<ExplorationMode>('baseline_v10_5b');
@@ -34,7 +35,7 @@ export function LiveExploreArena() {
     const snapshot = next.snapshot();
     gait.current = gaitHistory([{ time: snapshot.time, position: snapshot.position, heading: snapshot.heading }])[0];
     setGaitState(gait.current); setState(snapshot); setPath(next.trajectory.values());
-    setStatus('ready'); setSample(null); setError(null); setLagging(false);
+    setStatus('ready'); setSample(null); setHistory([]); setError(null); setLagging(false);
   }, []);
 
   useEffect(() => {
@@ -50,7 +51,7 @@ export function LiveExploreArena() {
   useEffect(() => {
     const onVisibility = () => {
       if (session.current && pauseForVisibility(session.current, document.hidden)) {
-        clock.current.reset(); setStatus('paused'); setNotice('Paused while this page was hidden. Resume when ready.');
+        setHistory(session.current.telemetry.values()); clock.current.reset(); setStatus('paused'); setNotice('Paused while this page was hidden. Resume when ready.');
       }
     };
     document.addEventListener('visibilitychange', onVisibility);
@@ -64,7 +65,7 @@ export function LiveExploreArena() {
       const current = session.current;
       if (!current || current.status !== 'running') return;
       if (document.hidden) {
-        pauseForVisibility(current, true); clock.current.reset(); setStatus('paused'); setNotice('Paused while this page was hidden. Resume when ready.'); return;
+        pauseForVisibility(current, true); setHistory(current.telemetry.values()); clock.current.reset(); setStatus('paused'); setNotice('Paused while this page was hidden. Resume when ready.'); return;
       }
       if (previous !== null) {
         try {
@@ -75,7 +76,7 @@ export function LiveExploreArena() {
             if (!gait.current) throw new Error('Gait state unavailable');
             gait.current = gaitHistory([gait.current.body, body], [gait.current])[1];
           });
-          if (result.steps) { setState(current.snapshot()); setPath(current.trajectory.values()); setSample(latest); setGaitState(gait.current ?? undefined); }
+          if (result.steps) { const currentSnapshot = current.snapshot(); setState(currentSnapshot); setPath(current.trajectory.values()); setSample(latest); if (currentSnapshot.step % 10 < result.steps) setHistory(current.telemetry.values()); setGaitState(gait.current ?? undefined); }
           if (result.limited) setLagging(true);
         } catch (e) {
           if (!current.error) current.stop();
@@ -90,7 +91,7 @@ export function LiveExploreArena() {
 
   function play() {
     const current = session.current; if (!current) return;
-    if (current.status === 'running') { current.pause(); clock.current.reset(); setStatus('paused'); return; }
+    if (current.status === 'running') { current.pause(); setHistory(current.telemetry.values()); clock.current.reset(); setStatus('paused'); return; }
     if (document.hidden) { setNotice('Return to this page to start the session.'); return; }
     try { current.start(); clock.current.reset(); setStatus('running'); setNotice(''); } catch (e) { setError(String(e)); }
   }
@@ -104,7 +105,7 @@ export function LiveExploreArena() {
   }
   const pose = state && authority ? { anchor: state.position, rotation: state.heading, assetOffset: authority.config.body.asset_offset } : undefined;
 
-  return <ExploreLabView state={state} playing={status === 'running'} error={error} notice={notice} neuralEnabled={neural} onPlay={play} onStop={stop} onReset={reset} onNeuralChange={changeNeural} mode={mode} onModeChange={changeMode} lagging={lagging} liveStatus={status} latestSample={sample} sessionId={sessionId}>
+  return <ExploreLabView state={state} playing={status === 'running'} error={error} notice={notice} neuralEnabled={neural} onPlay={play} onStop={stop} onReset={reset} onNeuralChange={changeNeural} mode={mode} onModeChange={changeMode} lagging={lagging} liveStatus={status} latestSample={sample} recentSamples={history} sessionId={sessionId}>
     <FlyViewer experience initialGait arena locomotion={Boolean(state)} locomotionVersion="v3" replayPose={pose} stimulusPlane={state?.plane} liveTrajectory={path} liveGaitState={gaitState}/>
   </ExploreLabView>;
 }

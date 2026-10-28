@@ -9,15 +9,23 @@ import type { ExplorationMode } from "@/lib/engineeringExploration";
 import { neuralActivityViewSnapshot, type NeuralActivityTrace, type NeuralActivityViewSnapshot } from "@/lib/neuralMorphologyExplorer";
 import { NeuralActivityExplorer3D } from "@/components/NeuralActivityExplorer3D";
 
+export function turnExplanation(neural: number, boundary: number, total: number): string {
+  if (![neural, boundary, total].every(Number.isFinite)) return "Movement contributions are unavailable.";
+  const motion = Math.abs(total) < 1e-9 ? "The fly is not rotating in this interval." : "The fly is rotating in this interval.";
+  const neuralText = Math.abs(neural) < 1e-9 ? "The modeled neural circuit contributes no yaw." : "The modeled neural circuit contributes to yaw through an engineering projection.";
+  const boundaryText = Math.abs(boundary) < 1e-9 ? "The engineering boundary response contributes no yaw." : "The engineering boundary response also contributes to yaw.";
+  return `${motion} ${neuralText} ${boundaryText}`;
+}
+
 export function explorationStatus(state: NavigationSnapshot | null, playing: boolean, error: string | null) {
   return error ? "Unavailable" : !state ? "Preparing" : state.step === 1500 ? "Exploration complete" : playing ? "Exploring" : state.step ? "Paused" : "Ready to explore";
 }
 
-export function ExploreLabView({ state, playing, error, notice, neuralEnabled, onPlay, onReset, onNeuralChange, onExport, onReplay, lagging, liveStatus, latestSample, onStop, sessionId, mode, onModeChange, children }: {
+export function ExploreLabView({ state, playing, error, notice, neuralEnabled, onPlay, onReset, onNeuralChange, onExport, onReplay, lagging, liveStatus, latestSample, recentSamples, onStop, sessionId, mode, onModeChange, children }: {
   state: NavigationSnapshot | null; playing: boolean; error: string | null; notice: string;
   neuralEnabled: boolean; onPlay: () => void; onReset: () => void; onNeuralChange: (enabled: boolean) => void;
   onExport?: () => void; onReplay?: () => void; lagging: boolean; children?: ReactNode;
-  liveStatus?: LiveStatus; latestSample?: LiveSample | null; onStop?: () => void; sessionId?: string | null;
+  liveStatus?: LiveStatus; latestSample?: LiveSample | null; recentSamples?: readonly LiveSample[]; onStop?: () => void; sessionId?: string | null;
   mode?: ExplorationMode; onModeChange?: (mode: ExplorationMode) => void;
 }) {
   const [neuralExplorerOpen, setNeuralExplorerOpen] = useState(false);
@@ -65,7 +73,7 @@ export function ExploreLabView({ state, playing, error, notice, neuralEnabled, o
         <details className="lab-neural-details" onToggle={(event) => setNeuralExplorerOpen(event.currentTarget.open)}>
           <summary>Inspect verified neural anatomy · 3D <span aria-hidden="true">⌄</span></summary>
           <div className="lab-neural-details-content">
-            {neuralExplorerOpen ? <NeuralActivityExplorer3D snapshot={activitySnapshot} activityError={activityError} /> : null}
+            {neuralExplorerOpen ? <NeuralActivityExplorer3D snapshot={activitySnapshot} activityError={activityError} recentSamples={recentSamples} /> : null}
           </div>
         </details>
       </div>
@@ -73,7 +81,7 @@ export function ExploreLabView({ state, playing, error, notice, neuralEnabled, o
         <div className="lab-introduction"><span className="lab-eyebrow">Your laboratory</span><p>Explore movement.<br />Look closer whenever you like.</p></div>
         {liveStatus && mode && onModeChange ? <details className="lab-settings" open><summary>Locomotion mode <span aria-hidden="true">⌄</span></summary><div className="lab-panel-content"><label className="lab-mode-select"><span>Controller</span><select aria-label="Locomotion mode" value={mode} disabled={!state || Boolean(error) || liveStatus === "running" || liveStatus === "paused"} onChange={e => onModeChange(e.target.value as ExplorationMode)}><option value="baseline_v10_5b">Baseline · v10.5b</option><option value="engineering_exploration_v1">Engineering exploration · v1</option></select></label><p>{mode === "baseline_v10_5b" ? "Constant engineering propulsion at 0.18 arena units/s, with the existing modeled neural yaw and boundary response." : "Speed decreases deterministically as geometric forward clearance falls; neural yaw and boundary response remain unchanged."}</p><p className="lab-setting-note">Choose before starting. Changing the mode starts a new session from the initial pose.</p></div></details> : null}
         <details className="lab-settings"><summary>Settings <span aria-hidden="true">+</span></summary><div className="lab-panel-content"><label className="lab-toggle"><span>Neural influence</span><input type="checkbox" checked={neuralEnabled} disabled={!state || Boolean(error)} onChange={e => onNeuralChange(e.target.checked)} /></label><p>Allow the selected neural model to influence the fly’s direction. Engineering propulsion and boundary response remain active.</p><p className="lab-setting-note">Changing this starts a new exploration from the initial state.</p></div></details>
-        {liveStatus ? <details><summary>Why did it turn?</summary><div className="lab-panel-content">{trace ? <><p>Interval {trace.tick} → {trace.accepted_tick} ({trace.time_s.toFixed(2)} s). Modelled neural yaw contribution: {trace.neural_yaw_rad_s.toFixed(4)} rad/s; engineering boundary yaw: {trace.boundary_yaw_rad_s.toFixed(4)} rad/s; resulting angular velocity: {trace.angular_velocity_rad_s.toFixed(4)} rad/s.</p><p>Engineering state: <strong>{trace.engineering.behavior_state.replaceAll("_", " ")}</strong>. Forward clearance {trace.engineering.forward_clearance_units.toFixed(3)} arena units; commanded speed {trace.engineering.commanded_speed_units_s.toFixed(3)} units/s; accepted movement {trace.engineering.accepted_speed_units_s.toFixed(3)} units/s{trace.engineering.contact ? ` · ${trace.engineering.contact}` : ""}.</p><p>HS and DNp15 model-space states at interval start (not calibrated fluorescence): {trace.states.map(s => `${s.model} ${s.id}: ${s.value.toFixed(4)}`).join(' · ')}.</p><p>MaleCNS-derived authority supplies structural connectivity. HS/DNp15 values are computed model states; neural yaw is an engineering motor projection. Speed modulation and boundary recovery are engineering rules, not neural decisions.</p></> : <p>{traceError ? `Neural interval telemetry is unavailable: ${traceError}. No substitute activity is displayed.` : "Start the session to inspect an accepted interval."}</p>}</div></details> : null}
+        {liveStatus ? <details><summary>Why did it turn?</summary><div className="lab-panel-content">{trace ? <><p>{turnExplanation(trace.neural_yaw_rad_s, trace.boundary_yaw_rad_s, trace.angular_velocity_rad_s)}</p><p>Interval {trace.tick} → {trace.accepted_tick} ({trace.time_s.toFixed(2)} s). Modelled neural yaw contribution: {trace.neural_yaw_rad_s.toFixed(4)} rad/s; engineering boundary yaw: {trace.boundary_yaw_rad_s.toFixed(4)} rad/s; resulting angular velocity: {trace.angular_velocity_rad_s.toFixed(4)} rad/s.</p><p>Engineering state: <strong>{trace.engineering.behavior_state.replaceAll("_", " ")}</strong>. Forward clearance {trace.engineering.forward_clearance_units.toFixed(3)} arena units; commanded speed {trace.engineering.commanded_speed_units_s.toFixed(3)} units/s; accepted movement {trace.engineering.accepted_speed_units_s.toFixed(3)} units/s{trace.engineering.contact ? ` · ${trace.engineering.contact}` : ""}.</p><p>HS and DNp15 model-space states at interval start (not calibrated fluorescence): {trace.states.map(s => `${s.model} ${s.id}: ${s.value.toFixed(4)}`).join(' · ')}.</p><p>MaleCNS-derived authority supplies structural connectivity. HS/DNp15 values are computed model states; neural yaw is an engineering motor projection. Speed modulation and boundary recovery are engineering rules, not neural decisions.</p></> : <p>{traceError ? `Neural interval telemetry is unavailable: ${traceError}. No substitute activity is displayed.` : "Start the session to inspect an accepted interval."}</p>}</div></details> : null}
         <details className="lab-details"><summary>Simulation details <span aria-hidden="true">+</span></summary><div className="lab-panel-content">
           {lagging ? <p className="lab-performance-detail">Simulation running slower than real time. The fixed simulation timestep remains unchanged. The timer shows simulation time, not wall-clock time.</p> : null}
           <p>Connectome-informed steering, engineering movement and leg animation. This is a computational model, not physiologically calibrated fly behaviour.</p>

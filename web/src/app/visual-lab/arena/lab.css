@@ -118,3 +118,18 @@
 @media (max-width:440px) { .lab-header { padding:0 16px; } .lab-brand { font-size:20px; gap:8px; } .lab-brand .neurofly-logo { width:52px; height:34px; } .lab-brand small { padding-left:8px; margin-left:6px; font-size:12px; } .lab-experience { padding:18px 12px; } .lab-activity { align-items:center; gap:10px; margin-bottom:16px; } .lab-activity p,.lab-activity .lab-eyebrow { display:none; } .lab-activity h1 { font-size:32px; margin:0; } .lab-status { font-size:12px; } .lab-shell .fly-viewer-stage { min-height:320px; height:52svh; border-radius:10px; } .lab-shell .fly-viewer-caption { top:14px; left:14px; } .lab-shell .fly-viewer-caption small { font-size:10px; } .lab-controls { flex-wrap:wrap; gap:8px; padding:12px 0; } .lab-shell .lab-play { min-width:100px; } .lab-shell button { padding-inline:12px; } .lab-time { margin-left:auto; } .lab-time output { font-size:13px; } .lab-neural-state { flex-basis:100%; margin:4px 0 0; } .lab-camera-bar { gap:8px; } .lab-camera-bar label { gap:8px; } .lab-shell .lab-camera-bar select { padding-inline:10px; } }
 @media (max-width:440px) { .neural-explorer-heading { display:block; } .neural-explorer-heading h2 { font-size:19px; } .neural-explorer-clock { display:block; text-align:left; margin-top:8px; white-space:normal; } .neural-explorer-canvas-wrap { min-height:240px; } .neural-explorer-inspector { grid-template-columns:1fr; } .neural-entity-list { grid-template-columns:1fr 1fr; } .neural-explorer-provenance { grid-template-columns:1fr; } .neural-entity-detail dl div { grid-template-columns:minmax(80px,.8fr) minmax(0,1.2fr); } }
 @media (prefers-reduced-motion:reduce) { .lab-shell *, .lab-shell *::before,.lab-shell *::after { transition:none!important; animation:none!important; scroll-behavior:auto!important; } }
+
+/* Neural explorer presentation; scientific values remain in the live session. */
+.neural-help,.neural-provenance-details { margin:10px 0; color:#c8d9df; font-size:12px; line-height:1.5; }
+.neural-help summary,.neural-provenance-details summary { cursor:pointer; color:#a7e4df; }
+.neural-help p { margin:7px 0; }
+.neural-presentation { display:flex; gap:6px; margin:10px 0 14px; }
+.lab-shell .neural-presentation button { min-height:36px; padding:6px 13px; }
+.lab-shell .neural-presentation button[aria-pressed="true"] { border-color:#86e5de; background:#173642; }
+.neural-list-title { font-size:12px; color:#d7e8eb; }
+.neural-entity-detail p { font-size:11px; line-height:1.55; color:#c8d9df; overflow-wrap:anywhere; }
+.neural-history,.neural-relationships { margin-top:12px; border-top:1px solid #b0d3dc25; padding-top:10px; font-size:11px; }
+.neural-history svg { display:block; width:100%; height:70px; margin:5px 0; background:#07121a; }
+.neural-history > span { display:flex; justify-content:space-between; gap:4px; color:#a7bbc8; font-size:10px; }
+.neural-history small { display:block; margin-top:5px; color:#a7bbc8; line-height:1.5; }
+.lab-shell .neural-entity-button:focus-visible,.lab-shell .neural-presentation button:focus-visible,.neural-help summary:focus-visible,.neural-provenance-details summary:focus-visible { outline:2px solid #a3f5e9; outline-offset:2px; }

@@ -22,6 +22,7 @@ test('trace uses the real left-boundary states and outgoing contributions', () =
     assert.equal(trace.boundary_yaw_rad_s, sample.interval.boundary_summary.omega);
     assert.equal(trace.angular_velocity_rad_s, trace.neural_yaw_rad_s + trace.boundary_yaw_rad_s);
     assert.equal(trace.neural_enabled, enabled);
+    assert.equal(trace.provenance.morphology, 'VERIFIED_STATIC_MALECNS_V1_BUNDLE');
     if (!enabled) assert.equal(trace.neural_yaw_rad_s, 0);
     assert.deepEqual(trace.accepted_position, sample.accepted.position);
     assert.equal(trace.provenance.authority_artifact_id, sample.source.authority_artifact_id);
@@ -34,8 +35,9 @@ test('the explanation displays the computed interval and its separate yaw compon
   const session = new LiveGroundSession(authority, true, 'ui'); session.start();
   for (let i = 0; i < 20; i++) session.advance();
   const sample = session.advance(), trace = neuralActivityTrace(sample), noop = () => {};
-  const html = renderToStaticMarkup(createElement(ExploreLabView, {state: sample.accepted, playing: true, error: null, notice: '', neuralEnabled: true, onPlay: noop, onReset: noop, onNeuralChange: noop, lagging: false, liveStatus: 'running', latestSample: sample}));
+  const html = renderToStaticMarkup(createElement(ExploreLabView, {state: sample.accepted, playing: true, error: null, notice: '', neuralEnabled: true, onPlay: noop, onReset: noop, onNeuralChange: noop, lagging: false, liveStatus: 'running', latestSample: sample, sessionId: session.config.session_id}));
   assert.match(html, /Why did it turn\?/);
+  assert.match(html, /Inspect verified neural anatomy/);
   assert.ok(html.includes(trace.neural_yaw_rad_s.toFixed(4)));
   assert.ok(html.includes(trace.boundary_yaw_rad_s.toFixed(4)));
   assert.match(html, /MaleCNS-derived authority supplies structural connectivity/);

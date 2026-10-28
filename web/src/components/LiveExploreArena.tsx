@@ -19,6 +19,7 @@ export function LiveExploreArena() {
   const [gaitState, setGaitState] = useState<GaitState | undefined>();
   const [path, setPath] = useState<[number, number, number][]>([]);
   const [sample, setSample] = useState<LiveSample | null>(null);
+  const [sessionId, setSessionId] = useState<string | null>(null);
   const [neural, setNeural] = useState(true);
   const [mode, setMode] = useState<ExplorationMode>('baseline_v10_5b');
   const [error, setError] = useState<string | null>(null);
@@ -29,6 +30,7 @@ export function LiveExploreArena() {
     session.current?.stop(); clock.current.reset();
     const next = new LiveGroundSession(source, enabled, crypto.randomUUID(), undefined, undefined, selectedMode);
     session.current = next;
+    setSessionId(next.config.session_id);
     const snapshot = next.snapshot();
     gait.current = gaitHistory([{ time: snapshot.time, position: snapshot.position, heading: snapshot.heading }])[0];
     setGaitState(gait.current); setState(snapshot); setPath(next.trajectory.values());
@@ -102,7 +104,7 @@ export function LiveExploreArena() {
   }
   const pose = state && authority ? { anchor: state.position, rotation: state.heading, assetOffset: authority.config.body.asset_offset } : undefined;
 
-  return <ExploreLabView state={state} playing={status === 'running'} error={error} notice={notice} neuralEnabled={neural} onPlay={play} onStop={stop} onReset={reset} onNeuralChange={changeNeural} mode={mode} onModeChange={changeMode} lagging={lagging} liveStatus={status} latestSample={sample}>
+  return <ExploreLabView state={state} playing={status === 'running'} error={error} notice={notice} neuralEnabled={neural} onPlay={play} onStop={stop} onReset={reset} onNeuralChange={changeNeural} mode={mode} onModeChange={changeMode} lagging={lagging} liveStatus={status} latestSample={sample} sessionId={sessionId}>
     <FlyViewer experience initialGait arena locomotion={Boolean(state)} locomotionVersion="v3" replayPose={pose} stimulusPlane={state?.plane} liveTrajectory={path} liveGaitState={gaitState}/>
   </ExploreLabView>;
 }

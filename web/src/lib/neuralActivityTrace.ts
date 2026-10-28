@@ -1,7 +1,7 @@
 import { SOURCE_IDS, TARGET_IDS } from './interactiveNeuralLocomotion';
 import type { LiveSample } from './liveGroundSession';
 
-/** Computed states at the interval's left boundary; no anatomy is inferred. */
+/** Computed states at the interval's left boundary; anatomy is not inferred from the trace. */
 export function neuralActivityTrace(sample: LiveSample) {
   const { interval, accepted, engineering } = sample;
   const neural = interval.neural_summary;
@@ -40,7 +40,7 @@ export function neuralActivityTrace(sample: LiveSample) {
       motor_mapping: 'ENGINEERING_NEURAL_YAW_PROJECTION',
       boundary_mapping: 'ENGINEERING_GEOMETRIC_YAW_RECOVERY',
       speed_mapping: engineering.mode === 'baseline_v10_5b' ? 'ENGINEERING_CONSTANT_PROPULSION' : 'ENGINEERING_CLEARANCE_SPEED_POLICY',
-      morphology: 'UNAVAILABLE',
+      morphology: 'VERIFIED_STATIC_MALECNS_V1_BUNDLE',
     },
   };
 }

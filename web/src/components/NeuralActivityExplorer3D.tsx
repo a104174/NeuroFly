@@ -1,7 +1,7 @@
 "use client";
 
 import { Canvas, useThree } from "@react-three/fiber";
-import { BufferGeometry, Float32BufferAttribute, PerspectiveCamera, Vector3 } from "three";
+import { BufferGeometry, Float32BufferAttribute, PerspectiveCamera, Vector3, type LineSegments, type Raycaster, type Intersection } from "three";
 import { memo, useCallback, useEffect, useMemo, useState, useRef, useLayoutEffect } from "react";
 import type { LiveSample } from "@/lib/liveGroundSession";
 import { activityHistory, activitySign } from "@/lib/neuralExplorerPresentation";
@@ -17,6 +17,8 @@ import {
 import { fitNeuralCamera, presentationBounds, NEURAL_OVERVIEW } from "@/lib/neuralCameraFraming";
 
 type CameraActions = { focus: () => string | null; overview: () => void };
+
+import { pickNeuralSegments } from "@/lib/neuralScreenPicking";
 
 interface LoadedBundle {
   readonly manifest: NeuralMorphologyManifest;
@@ -85,11 +87,22 @@ function Skeleton({ body, value, selected, onSelect }: {
     result.computeBoundingSphere();
     return result;
   }, [body]);
+  const get = useThree(state => state.get);
+  const raycast = useCallback(function(this: LineSegments, raycaster: Raycaster, hits: Intersection[]) {
+    const state = get();
+    const hit = pickNeuralSegments(body.view_positions, this.matrixWorld, state.camera, state.size, state.pointer);
+    if (hit.status !== "hit") return;
+    const cosine = state.camera.getWorldDirection(new Vector3()).dot(raycaster.ray.direction);
+    const distance = hit.depth / cosine;
+    if (!Number.isFinite(distance) || cosine <= 0) return;
+    if (distance < raycaster.near || distance > raycaster.far) return;
+    hits.push({ distance, point: hit.point, index: hit.index, object: this });
+  }, [body, get]);
   const magnitude = value === null ? 0 : Math.min(1, Math.abs(value));
   const color = value === null ? "#607c8a" : value > 0 ? "#87e9df" : value < 0 ? "#e8b77b" : "#91a7b0";
   const opacity = selected ? 0.6 + 0.4 * magnitude : value === null ? 0.34 : 0.12 + 0.25 * magnitude;
   return (
-    <lineSegments geometry={geometry} onClick={(event) => { event.stopPropagation(); onSelect(body.identity.body_id); }}>
+    <lineSegments geometry={geometry} raycast={raycast} onClick={(event) => { event.stopPropagation(); onSelect(body.identity.body_id); }}>
       <lineBasicMaterial color={color} transparent opacity={opacity} depthWrite={false} />
     </lineSegments>
   );

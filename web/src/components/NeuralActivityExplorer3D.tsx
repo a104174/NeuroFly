@@ -1,8 +1,8 @@
 "use client";
 
 import { Canvas, useThree } from "@react-three/fiber";
-import { BufferGeometry, Float32BufferAttribute } from "three";
-import { memo, useCallback, useEffect, useMemo, useState } from "react";
+import { BufferGeometry, Float32BufferAttribute, PerspectiveCamera, Vector3 } from "three";
+import { memo, useCallback, useEffect, useMemo, useState, useRef, useLayoutEffect } from "react";
 import type { LiveSample } from "@/lib/liveGroundSession";
 import { activityHistory, activitySign } from "@/lib/neuralExplorerPresentation";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
@@ -14,12 +14,18 @@ import {
   type NeuralMorphologyView,
 } from "@/lib/neuralMorphologyExplorer";
 
+import { fitNeuralCamera, presentationBounds, NEURAL_OVERVIEW } from "@/lib/neuralCameraFraming";
+
+type CameraActions = { focus: () => string | null; overview: () => void };
+
 interface LoadedBundle {
   readonly manifest: NeuralMorphologyManifest;
   readonly view: NeuralMorphologyView;
 }
 
-function CameraControls({ onContextLoss }: { readonly onContextLoss: () => void }) {
+function CameraControls({ onContextLoss, view, selectedId, onReady }: { readonly onContextLoss: () => void; readonly view: NeuralMorphologyView; readonly selectedId: number; readonly onReady: (actions: CameraActions | null) => void }) {
+  const selection = useRef(selectedId);
+  useLayoutEffect(() => { selection.current = selectedId; }, [selectedId]);
   const { camera, gl, invalidate } = useThree();
   useEffect(() => {
     const controls = new OrbitControls(camera, gl.domElement);
@@ -27,10 +33,27 @@ function CameraControls({ onContextLoss }: { readonly onContextLoss: () => void 
     controls.enablePan = true;
     controls.minDistance = 4;
     controls.maxDistance = 28;
-    controls.target.set(0, 0, 0);
-    camera.position.set(0, 5.8, 13.5);
+    controls.target.fromArray(NEURAL_OVERVIEW.target);
+    camera.position.fromArray(NEURAL_OVERVIEW.position);
     camera.lookAt(0, 0, 0);
     camera.updateProjectionMatrix();
+    if (camera instanceof PerspectiveCamera) onReady({
+      focus: () => {
+        const result = fitNeuralCamera(presentationBounds(view, selection.current), {
+          direction: camera.getWorldDirection(new Vector3()).toArray(), up: camera.up.toArray(),
+          fov: camera.fov, aspect: camera.aspect, zoom: camera.zoom, near: camera.near, far: camera.far,
+          minDistance: controls.minDistance, maxDistance: controls.maxDistance, margin: .12,
+        });
+        if (!result.ok) return result.reason;
+        camera.position.fromArray(result.position); controls.target.fromArray(result.target);
+        controls.update(); invalidate(); return null;
+      },
+      overview: () => {
+        camera.zoom = 1; camera.up.set(0, 1, 0); camera.updateProjectionMatrix();
+        camera.position.fromArray(NEURAL_OVERVIEW.position); controls.target.fromArray(NEURAL_OVERVIEW.target);
+        controls.update(); invalidate();
+      },
+    });
     const onChange = () => invalidate();
     const onLost = (event: Event) => {
       event.preventDefault();
@@ -43,9 +66,10 @@ function CameraControls({ onContextLoss }: { readonly onContextLoss: () => void 
     return () => {
       controls.removeEventListener("change", onChange);
       gl.domElement.removeEventListener("webglcontextlost", onLost);
+      onReady(null);
       controls.dispose();
     };
-  }, [camera, gl, invalidate, onContextLoss]);
+  }, [camera, gl, invalidate, onContextLoss, onReady, view]);
   return null;
 }
 
@@ -71,12 +95,13 @@ function Skeleton({ body, value, selected, onSelect }: {
   );
 }
 
-function NeuralScene({ view, selectedId, values, onContextLoss, onSelect }: {
+function NeuralScene({ view, selectedId, values, onContextLoss, onSelect, onReady }: {
   readonly view: NeuralMorphologyView;
   readonly selectedId: number;
   readonly values: ReadonlyMap<number, number>;
   readonly onContextLoss: () => void;
   readonly onSelect: (id: number) => void;
+  readonly onReady: (actions: CameraActions | null) => void;
 }) {
   return (
     <>
@@ -90,17 +115,18 @@ function NeuralScene({ view, selectedId, values, onContextLoss, onSelect }: {
           onSelect={onSelect}
         />
       ))}
-      <CameraControls onContextLoss={onContextLoss} />
+      <CameraControls onContextLoss={onContextLoss} view={view} selectedId={selectedId} onReady={onReady} />
     </>
   );
 }
 
-const NeuralCanvas = memo(function NeuralCanvas({ view, selectedId, values, onContextLoss, onSelect }: {
+const NeuralCanvas = memo(function NeuralCanvas({ view, selectedId, values, onContextLoss, onSelect, onReady }: {
   readonly view: NeuralMorphologyView;
   readonly selectedId: number;
   readonly values: ReadonlyMap<number, number>;
   readonly onContextLoss: () => void;
   readonly onSelect: (id: number) => void;
+  readonly onReady: (actions: CameraActions | null) => void;
 }) {
   return (
     <Canvas
@@ -116,6 +142,7 @@ const NeuralCanvas = memo(function NeuralCanvas({ view, selectedId, values, onCo
         values={values}
         onContextLoss={onContextLoss}
         onSelect={onSelect}
+        onReady={onReady}
       />
     </Canvas>
   );
@@ -170,6 +197,8 @@ export const NeuralActivityExplorer3D = memo(function NeuralActivityExplorer3D({
   const [loadError, setLoadError] = useState<string | null>(null);
   const [selectedId, setSelectedId] = useState(10015);
   const [presentation, setPresentation] = useState<"simple" | "detailed">("simple");
+  const [actions, setActions] = useState<CameraActions | null>(null);
+  const [cameraNotice, setCameraNotice] = useState<string | null>(null);
   const [contextLost, setContextLost] = useState(false);
   const onContextLoss = useCallback(() => setContextLost(true), []);
 
@@ -232,6 +261,11 @@ export const NeuralActivityExplorer3D = memo(function NeuralActivityExplorer3D({
       {activityError ? <p className="neural-explorer-error" role="alert">{activityError}. The neural view is not synchronized.</p> : null}
       {contextLost ? <p className="neural-explorer-error" role="alert">The neural viewer lost its WebGL context. Reload the page to restore it.</p> : null}
 
+      <div className="neural-camera-actions" role="group" aria-label="Morphology camera">
+        <button type="button" disabled={!actions || !selected || !presentationBounds(bundle.view, selectedId) || contextLost} onClick={() => setCameraNotice(actions?.focus() ?? null)}>Focus selected</button>
+        <button type="button" disabled={!actions || contextLost} onClick={() => { actions?.overview(); setCameraNotice(null); }}>Overview</button>
+        <span role="status">{cameraNotice}</span>
+      </div>
       <div className="neural-explorer-layout">
         <div className="neural-explorer-canvas-wrap">
           {!contextLost ? <NeuralCanvas
@@ -240,6 +274,7 @@ export const NeuralActivityExplorer3D = memo(function NeuralActivityExplorer3D({
             values={values}
             onContextLoss={onContextLoss}
             onSelect={setSelectedId}
+            onReady={setActions}
           /> : <div className="neural-explorer-canvas-lost" role="status">3D context unavailable</div>}
           <span className="neural-explorer-canvas-label">Native MaleCNS X / Y / Z · shared display fit</span>
         </div>

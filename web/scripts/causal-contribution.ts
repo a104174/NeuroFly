@@ -1,0 +1,14 @@
+import { readFileSync, realpathSync, writeFileSync } from 'node:fs';
+import { resolve, relative, isAbsolute, sep } from 'node:path';
+import { parseNeuralLocomotion } from '../src/lib/neuralLocomotion';
+import { runContributionExperiment } from '../src/lib/causalContributionExperiment';
+const [directory, horizon = '1500', ...extra] = process.argv.slice(2);
+if (!directory || extra.length) throw new Error('Usage: node --import tsx scripts/causal-contribution.ts EXISTING_EXTERNAL_DIRECTORY [ticks]');
+const root = realpathSync(new URL('../../', import.meta.url));
+const output = realpathSync(resolve(directory)), rel = relative(root, output);
+if (!(rel === ".." || rel.startsWith(".." + sep) || isAbsolute(rel))) throw new Error('Experiment evidence must be outside the repository');
+const authority = parseNeuralLocomotion(JSON.parse(readFileSync(new URL('../public/experiments/experimental_locomotion_v1.json', import.meta.url), 'utf8')));
+const result = await runContributionExperiment(authority, Number(horizon));
+writeFileSync(resolve(output, 'pair.json'), JSON.stringify(result.pair), { flag: 'wx' });
+writeFileSync(resolve(output, 'report.json'), JSON.stringify({ ...result.report, report_sha256: result.report_sha256 }, null, 2), { flag: 'wx' });
+console.log(JSON.stringify({ artifact_id: result.pair.artifact_id, report_sha256: result.report_sha256, metrics: result.report.metrics, tracks: result.report.tracks.map(({ intervals, ...summary }) => ({ ...summary, interval_count: intervals.length })) }, null, 2));

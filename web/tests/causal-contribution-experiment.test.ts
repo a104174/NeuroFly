@@ -1,0 +1,30 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
+import { parseNeuralLocomotion } from '../src/lib/neuralLocomotion';
+import { contributionReport, runContributionExperiment } from '../src/lib/causalContributionExperiment';
+const authority = parseNeuralLocomotion(JSON.parse(readFileSync(new URL('../public/experiments/experimental_locomotion_v1.json', import.meta.url),'utf8')));
+test('matched experiment reuses baseline and replay, records the immediate motor ablation and closed-loop effect', async()=>{
+ const a=await runContributionExperiment(authority,150), b=await runContributionExperiment(authority,150);
+ assert.deepEqual(a,b);
+ assert.deepEqual(a.pair.result.tracks[0].frames.slice(0,-1),a.pair.parent.telemetry.completed_intervals);
+ const [on,off]=a.report.tracks;
+ assert.deepEqual(a.pair.result.tracks[0].frames[0], {...a.pair.result.tracks[1].frames[0], model_mode:a.pair.result.tracks[0].frames[0].model_mode,steering_applied:true});
+ assert.equal(a.report.seed,null); assert.equal(a.report.random_policy,'NONE');
+ assert.equal(off.condition,'neural_yaw_contribution_ablation');
+ assert.equal(on.intervals[0].computed_neural_yaw_rad_s,0);
+ assert.deepEqual(on.intervals[1].computed_neural_yaw_rad_s,off.intervals[1].computed_neural_yaw_rad_s);
+ assert.ok(off.intervals.some(f=>f.computed_neural_yaw_rad_s!==0));
+ assert.ok(off.intervals.every(f=>f.applied_neural_yaw_rad_s===0));
+ assert.deepEqual(a.pair.result.tracks[0].frames[1].neural_summary,a.pair.result.tracks[1].frames[1].neural_summary);
+ assert.ok(a.report.metrics.final_separation>0);
+ const fake=structuredClone(a.pair);fake.result.tracks[1].frames[1].boundary_summary.neural_omega=.1;
+ assert.throws(()=>contributionReport(fake),/mismatch/);
+});
+test('invalid horizons and missing computed telemetry fail; one-tick null effect is retained',async()=>{
+ for(const ticks of [0,1501,NaN,1.5]) await assert.rejects(runContributionExperiment(authority,ticks));
+ const a=await runContributionExperiment(authority,1);assert.equal(a.report.metrics.final_separation,0);
+ const bad=structuredClone(a.pair);bad.result.tracks[0].frames[0].neural_summary=null;
+ assert.throws(()=>contributionReport(bad),/Missing/);
+ const incomplete=structuredClone(a.pair);incomplete.result.tracks[0].frames.pop();assert.throws(()=>contributionReport(incomplete),/Incomplete/);
+});

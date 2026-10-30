@@ -1,6 +1,6 @@
 "use client";
 
-import { Canvas, useThree } from "@react-three/fiber";
+import { Canvas, extend, useThree } from "@react-three/fiber";
 import { BufferGeometry, Float32BufferAttribute, PerspectiveCamera, Vector3, type LineSegments, type Raycaster, type Intersection } from "three";
 import { memo, useCallback, useEffect, useMemo, useState, useRef, useLayoutEffect } from "react";
 import type { LiveSample } from "@/lib/liveGroundSession";
@@ -84,19 +84,23 @@ function CameraControls({ onContextLoss, view, selectedId, onReady }: { readonly
   return null;
 }
 
-function Skeleton({ body, value, selected, onSelect, gesture }: {
+// R3F owns this geometry as an attached child, including on replacement.
+class NeuralGeometry extends BufferGeometry {
+  constructor(positions: Float32Array) {
+    super();
+    this.setAttribute("position", new Float32BufferAttribute(positions, 3));
+    this.computeBoundingSphere();
+  }
+}
+const NeuralGeometryElement = extend(NeuralGeometry);
+
+export function Skeleton({ body, value, selected, onSelect, gesture }: {
   readonly gesture: NeuralSelectionGesture;
   readonly body: DisplayNeuralMorphology;
   readonly value: number | null;
   readonly selected: boolean;
   readonly onSelect: (id: number) => void;
 }) {
-  const geometry = useMemo(() => {
-    const result = new BufferGeometry();
-    result.setAttribute("position", new Float32BufferAttribute(body.view_positions, 3));
-    result.computeBoundingSphere();
-    return result;
-  }, [body]);
   const get = useThree(state => state.get);
   const raycast = useCallback(function(this: LineSegments, raycaster: Raycaster, hits: Intersection[]) {
     const state = get();
@@ -112,7 +116,8 @@ function Skeleton({ body, value, selected, onSelect, gesture }: {
   const color = value === null ? "#607c8a" : value > 0 ? "#87e9df" : value < 0 ? "#e8b77b" : "#91a7b0";
   const opacity = selected ? 0.6 + 0.4 * magnitude : value === null ? 0.34 : 0.12 + 0.25 * magnitude;
   return (
-    <lineSegments geometry={geometry} raycast={raycast} onClick={(event) => { event.stopPropagation(); if (gesture.consume(event.nativeEvent)) onSelect(body.identity.body_id); }}>
+    <lineSegments raycast={raycast} onClick={(event) => { event.stopPropagation(); if (gesture.consume(event.nativeEvent)) onSelect(body.identity.body_id); }}>
+      <NeuralGeometryElement attach="geometry" args={[body.view_positions]} />
       <lineBasicMaterial color={color} transparent opacity={opacity} depthWrite={false} />
     </lineSegments>
   );

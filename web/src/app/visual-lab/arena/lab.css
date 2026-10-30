@@ -44,6 +44,10 @@
 .lab-shell .lab-camera-bar select { padding-right:28px; background:#102231; }
 .lab-camera-bar > span { margin-left:auto; font-size:12px; color:var(--lab-muted); }
 .lab-sidebar { padding-top:14px; }
+.lab-simulation-mode { display:grid; gap:7px; margin:0 0 18px; padding:11px; border:1px solid #b0d3dc25; border-radius:8px; background:#0c1c28; }
+.lab-simulation-mode > span { color:var(--lab-muted); font-size:11px; }
+.lab-shell .lab-simulation-mode button { min-height:38px; padding:8px 10px; text-align:left; font-size:12px; }
+.lab-shell .lab-simulation-mode button[aria-pressed="true"] { border-color:#86e5de; background:#173642; color:#f1f7fa; }
 .lab-introduction { margin-bottom:22px; }
 .lab-introduction > p { font-size:14px; line-height:1.7; color:var(--lab-muted); margin:12px 0 0; }
 .lab-performance-slot { order:1; min-height:25px; display:flex; align-items:center; }

@@ -92,6 +92,8 @@ export class FlightEngine {
   private readonly history: FlightFrame[];
   private command: FlightCommand = { id: '', step: 0, forward: 0, turn: 0, vertical: 0, intent: 'HOLD' };
   private adaptedTurn = false;
+  private externalCommandMode = false;
+  private readonly externalCommandIds = new Set<string>();
   constructor(trial = createFlightTrial()) { this.input = validateFlightTrial(trial); this.history = [structuredClone(this.input.initial)]; }
   trial() { return structuredClone(this.input); }
   snapshot() { return structuredClone(this.history.at(-1)!); }
@@ -100,14 +102,36 @@ export class FlightEngine {
   get stopStep() { return this.input.stop_step; }
   frame(step: number) { if (!Number.isInteger(step) || step < 0 || step >= this.history.length) throw new Error('Seek outside recorded flight boundaries'); return structuredClone(this.history[step]); }
   get hasExternalTurn() { return this.adaptedTurn; }
-  advance() { return this.advanceInterval(); }
+  get hasExternalCommand() { return this.externalCommandMode; }
+  advance() {
+    if (this.externalCommandMode) throw new Error('State-feedback flight requires a complete command for each interval');
+    return this.advanceInterval();
+  }
   /** Versioned downstream experiments may supply only a normalized turn input.
    * Such runs require their own artifact; they cannot be exported as legacy v8. */
   advanceWithTurn(turn: number) {
+    if (this.externalCommandMode) throw new Error('Cannot mix full external commands with external turn inputs');
     if (!Number.isFinite(turn) || Math.abs(turn) > 1) throw new Error('Invalid external flight turn');
     return this.advanceInterval(turn);
   }
-  private advanceInterval(turn?: number) {
+  /** Apply a complete normalized motor command to the interval beginning at the
+   * current accepted boundary. This additive mode requires an empty legacy
+   * schedule and must be selected before the first interval. */
+  advanceWithCommand(value: FlightCommand) {
+    const old = this.history.at(-1)!;
+    const command = value as FlightCommand;
+    if ((!this.externalCommandMode && this.history.length !== 1) || this.input.commands.length !== 0 || this.adaptedTurn)
+      throw new Error('Full external commands require a fresh flight trial with no scheduled commands');
+    if (!command || Object.keys(command).sort().join(',') !== 'forward,id,intent,step,turn,vertical' ||
+        typeof command.id !== 'string' || !/^[a-zA-Z0-9_-]{1,64}$/.test(command.id) || this.externalCommandIds.has(command.id) ||
+        command.step !== old.step || ![command.forward, command.turn, command.vertical].every(v => Number.isFinite(v) && Math.abs(v) <= 1) ||
+        !['HOLD', 'TAKEOFF', 'LAND'].includes(command.intent)) throw new Error('Invalid or misaligned external flight command');
+    const accepted = this.advanceInterval(undefined, command);
+    this.externalCommandIds.add(command.id);
+    this.externalCommandMode = true;
+    return accepted;
+  }
+  private advanceInterval(turn?: number, externalCommand?: FlightCommand) {
     const old = this.history.at(-1)!;
     if (old.step >= this.input.stop_step) throw new Error('Flight trial completed');
     const c = FLIGHT_MODEL, dt = c.dt_s, next = structuredClone(old);
@@ -123,7 +147,12 @@ export class FlightEngine {
       if (due.intent === 'TAKEOFF') { if (next.state === 'grounded') transition('takeoff'); else event('REJECTED_COMMAND', 'TAKEOFF requires grounded'); }
       if (due.intent === 'LAND') { if (next.state === 'flying' || next.state === 'takeoff') transition('landing'); else event('REJECTED_COMMAND', 'LAND requires takeoff/flying'); }
     }
-    const cmd = turn === undefined ? this.command : { ...this.command, turn };
+    if (externalCommand) {
+      next.commandId = externalCommand.id; event('COMMAND', externalCommand.id);
+      if (externalCommand.intent === 'TAKEOFF') { if (next.state === 'grounded') transition('takeoff'); else event('REJECTED_COMMAND', 'TAKEOFF requires grounded'); }
+      if (externalCommand.intent === 'LAND') { if (next.state === 'flying' || next.state === 'takeoff') transition('landing'); else event('REJECTED_COMMAND', 'LAND requires takeoff/flying'); }
+    }
+    const cmd = externalCommand ?? (turn === undefined ? this.command : { ...this.command, turn });
     if (next.state === 'grounded') {
       if (due && (cmd.forward || cmd.turn || cmd.vertical)) event('REJECTED_COMMAND', 'Grounded motion requires TAKEOFF');
       next.velocity = [0, 0, 0];
@@ -186,7 +215,7 @@ export async function flightHash(value: unknown) {
   return [...new Uint8Array(digest)].map(n => n.toString(16).padStart(2, '0')).join('');
 }
 export async function exportFlight(engine: FlightEngine, preset: WingbeatPreset) {
-  if (engine.hasExternalTurn) throw new Error('Externally steered flight requires its own versioned artifact');
+  if (engine.hasExternalTurn || engine.hasExternalCommand) throw new Error('Externally controlled flight requires its own versioned artifact');
   const trial = engine.trial(); trial.presentation.preset = preset; validateFlightTrial(trial);
   const frames = engine.frames(), termination = frames.length - 1 === trial.stop_step ? 'DURATION_COMPLETED' : 'RECORDED_PREFIX';
   return { schema: 'engineering_flight_result_v8', classification: 'ENGINEERING_ONLY_NOT_A_NEURAL_EXPERIMENT', trial, frames, termination,

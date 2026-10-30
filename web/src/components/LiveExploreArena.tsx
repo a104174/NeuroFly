@@ -2,6 +2,8 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { FlyViewer } from './FlyViewer';
+import { EngineeringVerticalFlightLab } from './EngineeringVerticalFlightLab';
+import { LabSimulationModeControl, type LabSimulationMode } from './lab/LabSimulationModeControl';
 import { ExploreLabView } from './lab/ExploreLabView';
 import { gaitHistory, type GaitState } from '@/lib/articulatedGait';
 import { loadNeuralLocomotion, type NeuralArtifact } from '@/lib/neuralLocomotion';
@@ -26,6 +28,7 @@ export function LiveExploreArena() {
   const [error, setError] = useState<string | null>(null);
   const [notice, setNotice] = useState('');
   const [lagging, setLagging] = useState(false);
+  const [labMode, setLabMode] = useState<LabSimulationMode>('ground');
 
   const install = useCallback((source: NeuralArtifact, enabled: boolean, selectedMode: ExplorationMode) => {
     session.current?.stop(); clock.current.reset();
@@ -103,9 +106,21 @@ export function LiveExploreArena() {
     setMode(selectedMode); install(authority, neural, selectedMode);
     setNotice('Locomotion mode changed. A new session starts from the original initial state.');
   }
+  function changeLabMode(selectedMode: LabSimulationMode) {
+    if (selectedMode === labMode) return;
+    session.current?.stop(); clock.current.reset();
+    if (selectedMode === 'ground') {
+      if (authority) install(authority, neural, mode);
+      else setStatus('ready');
+    } else setStatus('stopped');
+    setLabMode(selectedMode);
+  }
   const pose = state && authority ? { anchor: state.position, rotation: state.heading, assetOffset: authority.config.body.asset_offset } : undefined;
+  const modeControl = <LabSimulationModeControl value={labMode} onChange={changeLabMode}/>;
 
-  return <ExploreLabView state={state} playing={status === 'running'} error={error} notice={notice} neuralEnabled={neural} onPlay={play} onStop={stop} onReset={reset} onNeuralChange={changeNeural} mode={mode} onModeChange={changeMode} lagging={lagging} liveStatus={status} latestSample={sample} recentSamples={history} sessionId={sessionId}>
+  if (labMode === 'vertical-flight') return <EngineeringVerticalFlightLab modeControl={modeControl}/>;
+
+  return <ExploreLabView state={state} playing={status === 'running'} error={error} notice={notice} neuralEnabled={neural} onPlay={play} onStop={stop} onReset={reset} onNeuralChange={changeNeural} mode={mode} onModeChange={changeMode} modeControl={modeControl} lagging={lagging} liveStatus={status} latestSample={sample} recentSamples={history} sessionId={sessionId}>
     <FlyViewer experience initialGait arena locomotion={Boolean(state)} locomotionVersion="v3" replayPose={pose} stimulusPlane={state?.plane} liveTrajectory={path} liveGaitState={gaitState}/>
   </ExploreLabView>;
 }

@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { FlyViewer } from './FlyViewer';
 import { EngineeringVerticalFlightLab } from './EngineeringVerticalFlightLab';
+import { ReactiveFlightExplorationLab } from './ReactiveFlightExplorationLab';
 import { LabSimulationModeControl, type LabSimulationMode } from './lab/LabSimulationModeControl';
 import { ExploreLabView } from './lab/ExploreLabView';
 import { gaitHistory, type GaitState } from '@/lib/articulatedGait';
@@ -119,6 +120,7 @@ export function LiveExploreArena() {
   const modeControl = <LabSimulationModeControl value={labMode} onChange={changeLabMode}/>;
 
   if (labMode === 'vertical-flight') return <EngineeringVerticalFlightLab modeControl={modeControl}/>;
+  if (labMode === 'reactive-flight') return <ReactiveFlightExplorationLab modeControl={modeControl}/>;
 
   return <ExploreLabView state={state} playing={status === 'running'} error={error} notice={notice} neuralEnabled={neural} onPlay={play} onStop={stop} onReset={reset} onNeuralChange={changeNeural} mode={mode} onModeChange={changeMode} modeControl={modeControl} lagging={lagging} liveStatus={status} latestSample={sample} recentSamples={history} sessionId={sessionId}>
     <FlyViewer experience initialGait arena locomotion={Boolean(state)} locomotionVersion="v3" replayPose={pose} stimulusPlane={state?.plane} liveTrajectory={path} liveGaitState={gaitState}/>

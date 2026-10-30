@@ -1,0 +1,133 @@
+"use client";
+
+import { useEffect, useRef, useState, type ReactNode } from 'react';
+import { FlyViewer } from './FlyViewer';
+import { FlightClock, FLIGHT_MODEL, flightScene } from '@/lib/engineeringFlight';
+import { flightWingsV8 } from '@/lib/flightWingsV8';
+import {
+  REACTIVE_FLIGHT_CONFIG, ReactiveFlightExplorationSession,
+  type ReactiveFlightStatus,
+} from '@/lib/reactiveFlightExploration';
+
+const statusText: Record<ReactiveFlightStatus, string> = {
+  ready: 'Grounded · ready', running: 'Exploring chamber boundaries', paused: 'Paused',
+  completed: 'Finite trial complete', failed: 'Exploration stopped on error',
+};
+
+export function ReactiveFlightExplorationLab({ modeControl }: { modeControl: ReactNode }) {
+  const [session, setSession] = useState(() => new ReactiveFlightExplorationSession());
+  const clock = useRef(new FlightClock());
+  const [frame, setFrame] = useState(() => session.snapshot());
+  const [metrics, setMetrics] = useState(() => session.metrics());
+  const [latestInterval, setLatestInterval] = useState(() => session.latestInterval());
+  const [status, setStatus] = useState<ReactiveFlightStatus>('ready');
+  const [playing, setPlaying] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!playing) return;
+    let raf = 0, previous: number | null = null;
+    const tick = (now: number) => {
+      if (session.status !== 'running') return;
+      if (document.hidden) {
+        session.pause(); clock.current.reset(); setPlaying(false); setStatus(session.status); return;
+      }
+      if (previous !== null) {
+        try {
+          const result = clock.current.advance(session, now - previous);
+          if (result.steps) {
+            const accepted = session.snapshot();
+            setFrame(accepted);
+            setLatestInterval(session.latestInterval());
+            if (accepted.step % 10 < result.steps || session.status !== 'running') setMetrics(session.metrics());
+          }
+          const nextStatus = session.status as ReactiveFlightStatus;
+          if (nextStatus === 'completed' || nextStatus === 'failed') {
+            setStatus(nextStatus); setError(session.error); setPlaying(false); clock.current.reset(); return;
+          }
+        } catch (cause) {
+          setFrame(session.snapshot()); setLatestInterval(session.latestInterval()); setMetrics(session.metrics());
+          setStatus(session.status); setError(cause instanceof Error ? cause.message : String(cause));
+          setPlaying(false); clock.current.reset(); return;
+        }
+      }
+      previous = now; raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, [playing, session]);
+
+  useEffect(() => {
+    const onVisibility = () => {
+      if (document.hidden && session.status === 'running') {
+        session.pause(); clock.current.reset(); setPlaying(false); setStatus(session.status);
+      }
+    };
+    document.addEventListener('visibilitychange', onVisibility);
+    return () => document.removeEventListener('visibilitychange', onVisibility);
+  }, [session]);
+
+  function start() {
+    if (document.hidden) return;
+    try { session.start(); clock.current.reset(); setError(null); setStatus(session.status); setPlaying(true); }
+    catch (cause) { setError(cause instanceof Error ? cause.message : String(cause)); }
+  }
+
+  function pause() {
+    session.pause(); clock.current.reset(); setPlaying(false); setStatus(session.status);
+  }
+
+  function reset() {
+    clock.current.reset(); setPlaying(false);
+    const next = new ReactiveFlightExplorationSession(); setSession(next);
+    setFrame(next.snapshot()); setMetrics(next.metrics()); setLatestInterval(next.latestInterval());
+    setStatus('ready'); setError(null);
+  }
+
+  const altitude = frame.position[1] - REACTIVE_FLIGHT_CONFIG.environment.bounds.min[1];
+  const wings = flightWingsV8(frame.time, frame.state, Math.max(0, altitude), REACTIVE_FLIGHT_CONFIG.wing_presentation.preset);
+  const clearance = latestInterval?.observation;
+  const bodyPose = flightScene(frame);
+
+  return <section className="lab-experience" data-lab-mode="reactive-flight" data-flight-status={status}>
+    <div className="lab-activity"><div><span className="lab-eyebrow">Engineering state feedback</span><h1>Flight exploration<span>.</span></h1><p>Current-state wall response and altitude stabilization inside the existing chamber.</p></div><span className={`lab-status${playing ? ' is-running' : ''}`} role="status"><i aria-hidden="true" />{statusText[status]}</span></div>
+    <div className="lab-workspace">
+      <div className="lab-view-area">
+        <FlyViewer experience arena replayPose={bodyPose} flightPresentation={wings}
+          presentationLabel="Engineering reactive flight · fixed 20 ms plant intervals"
+          flightDisclosure="Engineering state-feedback exploration. Bounded geometric chamber clearances influence motor commands; they are not biological sensory recordings or validated Drosophila vision. The body plant controls accepted motion. Wing articulation is visual only and does not generate lift."
+          playbackControls={<div className="lab-controls" aria-label="Reactive flight controls">
+            <button className="lab-play" disabled={playing || status === 'completed' || status === 'failed'} onClick={start}>{status === 'paused' ? 'Resume' : 'Start takeoff'}</button>
+            <button disabled={!playing} onClick={pause}>Pause</button>
+            <button onClick={reset}>Reset</button>
+            <div className="lab-time"><output aria-label="Accepted flight time" aria-live="off">{frame.time.toFixed(2)} s</output><span>Accepted model time · maximum {REACTIVE_FLIGHT_CONFIG.maximum_duration_s} s</span></div>
+          </div>}/>
+        <p className="lab-live-window" data-flight-step={frame.step} data-flight-position={JSON.stringify(frame.position)} data-flight-velocity={JSON.stringify(frame.velocity)}>
+          Accepted state {frame.step} · {frame.state} · X/Y/Z {frame.position.map(value => value.toFixed(4)).join(' / ')} · velocity {frame.velocity.map(value => value.toFixed(4)).join(' / ')} units/s
+        </p>
+        {error ? <p className="lab-error" role="alert">{error} The controller stopped at the last accepted body state.</p> : null}
+        {status === 'completed' ? <p className="lab-completion" role="status">Finite 30-second verification window complete. This duration limit does not represent a landing decision.</p> : null}
+      </div>
+      <aside className="lab-sidebar" aria-label="Reactive flight mode and telemetry">
+        {modeControl}
+        <div className="lab-introduction"><span className="lab-eyebrow">Engineering model</span><p>Engineering state-feedback exploration. The controller uses geometric clearance to the existing chamber bounds; it has no internal-obstacle sensor and is not a biological flight-control model.</p></div>
+        <details className="lab-details" open><summary>Accepted flight telemetry <span aria-hidden="true">+</span></summary><div className="lab-panel-content">
+          <dl className="lab-telemetry" data-controller={REACTIVE_FLIGHT_CONFIG.controller.id} data-controller-version={REACTIVE_FLIGHT_CONFIG.controller.version}>
+            <div><dt>Controller / plant</dt><dd>{REACTIVE_FLIGHT_CONFIG.controller.id} · v{REACTIVE_FLIGHT_CONFIG.controller.version} / {FLIGHT_MODEL.schema}</dd></div>
+            <div><dt>Plant state / controller phase</dt><dd>{frame.state} / {session.controllerPhase}</dd></div>
+            <div><dt>Position / velocity</dt><dd>{frame.position.map(value => value.toFixed(4)).join(' / ')} units · {frame.velocity.map(value => value.toFixed(4)).join(' / ')} units/s</dd></div>
+            <div><dt>Heading / horizontal speed</dt><dd>{frame.heading.toFixed(4)} rad / {Math.hypot(frame.velocity[0], frame.velocity[2]).toFixed(4)} units/s</dd></div>
+            <div><dt>Forward / left / right clearance</dt><dd>{clearance ? `${clearance.forward_wall_clearance_units.toFixed(3)} / ${clearance.left_wall_clearance_units.toFixed(3)} / ${clearance.right_wall_clearance_units.toFixed(3)} units` : 'No post-start observation yet'}</dd></div>
+            <div><dt>Floor / ceiling clearance</dt><dd>{clearance ? `${clearance.floor_clearance_units.toFixed(3)} / ${clearance.ceiling_clearance_units.toFixed(3)} units` : 'No post-start observation yet'}</dd></div>
+            <div><dt>Horizontal distance / explored X/Z extent</dt><dd>{metrics.horizontal_distance_units.toFixed(3)} / {metrics.explored_x_extent_units.toFixed(3)} / {metrics.explored_z_extent_units.toFixed(3)} units</dd></div>
+            <div><dt>Steering responses / wall contacts</dt><dd>{metrics.steering_response_count} / {metrics.wall_contacts.length}</dd></div>
+            <div><dt>Altitude range / vertical speed</dt><dd>{metrics.altitude_range_above_floor_units.map(value => value.toFixed(3)).join('–')} units above floor · {frame.velocity[1].toFixed(4)} units/s</dd></div>
+            <div><dt>Bound violations / floor or ceiling contacts</dt><dd>{metrics.accepted_bound_violations} / {metrics.floor_ceiling_contacts.length}</dd></div>
+            <div><dt>Termination</dt><dd>{status === 'completed' ? 'DURATION_LIMIT_REACHED' : status === 'failed' ? 'FAILED' : 'IN PROGRESS'}</dd></div>
+          </dl>
+          <p className="lab-setting-note">State n produces a bounded geometric observation and feedback command for interval n; the existing FlightEngine then accepts state n+1. No waypoints, scheduled turns, neural lift command or renderer-driven translation are used. Wall distance is an engineering world query, not biological optic flow.</p>
+        </div></details>
+      </aside>
+    </div>
+  </section>;
+}

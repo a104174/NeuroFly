@@ -207,6 +207,13 @@ export function SelectedNeuralState({ name, side, bodyId, field, value }: {
   </header>;
 }
 
+export function NeuralCameraGuidance() {
+  return <p className="neural-camera-guidance">
+    <span><strong>Mouse:</strong> left-drag to rotate · right-drag to pan · scroll to zoom. <strong>Touch:</strong> one-finger drag rotates · two-finger drag pans and pinch zooms.</span>
+    <span><strong>Select:</strong> click or tap a neuron; camera drags do not change selection. <strong>Focus selected</strong> frames the chosen morphology · <strong>Overview</strong> restores the full view.</span>
+  </p>;
+}
+
 function activityFor(snapshot: NeuralActivityViewSnapshot | null): ReadonlyMap<number, number> {
   return new Map(snapshot?.values.map((entry) => [entry.body_id, entry.value]) ?? []);
 }
@@ -293,6 +300,7 @@ export const NeuralActivityExplorer3D = memo(function NeuralActivityExplorer3D({
         <button type="button" disabled={!actions || contextLost} onClick={() => { actions?.overview(); setCameraNotice(null); }}>Overview</button>
         <span role="status">{cameraNotice}</span>
       </div>
+      <NeuralCameraGuidance />
       <div className="neural-explorer-layout">
         <div className="neural-explorer-canvas-wrap">
           {!contextLost ? <NeuralCanvas

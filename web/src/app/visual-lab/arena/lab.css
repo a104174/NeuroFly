@@ -177,3 +177,6 @@
 .neural-history > span { flex-wrap:wrap; font-size:11px; }
 .neural-camera-actions { display:flex; flex-wrap:wrap; align-items:center; gap:8px; margin:10px 0; }
 .neural-camera-actions > span { flex-basis:100%; color:var(--lab-muted); font-size:12px; overflow-wrap:anywhere; }
+.neural-camera-guidance { max-width:100%; min-width:0; margin:-2px 0 12px; color:var(--lab-muted); font-size:12px; line-height:1.55; overflow-wrap:anywhere; }
+.neural-camera-guidance > span { display:block; }
+.neural-camera-guidance strong { color:#c8d9df; font-weight:600; }

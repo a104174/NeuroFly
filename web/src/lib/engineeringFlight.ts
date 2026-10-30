@@ -102,8 +102,19 @@ export class FlightEngine {
   private externalCommandMode = false;
   private readonly externalCommandIds = new Set<string>();
   private readonly chamber: FlightChamber;
-  constructor(trial = createFlightTrial(), chamber: FlightChamber = FLIGHT_MODEL.arena) {
+  private readonly handoffInitial: boolean;
+  constructor(trial = createFlightTrial(), chamber: FlightChamber = FLIGHT_MODEL.arena, grounded?: { position: Vec3; heading: number; velocity: Vec3 }) {
     this.input = validateFlightTrial(trial);
+    this.handoffInitial = Boolean(grounded);
+    if (grounded) {
+      if (trial.commands.length || !Array.isArray(grounded.position) || grounded.position.length !== 3 ||
+          !Array.isArray(grounded.velocity) || grounded.velocity.length !== 3 ||
+          ![...grounded.position, ...grounded.velocity, grounded.heading].every(Number.isFinite) ||
+          grounded.position[1] !== FLIGHT_MODEL.ground_y || grounded.velocity[1] !== 0 ||
+          Math.hypot(grounded.velocity[0], grounded.velocity[2]) > FLIGHT_MODEL.max_forward_speed + 1e-12)
+        throw new Error('Invalid grounded flight handoff');
+      this.input.initial = { ...initialFlightFrame(), position: [...grounded.position], heading: grounded.heading, velocity: [...grounded.velocity] };
+    }
     const bounds = flightBounds(chamber);
     if (this.input.initial.position.some((v, axis) => v < bounds.min[axis] || v > bounds.max[axis]))
       throw new Error('Initial flight pose is inadmissible in chamber');
@@ -111,7 +122,9 @@ export class FlightEngine {
     this.history = [structuredClone(this.input.initial)];
   }
   environment() { return structuredClone(this.chamber); }
-  trial() { return structuredClone(this.input); }
+  /** Mixed episodes require a separate artifact; legacy trial identity stays fixed. */
+  trial() { if (this.handoffInitial) throw new Error('Grounded handoff requires a mixed-mode artifact'); return structuredClone(this.input); }
+  get hasGroundedHandoff() { return this.handoffInitial; }
   snapshot() { return structuredClone(this.history.at(-1)!); }
   frames() { return structuredClone(this.history); }
   events() { return structuredClone(this.history.flatMap(f => f.events)); }
@@ -231,7 +244,7 @@ export async function flightHash(value: unknown) {
   return [...new Uint8Array(digest)].map(n => n.toString(16).padStart(2, '0')).join('');
 }
 export async function exportFlight(engine: FlightEngine, preset: WingbeatPreset) {
-  if (flightCanonical(engine.environment()) !== flightCanonical(FLIGHT_MODEL.arena) || engine.hasExternalTurn || engine.hasExternalCommand) throw new Error('Externally controlled flight requires its own versioned artifact');
+  if (engine.hasGroundedHandoff || flightCanonical(engine.environment()) !== flightCanonical(FLIGHT_MODEL.arena) || engine.hasExternalTurn || engine.hasExternalCommand) throw new Error('Externally controlled flight requires its own versioned artifact');
   const trial = engine.trial(); trial.presentation.preset = preset; validateFlightTrial(trial);
   const frames = engine.frames(), termination = frames.length - 1 === trial.stop_step ? 'DURATION_COMPLETED' : 'RECORDED_PREFIX';
   return { schema: 'engineering_flight_result_v8', classification: 'ENGINEERING_ONLY_NOT_A_NEURAL_EXPERIMENT', trial, frames, termination,

@@ -20,6 +20,14 @@ type CameraActions = { focus: () => string | null; overview: () => void };
 
 import { pickNeuralSegments } from "@/lib/neuralScreenPicking";
 
+import { NeuralSelectionGesture, bindNeuralSelectionGesture } from "./neuralSelectionGesture";
+
+function SelectionGestureEvents({ gesture }: { readonly gesture: NeuralSelectionGesture }) {
+  const gl = useThree(state => state.gl);
+  useEffect(() => bindNeuralSelectionGesture(gl.domElement, gesture), [gl, gesture]);
+  return null;
+}
+
 interface LoadedBundle {
   readonly manifest: NeuralMorphologyManifest;
   readonly view: NeuralMorphologyView;
@@ -75,7 +83,8 @@ function CameraControls({ onContextLoss, view, selectedId, onReady }: { readonly
   return null;
 }
 
-function Skeleton({ body, value, selected, onSelect }: {
+function Skeleton({ body, value, selected, onSelect, gesture }: {
+  readonly gesture: NeuralSelectionGesture;
   readonly body: DisplayNeuralMorphology;
   readonly value: number | null;
   readonly selected: boolean;
@@ -102,13 +111,14 @@ function Skeleton({ body, value, selected, onSelect }: {
   const color = value === null ? "#607c8a" : value > 0 ? "#87e9df" : value < 0 ? "#e8b77b" : "#91a7b0";
   const opacity = selected ? 0.6 + 0.4 * magnitude : value === null ? 0.34 : 0.12 + 0.25 * magnitude;
   return (
-    <lineSegments geometry={geometry} raycast={raycast} onClick={(event) => { event.stopPropagation(); onSelect(body.identity.body_id); }}>
+    <lineSegments geometry={geometry} raycast={raycast} onClick={(event) => { event.stopPropagation(); if (gesture.consume(event.nativeEvent)) onSelect(body.identity.body_id); }}>
       <lineBasicMaterial color={color} transparent opacity={opacity} depthWrite={false} />
     </lineSegments>
   );
 }
 
-function NeuralScene({ view, selectedId, values, onContextLoss, onSelect, onReady }: {
+function NeuralScene({ view, selectedId, values, onContextLoss, onSelect, onReady, gesture }: {
+  readonly gesture: NeuralSelectionGesture;
   readonly view: NeuralMorphologyView;
   readonly selectedId: number;
   readonly values: ReadonlyMap<number, number>;
@@ -118,11 +128,13 @@ function NeuralScene({ view, selectedId, values, onContextLoss, onSelect, onRead
 }) {
   return (
     <>
+      <SelectionGestureEvents gesture={gesture} />
       <color attach="background" args={["#07121a"]} />
       {view.bodies.map((body) => (
         <Skeleton
           key={body.identity.body_id}
           body={body}
+          gesture={gesture}
           value={values.get(body.identity.body_id) ?? null}
           selected={selectedId === body.identity.body_id}
           onSelect={onSelect}
@@ -141,6 +153,7 @@ const NeuralCanvas = memo(function NeuralCanvas({ view, selectedId, values, onCo
   readonly onSelect: (id: number) => void;
   readonly onReady: (actions: CameraActions | null) => void;
 }) {
+  const gesture = useMemo(() => new NeuralSelectionGesture(), []);
   return (
     <Canvas
       aria-label="MaleCNS HS and DNp15 raw skeletons in a 3D view"
@@ -150,6 +163,7 @@ const NeuralCanvas = memo(function NeuralCanvas({ view, selectedId, values, onCo
       fallback={<p className="neural-viewer-unavailable">WebGL is unavailable; verified source identities and model values remain listed beside the viewer.</p>}
     >
       <NeuralScene
+        gesture={gesture}
         view={view}
         selectedId={selectedId}
         values={values}

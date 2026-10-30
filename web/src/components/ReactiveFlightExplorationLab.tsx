@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState, useMemo, type ReactNode } from 'react';
 import { FlyViewer } from './FlyViewer';
 import { FlightClock, FLIGHT_MODEL, flightScene } from '@/lib/engineeringFlight';
-import { MixedGroundFlightSession } from '@/lib/mixedGroundFlight';
+import { MixedGroundFlightSession, SUSTAINED_MIXED_PROTOCOL } from '@/lib/mixedGroundFlight';
 import type { NeuralArtifact } from '@/lib/neuralLocomotion';
 import { gaitHistory } from '@/lib/articulatedGait';
 import { TouchAndGoSession, TOUCH_AND_GO_CONFIG } from '@/lib/flightTouchAndGo';
@@ -18,11 +18,11 @@ const statusText: Record<ReactiveFlightStatus, string> = {
   completed: 'Finite trial complete', failed: 'Exploration stopped on error',
 };
 
-export type ReactiveFlightBehavior = 'continuous' | 'touch-and-go' | 'mixed';
+export type ReactiveFlightBehavior = 'continuous' | 'touch-and-go' | 'mixed' | 'sustained';
 export function createReactiveFlightLabSession(behavior: ReactiveFlightBehavior, authority?: NeuralArtifact | null) {
-  if (behavior === 'mixed') {
+  if (behavior === 'mixed' || behavior === 'sustained') {
     if (!authority) throw new Error('Ground runtime authority unavailable');
-    return new MixedGroundFlightSession(authority);
+    return new MixedGroundFlightSession(authority, behavior === 'sustained');
   }
   return behavior === 'touch-and-go' ? new TouchAndGoSession() : new ReactiveFlightExplorationSession();
 }
@@ -32,8 +32,9 @@ export function ReactiveFlightExplorationLab({ modeControl, authority, authority
     <button type="button" aria-pressed={behavior === 'continuous'} onClick={() => setBehavior('continuous')}>Continuous exploration</button>
     <button type="button" aria-pressed={behavior === 'touch-and-go'} onClick={() => setBehavior('touch-and-go')}>Landing and re-takeoff</button>
     <button type="button" aria-pressed={behavior === 'mixed'} onClick={() => setBehavior('mixed')}>Flight + ground exploration</button>
+    <button type="button" aria-pressed={behavior === 'sustained'} onClick={() => setBehavior('sustained')}>Sustained flight + ground exploration</button>
   </div></>;
-  if (behavior === 'mixed' && !authority) return <section>{controls}<p role={authorityError ? 'alert' : 'status'}>{authorityError ?? 'Loading validated ground runtime…'}</p></section>;
+  if ((behavior === 'mixed' || behavior === 'sustained') && !authority) return <section>{controls}<p role={authorityError ? 'alert' : 'status'}>{authorityError ?? 'Loading validated ground runtime…'}</p></section>;
   return <ReactiveFlightSessionLab key={behavior} behavior={behavior} authority={authority} modeControl={controls}/>;
 }
 export function ReactiveFlightSessionLab({ modeControl, behavior, authority }: { modeControl: ReactNode; behavior: ReactiveFlightBehavior; authority?: NeuralArtifact | null }) {
@@ -107,8 +108,9 @@ export function ReactiveFlightSessionLab({ modeControl, behavior, authority }: {
   }
 
   const touchAndGo = behavior === 'touch-and-go';
-  const controller = behavior === 'mixed' ? {id:'mixed_ground_flight_v1',version:1} : touchAndGo ? TOUCH_AND_GO_CONFIG.controller : REACTIVE_FLIGHT_CONFIG.controller;
-  const mixed = behavior === 'mixed';
+  const sustained = behavior === 'sustained';
+  const controller = sustained ? {id:SUSTAINED_MIXED_PROTOCOL.schema,version:SUSTAINED_MIXED_PROTOCOL.version} : behavior === 'mixed' ? {id:'mixed_ground_flight_v1',version:1} : touchAndGo ? TOUCH_AND_GO_CONFIG.controller : REACTIVE_FLIGHT_CONFIG.controller;
+  const mixed = behavior === 'mixed' || sustained;
   const gait = useMemo(() => session instanceof MixedGroundFlightSession ? gaitHistory(session.presentationBodySamples(frame)).at(-1) : undefined, [session, frame]);
   useEffect(() => () => { if (session instanceof MixedGroundFlightSession) session.dispose(); }, [session]);
   const altitude = frame.position[1] - REACTIVE_FLIGHT_CONFIG.environment.bounds.min[1];
@@ -127,13 +129,13 @@ export function ReactiveFlightSessionLab({ modeControl, behavior, authority }: {
             <button className="lab-play" disabled={playing || status === 'completed' || status === 'failed'} onClick={start}>{status === 'paused' ? 'Resume' : 'Start takeoff'}</button>
             <button disabled={!playing} onClick={pause}>Pause</button>
             <button onClick={reset}>Reset</button>
-            <div className="lab-time"><output aria-label="Accepted flight time" aria-live="off">{frame.time.toFixed(2)} s</output><span>Accepted model time · maximum {REACTIVE_FLIGHT_CONFIG.maximum_duration_s} s</span></div>
+            <div className="lab-time"><output aria-label="Accepted flight time" aria-live="off">{frame.time.toFixed(2)} s</output><span>Accepted model time · maximum {sustained ? 60 : REACTIVE_FLIGHT_CONFIG.maximum_duration_s} s</span></div>
           </div>}/>
         <p className="lab-live-window" data-flight-step={frame.step} data-flight-position={JSON.stringify(frame.position)} data-flight-velocity={JSON.stringify(frame.velocity)}>
           Accepted state {frame.step} · {frame.state} · X/Y/Z {frame.position.map(value => value.toFixed(4)).join(' / ')} · velocity {frame.velocity.map(value => value.toFixed(4)).join(' / ')} units/s
         </p>
         {error ? <p className="lab-error" role="alert">{error} The controller stopped at the last accepted body state.</p> : null}
-        {status === 'completed' ? <p className="lab-completion" role="status">{mixed ? 'Walking and flight handoffs verified; second airborne exploration accepted.' : touchAndGo ? 'Landing and re-takeoff verified; second airborne exploration accepted.' : 'Finite 30-second verification window complete. This duration limit does not represent a landing decision.'}</p> : null}
+        {status === 'completed' ? <p className="lab-completion" role="status">{sustained ? 'Finite sustained window complete; inspect recorded episode counts and final plant state.' : mixed ? 'Walking and flight handoffs verified; second airborne exploration accepted.' : touchAndGo ? 'Landing and re-takeoff verified; second airborne exploration accepted.' : 'Finite 30-second verification window complete. This duration limit does not represent a landing decision.'}</p> : null}
       </div>
       <aside className="lab-sidebar" aria-label="Reactive flight mode and telemetry">
         {modeControl}
@@ -151,7 +153,8 @@ export function ReactiveFlightSessionLab({ modeControl, behavior, authority }: {
             <div><dt>Altitude range / vertical speed</dt><dd>{metrics.altitude_range_above_floor_units.map(value => value.toFixed(3)).join('–')} units above floor · {frame.velocity[1].toFixed(4)} units/s</dd></div>
             <div><dt>Bound violations / floor or ceiling contacts</dt><dd>{metrics.accepted_bound_violations} / {metrics.floor_ceiling_contacts.length}</dd></div>
             {touchAndGo && latestInterval && 'landing_eligible' in latestInterval.decision ? <div><dt>Landing / re-takeoff eligibility</dt><dd>{String(latestInterval.decision.landing_eligible)} / {String(latestInterval.decision.takeoff_eligible)} · {latestInterval.decision.reason}</dd></div> : null}
-            <div><dt>Termination</dt><dd>{status === 'completed' ? touchAndGo || mixed ? 'SECOND_FLIGHT_CONFIRMED' : 'DURATION_LIMIT_REACHED' : status === 'failed' ? 'FAILED' : 'IN PROGRESS'}</dd></div>
+            {sustained && 'ground_episode_count' in metrics && typeof metrics.ground_episode_count === 'number' && 'walking_distance_units' in metrics && typeof metrics.walking_distance_units === 'number' && 'walking_duration_s' in metrics && typeof metrics.walking_duration_s === 'number' ? <div><dt>Ground episodes / walking distance / duration</dt><dd>{metrics.ground_episode_count} / {metrics.walking_distance_units.toFixed(3)} units / {metrics.walking_duration_s.toFixed(2)} s</dd></div> : null}
+            <div><dt>Termination</dt><dd>{status === 'completed' ? sustained ? 'DURATION_WINDOW_COMPLETED' : touchAndGo || mixed ? 'SECOND_FLIGHT_CONFIRMED' : 'DURATION_LIMIT_REACHED' : status === 'failed' ? 'FAILED' : 'IN PROGRESS'}</dd></div>
           </dl>
           <p className="lab-setting-note">State n produces a bounded geometric observation and feedback command for interval n; the existing FlightEngine then accepts state n+1. No waypoints, scheduled turns, neural lift command or renderer-driven translation are used. Wall distance is an engineering world query, not biological optic flow.</p>
         </div></details>

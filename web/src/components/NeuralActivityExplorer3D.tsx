@@ -5,6 +5,7 @@ import { BufferGeometry, Float32BufferAttribute, PerspectiveCamera, Vector3, typ
 import { memo, useCallback, useEffect, useMemo, useState, useRef, useLayoutEffect } from "react";
 import type { LiveSample } from "@/lib/liveGroundSession";
 import { activityHistory, activitySign } from "@/lib/neuralExplorerPresentation";
+import { activityHistoryRows } from "./neuralHistoryRows";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import {
   loadVerifiedNeuralMorphology,
@@ -175,16 +176,18 @@ const NeuralCanvas = memo(function NeuralCanvas({ view, selectedId, values, onCo
   );
 });
 
-export const ActivityHistory = memo(function ActivityHistory({ history, name }: {
+export const ActivityHistory = memo(function ActivityHistory({ history, name, rows = history }: {
   readonly history: ReturnType<typeof activityHistory>;
   readonly name: string;
+  readonly rows?: ReturnType<typeof activityHistoryRows>;
 }) {
   return (
             <div className="neural-history"><strong>Recent activity · {name}</strong>
               {history.length ? <><svg viewBox="0 0 240 70" preserveAspectRatio="none" role="img" aria-label={`Recent ${name} model proxy values from ${history[0].time.toFixed(2)} to ${history[history.length - 1].time.toFixed(2)} seconds`}>
                 <line x1="0" x2="240" y1="35" y2="35" stroke="#6c8994" strokeDasharray="3 3" />
                 {history.map((point, i) => { const span = history[history.length - 1].time - history[0].time; const x = span > 0 ? (point.time - history[0].time) * 240 / span : 0; const y = 35 - Math.max(-1, Math.min(1, point.value)) * 30; const previous = history[i - 1]; return <g key={point.tick}>{previous && point.tick === previous.tick + 1 ? <line x1={span > 0 ? (previous.time - history[0].time) * 240 / span : 0} y1={35 - Math.max(-1, Math.min(1, previous.value)) * 30} x2={x} y2={y} stroke="#87e9df" /> : null}<circle cx={x} cy={y} r="1.2" fill="#d6f4f0" /></g>; })}
-              </svg><span>{history[0].time.toFixed(2)} s <span>interval-start time</span> {history[history.length - 1].time.toFixed(2)} s</span><small>Rolling window, up to 256 samples; −1 to +1 model units. Not a complete recording.</small></> : <p>No recent valid samples yet. Start a session to see activity.</p>}
+              </svg><span>{history[0].time.toFixed(2)} s <span>interval-start time</span> {history[history.length - 1].time.toFixed(2)} s</span><small>Rolling window, up to 256 samples; −1 to +1 model units. Not a complete recording.</small></> : <p>{rows.length ? "No valid activity is available in this window." : "No recent valid samples yet. Start a session to see activity."}</p>}
+              {rows.length ? <details className="neural-history-values"><summary>View recorded values ({rows.length} samples)</summary><div className="neural-history-table-scroll"><table><caption>{name}: model-computed activity, dimensionless units; interval-start times, oldest first.</caption><thead><tr><th scope="col">Interval</th><th scope="col">Time (s)</th><th scope="col">Activity</th></tr></thead><tbody>{rows.map((row, i) => <tr key={`${row.tick ?? 'unavailable'}-${i}`}><td>{row.tick ?? 'Unavailable'}</td><td>{row.time === null ? 'Unavailable' : String(row.time)}</td><td>{row.value === null || !Number.isFinite(row.value) ? 'Unavailable' : row.value > 0 ? `+${row.value}` : String(row.value)}</td></tr>)}</tbody></table></div></details> : null}
             </div>
   );
 });
@@ -249,7 +252,8 @@ export const NeuralActivityExplorer3D = memo(function NeuralActivityExplorer3D({
   const values = useMemo(() => activityFor(snapshot), [snapshot]);
   const selected = bundle?.view.bodies.find((body) => body.identity.body_id === selectedId) ?? null;
   const historyAvailable = !activityError && Boolean(snapshot);
-  const history = useMemo(() => historyAvailable ? activityHistory(recentSamples, selectedId) : [], [recentSamples, selectedId, historyAvailable]);
+  const historyRows = useMemo(() => historyAvailable ? activityHistoryRows(recentSamples, selectedId) : [], [recentSamples, selectedId, historyAvailable]);
+  const history = useMemo(() => historyRows.filter((row): row is { tick: number; time: number; value: number } => row.tick !== null && row.time !== null && row.value !== null), [historyRows]);
   const selectedValue = snapshot?.values.find((entry) => entry.body_id === selectedId)?.value ?? null;
   const routes = bundle?.manifest.selected_routes.filter((route) =>
     route.source_body_id === selectedId || route.target_body_id === selectedId,
@@ -320,7 +324,7 @@ export const NeuralActivityExplorer3D = memo(function NeuralActivityExplorer3D({
             <SelectedNeuralState name={selected.identity.cell_type} side={selected.identity.side} bodyId={selected.identity.body_id} field={selected.identity.model_state.field} value={selectedValue} />
             <p>{!snapshot ? "Start a session to see the circuit’s current contribution." : !snapshot.neural_enabled ? "Neural influence on movement is off; model states remain computed." : Math.abs(snapshot.neural_yaw_rad_s) < 1e-9 ? "The circuit’s current yaw contribution is zero." : "The circuit contributes to yaw through an engineering projection, not a decision by this individual cell."}</p>
             {snapshot ? <p>Engineering wall response: {Math.abs(snapshot.boundary_yaw_rad_s) < 1e-9 ? "no yaw contribution in this interval" : "also contributes to yaw in this interval"}.</p> : null}
-            <ActivityHistory history={history} name={`${selected.identity.cell_type} ${selected.identity.side} · ${selected.identity.body_id}`} />
+            <ActivityHistory history={history} rows={historyRows} name={`${selected.identity.cell_type} ${selected.identity.side} · ${selected.identity.body_id}`} />
             {presentation === "detailed" ? <dl>
               <div><dt>MaleCNS body ID</dt><dd>{selected.identity.body_id}</dd></div>
               <div><dt>Model state</dt><dd>{selected.identity.model_state.field}</dd></div>

@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState, useMemo, type ReactNode } from 'react';
 import { FlyViewer } from './FlyViewer';
 import { FlightClock, FLIGHT_MODEL, flightScene } from '@/lib/engineeringFlight';
-import { MixedGroundFlightSession, SUSTAINED_MIXED_PROTOCOL } from '@/lib/mixedGroundFlight';
+import { MixedGroundFlightSession, SUSTAINED_MIXED_PROTOCOL, LANDING_RECOVERY_PROTOCOL } from '@/lib/mixedGroundFlight';
 import type { NeuralArtifact } from '@/lib/neuralLocomotion';
 import { gaitHistory } from '@/lib/articulatedGait';
 import { TouchAndGoSession, TOUCH_AND_GO_CONFIG } from '@/lib/flightTouchAndGo';
@@ -18,11 +18,11 @@ const statusText: Record<ReactiveFlightStatus, string> = {
   completed: 'Finite trial complete', failed: 'Exploration stopped on error',
 };
 
-export type ReactiveFlightBehavior = 'continuous' | 'touch-and-go' | 'mixed' | 'sustained';
+export type ReactiveFlightBehavior = 'continuous' | 'touch-and-go' | 'mixed' | 'sustained' | 'landing-recovery';
 export function createReactiveFlightLabSession(behavior: ReactiveFlightBehavior, authority?: NeuralArtifact | null) {
-  if (behavior === 'mixed' || behavior === 'sustained') {
+  if (behavior === 'mixed' || behavior === 'sustained' || behavior === 'landing-recovery') {
     if (!authority) throw new Error('Ground runtime authority unavailable');
-    return new MixedGroundFlightSession(authority, behavior === 'sustained');
+    return new MixedGroundFlightSession(authority, behavior !== 'mixed', behavior === 'landing-recovery' ? 0 : undefined, behavior === 'landing-recovery');
   }
   return behavior === 'touch-and-go' ? new TouchAndGoSession() : new ReactiveFlightExplorationSession();
 }
@@ -33,8 +33,9 @@ export function ReactiveFlightExplorationLab({ modeControl, authority, authority
     <button type="button" aria-pressed={behavior === 'touch-and-go'} onClick={() => setBehavior('touch-and-go')}>Landing and re-takeoff</button>
     <button type="button" aria-pressed={behavior === 'mixed'} onClick={() => setBehavior('mixed')}>Flight + ground exploration</button>
     <button type="button" aria-pressed={behavior === 'sustained'} onClick={() => setBehavior('sustained')}>Sustained flight + ground exploration</button>
+    <button type="button" aria-pressed={behavior === 'landing-recovery'} onClick={() => setBehavior('landing-recovery')}>Mixed exploration — landing recovery</button>
   </div></>;
-  if ((behavior === 'mixed' || behavior === 'sustained') && !authority) return <section>{controls}<p role={authorityError ? 'alert' : 'status'}>{authorityError ?? 'Loading validated ground runtime…'}</p></section>;
+  if ((behavior === 'mixed' || behavior === 'sustained' || behavior === 'landing-recovery') && !authority) return <section>{controls}<p role={authorityError ? 'alert' : 'status'}>{authorityError ?? 'Loading validated ground runtime…'}</p></section>;
   return <ReactiveFlightSessionLab key={behavior} behavior={behavior} authority={authority} modeControl={controls}/>;
 }
 export function ReactiveFlightSessionLab({ modeControl, behavior, authority }: { modeControl: ReactNode; behavior: ReactiveFlightBehavior; authority?: NeuralArtifact | null }) {
@@ -108,8 +109,8 @@ export function ReactiveFlightSessionLab({ modeControl, behavior, authority }: {
   }
 
   const touchAndGo = behavior === 'touch-and-go';
-  const sustained = behavior === 'sustained';
-  const controller = sustained ? {id:SUSTAINED_MIXED_PROTOCOL.schema,version:SUSTAINED_MIXED_PROTOCOL.version} : behavior === 'mixed' ? {id:'mixed_ground_flight_v1',version:1} : touchAndGo ? TOUCH_AND_GO_CONFIG.controller : REACTIVE_FLIGHT_CONFIG.controller;
+  const sustained = behavior === 'sustained' || behavior === 'landing-recovery';
+  const controller = behavior === 'landing-recovery' ? {id:LANDING_RECOVERY_PROTOCOL.schema,version:LANDING_RECOVERY_PROTOCOL.version} : sustained ? {id:SUSTAINED_MIXED_PROTOCOL.schema,version:SUSTAINED_MIXED_PROTOCOL.version} : behavior === 'mixed' ? {id:'mixed_ground_flight_v1',version:1} : touchAndGo ? TOUCH_AND_GO_CONFIG.controller : REACTIVE_FLIGHT_CONFIG.controller;
   const mixed = behavior === 'mixed' || sustained;
   const gait = useMemo(() => session instanceof MixedGroundFlightSession ? gaitHistory(session.presentationBodySamples(frame)).at(-1) : undefined, [session, frame]);
   useEffect(() => () => { if (session instanceof MixedGroundFlightSession) session.dispose(); }, [session]);

@@ -1,6 +1,6 @@
 /** One active body integrator per global interval; engine counters remain episode-local. */
 import { FlightEngine, FLIGHT_MODEL, createFlightTrial, flightHash, flightCanonical, type FlightFrame, flightBounds } from './engineeringFlight';
-import { TouchAndGoSession, TOUCH_AND_GO_CONFIG, decideTouchAndGo, type TouchAndGoState } from './flightTouchAndGo';
+import { TouchAndGoSession, TOUCH_AND_GO_CONFIG, decideTouchAndGoWithLandingRecovery, type TouchAndGoState, type TouchAndGoDecision } from './flightTouchAndGo';
 import { LiveGroundSession, type LiveSample } from './liveGroundSession';
 import { locomotionBounds } from './experimentalLocomotion';
 import type { NeuralArtifact } from './neuralLocomotion';
@@ -25,6 +25,13 @@ export const SUSTAINED_MIXED_PROTOCOL = {
   landing_recovery: 'ABORT_BRAKING_WHEN_EXISTING_LANDING_CLEARANCE_IS_UNSATISFIED',
   ground_envelope: 'ACTUAL_GROUND_BOUNDS; FLIGHT_BOUNDS_REVALIDATED_AT_TAKEOFF',
   acceptance: 'TWO_COMPLETED_GROUND_EPISODES_AND_AT_LEAST_THREE_TAKEOFFS_WITH_SAFE_CONTINUITY',
+} as const;
+export const LANDING_RECOVERY_PROTOCOL = {
+  ...SUSTAINED_MIXED_PROTOCOL, schema:'mixed_ground_flight_landing_recovery_v1', version:1,
+  reference_revision:'c84e34f221f937517f2f25580f54811b04827c94',
+  recovery_applicability:'INITIAL_AND_RESUMED_FLIGHT',
+  recovery_policy:'UNCHANGED_SUSTAINED_V2_ABORT_BRAKING_OVERRIDE',
+  initial_flight_limit_s:30, continuation_horizon_s:60,
 } as const;
 export function sustainedTakeoffEligible(distance: number, frame: FlightFrame, walkingIntervals: number) {
   if (!Number.isFinite(distance) || distance < SUSTAINED_MIXED_PROTOCOL.walking_distance_units ||
@@ -62,6 +69,10 @@ type Interval = {
   controller_phase_before: string; controller_phase_after: string; numerical_validity: 'FINITE_AND_WITHIN_CONSERVATIVE_BOUNDS';
   observation: ReturnType<typeof observeFlightArena>; decision: { reason: string };
   sustained?: { episode_id: number; ground_path_since_landing: number; retakeoff_eligible: boolean; landing_eligible: boolean | null; ground_neural: LiveSample['interval']['neural_summary'] | null };
+  landing_recovery?: { schema:'mixed_landing_recovery_evidence_v1'; controller_id: typeof LANDING_RECOVERY_PROTOCOL.schema;
+    context: Source; observation_global_step:number; observation_global_time_s:number; observation_source_step:number;
+    resulting_global_step:number; resulting_global_time_s:number; applicable:boolean;
+    policy: TouchAndGoDecision['recovery'] | null; previous_interval_active:boolean; landing_eligible:boolean | null };
   native_evidence: unknown; accepted: FlightFrame; command_origin: string;
 };
 export class MixedGroundFlightSession {
@@ -80,9 +91,10 @@ export class MixedGroundFlightSession {
   private failure: string | null = null;
   private termination: string | null = null;
   status: ReactiveFlightStatus = 'ready';
-  constructor(private readonly authority: NeuralArtifact, readonly sustained = false, private readonly evaluationInitialHeading?: number) {
+  constructor(private readonly authority: NeuralArtifact, readonly sustained = false, private readonly evaluationInitialHeading?: number, readonly landingRecovery = false) {
     if(evaluationInitialHeading!==undefined && (!sustained || !Number.isFinite(evaluationInitialHeading)))throw new Error('Heading evaluation requires a finite sustained initial condition');
-    this.first=new TouchAndGoSession(evaluationInitialHeading);this.body=this.first.snapshot();this.frames=[this.body];
+    if(landingRecovery && !sustained)throw new Error('Landing recovery requires the versioned sustained controller');
+    this.first=new TouchAndGoSession(evaluationInitialHeading,landingRecovery);this.body=this.first.snapshot();this.frames=[this.body];
   }
   private bounds(source: Source) {
     if (!this.sustained || source !== 'ground') return flightBounds();
@@ -128,14 +140,7 @@ export class MixedGroundFlightSession {
         const f = this.resumed!.snapshot(); local = f.step;
         const o = observeFlightArena(f);
         const command = f.state === 'grounded' ? { id: 'mixed-retakeoff', step:f.step, forward:0, turn:0, vertical:.8, intent:'TAKEOFF' as const } : null;
-        let decision = command ? null : this.sustained ? decideTouchAndGo(this.touchState,o) : decideReactiveFlight(this.reactive,o);
-        if (this.sustained && decision && 'landing_eligible' in decision &&
-            decision.state_after.phase === 'braking' &&
-            Math.min(o.forward_wall_clearance_units,o.left_wall_clearance_units,o.right_wall_clearance_units) < TOUCH_AND_GO_CONFIG.minimum_horizontal_clearance) {
-          const recovery=decideReactiveFlight({phase:'exploring',avoidance_turn:0},o);
-          decision={...decision,state_after:{...this.touchState,phase:'exploring',reactive:recovery.state_after},command:recovery.command,
-            reason:'UNSAFE_LANDING_CLEARANCE_RETURN_TO_REACTIVE_EXPLORATION',reactive_decision:recovery};
-        }
+        const decision = command ? null : this.sustained ? decideTouchAndGoWithLandingRecovery(this.touchState,o,undefined,this.landingRecovery) : decideReactiveFlight(this.reactive,o);
         accepted = this.resumed!.advanceWithCommand(command ?? decision!.command);
         if (decision) {
           if(this.sustained)this.touchState=decision.state_after as TouchAndGoState;
@@ -159,7 +164,15 @@ export class MixedGroundFlightSession {
           landing_eligible:nativeDecision && 'landing_eligible' in nativeDecision ? nativeDecision.landing_eligible ?? null : null,
           ground_neural:sample?.interval.neural_summary ?? null};
       }
-      if(this.evaluationInitialHeading!==undefined && source==='flight_initial' && this.first.status==='failed')
+      if(this.landingRecovery) {
+        const decision=(native as {decision?:TouchAndGoDecision}).decision;
+        this.intervals.at(-1)!.landing_recovery={schema:'mixed_landing_recovery_evidence_v1',controller_id:LANDING_RECOVERY_PROTOCOL.schema,
+          context:source,observation_global_step:before.step,observation_global_time_s:before.time,observation_source_step:local,
+          resulting_global_step:accepted.step,resulting_global_time_s:accepted.time,applicable:source!=='ground',
+          policy:decision?.recovery??null,previous_interval_active:this.intervals.at(-2)?.landing_recovery?.policy?.active??false,
+          landing_eligible:decision?.landing_eligible??null};
+      }
+      if((this.evaluationInitialHeading!==undefined || this.landingRecovery) && source==='flight_initial' && this.first.status==='failed')
         throw new Error(this.first.error ?? 'Initial-flight evaluation failed');
       if ((source === 'flight_initial' || (this.sustained && source === 'flight_resumed')) && accepted.state === 'grounded' && accepted.step > 0) {
         const pose = validateLandingHandoff(accepted,this.authority); this.first.pause(); if(this.sustained)this.distance=0;
@@ -234,7 +247,7 @@ export class MixedGroundFlightSession {
   }
   result() {
     if(!this.termination)throw new Error('Mixed session not terminal');
-    return structuredClone({schema:this.evaluationInitialHeading!==undefined?'sustained_initial_heading_evaluation_result_v1':this.sustained?'mixed_ground_flight_sustained_result_v2':'mixed_ground_flight_result_v1',configuration:this.evaluationInitialHeading!==undefined?{schema:'sustained_initial_heading_evaluation_config_v1',base:SUSTAINED_MIXED_PROTOCOL,initial_heading:this.evaluationInitialHeading}:this.sustained?SUSTAINED_MIXED_PROTOCOL:MIXED_PROTOCOL,initial:this.frames[0],
+    return structuredClone({schema:this.landingRecovery?'mixed_ground_flight_landing_recovery_result_v1':this.evaluationInitialHeading!==undefined?'sustained_initial_heading_evaluation_result_v1':this.sustained?'mixed_ground_flight_sustained_result_v2':'mixed_ground_flight_result_v1',configuration:this.landingRecovery?{...LANDING_RECOVERY_PROTOCOL,initial_heading:this.frames[0].heading}:this.evaluationInitialHeading!==undefined?{schema:'sustained_initial_heading_evaluation_config_v1',base:SUSTAINED_MIXED_PROTOCOL,initial_heading:this.evaluationInitialHeading}:this.sustained?SUSTAINED_MIXED_PROTOCOL:MIXED_PROTOCOL,initial:this.frames[0],
       provenance:{ground_source:this.authority.artifact_id,ground_config:this.authority.config_sha256,ground_neural_policy:MIXED_PROTOCOL.neural_policy},
       intervals:this.intervals,handoffs:this.handoffs,metrics:this.metrics(),termination:this.termination,failure:this.failure});
   }

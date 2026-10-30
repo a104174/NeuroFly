@@ -19,11 +19,13 @@ export const TOUCH_AND_GO_CONFIG = {
 type Phase = 'ready' | 'takeoff' | 'exploring' | 'braking' | 'landing' | 'grounded' | 'retakeoff_ready' | 'retakeoff' | 'exploring_again';
 export type TouchAndGoState = { phase: Phase; reactive: ReactiveControllerState; floor_verified: boolean };
 export const initialTouchAndGoState = (): TouchAndGoState => ({ phase: 'ready', reactive: { phase: 'ready', avoidance_turn: 0 }, floor_verified: false });
-type Decision = {
+export type TouchAndGoDecision = {
   state_before: TouchAndGoState; state_after: TouchAndGoState;
   landing_eligible: boolean; takeoff_eligible: boolean; reason: string;
   command: FlightCommand; reactive_decision: ReactiveFlightDecision | null;
+  recovery?: { schema: 'landing_clearance_recovery_interval_v1'; observed_clearance: number; required_clearance: number; eligible: boolean; active: boolean; base_phase_after: Phase };
 };
+type Decision = TouchAndGoDecision;
 export function decideTouchAndGo(state: TouchAndGoState, supplied: FlightArenaObservation, declaredInitialHeading?: number): Decision {
   const o = validateFlightArenaObservation(supplied), f = o.accepted, c = TOUCH_AND_GO_CONFIG;
   if (!state || !['ready','takeoff','exploring','braking','landing','grounded','retakeoff_ready','retakeoff','exploring_again'].includes(state.phase) ||
@@ -91,6 +93,26 @@ export function decideTouchAndGo(state: TouchAndGoState, supplied: FlightArenaOb
   return emit(reactive.reason, reactive.command.intent, reactive.command.vertical, reactive.command.forward, reactive.command.turn, reactive);
 }
 
+/** The published sustained-v2 override, shared without changing its comparisons or motor policy.
+ * Abort braking for this interval, then resume the existing reactive hysteresis.
+ * Historical resumed callers omit evidence; only the new controller records it.
+ */
+export function decideTouchAndGoWithLandingRecovery(state: TouchAndGoState, supplied: FlightArenaObservation, declaredInitialHeading?: number, recordRecovery = false): Decision {
+  const o = validateFlightArenaObservation(supplied);
+  let decision = decideTouchAndGo(state, o, declaredInitialHeading);
+  const clearance = Math.min(o.forward_wall_clearance_units, o.left_wall_clearance_units, o.right_wall_clearance_units);
+  const basePhase = decision.state_after.phase;
+  const eligible = basePhase === 'braking' && clearance < TOUCH_AND_GO_CONFIG.minimum_horizontal_clearance;
+  if (eligible) {
+    const recovery = decideReactiveFlight({phase:'exploring',avoidance_turn:0},o);
+    decision = {...decision,state_after:{...state,phase:'exploring',reactive:recovery.state_after},command:recovery.command,
+      reason:'UNSAFE_LANDING_CLEARANCE_RETURN_TO_REACTIVE_EXPLORATION',reactive_decision:recovery};
+  }
+  if (recordRecovery) decision.recovery = {schema:'landing_clearance_recovery_interval_v1',observed_clearance:clearance,
+    required_clearance:TOUCH_AND_GO_CONFIG.minimum_horizontal_clearance,eligible,active:eligible,base_phase_after:basePhase};
+  return decision;
+}
+
 type Interval = { command_origin: 'ENGINEERING_TOUCH_AND_GO_V1'; observation_step: number; observation_time_s: number; observation: FlightArenaObservation; decision: Decision; accepted: ReturnType<FlightEngine['snapshot']> };
 export class TouchAndGoSession {
   private readonly engine: FlightEngine;
@@ -99,7 +121,7 @@ export class TouchAndGoSession {
   private failure: string | null = null;
   private termination: 'SECOND_FLIGHT_CONFIRMED' | 'DURATION_LIMIT_REACHED' | 'FAILED' | null = null;
   status: ReactiveFlightStatus = 'ready';
-  constructor(private readonly declaredInitialHeading?: number) {
+  constructor(private readonly declaredInitialHeading?: number, private readonly landingRecovery = false) {
     if(declaredInitialHeading!==undefined&&!Number.isFinite(declaredInitialHeading))throw new Error('Invalid evaluation heading');
     const initial=initialFlightFrame();
     this.engine=new FlightEngine(createFlightTrial([],TOUCH_AND_GO_CONFIG.maximum_steps),FLIGHT_MODEL.arena,
@@ -117,7 +139,9 @@ export class TouchAndGoSession {
     if (this.status !== 'running') throw new Error('Session is not running');
     try {
       const before = this.snapshot(), observation = observeFlightArena(before);
-      const decision = decideTouchAndGo(this.controller, observation, this.declaredInitialHeading);
+      const decision = this.landingRecovery
+        ? decideTouchAndGoWithLandingRecovery(this.controller, observation, this.declaredInitialHeading, true)
+        : decideTouchAndGo(this.controller, observation, this.declaredInitialHeading);
       const accepted = this.engine.advanceWithCommand(decision.command);
       this.intervals.push({ command_origin: 'ENGINEERING_TOUCH_AND_GO_V1', observation_step: before.step, observation_time_s: before.time, observation, decision, accepted });
       this.controller = decision.state_after;
@@ -150,8 +174,8 @@ export class TouchAndGoSession {
   }
   result() {
     if (!this.termination) throw new Error('Touch-and-go verification is not terminal');
-    return structuredClone({ schema: this.declaredInitialHeading===undefined?'neurofly_flight_touch_and_go_result_v1':'touch_and_go_initial_heading_evaluation_v1', configuration: this.declaredInitialHeading===undefined?TOUCH_AND_GO_CONFIG:{...TOUCH_AND_GO_CONFIG,schema:'touch_and_go_initial_heading_evaluation_config_v1',reactive_configuration:{...TOUCH_AND_GO_CONFIG.reactive_configuration,initial_state:{...initialFlightFrame(),heading:this.declaredInitialHeading}}},
-      provenance: { controller_id: TOUCH_AND_GO_CONFIG.controller.id, command_origin: 'ENGINEERING_TOUCH_AND_GO_V1', plant: FLIGHT_MODEL.schema, source_glb_sha256: FLIGHT_MODEL.source_glb_sha256, randomness: 'NONE' },
+    return structuredClone({ schema: this.landingRecovery?'touch_and_go_landing_recovery_result_v1':this.declaredInitialHeading===undefined?'neurofly_flight_touch_and_go_result_v1':'touch_and_go_initial_heading_evaluation_v1', configuration: this.declaredInitialHeading===undefined?TOUCH_AND_GO_CONFIG:{...TOUCH_AND_GO_CONFIG,schema:'touch_and_go_initial_heading_evaluation_config_v1',reactive_configuration:{...TOUCH_AND_GO_CONFIG.reactive_configuration,initial_state:{...initialFlightFrame(),heading:this.declaredInitialHeading}}},
+      provenance: { controller_id: this.landingRecovery?'mixed_ground_flight_landing_recovery_v1':TOUCH_AND_GO_CONFIG.controller.id, command_origin: 'ENGINEERING_TOUCH_AND_GO_V1', plant: FLIGHT_MODEL.schema, source_glb_sha256: FLIGHT_MODEL.source_glb_sha256, randomness: 'NONE' },
       intervals: this.intervals, events: this.engine.events(), metrics: this.metrics(), termination: this.termination, failure: this.failure });
   }
 }

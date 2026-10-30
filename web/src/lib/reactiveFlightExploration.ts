@@ -1,7 +1,7 @@
 /** Engineering-only, deterministic closed-loop flight inside the existing chamber. */
 import {
   FlightEngine, FLIGHT_MODEL, createFlightTrial, flightBounds, flightCanonical,
-  flightHash, initialFlightFrame, type FlightCommand, type FlightEvent, type FlightFrame,
+  flightHash, initialFlightFrame, type FlightCommand, type FlightEvent, type FlightFrame, type FlightChamber,
 } from './engineeringFlight';
 import { ARENA } from './experimentalArena';
 import { observeFlightArena, validateFlightArenaObservation, type FlightArenaObservation } from './flightArenaObservations';
@@ -65,7 +65,17 @@ export const REACTIVE_FLIGHT_CONFIG = Object.freeze({
   acceptance: REACTIVE_FLIGHT_ACCEPTANCE,
 } as const);
 
-export type ReactiveFlightConfig = typeof REACTIVE_FLIGHT_CONFIG;
+export type ReactiveFlightConfig = Omit<typeof REACTIVE_FLIGHT_CONFIG, 'environment'> & {
+  environment: { id: string; chamber: FlightChamber; bounds: ReturnType<typeof flightBounds>; bounds_source: string };
+};
+/** Geometry plumbing only; all controller coefficients retain V10.8C identity. */
+export function reactiveFlightEnvironmentConfig(chamber: FlightChamber): ReactiveFlightConfig {
+  const bounds = flightBounds(chamber);
+  return { ...structuredClone(REACTIVE_FLIGHT_CONFIG), environment: {
+    id: flightCanonical(chamber) === flightCanonical(ARENA.chamber) ? REACTIVE_FLIGHT_CONFIG.environment.id : 'engineering_chamber_v1:' + flightCanonical(chamber),
+    chamber: structuredClone(chamber), bounds, bounds_source: 'engineeringFlight.flightBounds',
+  } };
+}
 export type ReactiveControllerPhase = 'ready' | 'takeoff' | 'exploring';
 export type AvoidanceTurn = -1 | 0 | 1;
 export type ReactiveControllerState = { phase: ReactiveControllerPhase; avoidance_turn: AvoidanceTurn };
@@ -95,7 +105,7 @@ const legalTransitions: Record<(typeof physicalStates)[number], readonly (typeof
 };
 
 function assertConfig(config: ReactiveFlightConfig) {
-  if (!config || flightCanonical(config) !== flightCanonical(REACTIVE_FLIGHT_CONFIG))
+  if (!config || flightCanonical(config) !== flightCanonical(reactiveFlightEnvironmentConfig(config.environment.chamber)))
     throw new Error('Unsupported reactive-flight configuration identity');
   const { bounds } = config.environment;
   const targetY = bounds.min[1] + config.controller.target_altitude_above_floor_units;
@@ -105,7 +115,7 @@ function assertConfig(config: ReactiveFlightConfig) {
       !(targetY - safety > bounds.min[1] && targetY + safety < bounds.max[1]) ||
       config.controller.wall_approach_clearance_units >= config.controller.wall_release_clearance_units ||
       config.controller.wall_release_clearance_units <= 0 ||
-      flightCanonical(bounds) !== flightCanonical(flightBounds()))
+      flightCanonical(bounds) !== flightCanonical(flightBounds(config.environment.chamber)))
     throw new Error('Reactive-flight configuration is inadmissible for the existing plant bounds');
 }
 
@@ -231,7 +241,7 @@ export class ReactiveFlightExplorationSession {
   constructor(config: ReactiveFlightConfig = REACTIVE_FLIGHT_CONFIG) {
     assertConfig(config);
     this.config = structuredClone(config);
-    this.engine = new FlightEngine(createFlightTrial([], config.maximum_steps, 'normal'));
+    this.engine = new FlightEngine(createFlightTrial([], config.maximum_steps, 'normal'), config.environment.chamber);
   }
 
   get stopStep() { return this.termination ? this.engine.snapshot().step : this.config.maximum_steps; }

@@ -77,10 +77,17 @@ export function validateFlightTrial(value: unknown): FlightTrial {
   }
   return structuredClone(t);
 }
-export function flightBounds() {
-  const c = FLIGHT_MODEL;
-  return { min: [-(c.arena.width - c.arena.wall) / 2 + c.horizontal_clearance, c.ground_y, -(c.arena.depth - c.arena.wall) / 2 + c.horizontal_clearance] as Vec3,
+export type FlightChamber = { width: number; depth: number; height: number; wall: number; floor: number };
+export function flightBounds(chamber: FlightChamber = FLIGHT_MODEL.arena) {
+  if (!chamber || Object.keys(chamber).sort().join(',') !== 'depth,floor,height,wall,width' ||
+      !Object.values(chamber).every(value => Number.isFinite(value) && value > 0) ||
+      chamber.floor >= chamber.height || chamber.wall >= Math.min(chamber.width, chamber.depth, chamber.height))
+    throw new Error('Invalid flight chamber dimensions');
+  const c = { ...FLIGHT_MODEL, arena: chamber };
+  const bounds = { min: [-(c.arena.width - c.arena.wall) / 2 + c.horizontal_clearance, c.ground_y, -(c.arena.depth - c.arena.wall) / 2 + c.horizontal_clearance] as Vec3,
     max: [(c.arena.width - c.arena.wall) / 2 - c.horizontal_clearance, c.arena.height - c.arena.wall / 2 - c.upper_clearance, (c.arena.depth - c.arena.wall) / 2 - c.horizontal_clearance] as Vec3 };
+  if (bounds.min.some((value, axis) => value >= bounds.max[axis])) throw new Error('Chamber cannot accommodate conservative flight clearance');
+  return bounds;
 }
 const approach = (current: number, target: number, amount: number) => current + Math.max(-amount, Math.min(amount, target - current));
 // Portable engineering state grid: sub-ULP differences in runtime hypot/trig must
@@ -94,7 +101,16 @@ export class FlightEngine {
   private adaptedTurn = false;
   private externalCommandMode = false;
   private readonly externalCommandIds = new Set<string>();
-  constructor(trial = createFlightTrial()) { this.input = validateFlightTrial(trial); this.history = [structuredClone(this.input.initial)]; }
+  private readonly chamber: FlightChamber;
+  constructor(trial = createFlightTrial(), chamber: FlightChamber = FLIGHT_MODEL.arena) {
+    this.input = validateFlightTrial(trial);
+    const bounds = flightBounds(chamber);
+    if (this.input.initial.position.some((v, axis) => v < bounds.min[axis] || v > bounds.max[axis]))
+      throw new Error('Initial flight pose is inadmissible in chamber');
+    this.chamber = structuredClone(chamber);
+    this.history = [structuredClone(this.input.initial)];
+  }
+  environment() { return structuredClone(this.chamber); }
   trial() { return structuredClone(this.input); }
   snapshot() { return structuredClone(this.history.at(-1)!); }
   frames() { return structuredClone(this.history); }
@@ -168,7 +184,7 @@ export class FlightEngine {
       const vy = landing ? -c.landing_speed : next.state === 'takeoff' ? Math.max(c.takeoff_speed, cmd.vertical * c.max_vertical_speed) : cmd.vertical * c.max_vertical_speed;
       next.velocity[1] = quantize(approach(old.velocity[1], vy, c.vertical_acceleration * dt));
       next.position = old.position.map((v, i) => next.velocity[i] === 0 ? v : quantize(v + next.velocity[i] * dt)) as Vec3;
-      const bounds = flightBounds();
+      const bounds = flightBounds(this.chamber);
       for (let axis = 0; axis < 3; axis++) {
         if (next.position[axis] < bounds.min[axis] || next.position[axis] > bounds.max[axis]) {
           const lower = next.position[axis] < bounds.min[axis], contact = ['X_WALL', lower ? 'FLOOR' : 'CEILING', 'Z_WALL'][axis];
@@ -215,7 +231,7 @@ export async function flightHash(value: unknown) {
   return [...new Uint8Array(digest)].map(n => n.toString(16).padStart(2, '0')).join('');
 }
 export async function exportFlight(engine: FlightEngine, preset: WingbeatPreset) {
-  if (engine.hasExternalTurn || engine.hasExternalCommand) throw new Error('Externally controlled flight requires its own versioned artifact');
+  if (flightCanonical(engine.environment()) !== flightCanonical(FLIGHT_MODEL.arena) || engine.hasExternalTurn || engine.hasExternalCommand) throw new Error('Externally controlled flight requires its own versioned artifact');
   const trial = engine.trial(); trial.presentation.preset = preset; validateFlightTrial(trial);
   const frames = engine.frames(), termination = frames.length - 1 === trial.stop_step ? 'DURATION_COMPLETED' : 'RECORDED_PREFIX';
   return { schema: 'engineering_flight_result_v8', classification: 'ENGINEERING_ONLY_NOT_A_NEURAL_EXPERIMENT', trial, frames, termination,

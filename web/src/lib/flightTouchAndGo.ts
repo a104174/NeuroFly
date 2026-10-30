@@ -1,5 +1,5 @@
 /** Engineering transition policy composed with unchanged reactive flight; no neural or renderer inputs. */
-import { FlightEngine, FLIGHT_MODEL, createFlightTrial, flightCanonical, flightHash, type FlightCommand } from './engineeringFlight';
+import { FlightEngine, FLIGHT_MODEL, createFlightTrial, flightCanonical, flightHash, initialFlightFrame, type FlightCommand } from './engineeringFlight';
 import { observeFlightArena, validateFlightArenaObservation, type FlightArenaObservation } from './flightArenaObservations';
 import { REACTIVE_FLIGHT_CONFIG, decideReactiveFlight, reactiveFlightMetrics, type ReactiveControllerState, type ReactiveFlightDecision, type ReactiveFlightStatus } from './reactiveFlightExploration';
 
@@ -24,7 +24,7 @@ type Decision = {
   landing_eligible: boolean; takeoff_eligible: boolean; reason: string;
   command: FlightCommand; reactive_decision: ReactiveFlightDecision | null;
 };
-export function decideTouchAndGo(state: TouchAndGoState, supplied: FlightArenaObservation): Decision {
+export function decideTouchAndGo(state: TouchAndGoState, supplied: FlightArenaObservation, declaredInitialHeading?: number): Decision {
   const o = validateFlightArenaObservation(supplied), f = o.accepted, c = TOUCH_AND_GO_CONFIG;
   if (!state || !['ready','takeoff','exploring','braking','landing','grounded','retakeoff_ready','retakeoff','exploring_again'].includes(state.phase) ||
       typeof state.floor_verified !== 'boolean') throw new Error('invalid_controller_state');
@@ -48,6 +48,13 @@ export function decideTouchAndGo(state: TouchAndGoState, supplied: FlightArenaOb
     takeoff_eligible: takeoffEligible, reason, reactive_decision: reactive,
     command: { id: 'touch-and-go-' + f.step, step: f.step, forward, turn, vertical, intent },
   });
+  // Evaluation-only startup boundary: same explicit motor request, validated against the declared initial pose.
+  if (state.phase === 'ready' && declaredInitialHeading !== undefined) {
+    if (!Number.isFinite(declaredInitialHeading) || flightCanonical(f) !== flightCanonical({...initialFlightFrame(),heading:declaredInitialHeading}))
+      throw new Error('Invalid declared initial-heading evaluation state');
+    after.phase='takeoff';after.reactive={phase:'takeoff',avoidance_turn:0};
+    return emit('explicit_start_at_declared_evaluation_heading','TAKEOFF',REACTIVE_FLIGHT_CONFIG.controller.explicit_takeoff_vertical_command);
+  }
   if (state.phase === 'landing') {
     if (groundValid && f.contacts.includes('FLOOR')) {
       after.phase = 'grounded'; after.floor_verified = true;
@@ -86,12 +93,18 @@ export function decideTouchAndGo(state: TouchAndGoState, supplied: FlightArenaOb
 
 type Interval = { command_origin: 'ENGINEERING_TOUCH_AND_GO_V1'; observation_step: number; observation_time_s: number; observation: FlightArenaObservation; decision: Decision; accepted: ReturnType<FlightEngine['snapshot']> };
 export class TouchAndGoSession {
-  private readonly engine = new FlightEngine(createFlightTrial([], TOUCH_AND_GO_CONFIG.maximum_steps));
+  private readonly engine: FlightEngine;
   private controller = initialTouchAndGoState();
   private readonly intervals: Interval[] = [];
   private failure: string | null = null;
   private termination: 'SECOND_FLIGHT_CONFIRMED' | 'DURATION_LIMIT_REACHED' | 'FAILED' | null = null;
   status: ReactiveFlightStatus = 'ready';
+  constructor(private readonly declaredInitialHeading?: number) {
+    if(declaredInitialHeading!==undefined&&!Number.isFinite(declaredInitialHeading))throw new Error('Invalid evaluation heading');
+    const initial=initialFlightFrame();
+    this.engine=new FlightEngine(createFlightTrial([],TOUCH_AND_GO_CONFIG.maximum_steps),FLIGHT_MODEL.arena,
+      declaredInitialHeading===undefined?undefined:{position:initial.position,velocity:initial.velocity,heading:declaredInitialHeading});
+  }
   get error() { return this.failure; }
   get stopStep() { return this.termination ? this.snapshot().step : TOUCH_AND_GO_CONFIG.maximum_steps; }
   get controllerPhase() { return this.controller.phase; }
@@ -104,7 +117,7 @@ export class TouchAndGoSession {
     if (this.status !== 'running') throw new Error('Session is not running');
     try {
       const before = this.snapshot(), observation = observeFlightArena(before);
-      const decision = decideTouchAndGo(this.controller, observation);
+      const decision = decideTouchAndGo(this.controller, observation, this.declaredInitialHeading);
       const accepted = this.engine.advanceWithCommand(decision.command);
       this.intervals.push({ command_origin: 'ENGINEERING_TOUCH_AND_GO_V1', observation_step: before.step, observation_time_s: before.time, observation, decision, accepted });
       this.controller = decision.state_after;
@@ -137,7 +150,7 @@ export class TouchAndGoSession {
   }
   result() {
     if (!this.termination) throw new Error('Touch-and-go verification is not terminal');
-    return structuredClone({ schema: 'neurofly_flight_touch_and_go_result_v1', configuration: TOUCH_AND_GO_CONFIG,
+    return structuredClone({ schema: this.declaredInitialHeading===undefined?'neurofly_flight_touch_and_go_result_v1':'touch_and_go_initial_heading_evaluation_v1', configuration: this.declaredInitialHeading===undefined?TOUCH_AND_GO_CONFIG:{...TOUCH_AND_GO_CONFIG,schema:'touch_and_go_initial_heading_evaluation_config_v1',reactive_configuration:{...TOUCH_AND_GO_CONFIG.reactive_configuration,initial_state:{...initialFlightFrame(),heading:this.declaredInitialHeading}}},
       provenance: { controller_id: TOUCH_AND_GO_CONFIG.controller.id, command_origin: 'ENGINEERING_TOUCH_AND_GO_V1', plant: FLIGHT_MODEL.schema, source_glb_sha256: FLIGHT_MODEL.source_glb_sha256, randomness: 'NONE' },
       intervals: this.intervals, events: this.engine.events(), metrics: this.metrics(), termination: this.termination, failure: this.failure });
   }

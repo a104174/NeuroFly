@@ -65,12 +65,12 @@ type Interval = {
   native_evidence: unknown; accepted: FlightFrame; command_origin: string;
 };
 export class MixedGroundFlightSession {
-  private first = new TouchAndGoSession();
+  private first: TouchAndGoSession;
   private ground: LiveGroundSession | null = null;
   private resumed: FlightEngine | null = null;
   private source: Source = 'flight_initial';
-  private body = this.first.snapshot();
-  private readonly frames: FlightFrame[] = [this.body];
+  private body: FlightFrame;
+  private readonly frames: FlightFrame[];
   private readonly intervals: Interval[] = [];
   private readonly handoffs: BodyHandoff[] = [];
   private reactive: ReactiveControllerState = { phase: 'takeoff', avoidance_turn: 0 };
@@ -80,7 +80,10 @@ export class MixedGroundFlightSession {
   private failure: string | null = null;
   private termination: string | null = null;
   status: ReactiveFlightStatus = 'ready';
-  constructor(private readonly authority: NeuralArtifact, readonly sustained = false) {}
+  constructor(private readonly authority: NeuralArtifact, readonly sustained = false, private readonly evaluationInitialHeading?: number) {
+    if(evaluationInitialHeading!==undefined && (!sustained || !Number.isFinite(evaluationInitialHeading)))throw new Error('Heading evaluation requires a finite sustained initial condition');
+    this.first=new TouchAndGoSession(evaluationInitialHeading);this.body=this.first.snapshot();this.frames=[this.body];
+  }
   private bounds(source: Source) {
     if (!this.sustained || source !== 'ground') return flightBounds();
     const [x,z]=locomotionBounds(this.authority.config.body), b=flightBounds();
@@ -156,6 +159,8 @@ export class MixedGroundFlightSession {
           landing_eligible:nativeDecision && 'landing_eligible' in nativeDecision ? nativeDecision.landing_eligible ?? null : null,
           ground_neural:sample?.interval.neural_summary ?? null};
       }
+      if(this.evaluationInitialHeading!==undefined && source==='flight_initial' && this.first.status==='failed')
+        throw new Error(this.first.error ?? 'Initial-flight evaluation failed');
       if ((source === 'flight_initial' || (this.sustained && source === 'flight_resumed')) && accepted.state === 'grounded' && accepted.step > 0) {
         const pose = validateLandingHandoff(accepted,this.authority); this.first.pause(); if(this.sustained)this.distance=0;
         this.ground = new LiveGroundSession(this.authority,true,'mixed-ground-episode-v1'+(this.sustained?'-'+this.episodeId:''),undefined,pose);
@@ -229,7 +234,7 @@ export class MixedGroundFlightSession {
   }
   result() {
     if(!this.termination)throw new Error('Mixed session not terminal');
-    return structuredClone({schema:this.sustained?'mixed_ground_flight_sustained_result_v2':'mixed_ground_flight_result_v1',configuration:this.sustained?SUSTAINED_MIXED_PROTOCOL:MIXED_PROTOCOL,initial:this.frames[0],
+    return structuredClone({schema:this.evaluationInitialHeading!==undefined?'sustained_initial_heading_evaluation_result_v1':this.sustained?'mixed_ground_flight_sustained_result_v2':'mixed_ground_flight_result_v1',configuration:this.evaluationInitialHeading!==undefined?{schema:'sustained_initial_heading_evaluation_config_v1',base:SUSTAINED_MIXED_PROTOCOL,initial_heading:this.evaluationInitialHeading}:this.sustained?SUSTAINED_MIXED_PROTOCOL:MIXED_PROTOCOL,initial:this.frames[0],
       provenance:{ground_source:this.authority.artifact_id,ground_config:this.authority.config_sha256,ground_neural_policy:MIXED_PROTOCOL.neural_policy},
       intervals:this.intervals,handoffs:this.handoffs,metrics:this.metrics(),termination:this.termination,failure:this.failure});
   }
@@ -239,8 +244,8 @@ export function runMixedGroundFlight(authority:NeuralArtifact) {
 }
 export const mixedGroundFlightHash=(value:ReturnType<MixedGroundFlightSession['result']>)=>flightHash(value);
 
-export function runSustainedMixedGroundFlight(authority:NeuralArtifact) {
-  const s=new MixedGroundFlightSession(authority,true);s.start();while(s.status==='running'){try{s.advance();}catch{break;}}
+export function runSustainedMixedGroundFlight(authority:NeuralArtifact, evaluationInitialHeading?: number) {
+  const s=new MixedGroundFlightSession(authority,true,evaluationInitialHeading);s.start();while(s.status==='running'){try{s.advance();}catch{break;}}
   const result=s.result(), m=result.metrics;
   const episodes='episodes' in m?m.episodes:[];
   return {...result,acceptance:{passed:result.termination==='DURATION_WINDOW_COMPLETED' &&

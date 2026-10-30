@@ -1,0 +1,36 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {readFileSync} from 'node:fs';
+import {parseNeuralLocomotion} from '../src/lib/neuralLocomotion';
+import {runMixedFlightHeadingPair,mixedFlightHeadingPairHashes,ROBUSTNESS_PROTOCOL} from '../src/lib/mixedFlightRobustnessEvaluation';
+import {MixedGroundFlightSession} from '../src/lib/mixedGroundFlight';
+import {TouchAndGoSession,touchAndGoResultHash,runTouchAndGoVerification} from '../src/lib/flightTouchAndGo';
+const authority=parseNeuralLocomotion(JSON.parse(readFileSync(new URL('../public/experiments/experimental_locomotion_v1.json',import.meta.url),'utf8')));
+test('declared heading pair uses real repeated evidence, preserves baseline hash and reports unsuccessful variant honestly',async()=>{
+ const pair=runMixedFlightHeadingPair(authority),hashes=await mixedFlightHeadingPairHashes(pair);
+ assert.equal(hashes.baseline,'92c034ca11d507d9e2759ed5c3241ecb6510a17737388cdfe5f8d3fa96bd272b');
+ assert.deepEqual(pair.repeatability,{baseline:true,variant:true});
+ assert.deepEqual(pair.baseline.initial.position,pair.variant.initial.position);
+ assert.deepEqual(pair.baseline.initial.velocity,pair.variant.initial.velocity);
+ assert.equal(pair.baseline.initial.heading,ROBUSTNESS_PROTOCOL.baseline_heading);
+ assert.equal(pair.variant.initial.heading,ROBUSTNESS_PROTOCOL.variant_heading);
+ assert(pair.comparison.first_motor_command);
+ assert.equal(pair.comparison.first_accepted_body_state?.index,0);
+ assert.equal(pair.comparison.common_final_boundary?.time_s,Math.min(pair.baseline.metrics.final_time_s,pair.variant.metrics.final_time_s));
+ assert.equal(pair.variant.acceptance.passed,false);
+ assert.equal(pair.variant.failure,'landing_not_reached');
+ assert.equal(pair.variant.metrics.accepted_bound_violations,0);
+ assert.equal(pair.variant.metrics.invalid_command_count,0);
+});
+test('heading-only public startup rejects invalid headings, preserves explicit first motor request and original touch-and-go evidence',async()=>{
+ assert.throws(()=>new TouchAndGoSession(NaN),/heading/);
+ assert.throws(()=>new MixedGroundFlightSession(authority,false,0),/Heading evaluation/);
+ const original=new TouchAndGoSession(),declaredCanonical=new TouchAndGoSession(Math.PI/2);
+ original.start();declaredCanonical.start();
+ while(original.status==='running')assert.deepEqual(declaredCanonical.advance(),original.advance());
+ const s=new TouchAndGoSession(0);s.start();const accepted=s.advance(),r=s.latestInterval()!;
+ assert.equal(r.observation.accepted.heading,0);
+ assert.equal(r.decision.command.intent,'TAKEOFF');assert.equal(r.decision.command.vertical,.8);
+ assert.equal(accepted.state,'takeoff');assert.equal(accepted.step,1);
+ assert.equal(await touchAndGoResultHash(runTouchAndGoVerification()),'b9636f67ee6fe70559015399d1df9f60c3eef048e96793a3c840d1e135264894');
+});

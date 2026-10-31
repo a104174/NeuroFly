@@ -14,9 +14,42 @@ import {
 } from '@/lib/reactiveFlightExploration';
 
 const statusText: Record<ReactiveFlightStatus, string> = {
-  ready: 'Grounded · ready', running: 'Exploring chamber boundaries', paused: 'Paused',
+  ready: 'Ready', running: 'Locomotion status unavailable', paused: 'Paused',
   completed: 'Finite trial complete', failed: 'Exploration stopped on error',
 };
+
+/** Presentation from the current accepted plant state and its aligned active-engine phase. */
+export function acceptedLocomotionStatusText(
+  status: ReactiveFlightStatus,
+  acceptedState: unknown,
+  controllerPhase: string | null | undefined,
+  groundIntervalAccepted: boolean,
+): string {
+  if (status === 'completed' || status === 'failed') return statusText[status];
+
+  let phase: string;
+  switch (acceptedState) {
+    case 'takeoff':
+      phase = 'Taking off';
+      break;
+    case 'flying':
+      phase = controllerPhase === 'braking' || controllerPhase === 'landing' ? 'Preparing to land' : 'Flying';
+      break;
+    case 'landing':
+      phase = 'Landing';
+      break;
+    case 'grounded':
+      if (groundIntervalAccepted && controllerPhase === 'walking') phase = 'Walking';
+      else if (controllerPhase === 'takeoff' || controllerPhase === 'retakeoff' || (status === 'running' && controllerPhase === 'ready')) phase = 'Preparing for takeoff';
+      else if (status === 'ready' && controllerPhase === 'ready') phase = 'Ready to take off';
+      else phase = 'Grounded';
+      break;
+    default:
+      return statusText[status];
+  }
+
+  return status === 'paused' ? `Paused · ${phase}` : phase;
+}
 
 export type ReactiveFlightBehavior = 'continuous' | 'touch-and-go' | 'mixed' | 'sustained' | 'landing-recovery';
 export function createReactiveFlightLabSession(behavior: ReactiveFlightBehavior, authority?: NeuralArtifact | null) {
@@ -118,9 +151,13 @@ export function ReactiveFlightSessionLab({ modeControl, behavior, authority }: {
   const wings = flightWingsV8(frame.time, frame.state, Math.max(0, altitude), REACTIVE_FLIGHT_CONFIG.wing_presentation.preset);
   const clearance = latestInterval?.observation;
   const bodyPose = flightScene(frame);
+  const groundIntervalAccepted = session instanceof MixedGroundFlightSession && latestInterval !== null &&
+    'active_engine' in latestInterval && latestInterval.active_engine === 'ground' &&
+    latestInterval.accepted.step === frame.step && latestInterval.accepted.time === frame.time;
+  const activityStatus = acceptedLocomotionStatusText(status, frame.state, session.controllerPhase, groundIntervalAccepted);
 
   return <section className="lab-experience" data-lab-mode="reactive-flight" data-flight-behavior={behavior} data-flight-status={status}>
-    <div className="lab-activity"><div><span className="lab-eyebrow">Engineering state feedback</span><h1>Flight exploration<span>.</span></h1><p>{mixed ? 'Engineering flight with neural-influenced walking; fresh ground neural episodes are explicitly initialized.' : touchAndGo ? 'Engineering landing and re-takeoff from accepted body state. Walking is not integrated.' : 'Current-state wall response and altitude stabilization inside the existing chamber.'}</p></div><span className={`lab-status${playing ? ' is-running' : ''}`} role="status"><i aria-hidden="true" />{statusText[status]}</span></div>
+    <div className="lab-activity"><div><span className="lab-eyebrow">Engineering state feedback</span><h1>Flight exploration<span>.</span></h1><p>{mixed ? 'Engineering flight with neural-influenced walking; fresh ground neural episodes are explicitly initialized.' : touchAndGo ? 'Engineering landing and re-takeoff from accepted body state. Walking is not integrated.' : 'Current-state wall response and altitude stabilization inside the existing chamber.'}</p></div><span className={`lab-status${playing ? ' is-running' : ''}`} role="status"><i aria-hidden="true" />{activityStatus}</span></div>
     <div className="lab-workspace">
       <div className="lab-view-area">
         <FlyViewer experience initialGait={mixed} liveGaitState={gait} arena replayPose={bodyPose} flightPresentation={wings}

@@ -1,10 +1,15 @@
 // Lighthouse mobile on the routes with targets in brief section 11. Usage: BASE=... CHROME=... node lighthouse.mjs
 import lighthouse from "lighthouse";
 import { launch } from "chrome-launcher";
+import os from "node:os";
+import path from "node:path";
+import fs from "node:fs";
 import { ROUTES } from "./routes.mjs";
 const BASE = process.env.BASE ?? "http://localhost:3000";
 const PERF = ["home", "scenarios", "experiments", "science"];
-const chrome = await launch({ chromePath: process.env.CHROME, chromeFlags: ["--headless=new", "--no-sandbox"] });
+// The browser profile goes to the system temp folder, never into the repository.
+const profile = fs.mkdtempSync(path.join(os.tmpdir(), "neurofly-lh-"));
+const chrome = await launch({ chromePath: process.env.CHROME, userDataDir: profile, chromeFlags: ["--headless=new", "--no-sandbox"] });
 let bad = 0;
 for (const [name, path, want] of ROUTES) {
   if (want !== 200) continue;
@@ -15,4 +20,5 @@ for (const [name, path, want] of ROUTES) {
   console.log(ok ? "PASS" : "FAIL", name, `accessibility ${a11y}`, PERF.includes(name) ? `performance ${perf}` : "");
 }
 await chrome.kill();
+fs.rmSync(profile, { recursive: true, force: true });
 process.exit(bad ? 1 : 0);

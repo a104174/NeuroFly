@@ -80,7 +80,7 @@ export default async function ScenariosPage({ searchParams }: { searchParams?: P
       <section className={styles.lab} aria-labelledby="lab-title">
         <div>
           <h2 id="lab-title">Prefer to explore freely?</h2>
-          <p>The Lab runs in your browser: walking and flight modes with engineering movement and no muscle or wing physics.</p>
+          <p>Explore runs in your browser: walking and flight modes with engineering movement and no muscle or wing physics.</p>
         </div>
         <ButtonLink variant="quiet" href={LAB_HREF}>Enter the Lab</ButtonLink>
       </section>

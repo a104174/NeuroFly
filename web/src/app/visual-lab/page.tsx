@@ -1,11 +1,10 @@
 import type { Metadata } from "next";
-import { LabScopeNotice } from "@/components/lab/LabScopeNotice";
 import { PageShell } from "@/components/site/PageShell";
 import { Card, KindBadge } from "@/components/ui";
 
 export const metadata: Metadata = {
   title: "Lab · NeuroFly",
-  description: "Three interactive tools: the Explore arena, the research tools and the fly viewer. They run in your browser.",
+  description: "Three interactive tools: the Explore arena, the research tools and the fly viewer. Explore and the research tools run model code in your browser.",
 };
 
 /** Every statement below comes from existing descriptions of these tools; none is new. */
@@ -40,9 +39,8 @@ export default function LabOverviewPage() {
         eyebrow="Lab"
         title="The Lab"
         current="/visual-lab"
-        lead={<p>Three tools for exploring the model. They run in your browser, and saved runs stay in this browser. Nothing is sent to a server.</p>}
+        lead={<p>Three tools for exploring the model. Explore and the research tools run model code in your browser; the fly viewer only shows a body model. Each tool says what it is based on.</p>}
       >
-        <LabScopeNotice />
         <ul style={{ display: "grid", gap: "var(--space-5)", margin: "var(--space-6) 0 0", padding: 0, listStyle: "none", gridTemplateColumns: "repeat(auto-fill, minmax(min(100%, 20rem), 1fr))" }}>
           {TOOLS.map((tool) => (
             <li key={tool.href}>

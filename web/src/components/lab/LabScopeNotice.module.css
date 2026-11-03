@@ -5,3 +5,5 @@
 .more summary:focus-visible, .more a:focus-visible { outline: var(--focus-ring); outline-offset: var(--focus-offset); border-radius: var(--radius-sm); }
 .more p { margin: var(--space-2) 0 0; max-inline-size: var(--measure-prose); }
 .more a { color: var(--color-accent); text-decoration: underline; text-underline-offset: 3px; display: inline-block; min-block-size: 24px; }
+.more ul { margin: var(--space-1) 0 0; padding-inline-start: var(--space-5); }
+.more code { font-family: var(--font-mono); font-size: var(--text-caption-size); overflow-wrap: anywhere; }

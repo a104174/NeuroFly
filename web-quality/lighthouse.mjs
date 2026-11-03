@@ -9,7 +9,9 @@ const BASE = process.env.BASE ?? "http://localhost:3000";
 const PERF = ["home", "scenarios", "experiments", "science"];
 // The browser profile goes to the system temp folder, never into the repository.
 const profile = fs.mkdtempSync(path.join(os.tmpdir(), "neurofly-lh-"));
-const chrome = await launch({ chromePath: process.env.CHROME, userDataDir: profile, chromeFlags: ["--headless=new", "--no-sandbox"] });
+// userDataDir:false stops chrome-launcher choosing its own folder (on WSL it rewrote the path into a Windows-style
+// name that became a folder inside the repository); the profile is passed as a plain flag instead.
+const chrome = await launch({ chromePath: process.env.CHROME, userDataDir: false, chromeFlags: [`--user-data-dir=${profile}`, "--headless=new", "--no-sandbox"] });
 let bad = 0;
 for (const [name, path, want] of ROUTES) {
   if (want !== 200) continue;

@@ -226,7 +226,7 @@ export const CAPABILITIES: readonly Capability[] = [
   },
   {
     id: "lab", group: "model-only", kind: "model-assumption", name: "Movement in the Lab",
-    reason: "Runs in your browser. The neural update is a reimplementation of the pinned Python model; it agrees with the recorded Python run to within 1e-8 in each model-space quantity over eight seconds. Forward propulsion, boundary response and flight are engineering rules, not biology.",
+    reason: "Runs in your browser. The walking neural update is a reimplementation of the pinned Python model; it agrees with the recorded Python run to within 1e-8 in each model-space quantity over eight seconds. Forward propulsion, boundary response and flight are engineering rules, not biology.",
     source: { path: "docs/science/interactive_neural_locomotion_v2.md", label: "Interactive neural locomotion report" },
   },
   {

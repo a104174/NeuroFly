@@ -30,3 +30,17 @@ test("frozen Portuguese strings are shown in English", () => {
   assert.equal(displayText("Locomoção indisponível (HTTP 503)."), "Locomotion unavailable (HTTP 503).");
   assert.equal(displayText("Already English"), "Already English");
 });
+
+import { LAB_CLAIMS } from "../src/components/lab/labClaims";
+test("every Lab tool that claims something cites repository evidence that exists", () => {
+  const root = new URL("../../", import.meta.url);
+  for (const [tool, claim] of Object.entries(LAB_CLAIMS)) {
+    assert.ok(claim.paths.length > 0, `${tool} makes claims without evidence`);
+    for (const path of claim.paths) {
+      const file = path.split(" ")[0];
+      assert.ok(statSync(new URL(file, root)).isFile(), `${tool}: ${file} does not exist`);
+    }
+  }
+  // The fly viewer runs no model, so it must not claim parity with Python.
+  assert.doesNotMatch(JSON.stringify(LAB_CLAIMS.fly), /1e-8|Python run/);
+});

@@ -361,6 +361,38 @@ Run against a production build (`next build`, `next start`) with the local API o
 | Regression: routes | Pass: 22 routes resolve as expected, unknown IDs are real 404s | `web-quality` routes |
 | Regression: tests | Pass: 586 tests | `npm test` |
 
+## Review round after PR #5 (owner's five checks)
+
+1. **Committed Chrome profile (`f442d67`, removed in `a517893`).** Inspected in a temp folder, no values
+   printed. It is a fresh automation profile ("Your Chromium"), 184 files, 31 MB. Cookies: 0 rows. Saved
+   logins: 0. Credit cards: 0. Autofill: none. Not signed in to any account (no account id, no email, empty
+   account list). History: 17 entries and 3 top sites, all `localhost`. Local storage: no origins. No path to
+   your real browser profile. **Personal data found:** your Windows username appears in the profile folder
+   name and in 10 log files, and the profile holds a random device id (not an account). Nothing else. It
+   remains in branch history; squash-merge keeps it out of `main`.
+2. **Lab claims, tool by tool** (`web/src/components/lab/labClaims.ts`, evidence listed on each page, and
+   checked by `tests/lab-english.test.ts`). Explore: browser-run walking model, proven by
+   `tests/live-ground.test.ts` and `tests/continuous-navigation.test.ts` and the two science reports; the
+   1e-8 claim now states the 30 s reference and says longer sessions have no Python comparison; "saved runs
+   stay in this browser" was **removed** (live Explore saves and exports nothing). Research tools: now says
+   "some modes run in your browser; others play back recorded Python runs"; saved runs claim kept, proven by
+   `tests/experiment-library.test.ts`. Fly viewer: the "Runs in your browser" and 1e-8 claims were
+   **removed**; it says it shows no simulation. Overview: "Nothing is sent to a server" **removed** (tools
+   fetch recorded data). Scenarios page: "The Lab runs" became "Explore runs".
+3. **Clean install in `web-quality/`:** `npm install` from an empty folder (lockfile added). **Stylelint:
+   fails, 226 errors**, all in the six legacy stylesheets (as the colour ratchet said). Full run: **220 of
+   220 pass**; Lighthouse mobile: all 18 routes pass. `npm audit` reports 11 high-severity issues in the
+   dev tooling's own dependencies (not shipped to visitors, not fixed).
+4. **Missing citation, author, roadmap, hero asset: what visitors see.** No page shows an internal note: a
+   scan of the HTML of 15 routes finds no "NEEDS OWNER INPUT", "TODO", "TBD" or placeholder. The items are
+   simply absent. Home: the hero is the artistic specimen render with the caption "The visible specimen is an
+   artistic 3D asset, not anatomy reconstructed from MaleCNS." (no real-run poster). Science and the footer:
+   a "MaleCNS data" link and "Wiring data: MaleCNS v1.0. Model output is not biological data."; credits
+   read "Visual assets: fly by mlykouretzos; lab table by zeeshanfareed." No "How to cite" block, no author or
+   lab name, no licence line for MaleCNS, no roadmap section. Experiments table and experiment page: "Not
+   recorded" for scenario and date, and "Body model: Not recorded in this experiment summary."
+5. **`docs/science-copy-review.md`** lists all new scientific wording with location and repository source.
+
 ## Backend requests (not done here)
 
 - Add the **scenario** and a **creation date** to the experiment summary, so the Experiments table can

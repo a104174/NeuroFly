@@ -1,3 +1,12 @@
+/* Legacy variables. Values are unchanged so unmigrated pages look exactly as before
+ * and stay dark in every theme. Each pointer below is the token that replaces the
+ * variable when its page is migrated (src/styles/tokens.css):
+ *   --ink -> --color-ink            --muted -> --color-ink-2      --faint -> --color-ink-3
+ *   --surface -> --color-surface    --surface-raised -> --color-raised
+ *   --canvas -> --color-canvas      --line, --line-strong -> --color-hairline
+ *   --cyan -> --color-structural    --amber -> --color-model      --danger -> --color-danger
+ *   --science-*, --nf-*, --lab-* follow the same mapping with their page.
+ */
 :root {
   --ink: #e7edf0;
   --muted: #8d9ba1;
@@ -24,7 +33,7 @@ body {
   background:
     radial-gradient(circle at 72% -12%, rgba(37, 103, 107, 0.22), transparent 34rem),
     var(--canvas);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
 }
 

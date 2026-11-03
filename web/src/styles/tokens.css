@@ -1,0 +1,278 @@
+/* NeuroFly design tokens (redesign brief section 4).
+ *
+ * Theme rules (brief question 4, Phase 0 decisions):
+ *   - No data-theme and no system signal  -> dark. Browsers normally always report
+ *                                            a scheme (no preference reads as light),
+ *                                            so this only reaches browsers that do not
+ *                                            expose prefers-color-scheme.
+ *   - prefers-color-scheme: light         -> light, unless data-theme="dark".
+ *   - data-theme="light" | "dark"         -> that theme (set before first paint
+ *                                            by the script in src/lib/theme.ts).
+ * The light values appear twice (system light, explicit light); tests/tokens.test.ts
+ * fails if the two copies drift or if any contrast ratio drops below its limit.
+ *
+ * Breakpoints cannot be custom properties. Use 600, 1024, 1440 and 1920 px.
+ */
+
+/* ---------- Colour: dark (default) ---------- */
+:root {
+  --color-canvas: #0a0c0d;
+  --color-surface: #131618;
+  --color-raised: #1c2023;
+  --color-hairline: #2a2f32;
+  --color-border-control: #7a8387;
+
+  --color-ink: #f2f4f4;
+  --color-ink-2: #b4bcbf;
+  --color-ink-3: #8f999d;
+  --color-accent: #7fb2ff;
+  --color-on-accent: #0a0c0d;
+
+  --color-structural: #5fd0bc;
+  --color-model: #f0b46a;
+  --color-not-evaluated: #b7abff;
+  --color-unavailable: #9aa4a8;
+  /* Model state uses ink-2 because accent is reserved for actions. */
+  --color-model-state: var(--color-ink-2);
+  --color-danger: #ff9c94;
+  /* System states only (for example "loaded"). Never a scientific result. */
+  --color-success: #74d49a;
+
+  --tint-structural: #10302b;
+  --tint-model: #33261a;
+  --tint-not-evaluated: #241f45;
+  --tint-unavailable: #1c2023;
+  --tint-danger: #3a1a18;
+  --tint-accent: #14263f;
+
+  --shadow-1: none;
+  --shadow-2: none;
+  --shadow-3: 0 24px 64px rgba(0, 0, 0, 0.5);
+}
+
+/* ---------- Colour: light (system preference) ---------- */
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    --color-canvas: #f7f8f7;
+    --color-surface: #ffffff;
+    --color-raised: #eef0ef;
+    --color-hairline: #dde1e0;
+    --color-border-control: #7a8387;
+
+    --color-ink: #14191b;
+    --color-ink-2: #4a5457;
+    --color-ink-3: #626c70;
+    --color-accent: #0b5fcc;
+    --color-on-accent: #ffffff;
+
+    --color-structural: #0a6b5f;
+    --color-model: #8a4b00;
+    --color-not-evaluated: #5b4ab0;
+    --color-unavailable: #5c666a;
+    --color-danger: #b3261e;
+    --color-success: #1b6e3c;
+
+    --tint-structural: #e3f2ef;
+    --tint-model: #f8ecdd;
+    --tint-not-evaluated: #ece9fa;
+    --tint-unavailable: #eef0ef;
+    --tint-danger: #fbe9e7;
+    --tint-accent: #e6effb;
+
+    --shadow-1: 0 1px 2px rgba(20, 25, 27, 0.06);
+    --shadow-2: 0 8px 24px rgba(20, 25, 27, 0.08);
+    --shadow-3: 0 24px 64px rgba(20, 25, 27, 0.14);
+  }
+}
+
+/* ---------- Colour: light (explicit) ---------- */
+:root[data-theme="light"] {
+  --color-canvas: #f7f8f7;
+  --color-surface: #ffffff;
+  --color-raised: #eef0ef;
+  --color-hairline: #dde1e0;
+  --color-border-control: #7a8387;
+
+  --color-ink: #14191b;
+  --color-ink-2: #4a5457;
+  --color-ink-3: #626c70;
+  --color-accent: #0b5fcc;
+  --color-on-accent: #ffffff;
+
+  --color-structural: #0a6b5f;
+  --color-model: #8a4b00;
+  --color-not-evaluated: #5b4ab0;
+  --color-unavailable: #5c666a;
+  --color-danger: #b3261e;
+  --color-success: #1b6e3c;
+
+  --tint-structural: #e3f2ef;
+  --tint-model: #f8ecdd;
+  --tint-not-evaluated: #ece9fa;
+  --tint-unavailable: #eef0ef;
+  --tint-danger: #fbe9e7;
+  --tint-accent: #e6effb;
+
+  --shadow-1: 0 1px 2px rgba(20, 25, 27, 0.06);
+  --shadow-2: 0 8px 24px rgba(20, 25, 27, 0.08);
+  --shadow-3: 0 24px 64px rgba(20, 25, 27, 0.14);
+}
+
+/* ---------- Everything that does not change with the theme ---------- */
+:root {
+  /* 3D stage: dark in both themes (brief question 3). */
+  --stage-bg: #0a0c0d;
+  /* Grid lines on the stage. Design choice: ink at 8% on the stage. */
+  --stage-grid: rgba(242, 244, 244, 0.08);
+  --neuron-lc4: #7fb2ff;
+  --neuron-lplc2: #f0b46a;
+  --neuron-dnp01: #f2f4f4;
+
+  /* Glass panels over the stage: never below 0.82 opacity. */
+  --glass-bg: rgba(19, 22, 24, 0.82);
+  --glass-solid: #131618;
+  --glass-blur: blur(16px);
+
+  /* Fonts (loaded in src/app/layout.tsx through next/font). */
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, "Segoe UI", Roboto, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+
+  /* Type scale: size / line height / weight / tracking. */
+  --text-display-size: clamp(2.75rem, 6vw, 5rem);
+  --text-display-lh: 1.05;
+  --text-display-weight: 600;
+  --text-display-tracking: -0.03em;
+  --text-h1-size: clamp(2rem, 4vw, 3rem);
+  --text-h1-lh: 1.1;
+  --text-h1-weight: 600;
+  --text-h1-tracking: -0.02em;
+  --text-h2-size: 1.75rem;
+  --text-h2-lh: 1.2;
+  --text-h2-weight: 600;
+  --text-h2-tracking: -0.015em;
+  --text-h3-size: 1.25rem;
+  --text-h3-lh: 1.3;
+  --text-h3-weight: 600;
+  --text-h3-tracking: -0.01em;
+  --text-body-lg-size: 1.125rem;
+  --text-body-lg-lh: 1.55;
+  --text-body-lg-weight: 400;
+  --text-body-lg-tracking: 0;
+  --text-body-size: 1rem;
+  --text-body-lh: 1.55;
+  --text-body-weight: 400;
+  --text-body-tracking: 0;
+  --text-small-size: 0.875rem;
+  --text-small-lh: 1.45;
+  --text-small-weight: 400;
+  --text-small-tracking: 0;
+  /* Caption is the minimum size on the site. */
+  --text-caption-size: 0.75rem;
+  --text-caption-lh: 1.35;
+  --text-caption-weight: 500;
+  --text-caption-tracking: 0.01em;
+  --text-readout-lg-size: 1.75rem;
+  --text-readout-lg-lh: 1.1;
+  --text-readout-lg-weight: 500;
+  --text-readout-lg-tracking: -0.01em;
+  --text-readout-size: 0.875rem;
+  --text-readout-lh: 1.3;
+  --text-readout-weight: 400;
+  --text-readout-tracking: 0;
+  --measure-prose: 68ch;
+
+  /* Spacing, 4 px base. */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px;
+  --space-9: 96px;
+  --space-10: 128px;
+  --space-11: 160px;
+
+  /* Layout. */
+  --gutter: 16px;
+  --section-space: var(--space-9);
+  --content-max: 1200px;
+  --prose-max: 720px;
+
+  /* Radii. */
+  --radius-sm: 6px; /* badges, inputs */
+  --radius-md: 10px; /* buttons */
+  --radius-lg: 16px; /* cards, panels */
+  --radius-xl: 24px; /* hero stages */
+  --radius-full: 9999px;
+
+  /* Motion. */
+  --dur-fast: 120ms;
+  --dur-base: 200ms;
+  --dur-slow: 320ms;
+  --dur-camera: 800ms;
+  --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  --ease-exit: cubic-bezier(0.4, 0, 1, 1);
+
+  /* Components. */
+  --button-height-sm: 32px;
+  --button-height-md: 40px;
+  --button-height-lg: 48px;
+  --touch-target: 44px;
+  --input-height: 40px;
+  --focus-ring: 2px solid var(--color-accent);
+  --focus-offset: 2px;
+  --header-height: 64px;
+  --toolbar-height: 48px;
+  --timeline-height: 72px;
+  --panel-width: 320px;
+  --card-padding: 24px;
+  --panel-padding: 16px;
+  --badge-height: 22px;
+}
+
+@media (min-width: 600px) {
+  :root {
+    --gutter: 32px;
+    --section-space: var(--space-10);
+  }
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --gutter: 48px;
+    --section-space: var(--space-11);
+  }
+}
+
+@media (min-width: 1920px) {
+  :root {
+    --panel-width: 400px;
+  }
+}
+
+/* Reduced motion: every transition becomes instant (brief section 8). */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --dur-fast: 0ms;
+    --dur-base: 0ms;
+    --dur-slow: 0ms;
+    --dur-camera: 0ms;
+  }
+}
+
+/* Glass falls back to a solid panel when transparency is unwanted or unsupported. */
+@media (prefers-reduced-transparency: reduce) {
+  :root {
+    --glass-bg: var(--glass-solid);
+    --glass-blur: none;
+  }
+}
+
+@supports not (backdrop-filter: blur(1px)) {
+  :root {
+    --glass-bg: var(--glass-solid);
+    --glass-blur: none;
+  }
+}

@@ -101,7 +101,7 @@ export function PlaybackWorkspace({
 
       <div className="playback-stage">
         <div
-          className="playback-canvas-shell"
+          className="playback-canvas-shell" role="group"
           aria-label="Three-dimensional experiment presentation"
         >
           <PlaybackRenderBoundary>

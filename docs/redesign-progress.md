@@ -16,7 +16,7 @@ pull request to `main` opened at the end (not merged by the agent).
 | 3 Shell | Header, navigation, footer, status pill, skip link, route focus | Committed and pushed | `89acf27` |
 | 4 Content pages | Science, Status and limits, Glossary | Committed and pushed | `79c1f8b` |
 | 5 Home | Hero, status strip, explainer, gallery | Committed and pushed | `e690fdc` |
-| 6 Lists and details | Scenarios and Experiments pages | Committed and pushed (detail pages partly, see below) | see `git log` |
+| 6 Lists and details | Scenarios and Experiments pages, plus the two detail pages | Committed and pushed (lists `937ab5b`; detail pages in the next commit, see "Phase 6b") | see `git log` |
 | 7 3D frame and Neurons | `Viewport3D` and the Neurons pages | Not started | |
 | 8 Cockpit and Lab | Layers, shared clock, responsive strategy, Lab overview | Not started | |
 | 9 Polish and removal | Transitions, audit, delete old CSS | Not started | |
@@ -199,7 +199,7 @@ accessibility 100, best practices 100, SEO 100.
   dismiss/restore and reload persistence; keyboard path 28 of 28 routes; the scenario Replay button
   works (its one POST is the named Server Action).
 
-**Deferred from the brief's phase 6 detail pages (not done)**
+**Deferred from the brief's phase 6 detail pages (done later, see Phase 6b)**
 
 - Scenario detail: the full-width stage with timeline below and the two-column "what happens / what to
   notice" and provenance area; **guided mode** (3 to 4 skippable captions tied to the timeline); the
@@ -217,6 +217,24 @@ accessibility 100, best practices 100, SEO 100.
 - `loading.tsx` still exists for each list and detail route. The list-level loading screen is a plain
   status panel, not a skeleton that matches the final layout.
 - Search matches name, artifact id, config id and model only (there is no scenario field).
+
+## Phase 6b: Scenario and Experiment detail pages (details)
+
+- **Experiment detail** (`components/experiment/ExperimentDetail.tsx`) now follows the brief's order:
+  title and summary, status badge, scenario ("Not recorded"), "Open Cockpit"; Replay (the legacy 3D
+  workspace in a dark stage frame until phase 7); Setup with kind glyphs (circuit = Structural,
+  encoder and neuron model = Model assumption, body model = "Not recorded in this experiment summary");
+  free parameters; Results, every value a `Readout` of kind Model state (counts "dimensionless", `mV_eq`,
+  `ms`); "What this does not show"; Data (`ProvenanceLabel` card with a copy button, config and result
+  IDs, checksum).
+- Fixed a bare "mV" on "Peak membrane": it is now `mV_eq`.
+- **Not added:** an API link in Data. The API base URL is a server-only setting, so no browser-safe link exists.
+- **Scenario detail** is on `PageShell`. Stage stays in a dark frame (legacy playback), with a
+  **guided tour** (3 captions: start, stored model state, end; skippable, restartable, stored only in
+  this browser), a two-column "What happens / What to notice" and provenance card, and the next-step
+  link. The link goes to all experiments: there is no scenario field to filter by.
+- Guide captions are generic or reuse existing scenario text; no new scientific claims.
+- Verified: tsc, lint, tests; axe 0 on 12 variants (3 pages x 2 widths x 2 themes).
 
 ## Backend requests (not done here)
 

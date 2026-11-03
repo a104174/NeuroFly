@@ -1,7 +1,10 @@
-import { SiteHeader } from "@/components/site/SiteChrome";
+import { PageShell } from "@/components/site/PageShell";
 import { ScientificPlaybackLoading } from "@/components/ScientificInstrument";
-import Link from "next/link";
 
 export default function Loading() {
-  return <div className="app-shell"><SiteHeader /><main id="main-content" tabIndex={-1} className="scenario-route"><Link className="back-link" href="/scenarios">← Scenarios</Link><header className="scenario-heading"><div><p className="eyebrow">SCIENTIFIC EXPERIMENT</p><h1>Preparing experiment</h1></div></header><ScientificPlaybackLoading/></main></div>;
+  return (
+    <PageShell title="Preparing scenario" current="/scenarios">
+      <div className="scenario-route" data-theme-scope="dark"><ScientificPlaybackLoading /></div>
+    </PageShell>
+  );
 }

@@ -1,0 +1,19 @@
+.bar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-3); margin-block-end: var(--space-3); }
+.back { color: var(--color-accent); text-decoration: underline; text-underline-offset: 3px; font-size: var(--text-small-size); }
+.back:focus-visible, .run:focus-visible { outline: var(--focus-ring); outline-offset: var(--focus-offset); border-radius: var(--radius-sm); }
+.run { min-block-size: var(--button-height-lg); padding-inline: var(--space-5); border: 0; border-radius: var(--radius-md); background: var(--color-accent); color: var(--color-on-accent); font: inherit; font-weight: 600; cursor: pointer; }
+.run:disabled { opacity: 0.7; cursor: progress; }
+.facts { display: flex; flex-wrap: wrap; gap: var(--space-2) var(--space-5); margin-block-end: var(--space-5); color: var(--color-ink-2); font-size: var(--text-small-size); }
+.stage { max-inline-size: none; margin: 0; padding: var(--space-4); border-radius: var(--radius-xl); background: var(--stage-bg); overflow-x: clip; }
+.columns { display: grid; gap: var(--space-6); margin-block-start: var(--space-7); }
+@media (min-width: 1024px) { .columns { grid-template-columns: 3fr 2fr; } }
+.columns h2 { margin: 0 0 var(--space-2); font-size: var(--text-h3-size); line-height: var(--text-h3-lh); font-weight: var(--text-h3-weight); }
+.columns p { max-inline-size: var(--measure-prose); margin: 0 0 var(--space-3); }
+.second { margin-block-start: var(--space-5) !important; }
+.small { color: var(--color-ink-2); font-size: var(--text-small-size); }
+.card { padding: var(--card-padding); border: 1px solid var(--color-hairline); border-radius: var(--radius-lg); background: var(--color-surface); align-self: start; }
+.card dl { display: grid; gap: var(--space-3); margin: 0 0 var(--space-4); }
+.card dt { color: var(--color-ink-2); font-size: var(--text-caption-size); font-weight: var(--text-caption-weight); }
+.card dd { margin: 0; color: var(--color-ink); font-size: var(--text-body-size); }
+.next { margin-block-start: var(--space-6); color: var(--color-ink-2); }
+.next a { color: var(--color-accent); text-decoration: underline; text-underline-offset: 3px; }

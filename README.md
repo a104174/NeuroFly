@@ -421,10 +421,12 @@ works. No generated scientific data should be committed for this view.
 
 ## Read-only browser foundation (Phase 5A)
 
-The current HomePage (`/`) explores the verified canonical scenario catalogue,
-using the same cards and playback routes as `/scenarios`. Historical completed
-Phase 3B runs remain available at `/experiments` when a compatible flat artifact
-root is configured. An incompatible root still reports its integrity error;
+The current HomePage (`/`) is a static introduction. It states the project's scope
+and its status (not evaluated against real flies), and links to the scenarios, the
+Lab and the Science pages; it makes no API requests. The scenario catalogue and its
+playback routes are at `/scenarios`. Historical completed Phase 3B runs remain
+available at `/experiments` when a compatible flat artifact root is configured; the
+interface labels the recorded run an engineering test, not a scientific experiment. An incompatible root still reports its integrity error;
 canonical scenarios are not substituted for completed experiment artifacts.
 
 The `web/` application is a small Next.js App Router slice. It consumes the

@@ -123,6 +123,41 @@ export const STATE_COPY = {
   missing: (what: string) => `${what} not included in this artifact.`,
 } as const;
 
+/**
+ * Home page copy. The headline, statement and the four status facts are the owner's wording
+ * (Phase 0 decision 5). Counts are not added together.
+ */
+export const HOME_COPY = {
+  eyebrow: "Research project",
+  headline: "Selected fruit fly circuits, modelled from the connectome.",
+  statement:
+    "NeuroFly is a research model of selected fruit fly neural circuits, built from the MaleCNS connectome and connected to a simplified simulated body.",
+  primaryAction: "Watch the looming scenario",
+  secondaryAction: "How much of this is real?",
+  posterCaption: "The visible specimen is an artistic 3D asset, not anatomy reconstructed from MaleCNS.",
+  strip: [
+    { kind: "structural", text: "Two selected circuits: looming (313 bodies) and HS → DNp15 (8 bodies). Not a whole brain." },
+    { kind: "structural", text: `Wiring from ${MALECNS_RELEASE}` },
+    { kind: "model-assumption", text: "Kinematic body, no muscle or wing physics" },
+    { kind: "not-evaluated", text: "Not yet evaluated against real flies" },
+  ],
+  layers: [
+    { kind: "structural", title: "The connectome", text: `Which identified neurons connect, taken from the ${MALECNS_RELEASE} connectome. It describes wiring, not signal strength.` },
+    { kind: "model-assumption", title: "The neuron model", text: "Explicit rules for how each neuron's state changes over time. They are chosen for the model, not measured from the fly." },
+    { kind: "model-state", title: "The output", text: "What the simulation produces, in model units such as mV_eq. It is a model result, not a measurement from a fly." },
+  ],
+  lab: {
+    title: "Explore the Lab",
+    text: "Walking and flight modes in a 3D enclosure. Movement follows engineering rules with a neural steering influence, and there is no muscle or wing physics.",
+    note: "Runs in your browser",
+  },
+} as const satisfies {
+  eyebrow: string; headline: string; statement: string; primaryAction: string; secondaryAction: string; posterCaption: string;
+  strip: readonly { kind: DataKind; text: string }[];
+  layers: readonly { kind: DataKind; title: string; text: string }[];
+  lab: { title: string; text: string; note: string };
+};
+
 /** Repository root, for evidence links. Every capability and glossary source must exist there. */
 export const REPOSITORY_BLOB = "https://github.com/a104174/NeuroFly/blob/main/";
 

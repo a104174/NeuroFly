@@ -38,8 +38,11 @@ test("Science is a static independent explanation even when every scientific req
 test("Science navigation resolves without removing homepage anchors or promoting the recorded archive", () => {
   const html = render(), home = renderToStaticMarkup(createElement(HomePage));
   assert.equal(SITE_LINKS.find(link => link.label === "Science")?.href, "/science");
-  assert.match(home, /id="science"/);
-  assert.match(home, /href="\/science"[^>]*>Explore the Science/);
+  // The redesigned Home has no Science teaser section; Science stays reachable from the header,
+  // the footer and the "How much of this is real?" action, and the recorded run is not promoted.
+  assert.match(home, /href="\/science\/status"[^>]*>How much of this is real\?/);
+  assert.match(home, /<nav aria-label="Footer navigation"[^>]*>[\s\S]*href="\/science">Science<\/a>/);
+  assert.doesNotMatch(home.match(/<nav[^>]*aria-label="Primary navigation"[\s\S]*?<\/nav>/)![0], /href="\/experiments"/);
   const primary = html.match(/<nav[^>]*aria-label="Primary navigation"[\s\S]*?<\/nav>/)![0];
   assert.match(primary, /aria-current="page" href="\/science"|href="\/science"[^>]*aria-current="page"/);
   assert.doesNotMatch(primary, /href="\/experiments"/);

@@ -14,8 +14,8 @@ pull request to `main` opened at the end (not merged by the agent).
 | 1 Tokens | Colour, type, spacing, motion tokens; Geist; pre-paint theme | Merged to `main` (PR #3) | `db39c20` |
 | 2 Honesty primitives | `KindBadge`, `Readout`, `ProvenanceLabel`, `Tooltip`, `StatePanel`, copy file | Merged to `main` (PR #4) | `1c14c53` |
 | 3 Shell | Header, navigation, footer, status pill, skip link, route focus | Committed and pushed | `89acf27` |
-| 4 Content pages | Science, Status and limits, Glossary | Committed and pushed | see `git log` |
-| 5 Home | Hero, status strip, explainer, gallery | Not started | |
+| 4 Content pages | Science, Status and limits, Glossary | Committed and pushed | `79c1f8b` |
+| 5 Home | Hero, status strip, explainer, gallery | Committed and pushed | see `git log` |
 | 6 Lists and details | Scenarios and Experiments pages | Not started | |
 | 7 3D frame and Neurons | `Viewport3D` and the Neurons pages | Not started | |
 | 8 Cockpit and Lab | Layers, shared clock, responsive strategy, Lab overview | Not started | |
@@ -120,6 +120,45 @@ Contrast of the tokens is computed in `tests/tokens.test.ts`.
 **Could not verify:** a scientific review of the new copy (see below), and screen-reader behaviour.
 "Copy has been reviewed" in the phase 4 Done-when column is therefore **not met** and needs the owner.
 
+## Phase 5: Home (details)
+
+- New Home on the tokens (light and dark, theme switch shown): hero with the owner's headline and
+  statement, a status strip directly under it (real text, the four owner-worded facts, kind glyphs), a
+  three-layer explainer (Structural, Model assumption, Model state), a gallery of three canonical
+  scenarios plus the Lab, and a "choose your path" section. It is static and makes no API request.
+- The Lab card says "Runs in your browser" and "no muscle or wing physics" (decision 2) and never uses
+  the word Replay.
+- **LCP.** The root `app/loading.tsx` wrapped every route, so every page, including the static Home,
+  first showed a "Loading scientific data" screen and kept its real content in a `hidden` div until a
+  script swapped it in. That was the render delay. The root fallback was removed and moved to
+  `morphology/loading.tsx` (the other data routes already had their own). Home's content is now in the
+  initial HTML. Measured: real Chromium under slow 4G and 4x CPU throttling, six runs: LCP 0.82 s
+  (p75 0.82 s); Lighthouse mobile (simulated): LCP 2.5 s, performance 98, accessibility 100. The
+  simulated figure sits on the 2.5 s line; the old Home measured 2.1 s in the same simulation, with
+  its own hero image, before the redesign changed the layout. Poster decoding is synchronous.
+- Removed dead code: `SpecimenVisual`, `FeatureIcon`, `SectionHeading`, and 204 Home-only rules from
+  `product.css` (21.9 KB to 4.2 KB). `discoveryCopy` moved to `scenarioPresentation.ts` (re-exported).
+- `README.md` no longer says Home "explores the verified canonical scenario catalogue".
+- Tests changed for the redesign (intent kept): the Home-specific copy and structure assertions, the
+  link-resolution test (dynamic scenario routes), the Science navigation test (Home has no Science
+  teaser now), the loading test (fallback now lives with the data routes), and the import-tree guard
+  (allow-list: the theme helper and `scenarioPresentation`, plus type-only imports; engines, WebGL,
+  animation loops and fetching are still forbidden).
+
+Small choices (brief's recommendation or closest fit):
+
+- The primary action reads "Watch the looming scenario", not the brief's "Watch a looming response".
+  In the canonical looming scenarios the DNp01 model stays below its spike threshold and the body does
+  not move, so "response" could read as the fly responding. It opens the scenario ready to play
+  (`?replay=canonical`). Change it back if you prefer the brief's wording.
+- No rotating circuit and no video loop: there is no asset of a real run, and a rotating 3D circuit
+  needs three.js on Home. The hero uses the existing artistic specimen render, captioned as such.
+
+Verified: type check, lint, build, 559 tests. Browser: Home at 390 and 1440 px in light and dark: axe 0,
+no overflow, no console errors, no non-GET requests; Scenarios and Experiments lists (which share the
+pruned CSS) unchanged and clean; keyboard path 28 of 28 routes. Lighthouse mobile (Home): performance 98,
+accessibility 100, best practices 100, SEO 100.
+
 ## Deployments
 
 Every merge to `main` deploys to Vercel production (`vercel.json` enables it for `main`). The branch
@@ -134,6 +173,10 @@ Every merge to `main` deploys to Vercel production (`vercel.json` enables it for
 
 ## Needs owner input
 
+- **Hero asset.** A poster image or short muted loop taken from a real run, labelled as model output
+  (brief question 6). Until then the hero shows the artistic specimen render.
+- **Roadmap.** The brief's plain-list roadmap (what is planned) is omitted: no plan is recorded in the
+  repository. Please supply it, or say the section should stay out.
 - **Scientific review of the phase 4 copy.** The reviewed Science text is unchanged. New wording to
   review: the `scope` paragraph, the `kinds` section, `open`, `circuitcheck`, the twelve capability
   reasons (paraphrased from the cited reports) and the glossary definitions.

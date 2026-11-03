@@ -39,3 +39,12 @@ export function scenarioNarrative(result: ScenarioPlaybackResult, frame: Scenari
         : "The causal loop executed. Inspect the authoritative neural, actuator and body records below; this is not a biological escape prediction.",
   };
 }
+
+/** Friendly labels over the five existing IDs. Never used to construct model inputs. */
+export const discoveryCopy: Readonly<Record<ScenarioKind, { title: string; description: string; category: string }>> = {
+  BASELINE_CONTROL: { title: "Begin with stillness", description: "A quiet reference. See what the selected model does when no effective stimulus is present.", category: "Control" },
+  LOOMING_CIRCUIT_VALIDATION: { title: "An approaching object", description: "Follow a brief visual input through a selected circuit. A neural response can occur while the body stays still.", category: "Visual circuit" },
+  LOOMING_WORLD_EXPERIMENT: { title: "A changing field of view", description: "Inspect a longer, prescribed approach and the recorded neural and body outputs it produces.", category: "World & perception" },
+  HORIZONTAL_MOTION_NEURAL_VALIDATION: { title: "Motion into neural activity", description: "Trace a horizontal-motion descriptor through HS and DNp15 model states. This experiment has no body movement mapping.", category: "Neural dynamics" },
+  EXPLORATORY_COURSE_CONTROL: { title: "A turn through feedback", description: "Explore how visual-motion feedback changes model orientation after a perturbation. Orientation only; no translation.", category: "Closed-loop model" },
+};

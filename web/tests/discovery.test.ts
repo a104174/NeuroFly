@@ -282,7 +282,7 @@ test("scenario failures are visible, explain themselves and never substitute a c
       assert.match(html, /Technical details/);
       assert.match(html, /so no scenarios are shown and none are substituted/);
       assert.doesNotMatch(html, /data-scenario-id=|Showing \d+ of/);
-      assert.match(html, /href="\/visual-lab\/arena"[^>]*>Enter the Lab/);
+      assert.match(html, /href="\/visual-lab"[^>]*>Enter the Lab/);
     });
   }
 });

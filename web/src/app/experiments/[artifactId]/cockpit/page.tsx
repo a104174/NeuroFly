@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 
 import { SiteHeader } from "@/components/site/SiteChrome";
 import { ScientificCockpit } from "@/components/ScientificCockpit";
+import { parseLayer } from "@/lib/cockpitLayers";
 import { StateMessage } from "@/components/StateMessage";
 import {
   COCKPIT_MORPHOLOGY_ARTIFACT_ID,
@@ -21,6 +22,7 @@ import {
   type ExperimentTimeline,
   type MorphologyArtifactSummary,
   type MorphologyBody,
+  type MorphologyBodyId,
   type StructuralConnectivityProjection,
 } from "@/lib/neuroflyClient";
 
@@ -34,10 +36,16 @@ function readableFailure(error: unknown): string {
 
 export default async function ScientificCockpitPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ artifactId: string }>;
+  searchParams?: Promise<Record<string, string | string[] | undefined>>;
 }) {
   const { artifactId } = await params;
+  const query = (await searchParams) ?? {};
+  const bodyParam = Number(Array.isArray(query.body) ? query.body[0] : query.body);
+  const initialBodyId = [10001, 10010, 11498, 12032, 14465, 16128].includes(bodyParam) ? (bodyParam as MorphologyBodyId) : null;
+  const initialLayer = parseLayer(query.layer);
   let core: { summary: ExperimentSummary; timeline: ExperimentTimeline } | null = null;
   let coreError: unknown = null;
   try {
@@ -54,7 +62,7 @@ export default async function ScientificCockpitPage({
     notFound();
   }
   if (!core) {
-    return <div className="app-shell cockpit-shell">
+    return <div className="app-shell cockpit-shell" data-theme-scope="dark">
       <SiteHeader variant="tool" backHref="/experiments" backLabel="Experiments" title="Cockpit" />
       <main id="main-content" tabIndex={-1} className="cockpit-route cockpit-route-error">
         <Link className="back-link" href="/experiments">← Experiments</Link>
@@ -100,7 +108,7 @@ export default async function ScientificCockpitPage({
   }
 
   return (
-    <div className="app-shell cockpit-shell">
+    <div className="app-shell cockpit-shell" data-theme-scope="dark">
       <SiteHeader variant="tool" backHref="/experiments" backLabel="Experiments" title="Cockpit" />
       <main id="main-content" tabIndex={-1} className="cockpit-route">
         <div className="cockpit-route-nav">
@@ -115,6 +123,8 @@ export default async function ScientificCockpitPage({
           connectivity={connectivity}
           morphologyFailure={morphologyFailure}
           connectivityFailure={connectivityFailure}
+          initialBodyId={initialBodyId}
+          initialLayer={initialLayer}
         />
       </main>
     </div>

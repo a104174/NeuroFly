@@ -18,7 +18,7 @@ pull request to `main` opened at the end (not merged by the agent).
 | 5 Home | Hero, status strip, explainer, gallery | Committed and pushed | `e690fdc` |
 | 6 Lists and details | Scenarios and Experiments pages, plus the two detail pages | Committed and pushed (lists `937ab5b`; detail pages in the next commit, see "Phase 6b") | see `git log` |
 | 7 3D frame and Neurons | `Viewport3D` and the Neurons pages | Committed and pushed (see `git log`) | see `git log` |
-| 8 Cockpit and Lab | Layers, shared clock, responsive strategy, Lab overview | In progress: 8a Lab text in English done | |
+| 8 Cockpit and Lab | Layers, shared clock, responsive strategy, Lab overview | Committed and pushed: 8a Lab in English (`4d6df84`), 8b Cockpit layers and Lab overview (see `git log`) | |
 | 9 Polish and removal | Transitions, audit, delete old CSS | Not started | |
 
 Phases 0 to 2 were merged to `main` before the plan changed to a single branch. Each merge to
@@ -273,6 +273,35 @@ accessibility 100, best practices 100, SEO 100.
   Open item for the owner: if the freeze is lifted, move the English text into those files.
 - The Lab also still shows legacy engineering vocabulary (for example `ENGINEERING_PROPULSION`); those
   are identifiers, not Portuguese, and are kept as written.
+
+## Phase 8b: Cockpit layers and Lab overview (details)
+
+- **Cockpit** (`ScientificCockpit.tsx`, `lib/cockpitLayers.ts`, `styles/cockpit-layers.css`): opens at
+  **Overview** (world large, connectome small, 5 model-state `Readout`s, timeline). **Detail** adds a 320 px
+  panel with four accordions (System, Body, Stimulus and neural signals, Events; open or closed state is
+  remembered in this browser). **Raw** adds a table of values at the current step with machine codes and
+  IDs. Layer is in the URL (`?layer=`), selected body too (`?body=`). Keys: Space, arrows (Shift = 10),
+  1 2 3, `?` lists them. The toolbar says "Replay of a completed run" and carries the Not evaluated badge.
+- **Timeline** (`ui/Timeline.tsx`): `role="slider"` with `aria-valuetext` "Step N of M", arrows, Shift,
+  Home and End, a speed menu, and event markers as named buttons. One playback clock feeds every panel.
+- **Widths:** 1920 px and up starts in Detail; below 600 px is a simplified replay (world only in 4:5, 3
+  readouts, timeline, a note and "Copy link for desktop", no second 3D view); 600 to 1023 px has
+  Connectome and Readouts tabs under the world.
+- Vocabulary and units: bare `mV` on the DNp01 membrane readouts, plot and provenance became `mV_eq`.
+- **Lab:** new `/visual-lab` overview (three cards: what each tool models and leaves out) and the header
+  Lab link points to it. Every Lab tool carries a notice: "Kinematic model. No muscle or wing physics.
+  Output is model state. Runs in your browser. Saved runs stay in this browser", with the exact 1e-8
+  comparison under "How exact is it?" (reviewed capability text, not new). Research tools show "Best on a
+  larger screen" below 600 px. "verified" and "digital fly" wording removed from Lab pages.
+- **Not done (listed):** panel swap ("Expand" crossfade; the legacy buttons are hidden), virtualised Raw
+  table (the table has under 10 rows), the Cockpit's legacy panel interiors still use old styling
+  (`cockpit.css`), the Lab's three tools keep their legacy dark layout and controls (no shared
+  stage/controls frame), the Lab "unavailable control with reason" pattern, and the Arena phone
+  simplification (Arena works on phones as before).
+- Verified: tsc, lint, 583 tests (new: cockpit layers, timeline keys), build. Browser: Cockpit at 1920,
+  1440, 800 and 390 px in light and dark, layers Overview, Detail and Raw: axe 0 after fixes (target
+  size, contrast); readouts 5 (Overview) and 3 (phone); one 3D view on phones; keyboard Space, 3, ?;
+  no non-GET requests. Lab pages: axe 0 on 16 variants.
 
 ## Backend requests (not done here)
 

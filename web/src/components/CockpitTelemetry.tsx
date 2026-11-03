@@ -156,7 +156,7 @@ export function CockpitTelemetry({
         <TelemetryPlot title="Looming angular size" source="theta_rad · persisted interval values" unit="rad" times={timeline.step_times_ms} series={theta} currentValues={[frame.thetaRad]} startMs={timeline.start_ms} endMs={timeline.end_ms} frame={frame} />
         {activity.typeLevelDrives ? <TelemetryPlot title="Sensory model drive · TYPE LEVEL" source="Bilateral type-broadcast interval values" unit="mV_eq" times={timeline.step_times_ms} series={drives} currentValues={activity.typeLevelDrives.map((signal) => signal.valueMveq)} startMs={timeline.start_ms} endMs={timeline.end_ms} frame={frame} /> : null}
         {selectedTelemetry && selectedState && membrane.length > 0 ? (
-          <TelemetryPlot title={`DNp01 ${selectedTelemetry.body_id} membrane`} source="Body-specific persisted boundary state · simulated" unit="mV" times={timeline.times_ms} series={membrane} currentValues={[selectedState.membraneMv]} startMs={timeline.start_ms} endMs={timeline.end_ms} frame={frame} />
+          <TelemetryPlot title={`DNp01 ${selectedTelemetry.body_id} membrane`} source="Body-specific persisted boundary state · simulated" unit="mV_eq" times={timeline.times_ms} series={membrane} currentValues={[selectedState.membraneMv]} startMs={timeline.start_ms} endMs={timeline.end_ms} frame={frame} />
         ) : null}
       </div>
       <details className="cockpit-panel-details">

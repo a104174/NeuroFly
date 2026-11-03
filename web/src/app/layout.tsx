@@ -10,6 +10,7 @@ import "./globals.css";
 import "./cockpit.css";
 import "./scenarios.css";
 import "./product.css";
+import "@/styles/cockpit-layers.css";
 
 const geistSans = Geist({ subsets: ["latin"], variable: "--font-geist-sans", display: "swap" });
 const geistMono = Geist_Mono({ subsets: ["latin"], variable: "--font-geist-mono", display: "swap" });

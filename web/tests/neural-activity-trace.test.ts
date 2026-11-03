@@ -37,7 +37,7 @@ test('the explanation displays the computed interval and its separate yaw compon
   const sample = session.advance(), trace = neuralActivityTrace(sample), noop = () => {};
   const html = renderToStaticMarkup(createElement(ExploreLabView, {state: sample.accepted, playing: true, error: null, notice: '', neuralEnabled: true, onPlay: noop, onReset: noop, onNeuralChange: noop, lagging: false, liveStatus: 'running', latestSample: sample, sessionId: session.config.session_id}));
   assert.match(html, /Why did it turn\?/);
-  assert.match(html, /Inspect verified neural anatomy/);
+  assert.match(html, /Inspect neural anatomy/);
   assert.ok(html.includes(trace.neural_yaw_rad_s.toFixed(4)));
   assert.ok(html.includes(trace.boundary_yaw_rad_s.toFixed(4)));
   assert.match(html, /MaleCNS-derived authority supplies structural connectivity/);

@@ -54,7 +54,7 @@ test("Science navigation resolves without removing homepage anchors or promoting
       assert(existsSync(new URL(`web/src/app${path === "/" ? "" : path}/page.tsx`, root)) || existsSync(new URL(`web/src/app${path}/(list)/page.tsx`, root)), href);
     }
   }
-  for (const href of ["/visual-lab/arena", "/scenarios", "/visual-lab/arena/research"]) assert(html.includes(`href="${href}"`));
+  for (const href of ["/visual-lab", "/scenarios"]) assert(html.includes(`href="${href}"`));
 });
 
 test("Science provides a route-scoped no-JavaScript reveal for the inherited root loading boundary", () => {

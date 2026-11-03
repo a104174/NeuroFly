@@ -30,7 +30,7 @@ test("product homepage renders one H1, the owner's headline and statement, and a
     // The primary action opens one recorded run, ready to play with no setup.
     assert.match(markup, /href="\/scenarios\/LOOMING_CIRCUIT_VALIDATION\?replay=canonical"[^>]*>Watch the looming scenario/);
     assert.match(markup, /href="\/science\/status"[^>]*>How much of this is real\?/);
-    assert.match(markup, /href="\/visual-lab\/arena"[^>]*>Explore the Lab/);
+    assert.match(markup, /href="\/visual-lab"[^>]*>Explore the Lab/);
     assert.match(markup, /<main id="main-content" tabindex="-1"/);
     assert.match(markup, /<noscript><style>/);
     assert.deepEqual(calls, []);
@@ -66,7 +66,7 @@ test("the hero poster is the eager, high-priority image and is described as an a
 });
 
 test("public links resolve to preserved routes or existing homepage anchors", () => {
-  assert.equal(LAB_HREF, "/visual-lab/arena");
+  assert.equal(LAB_HREF, "/visual-lab");
   const markup = renderToStaticMarkup(createElement(HomePage));
   // React may emit image preload links; this checks navigation anchors only.
   for (const [, href] of markup.matchAll(/<a\b[^>]*href="([^"?#]*)(?:#([^"]*))?"/g)) {
@@ -84,7 +84,7 @@ test("authentic static laboratory capture is accessible, labelled as running in 
   const markup = renderToStaticMarkup(createElement(HomePage));
   const card = markup.match(/<li class="card"><p class="cardKind">Lab<\/p>[\s\S]*?<\/li>/)?.[0];
   assert.ok(card);
-  assert.match(card, /href="\/visual-lab\/arena"/);
+  assert.match(card, /href="\/visual-lab"/);
   assert.match(card, /src="\/assets\/site\/neurofly-lab-preview.webp"/);
   assert.match(card, /width="1294" height="718" loading="lazy"/);
   assert.match(card, /alt="Screenshot of the NeuroFly 3D laboratory/);

@@ -573,8 +573,9 @@ test("cockpit keeps one transport and scopes layout styling away from standalone
   const telemetry = readFileSync(new URL("../src/components/CockpitTelemetry.tsx", import.meta.url), "utf8");
   const css = readFileSync(new URL("../src/app/cockpit.css", import.meta.url), "utf8");
   assert.equal(cockpit.match(/useExperimentPlayback\(timeline\)/g)?.length, 1);
-  assert.equal(cockpit.match(/Canonical experiment playback controls/g)?.length, 1);
-  assert.match(cockpit, /data-focus=\{focusedPanel \?\? "none"\}/);
+  // One shared clock drives one Timeline; world, connectome, readouts and events all read the same frame.
+  assert.equal(cockpit.match(/<Timeline\b/g)?.length, 1);
+  assert.match(cockpit, /data-layer=\{layer\}/);
   assert.match(cockpit, /playback\.play/);
   assert.match(cockpit, /playback\.pause/);
   assert.match(cockpit, /playback\.reset/);

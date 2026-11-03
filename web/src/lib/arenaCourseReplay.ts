@@ -10,21 +10,21 @@ export type ArenaCoursePose = { anchor: [number, number, number]; assetOffset: [
 
 /** Recorded abstract orientation only. Position is an unchanged presentation convention. */
 export function arenaCoursePose(replay: CoursePlaybackResult, cursor: number): ArenaCoursePose {
-  if (!Number.isFinite(cursor) || cursor < 0 || cursor > replay.frames.length - 1) throw new Error("Boundary de replay inválido.");
-  if (replay.scenario.id !== ARENA_COURSE_ID || replay.world_reference.period_eq !== 1 || ARENA.flyScale !== .30) throw new Error("Replay incompatível com a arena.");
+  if (!Number.isFinite(cursor) || cursor < 0 || cursor > replay.frames.length - 1) throw new Error("Invalid replay boundary.");
+  if (replay.scenario.id !== ARENA_COURSE_ID || replay.world_reference.period_eq !== 1 || ARENA.flyScale !== .30) throw new Error("Replay is incompatible with the arena.");
   const a = new Vector3(...flyPresentationAnchor(FLY_VIEWER_ASSET, "historical"));
   const anchor = a.clone().multiplyScalar(ARENA.flyScale).add(new Vector3(...ARENA.flyOffset)).toArray();
   const { renderRotation } = courseScene(replay, cursor);
-  if (!Number.isFinite(renderRotation)) throw new Error("Orientação inválida.");
+  if (!Number.isFinite(renderRotation)) throw new Error("Invalid orientation.");
   return { anchor, assetOffset: a.negate().toArray(), rotation: renderRotation };
 }
 
 /** Fail before starting playback; never clamp scientific poses or resize the specimen. */
 export function validateArenaCourseReplay(value: unknown): CoursePlaybackResult {
   const replay = parseCoursePlayback(value);
-  if (replay.artifact_id !== "f6ad13b9ba57d1ddb5e95cf91440c5b67f503a407f7330d4423ce7ab4340e581") throw new Error("A autoridade canónica Course não corresponde à esperada.");
+  if (replay.artifact_id !== "f6ad13b9ba57d1ddb5e95cf91440c5b67f503a407f7330d4423ce7ab4340e581") throw new Error("The canonical Course authority does not match the expected one.");
   const transform = FLY_VIEWER_ASSET.canonical_transform;
-  if (transform.scene_uniform_scale !== 1 || [...transform.scene_position, ...transform.scene_rotation_euler_rad].some(n => n !== 0)) throw new Error("O fitting do asset não corresponde ao mapping auditado.");
+  if (transform.scene_uniform_scale !== 1 || [...transform.scene_position, ...transform.scene_rotation_euler_rad].some(n => n !== 0)) throw new Error("The asset fitting does not match the audited mapping.");
   const { width, depth, height, wall } = ARENA.chamber;
   // A bounding sphere in X/Z about the anchor covers every angle, including interpolation.
   const pose = arenaCoursePose(replay, 0);
@@ -35,7 +35,7 @@ export function validateArenaCourseReplay(value: unknown): CoursePlaybackResult 
     }
   const lowY = ARENA.flyOffset[1] + FLY_VIEWER_ASSET.bounds.min[1] * ARENA.flyScale;
   const highY = ARENA.flyOffset[1] + FLY_VIEWER_ASSET.bounds.max[1] * ARENA.flyScale;
-  if (Math.abs(pose.anchor[0]) + radius >= (width - wall) / 2 || Math.abs(pose.anchor[2]) + radius >= (depth - wall) / 2 || lowY <= 0 || highY >= height - wall / 2) throw new Error("O espécime ultrapassa os limites visuais da câmara. Replay não iniciado.");
+  if (Math.abs(pose.anchor[0]) + radius >= (width - wall) / 2 || Math.abs(pose.anchor[2]) + radius >= (depth - wall) / 2 || lowY <= 0 || highY >= height - wall / 2) throw new Error("The specimen exceeds the camera's visual limits. Replay not started.");
   replay.frames.forEach((_, i) => arenaCoursePose(replay, i));
   return replay;
 }

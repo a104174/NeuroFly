@@ -18,7 +18,7 @@ pull request to `main` opened at the end (not merged by the agent).
 | 5 Home | Hero, status strip, explainer, gallery | Committed and pushed | `e690fdc` |
 | 6 Lists and details | Scenarios and Experiments pages, plus the two detail pages | Committed and pushed (lists `937ab5b`; detail pages in the next commit, see "Phase 6b") | see `git log` |
 | 7 3D frame and Neurons | `Viewport3D` and the Neurons pages | Committed and pushed (see `git log`) | see `git log` |
-| 8 Cockpit and Lab | Layers, shared clock, responsive strategy, Lab overview | Not started | |
+| 8 Cockpit and Lab | Layers, shared clock, responsive strategy, Lab overview | In progress: 8a Lab text in English done | |
 | 9 Polish and removal | Transitions, audit, delete old CSS | Not started | |
 
 Phases 0 to 2 were merged to `main` before the plan changed to a single branch. Each merge to
@@ -260,6 +260,19 @@ accessibility 100, best practices 100, SEO 100.
 - Verified: tsc, lint, 577 tests (6 new), build. Playwright (`scratchpad` script, 11 checks): WebGL off
   message, canvas drawn, PNG download, context loss then restart, unknown ID 404, reduced motion tokens.
   axe 0 on the Neurons pages (light/dark, phone/desktop) and with WebGL off.
+
+## Phase 8a: Lab text in English (details)
+
+- All Portuguese interface text in the Lab components and in their non-frozen libraries was translated
+  to English (about 250 strings in 20 files). The wording keeps the technical meaning; no claim was
+  added or removed. `tests/lab-english.test.ts` fails if Portuguese text returns.
+- Tests that asserted the old Portuguese error messages now assert the English ones.
+- **Frozen files.** `experimentalLocomotion.ts`, `neuralLocomotion.ts` and `neuralSteeringComparison.ts`
+  are pinned by `scripts/frozen-contribution.ts`, so their six Portuguese strings (two scenario labels
+  and four error messages) were not edited. `lib/frozenText.ts` translates them when they are shown.
+  Open item for the owner: if the freeze is lifted, move the English text into those files.
+- The Lab also still shows legacy engineering vocabulary (for example `ENGINEERING_PROPULSION`); those
+  are identifiers, not Portuguese, and are kept as written.
 
 ## Backend requests (not done here)
 

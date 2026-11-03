@@ -80,9 +80,9 @@ test("incompatible presentation scale or chamber fails rather than resizing or c
   const originalScale = ARENA.flyScale, originalWidth = ARENA.chamber.width;
   try {
     ARENA.flyScale = .35;
-    assert.throws(() => validateArenaCourseReplay(replay), /incompatível/);
+    assert.throws(() => validateArenaCourseReplay(replay), /incompatible/);
     ARENA.flyScale = originalScale;
     ARENA.chamber.width = .1;
-    assert.throws(() => validateArenaCourseReplay(replay), /limites/);
+    assert.throws(() => validateArenaCourseReplay(replay), /limits/);
   } finally { ARENA.flyScale = originalScale; ARENA.chamber.width = originalWidth; }
 });

@@ -25,7 +25,7 @@ import {
   type ActivityStructureProjection,
   type BodySpecificDnp01State,
 } from "@/lib/activityStructure";
-import { buildSchematicStructuralConnectors } from "@/lib/connectivityView";
+import { buildSchematicStructuralConnectors, projectionCoversBodies } from "@/lib/connectivityView";
 import {
   getMorphologyWebGLCapability,
   getServerMorphologyWebGLCapability,
@@ -255,7 +255,7 @@ function vector(values: readonly number[]): string {
 export const MorphologyInspector = memo(function MorphologyInspector({
   artifact,
   bodies,
-  connectivity,
+  connectivity: providedConnectivity,
   selection: controlledSelection,
   onSelectionChange,
   visibility: controlledVisibility,
@@ -285,6 +285,10 @@ export const MorphologyInspector = memo(function MorphologyInspector({
     () => deriveSharedMorphologyViewTransform(bodies),
     [bodies],
   );
+  // The projection describes a fixed sample; draw it only if every body it names is loaded.
+  const connectivity = providedConnectivity && projectionCoversBodies(providedConnectivity, bodies)
+    ? providedConnectivity
+    : null;
   const [localVisibility, setLocalVisibility] = useState<Record<MorphologyBodyId, boolean>>({
     10001: true,
     10010: true,
@@ -599,7 +603,9 @@ export const MorphologyInspector = memo(function MorphologyInspector({
             ))}
           </ul>
         </details> : null}
-      </section> : <p className="morphology-warning">Structural connectivity is unavailable. Raw morphology remains inspectable.</p>}
+      </section> : <p className="morphology-warning">{providedConnectivity
+        ? "Structural connectivity is not available for this sample: the fixed relationships involve bodies that are not loaded here. Raw morphology remains inspectable."
+        : "Structural connectivity is unavailable. Raw morphology remains inspectable."}</p>}
 
       {compact ? <details className="morphology-source-note"><summary>Native source axes</summary><p>
         Source x/y/z are MaleCNS native voxel axes. They are intentionally not

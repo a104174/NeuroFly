@@ -59,3 +59,16 @@ export function buildSchematicStructuralConnectors(
     };
   });
 }
+
+/**
+ * The structural projection describes one fixed sample. It can be drawn only
+ * when every body it names is loaded; otherwise connectors have no anchors.
+ */
+export function projectionCoversBodies(
+  projection: StructuralConnectivityProjection,
+  bodies: readonly MorphologyBody[],
+): boolean {
+  const loaded = new Set(bodies.map((body) => body.body_id));
+  return projection.fixed_sample.body_ids.every((id) => loaded.has(id)) &&
+    projection.edges.every((edge) => loaded.has(edge.pre_body_id) && loaded.has(edge.post_body_id));
+}

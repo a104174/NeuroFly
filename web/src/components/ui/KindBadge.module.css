@@ -1,0 +1,28 @@
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  block-size: var(--badge-height);
+  padding-inline: var(--space-2);
+  border: 1px solid color-mix(in srgb, currentColor 38%, transparent);
+  border-radius: var(--radius-sm);
+  font-size: var(--text-caption-size);
+  line-height: 1;
+  font-weight: var(--text-caption-weight);
+  letter-spacing: var(--text-caption-tracking);
+  white-space: nowrap;
+}
+.badge svg { flex: none; }
+.glyphOnly { padding-inline: var(--space-1); }
+
+.badge[data-kind="structural"] { color: var(--color-structural); background: var(--tint-structural); }
+.badge[data-kind="model-assumption"] { color: var(--color-model); background: var(--tint-model); }
+/* Accent is reserved for actions, so model state uses ink-2 on the raised surface. */
+.badge[data-kind="model-state"] { color: var(--color-model-state); background: var(--color-raised); }
+.badge[data-kind="not-evaluated"] { color: var(--color-not-evaluated); background: var(--tint-not-evaluated); }
+/* Unavailable is neutral and dashed: it must not look like an error. */
+.badge[data-kind="unavailable"] { color: var(--color-unavailable); background: var(--tint-unavailable); border-style: dashed; }
+
+@media (forced-colors: active) {
+  .badge { border-color: CanvasText; color: CanvasText; background: Canvas; }
+}

@@ -1,0 +1,21 @@
+.readout { display: grid; gap: var(--space-1); min-inline-size: 0; }
+.label { display: flex; align-items: center; gap: var(--space-1); color: var(--color-ink-2); font-size: var(--text-caption-size); line-height: var(--text-caption-lh); font-weight: var(--text-caption-weight); letter-spacing: var(--text-caption-tracking); }
+.glyph { display: inline-flex; flex: none; color: var(--color-ink-2); }
+.readout[data-kind="structural"] .glyph { color: var(--color-structural); }
+.readout[data-kind="model-assumption"] .glyph { color: var(--color-model); }
+.readout[data-kind="not-evaluated"] .glyph { color: var(--color-not-evaluated); }
+.readout[data-kind="unavailable"] .glyph { color: var(--color-unavailable); }
+
+.value { display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--space-1) var(--space-2); color: var(--color-ink); font-family: var(--font-mono); font-size: var(--text-readout-size); line-height: var(--text-readout-lh); font-weight: var(--text-readout-weight); font-variant-numeric: tabular-nums; }
+.large .value { font-size: var(--text-readout-lg-size); line-height: var(--text-readout-lg-lh); font-weight: var(--text-readout-lg-weight); letter-spacing: var(--text-readout-lg-tracking); }
+.number { display: inline-block; min-inline-size: calc(var(--min-chars, 0) * 1ch); text-align: end; }
+.unit { color: var(--color-ink-2); font-size: var(--text-caption-size); }
+.note { color: var(--color-ink-2); font-family: var(--font-sans); font-size: var(--text-caption-size); }
+.readout[data-state="unavailable"] .value { color: var(--color-unavailable); }
+.readout[data-state="unavailable"] .number { text-align: start; }
+.skeleton { display: inline-block; inline-size: calc(max(var(--min-chars, 6), 4) * 1ch); block-size: 1em; border-radius: var(--radius-sm); background: var(--color-raised); }
+.srOnly { position: absolute; inline-size: 1px; block-size: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+@media (prefers-reduced-motion: no-preference) {
+  .skeleton { animation: pulse 1.4s var(--ease-standard) infinite; }
+}
+@keyframes pulse { 50% { opacity: 0.5; } }

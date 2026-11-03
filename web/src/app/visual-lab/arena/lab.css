@@ -1,5 +1,5 @@
 /* Product Lab only. No scientific scene, camera or engine styles are global. */
-.lab-shell { --lab-accent:#86e5de; --lab-muted:#a7bbc8; min-height:100svh; background:radial-gradient(ellipse at 85% 8%,#17435055,transparent 55%),#08131f; color:#f1f7fa; font-family:Arial,Helvetica,sans-serif; }
+.lab-shell { --lab-accent:#86e5de; --lab-muted:#a7bbc8; min-height:100svh; background:radial-gradient(ellipse at 85% 8%,#17435055,transparent 55%),#08131f; color:#f1f7fa; font-family: var(--font-sans); }
 .lab-shell * { min-width:0; }
 .lab-shell a:focus-visible,.lab-shell button:focus-visible,.lab-shell summary:focus-visible,.lab-shell input:focus-visible,.lab-shell select:focus-visible { outline:3px solid var(--lab-accent); outline-offset:4px; }
 .lab-skip { position:fixed; top:8px; left:20px; z-index:100; transform:translateY(-180%); padding:12px; background:#86e5de; color:#08131f; }

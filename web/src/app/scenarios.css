@@ -21,7 +21,6 @@
 }
 body { background: var(--science-bg); }
 .app-header { background: #101617; height: 72px; border-color: var(--science-line); }
-.brand-mark { border-color: #7a9b8c; color: #b4ccb8; border-radius: 3px; }
 .brand-name { letter-spacing: .06em; }
 .brand-subtitle { font-size: 10px; }
 .header-nav { gap: 24px; }

@@ -13,8 +13,8 @@ pull request to `main` opened at the end (not merged by the agent).
 | 0 Baseline | Record the current site and check the diagnosis | Merged to `main` (PR #1, #2) | `5c91c26`, `dfc9582` |
 | 1 Tokens | Colour, type, spacing, motion tokens; Geist; pre-paint theme | Merged to `main` (PR #3) | `db39c20` |
 | 2 Honesty primitives | `KindBadge`, `Readout`, `ProvenanceLabel`, `Tooltip`, `StatePanel`, copy file | Merged to `main` (PR #4) | `1c14c53` |
-| 3 Shell | Header, navigation, footer, status pill, skip link, route focus | Committed and pushed | `e0dd406` |
-| 4 Content pages | Science, Status and limits, Glossary | Not started | |
+| 3 Shell | Header, navigation, footer, status pill, skip link, route focus | Committed and pushed | `89acf27` |
+| 4 Content pages | Science, Status and limits, Glossary | Committed and pushed | see `git log` |
 | 5 Home | Hero, status strip, explainer, gallery | Not started | |
 | 6 Lists and details | Scenarios and Experiments pages | Not started | |
 | 7 3D frame and Neurons | `Viewport3D` and the Neurons pages | Not started | |
@@ -70,8 +70,8 @@ Phases 0 to 2 were merged to `main` before the plan changed to a single branch. 
   focusable element and one `<main id="main-content">`.
 - The Cockpit and Lab use the 48 px tool bar. The Cockpit layout now derives from
   `--toolbar-height`.
-- Status pill reads "Model · Not evaluated" and links to `/science#limits`. **It moves to
-  `/science/status` in phase 4.**
+- Status pill reads "Model · Not evaluated" and links to the Status page (`/science/status`, added in
+  phase 4).
 - The approved white emblem is inverted to black on light surfaces with a `--logo-filter` token.
 - Dead header and footer CSS was removed from `product.css`, `globals.css`, `scenarios.css`,
   `lab.css` and `cockpit.css` (about 120 rules). `.status-dot` stays: two components use it.
@@ -85,6 +85,40 @@ Verified: type check, lint, build, 545 tests. Browser, 15 routes (including the 
 phone menus open, trap focus, close on Escape and return focus; axe on header and footer 0 findings;
 no horizontal overflow. Theme: system, stored choice before first paint, switch, reload. Route focus
 moves to the `h1` after client navigation.
+
+## Phase 4: Content pages (details)
+
+- `/science` rebuilt as a long-form article on the tokens (light and dark), with a contents list that is
+  sticky from 1024 px. New pages `/science/status` (capability, kind, reason, source) and
+  `/science/glossary`. Shared `ArticleShell`, `StageFigure`, `Article.module.css`.
+- **The reviewed Science copy was kept verbatim.** A test maps each `data-claim` group to a row in
+  `docs/architecture/product_experience_v10_3b.md`. The 17 existing groups are unchanged. Four new
+  groups were added, each with an evidence row: `scope` (two circuits, 313 and 8 bodies, not added),
+  `kinds`, `open` (the eight unresolved questions from the v1 status) and `circuitcheck`. The Status
+  table has a fifth, `capabilities`.
+- All status and glossary copy lives in `src/content/science-copy.ts`. Every capability cites a
+  repository report; a test checks that each cited file exists. Level C's reason is quoted from
+  `docs/science/sensory_consumption_boundary.md`. The Lab row states what was compared (the browser
+  neural update against the recorded Python run) and the tolerance (1e-8 per model-space quantity over
+  eight seconds), from `docs/science/interactive_neural_locomotion_v2.md`.
+- "Neural-only validation" is now "Neural-only circuit check" (`scenarioPresentation.ts`), with the
+  explanation that a circuit check is not biological validation. The retired-term rule allows the
+  word "validation" only in that explanation.
+- Removed `science.css` and the Science layout, now unused. `ScienceArchitecture` keeps its text and
+  moved to the module CSS.
+- `themed-page.css` makes the page's backdrop, scrollbars and native controls follow the theme.
+  Pages opt in with `data-themed-page`; it goes away with the legacy CSS in phase 9.
+- Found and fixed in verification: legacy global `a`, `dt` and `dd` rules (no underline; dark-theme grey
+  at 10 to 12 px) leaked into the new pages. New components now set these explicitly.
+
+Verified: type check, lint, build, 556 tests. Browser, three pages x phone/desktop x light/dark: axe 0
+violations, no horizontal overflow, no console errors, sticky contents, anchors land below the header,
+tables keyboard-scrollable on phones, figures load. Lighthouse mobile: performance 99, accessibility
+100, best practices 100, SEO 100 on all three (Science LCP 2.3 s, was 2.8 s). three.js is not loaded.
+Contrast of the tokens is computed in `tests/tokens.test.ts`.
+
+**Could not verify:** a scientific review of the new copy (see below), and screen-reader behaviour.
+"Copy has been reviewed" in the phase 4 Done-when column is therefore **not met** and needs the owner.
 
 ## Deployments
 
@@ -100,6 +134,11 @@ Every merge to `main` deploys to Vercel production (`vercel.json` enables it for
 
 ## Needs owner input
 
+- **Scientific review of the phase 4 copy.** The reviewed Science text is unchanged. New wording to
+  review: the `scope` paragraph, the `kinds` section, `open`, `circuitcheck`, the twelve capability
+  reasons (paraphrased from the cited reports) and the glossary definitions.
+- The Science page has **no "How to cite" block** and names **no author**, because neither the exact
+  citation nor the author is in the repository. The MaleCNS link is the existing one.
 - Exact **citation and data licence** wording for MaleCNS (brief question 10).
 - A **named author or lab** for the Science page (question 12).
 - The **reason for each unavailable capability** is taken from the repository where it exists (for

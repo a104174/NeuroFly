@@ -1,8 +1,8 @@
 /** Public website destinations. Scientific routes and runtime remain independent. */
 export const LAB_HREF = "/visual-lab/arena";
 export const SCIENCE_PAGE_HREF = "/science";
-/** Becomes /science/status when that page exists (phase 4). */
-export const STATUS_HREF = "/science#limits";
+/** The page that gives the reason for every capability. */
+export const STATUS_HREF = "/science/status";
 export const EXPERIMENTS_HREF = "/experiments";
 export const REPOSITORY_HREF = "https://github.com/a104174/NeuroFly";
 export const SCIENCE_HREF = "https://github.com/a104174/NeuroFly/tree/main/docs/science";

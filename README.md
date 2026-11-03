@@ -116,6 +116,14 @@ python -m ruff check .
 python -m ruff format --check .
 ```
 
+The web tests in `web/` (`npm test`) call `python` to compare browser code with
+the Python reference. Put the project virtualenv first on `PATH`, or they fail
+with `spawnSync python ENOENT` on machines that only provide `python3`:
+
+```bash
+cd web && PATH="$PWD/../.venv/bin:$PATH" npm test
+```
+
 ## MaleCNS Phase 1A
 
 The versioned candidate `looming_giant_fiber_v1` selects every typed `:Neuron`

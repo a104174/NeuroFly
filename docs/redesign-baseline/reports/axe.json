@@ -1,0 +1,742 @@
+[
+ {
+  "name": "home",
+  "route": "/",
+  "width": "phone",
+  "theme": "light",
+  "axe": []
+ },
+ {
+  "name": "home",
+  "route": "/",
+  "width": "phone",
+  "theme": "dark",
+  "axe": []
+ },
+ {
+  "name": "home",
+  "route": "/",
+  "width": "desktop",
+  "theme": "light",
+  "axe": []
+ },
+ {
+  "name": "home",
+  "route": "/",
+  "width": "desktop",
+  "theme": "dark",
+  "axe": []
+ },
+ {
+  "name": "scenarios",
+  "route": "/scenarios",
+  "width": "phone",
+  "theme": "light",
+  "axe": []
+ },
+ {
+  "name": "scenarios",
+  "route": "/scenarios",
+  "width": "phone",
+  "theme": "dark",
+  "axe": []
+ },
+ {
+  "name": "scenarios",
+  "route": "/scenarios",
+  "width": "desktop",
+  "theme": "light",
+  "axe": []
+ },
+ {
+  "name": "scenarios",
+  "route": "/scenarios",
+  "width": "desktop",
+  "theme": "dark",
+  "axe": []
+ },
+ {
+  "name": "scenario-looming",
+  "route": "/scenarios/LOOMING_CIRCUIT_VALIDATION",
+  "width": "phone",
+  "theme": "light",
+  "axe": []
+ },
+ {
+  "name": "scenario-looming",
+  "route": "/scenarios/LOOMING_CIRCUIT_VALIDATION",
+  "width": "phone",
+  "theme": "dark",
+  "axe": []
+ },
+ {
+  "name": "scenario-looming",
+  "route": "/scenarios/LOOMING_CIRCUIT_VALIDATION",
+  "width": "desktop",
+  "theme": "light",
+  "axe": []
+ },
+ {
+  "name": "scenario-looming",
+  "route": "/scenarios/LOOMING_CIRCUIT_VALIDATION",
+  "width": "desktop",
+  "theme": "dark",
+  "axe": []
+ },
+ {
+  "name": "scenario-looming-replay",
+  "route": "/scenarios/LOOMING_CIRCUIT_VALIDATION?replay=canonical",
+  "width": "phone",
+  "theme": "light",
+  "axe": []
+ },
+ {
+  "name": "scenario-looming-replay",
+  "route": "/scenarios/LOOMING_CIRCUIT_VALIDATION?replay=canonical",
+  "width": "phone",
+  "theme": "dark",
+  "axe": []
+ },
+ {
+  "name": "scenario-looming-replay",
+  "route": "/scenarios/LOOMING_CIRCUIT_VALIDATION?replay=canonical",
+  "width": "desktop",
+  "theme": "light",
+  "axe": []
+ },
+ {
+  "name": "scenario-looming-replay",
+  "route": "/scenarios/LOOMING_CIRCUIT_VALIDATION?replay=canonical",
+  "width": "desktop",
+  "theme": "dark",
+  "axe": []
+ },
+ {
+  "name": "scenario-course-replay",
+  "route": "/scenarios/EXPLORATORY_COURSE_CONTROL?replay=canonical",
+  "width": "phone",
+  "theme": "light",
+  "axe": []
+ },
+ {
+  "name": "scenario-course-replay",
+  "route": "/scenarios/EXPLORATORY_COURSE_CONTROL?replay=canonical",
+  "width": "phone",
+  "theme": "dark",
+  "axe": []
+ },
+ {
+  "name": "scenario-course-replay",
+  "route": "/scenarios/EXPLORATORY_COURSE_CONTROL?replay=canonical",
+  "width": "desktop",
+  "theme": "light",
+  "axe": []
+ },
+ {
+  "name": "scenario-course-replay",
+  "route": "/scenarios/EXPLORATORY_COURSE_CONTROL?replay=canonical",
+  "width": "desktop",
+  "theme": "dark",
+  "axe": []
+ },
+ {
+  "name": "experiments",
+  "route": "/experiments",
+  "width": "phone",
+  "theme": "light",
+  "axe": []
+ },
+ {
+  "name": "experiments",
+  "route": "/experiments",
+  "width": "phone",
+  "theme": "dark",
+  "axe": []
+ },
+ {
+  "name": "experiments",
+  "route": "/experiments",
+  "width": "desktop",
+  "theme": "light",
+  "axe": []
+ },
+ {
+  "name": "experiments",
+  "route": "/experiments",
+  "width": "desktop",
+  "theme": "dark",
+  "axe": []
+ },
+ {
+  "name": "experiment-detail",
+  "route": "/experiments/63a73b7ea3ba10a5850b166598f134a2dc0a752bf93c550e2371ee8d5b1bf656",
+  "width": "phone",
+  "theme": "light",
+  "axe": [
+   {
+    "id": "aria-prohibited-attr",
+    "impact": "serious",
+    "help": "Elements must only use permitted ARIA attributes",
+    "nodes": 1,
+    "targets": [
+     ".playback-canvas-shell"
+    ]
+   }
+  ]
+ },
+ {
+  "name": "experiment-detail",
+  "route": "/experiments/63a73b7ea3ba10a5850b166598f134a2dc0a752bf93c550e2371ee8d5b1bf656",
+  "width": "phone",
+  "theme": "dark",
+  "axe": [
+   {
+    "id": "aria-prohibited-attr",
+    "impact": "serious",
+    "help": "Elements must only use permitted ARIA attributes",
+    "nodes": 1,
+    "targets": [
+     ".playback-canvas-shell"
+    ]
+   }
+  ]
+ },
+ {
+  "name": "experiment-detail",
+  "route": "/experiments/63a73b7ea3ba10a5850b166598f134a2dc0a752bf93c550e2371ee8d5b1bf656",
+  "width": "desktop",
+  "theme": "light",
+  "axe": [
+   {
+    "id": "aria-prohibited-attr",
+    "impact": "serious",
+    "help": "Elements must only use permitted ARIA attributes",
+    "nodes": 1,
+    "targets": [
+     ".playback-canvas-shell"
+    ]
+   }
+  ]
+ },
+ {
+  "name": "experiment-detail",
+  "route": "/experiments/63a73b7ea3ba10a5850b166598f134a2dc0a752bf93c550e2371ee8d5b1bf656",
+  "width": "desktop",
+  "theme": "dark",
+  "axe": [
+   {
+    "id": "aria-prohibited-attr",
+    "impact": "serious",
+    "help": "Elements must only use permitted ARIA attributes",
+    "nodes": 1,
+    "targets": [
+     ".playback-canvas-shell"
+    ]
+   }
+  ]
+ },
+ {
+  "name": "cockpit",
+  "route": "/experiments/63a73b7ea3ba10a5850b166598f134a2dc0a752bf93c550e2371ee8d5b1bf656/cockpit",
+  "width": "phone",
+  "theme": "light",
+  "axe": [
+   {
+    "id": "aria-prohibited-attr",
+    "impact": "serious",
+    "help": "Elements must only use permitted ARIA attributes",
+    "nodes": 1,
+    "targets": [
+     ".morphology-canvas-shell > div:nth-child(1)"
+    ]
+   },
+   {
+    "id": "color-contrast",
+    "impact": "serious",
+    "help": "Elements must meet minimum color contrast ratio thresholds",
+    "nodes": 8,
+    "targets": [
+     ".cockpit-event-future:nth-child(2) > button > time",
+     ".cockpit-event-future:nth-child(2) > button > small",
+     ".cockpit-event-future:nth-child(3) > button > time",
+     ".cockpit-event-future:nth-child(3) > button > small"
+    ]
+   },
+   {
+    "id": "target-size",
+    "impact": "serious",
+    "help": "All touch targets must be 24px large, or leave sufficient space",
+    "nodes": 2,
+    "targets": [
+     ".morphology-compact-details:nth-child(4) > summary",
+     ".morphology-compact-details:nth-child(5) > summary"
+    ]
+   }
+  ]
+ },
+ {
+  "name": "cockpit",
+  "route": "/experiments/63a73b7ea3ba10a5850b166598f134a2dc0a752bf93c550e2371ee8d5b1bf656/cockpit",
+  "width": "phone",
+  "theme": "dark",
+  "axe": [
+   {
+    "id": "aria-prohibited-attr",
+    "impact": "serious",
+    "help": "Elements must only use permitted ARIA attributes",
+    "nodes": 1,
+    "targets": [
+     ".morphology-canvas-shell > div:nth-child(1)"
+    ]
+   },
+   {
+    "id": "color-contrast",
+    "impact": "serious",
+    "help": "Elements must meet minimum color contrast ratio thresholds",
+    "nodes": 8,
+    "targets": [
+     ".cockpit-event-future:nth-child(2) > button > time",
+     ".cockpit-event-future:nth-child(2) > button > small",
+     ".cockpit-event-future:nth-child(3) > button > time",
+     ".cockpit-event-future:nth-child(3) > button > small"
+    ]
+   },
+   {
+    "id": "target-size",
+    "impact": "serious",
+    "help": "All touch targets must be 24px large, or leave sufficient space",
+    "nodes": 2,
+    "targets": [
+     ".morphology-compact-details:nth-child(4) > summary",
+     ".morphology-compact-details:nth-child(5) > summary"
+    ]
+   }
+  ]
+ },
+ {
+  "name": "cockpit",
+  "route": "/experiments/63a73b7ea3ba10a5850b166598f134a2dc0a752bf93c550e2371ee8d5b1bf656/cockpit",
+  "width": "desktop",
+  "theme": "light",
+  "axe": [
+   {
+    "id": "aria-prohibited-attr",
+    "impact": "serious",
+    "help": "Elements must only use permitted ARIA attributes",
+    "nodes": 1,
+    "targets": [
+     ".morphology-canvas-shell > div:nth-child(1)"
+    ]
+   },
+   {
+    "id": "color-contrast",
+    "impact": "serious",
+    "help": "Elements must meet minimum color contrast ratio thresholds",
+    "nodes": 8,
+    "targets": [
+     ".cockpit-event-future:nth-child(2) > button > time",
+     ".cockpit-event-future:nth-child(2) > button > small",
+     ".cockpit-event-future:nth-child(3) > button > time",
+     ".cockpit-event-future:nth-child(3) > button > small"
+    ]
+   }
+  ]
+ },
+ {
+  "name": "cockpit",
+  "route": "/experiments/63a73b7ea3ba10a5850b166598f134a2dc0a752bf93c550e2371ee8d5b1bf656/cockpit",
+  "width": "desktop",
+  "theme": "dark",
+  "axe": [
+   {
+    "id": "aria-prohibited-attr",
+    "impact": "serious",
+    "help": "Elements must only use permitted ARIA attributes",
+    "nodes": 1,
+    "targets": [
+     ".morphology-canvas-shell > div:nth-child(1)"
+    ]
+   },
+   {
+    "id": "color-contrast",
+    "impact": "serious",
+    "help": "Elements must meet minimum color contrast ratio thresholds",
+    "nodes": 8,
+    "targets": [
+     ".cockpit-event-future:nth-child(2) > button > time",
+     ".cockpit-event-future:nth-child(2) > button > small",
+     ".cockpit-event-future:nth-child(3) > button > time",
+     ".cockpit-event-future:nth-child(3) > button > small"
+    ]
+   }
+  ]
+ },
+ {
+  "name": "morphology",
+  "route": "/morphology",
+  "width": "phone",
+  "theme": "light",
+  "axe": []
+ },
+ {
+  "name": "morphology",
+  "route": "/morphology",
+  "width": "phone",
+  "theme": "dark",
+  "axe": []
+ },
+ {
+  "name": "morphology",
+  "route": "/morphology",
+  "width": "desktop",
+  "theme": "light",
+  "axe": []
+ },
+ {
+  "name": "morphology",
+  "route": "/morphology",
+  "width": "desktop",
+  "theme": "dark",
+  "axe": []
+ },
+ {
+  "name": "morphology-detail",
+  "route": "/morphology/719426f0cd2db586b149943483abfe6519d45c4a39fb48aa1f4a566c514c84f3",
+  "width": "phone",
+  "theme": "light",
+  "axe": []
+ },
+ {
+  "name": "morphology-detail",
+  "route": "/morphology/719426f0cd2db586b149943483abfe6519d45c4a39fb48aa1f4a566c514c84f3",
+  "width": "phone",
+  "theme": "dark",
+  "axe": []
+ },
+ {
+  "name": "morphology-detail",
+  "route": "/morphology/719426f0cd2db586b149943483abfe6519d45c4a39fb48aa1f4a566c514c84f3",
+  "width": "desktop",
+  "theme": "light",
+  "axe": []
+ },
+ {
+  "name": "morphology-detail",
+  "route": "/morphology/719426f0cd2db586b149943483abfe6519d45c4a39fb48aa1f4a566c514c84f3",
+  "width": "desktop",
+  "theme": "dark",
+  "axe": []
+ },
+ {
+  "name": "lab-arena",
+  "route": "/visual-lab/arena",
+  "width": "phone",
+  "theme": "light",
+  "axe": []
+ },
+ {
+  "name": "lab-arena",
+  "route": "/visual-lab/arena",
+  "width": "phone",
+  "theme": "dark",
+  "axe": []
+ },
+ {
+  "name": "lab-arena",
+  "route": "/visual-lab/arena",
+  "width": "desktop",
+  "theme": "light",
+  "axe": []
+ },
+ {
+  "name": "lab-arena",
+  "route": "/visual-lab/arena",
+  "width": "desktop",
+  "theme": "dark",
+  "axe": []
+ },
+ {
+  "name": "lab-research",
+  "route": "/visual-lab/arena/research",
+  "width": "phone",
+  "theme": "light",
+  "axe": []
+ },
+ {
+  "name": "lab-research",
+  "route": "/visual-lab/arena/research",
+  "width": "phone",
+  "theme": "dark",
+  "axe": []
+ },
+ {
+  "name": "lab-research",
+  "route": "/visual-lab/arena/research",
+  "width": "desktop",
+  "theme": "light",
+  "axe": []
+ },
+ {
+  "name": "lab-research",
+  "route": "/visual-lab/arena/research",
+  "width": "desktop",
+  "theme": "dark",
+  "axe": []
+ },
+ {
+  "name": "lab-fly",
+  "route": "/visual-lab/fly",
+  "width": "phone",
+  "theme": "light",
+  "axe": []
+ },
+ {
+  "name": "lab-fly",
+  "route": "/visual-lab/fly",
+  "width": "phone",
+  "theme": "dark",
+  "axe": []
+ },
+ {
+  "name": "lab-fly",
+  "route": "/visual-lab/fly",
+  "width": "desktop",
+  "theme": "light",
+  "axe": []
+ },
+ {
+  "name": "lab-fly",
+  "route": "/visual-lab/fly",
+  "width": "desktop",
+  "theme": "dark",
+  "axe": []
+ },
+ {
+  "name": "science",
+  "route": "/science",
+  "width": "phone",
+  "theme": "light",
+  "axe": []
+ },
+ {
+  "name": "science",
+  "route": "/science",
+  "width": "phone",
+  "theme": "dark",
+  "axe": []
+ },
+ {
+  "name": "science",
+  "route": "/science",
+  "width": "desktop",
+  "theme": "light",
+  "axe": []
+ },
+ {
+  "name": "science",
+  "route": "/science",
+  "width": "desktop",
+  "theme": "dark",
+  "axe": []
+ },
+ {
+  "name": "not-found",
+  "route": "/does-not-exist",
+  "width": "phone",
+  "theme": "light",
+  "axe": []
+ },
+ {
+  "name": "not-found",
+  "route": "/does-not-exist",
+  "width": "phone",
+  "theme": "dark",
+  "axe": []
+ },
+ {
+  "name": "not-found",
+  "route": "/does-not-exist",
+  "width": "desktop",
+  "theme": "light",
+  "axe": []
+ },
+ {
+  "name": "not-found",
+  "route": "/does-not-exist",
+  "width": "desktop",
+  "theme": "dark",
+  "axe": []
+ },
+ {
+  "name": "unknown-experiment",
+  "route": "/experiments/abc123",
+  "width": "phone",
+  "theme": "light",
+  "axe": []
+ },
+ {
+  "name": "unknown-experiment",
+  "route": "/experiments/abc123",
+  "width": "phone",
+  "theme": "dark",
+  "axe": []
+ },
+ {
+  "name": "unknown-experiment",
+  "route": "/experiments/abc123",
+  "width": "desktop",
+  "theme": "light",
+  "axe": []
+ },
+ {
+  "name": "unknown-experiment",
+  "route": "/experiments/abc123",
+  "width": "desktop",
+  "theme": "dark",
+  "axe": []
+ },
+ {
+  "name": "morphology-six",
+  "route": "/morphology/a3f090d5309d9ede0e9e0f78343a618a4bafba3fea91e5a27d37927d5ec55f79",
+  "width": "phone",
+  "theme": "light",
+  "axe": [
+   {
+    "id": "aria-prohibited-attr",
+    "impact": "serious",
+    "help": "Elements must only use permitted ARIA attributes",
+    "nodes": 1,
+    "targets": [
+     ".morphology-canvas-shell > div:nth-child(1)"
+    ]
+   },
+   {
+    "id": "target-size",
+    "impact": "serious",
+    "help": "All touch targets must be 24px large, or leave sufficient space",
+    "nodes": 6,
+    "targets": [
+     "li:nth-child(1) > a[target=\"_blank\"][rel=\"noreferrer\"]",
+     "li:nth-child(2) > a[target=\"_blank\"][rel=\"noreferrer\"]",
+     "li:nth-child(3) > a[target=\"_blank\"][rel=\"noreferrer\"]",
+     "li:nth-child(4) > a[target=\"_blank\"][rel=\"noreferrer\"]"
+    ]
+   }
+  ]
+ },
+ {
+  "name": "morphology-six",
+  "route": "/morphology/a3f090d5309d9ede0e9e0f78343a618a4bafba3fea91e5a27d37927d5ec55f79",
+  "width": "phone",
+  "theme": "dark",
+  "axe": [
+   {
+    "id": "aria-prohibited-attr",
+    "impact": "serious",
+    "help": "Elements must only use permitted ARIA attributes",
+    "nodes": 1,
+    "targets": [
+     ".morphology-canvas-shell > div:nth-child(1)"
+    ]
+   },
+   {
+    "id": "target-size",
+    "impact": "serious",
+    "help": "All touch targets must be 24px large, or leave sufficient space",
+    "nodes": 6,
+    "targets": [
+     "li:nth-child(1) > a[target=\"_blank\"][rel=\"noreferrer\"]",
+     "li:nth-child(2) > a[target=\"_blank\"][rel=\"noreferrer\"]",
+     "li:nth-child(3) > a[target=\"_blank\"][rel=\"noreferrer\"]",
+     "li:nth-child(4) > a[target=\"_blank\"][rel=\"noreferrer\"]"
+    ]
+   }
+  ]
+ },
+ {
+  "name": "morphology-six",
+  "route": "/morphology/a3f090d5309d9ede0e9e0f78343a618a4bafba3fea91e5a27d37927d5ec55f79",
+  "width": "desktop",
+  "theme": "light",
+  "axe": [
+   {
+    "id": "aria-prohibited-attr",
+    "impact": "serious",
+    "help": "Elements must only use permitted ARIA attributes",
+    "nodes": 1,
+    "targets": [
+     ".morphology-canvas-shell > div:nth-child(1)"
+    ]
+   },
+   {
+    "id": "target-size",
+    "impact": "serious",
+    "help": "All touch targets must be 24px large, or leave sufficient space",
+    "nodes": 6,
+    "targets": [
+     "li:nth-child(1) > a[target=\"_blank\"][rel=\"noreferrer\"]",
+     "li:nth-child(2) > a[target=\"_blank\"][rel=\"noreferrer\"]",
+     "li:nth-child(3) > a[target=\"_blank\"][rel=\"noreferrer\"]",
+     "li:nth-child(4) > a[target=\"_blank\"][rel=\"noreferrer\"]"
+    ]
+   }
+  ]
+ },
+ {
+  "name": "morphology-six",
+  "route": "/morphology/a3f090d5309d9ede0e9e0f78343a618a4bafba3fea91e5a27d37927d5ec55f79",
+  "width": "desktop",
+  "theme": "dark",
+  "axe": [
+   {
+    "id": "aria-prohibited-attr",
+    "impact": "serious",
+    "help": "Elements must only use permitted ARIA attributes",
+    "nodes": 1,
+    "targets": [
+     ".morphology-canvas-shell > div:nth-child(1)"
+    ]
+   },
+   {
+    "id": "target-size",
+    "impact": "serious",
+    "help": "All touch targets must be 24px large, or leave sufficient space",
+    "nodes": 6,
+    "targets": [
+     "li:nth-child(1) > a[target=\"_blank\"][rel=\"noreferrer\"]",
+     "li:nth-child(2) > a[target=\"_blank\"][rel=\"noreferrer\"]",
+     "li:nth-child(3) > a[target=\"_blank\"][rel=\"noreferrer\"]",
+     "li:nth-child(4) > a[target=\"_blank\"][rel=\"noreferrer\"]"
+    ]
+   }
+  ]
+ },
+ {
+  "name": "unknown-experiment-hex",
+  "route": "/experiments/0000000000000000000000000000000000000000000000000000000000000000",
+  "width": "phone",
+  "theme": "light",
+  "axe": []
+ },
+ {
+  "name": "unknown-experiment-hex",
+  "route": "/experiments/0000000000000000000000000000000000000000000000000000000000000000",
+  "width": "phone",
+  "theme": "dark",
+  "axe": []
+ },
+ {
+  "name": "unknown-experiment-hex",
+  "route": "/experiments/0000000000000000000000000000000000000000000000000000000000000000",
+  "width": "desktop",
+  "theme": "light",
+  "axe": []
+ },
+ {
+  "name": "unknown-experiment-hex",
+  "route": "/experiments/0000000000000000000000000000000000000000000000000000000000000000",
+  "width": "desktop",
+  "theme": "dark",
+  "axe": []
+ }
+]

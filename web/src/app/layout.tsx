@@ -5,6 +5,7 @@ import { RouteFocus } from "@/components/site/RouteFocus";
 import { THEME_INIT_SCRIPT } from "@/lib/theme";
 import "@/styles/tokens.css";
 import "@/styles/themed-page.css";
+import "@/styles/morphology.css";
 import "./globals.css";
 import "./cockpit.css";
 import "./scenarios.css";

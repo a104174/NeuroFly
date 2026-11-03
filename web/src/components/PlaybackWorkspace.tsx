@@ -9,6 +9,7 @@ import {
   type ReactNode,
 } from "react";
 
+import { WebGLGate } from "./WebGLGate";
 import { useExperimentPlayback } from "@/hooks/useExperimentPlayback";
 import type {
   ExperimentTimeline,
@@ -104,12 +105,14 @@ export function PlaybackWorkspace({
           className="playback-canvas-shell" role="group"
           aria-label="Three-dimensional experiment presentation"
         >
+          <WebGLGate>
           <PlaybackRenderBoundary>
             <PlaybackCanvas
               sceneState={scene}
               onAssetStatusChange={handleAssetStatusChange}
             />
           </PlaybackRenderBoundary>
+          </WebGLGate>
         </div>
         <div className="playback-overlay" aria-live="polite">
           <div>

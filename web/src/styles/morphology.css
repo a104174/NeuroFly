@@ -1,0 +1,65 @@
+/* Neuron shapes (MorphologyInspector). Moved out of globals.css and tokenised in phase 7. */
+.morphology-catalogue { max-width: 920px; margin: 0 auto; }
+.morphology-catalogue > h1, .morphology-heading-row h1 { margin: 8px 0 12px; font-size: clamp(28px, 4vw, 48px); }
+.morphology-catalogue > p, .morphology-heading-row p { max-width: 760px; color: var(--color-ink-2); line-height: 1.65; }
+.morphology-catalogue ul { display: grid; gap: 10px; margin: 32px 0 0; padding: 0; list-style: none; }
+.morphology-catalogue li a { display: grid; grid-template-columns: 1.1fr 0.8fr 1.3fr 1fr; gap: 18px; padding: 18px; border: 1px solid var(--color-hairline); background: var(--color-surface); }
+.morphology-catalogue li a:hover, .morphology-catalogue li a:focus-visible { border-color: var(--color-accent); outline: none; }
+.morphology-catalogue li span { color: var(--color-ink-2); font-family: var(--font-mono); font-size: var(--text-caption-size); overflow-wrap: anywhere; }
+.morphology-heading-row { display: flex; justify-content: space-between; gap: 30px; margin-bottom: 24px; }
+.morphology-mode { align-self: flex-start; padding: 8px 11px; border: 1px solid var(--tint-accent); color: var(--color-accent); font-family: var(--font-mono); font-size: var(--text-caption-size); white-space: nowrap; }
+.morphology-canvas-shell { position: relative; min-height: 610px; overflow: hidden; border: 1px solid var(--color-border-control); background: var(--stage-bg); }
+.morphology-canvas-shell canvas { min-height: 610px; }
+.morphology-webgl-fallback, .morphology-webgl-pending { display: grid; min-height: 610px; place-items: center; color: var(--color-ink-2); }
+.morphology-canvas-key { position: absolute; right: 18px; bottom: 18px; display: grid; gap: 8px; padding: 12px 14px; border: 1px solid var(--color-hairline); background: var(--glass-bg); font-family: var(--font-mono); font-size: var(--text-caption-size); }
+.morphology-canvas-key span { display: flex; align-items: center; gap: 8px; }
+.morphology-canvas-key i { width: 12px; height: 2px; background: var(--color-accent); }
+.morphology-canvas-key .body-key-10010 { background: var(--color-model); }
+.morphology-controls { display: flex; flex-wrap: wrap; align-items: center; gap: 18px; padding: 14px 18px; border: 1px solid var(--color-hairline); border-top: 0; background: var(--color-raised); font-family: var(--font-mono); font-size: var(--text-caption-size); }
+.morphology-controls label { display: flex; align-items: center; gap: 7px; }
+.morphology-controls input { accent-color: var(--color-accent); }
+.morphology-controls button { margin-left: auto; padding: 8px 12px; border: 1px solid var(--color-border-control); color: var(--color-accent); background: var(--color-surface); cursor: pointer; }
+.morphology-selection { margin-top: 12px; padding: 18px; border: 1px solid var(--color-hairline); background: var(--color-surface); }
+.morphology-selection h2 { margin: 5px 0 16px; font-size: 18px; }
+.morphology-selection p, .morphology-component-row span { color: var(--color-ink-2); font-size: var(--text-caption-size); line-height: 1.6; }
+.morphology-body-selector { display: flex; flex-wrap: wrap; gap: 8px; }
+.morphology-selection button { padding: 8px 12px; border: 1px solid var(--color-border-control); color: var(--color-accent); background: var(--color-raised); cursor: pointer; }
+.morphology-selection button[aria-pressed="true"] { border-color: var(--color-accent); background: var(--tint-accent); outline: 1px solid var(--color-accent); }
+.morphology-selection button:focus-visible { outline: 2px solid var(--color-model); outline-offset: 2px; }
+.morphology-selection button:disabled { opacity: 0.45; cursor: not-allowed; }
+.morphology-component-list { display: grid; gap: 8px; margin: 14px 0; }
+.morphology-component-row { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+.morphology-connectivity { margin-top: 12px; padding: 18px; border: 1px solid var(--color-hairline); background: var(--color-surface); }
+.morphology-connectivity h2 { margin: 5px 0 14px; font-size: 18px; }
+.morphology-connectivity p, .morphology-connectivity li { color: var(--color-ink-2); font-size: var(--text-caption-size); line-height: 1.65; }
+.morphology-connectivity ul { display: grid; gap: 8px; margin: 12px 0; padding: 0; list-style: none; }
+.morphology-connectivity li { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; gap: 10px; padding: 9px 11px; border-left: 2px solid var(--color-border-control); background: var(--color-raised); }
+.morphology-connectivity li.is-incident { border-color: var(--color-accent); color: var(--color-ink); }
+.morphology-connectivity li.is-unrelated { opacity: 0.5; }
+.morphology-warning { margin: 12px 0 0; padding: 13px 15px; border-left: 2px solid var(--color-model); color: var(--color-ink-2); background: var(--color-surface); font-size: var(--text-caption-size); line-height: 1.6; }
+.morphology-readouts { margin-top: 12px; padding: 18px; border: 1px solid var(--color-hairline); background: var(--color-surface); }
+.morphology-readouts dl { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin: 0; }
+.morphology-readouts dt { color: var(--color-ink-2); font-size: var(--text-caption-size); letter-spacing: 0.05em; text-transform: uppercase; }
+.morphology-readouts dd { margin: 5px 0 0; font-family: var(--font-mono); font-size: var(--text-caption-size); overflow-wrap: anywhere; }
+.morphology-readouts section > p:not(.eyebrow) { color: var(--color-ink-2); font-size: var(--text-caption-size); line-height: 1.65; }
+.morphology-intro { max-inline-size: var(--measure-prose); }
+.morphology-legend { display: grid; gap: var(--space-2); font-family: var(--font-mono); }
+.morphology-legend span { display: flex; align-items: center; gap: var(--space-2); }
+.morphology-legend i { inline-size: 12px; block-size: 3px; }
+.morphology-stage-button { min-block-size: var(--button-height-md); padding-inline: var(--space-4); border: 1px solid var(--color-border-control); border-radius: var(--radius-md); background: var(--glass-bg); color: var(--stage-ink); font: inherit; font-size: var(--text-small-size); font-weight: 600; cursor: pointer; }
+.morphology-stage-button:focus-visible { outline: var(--focus-ring); outline-offset: var(--focus-offset); }
+.morphology-shot-note { min-block-size: 1.4em; margin: var(--space-2) 0 0; color: var(--color-ink-2); font-size: var(--text-small-size); }
+.morphology-isolate { display: flex; flex-wrap: wrap; gap: var(--space-2); margin-block-start: var(--space-3); }
+.morphology-selection .morphology-isolate button { min-block-size: 24px; }
+@media (max-width: 599px) {
+  .morphology-heading-row { display: block; }
+  .morphology-mode { display: inline-block; margin-top: 12px; }
+  .morphology-catalogue li a { grid-template-columns: 1fr; }
+  .morphology-canvas-shell, .morphology-canvas-shell canvas, .morphology-webgl-fallback, .morphology-webgl-pending { min-height: 440px; }
+  .morphology-readouts dl { grid-template-columns: 1fr; }
+}
+/* The legacy global .eyebrow and dd colours are dark-theme values; set them from tokens here. */
+.morphology-inspector .eyebrow { color: var(--color-ink-2); }
+.morphology-readouts dd, .morphology-readouts article, .morphology-readouts li { color: var(--color-ink); }
+.morphology-readouts a { color: var(--color-accent); }
+.morphology-readouts a { display: inline-block; min-block-size: 24px; }

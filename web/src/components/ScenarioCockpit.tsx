@@ -8,6 +8,7 @@ import { ScenarioExplanation } from "./ScenarioExplanation";
 import { HorizontalMotionExplanation } from "./HorizontalMotionExplanation";
 import { CourseControlExplanation } from "./CourseControlExplanation";
 import { scenarioCopy, experimentMetadata } from "@/lib/scenarioPresentation";
+import { WebGLGate } from "./WebGLGate";
 import { CurrentResult } from "./CurrentResult";
 import { GuidedCaptions, type Caption } from "./GuidedCaptions";
 import { ProvenanceLabel, KindBadge } from "@/components/ui";
@@ -51,7 +52,7 @@ function Playback({ result }: { result: ScenarioPlayback }) {
   return <div className="scientific-playback">
     <GuidedCaptions captions={captions} onGoTo={goTo}/>
     <div className="experiment-main">
-      <div className="experiment-viewport">{isCoursePlayback(result) ? <><CourseControlWorld result={result} cursor={cursor}/><ScientificTrace result={result} step={frame.step}/></> : isNeuralPlayback(result) ? <HorizontalMotionWorld result={result} cursor={cursor}/> : <ScenarioWorld result={result} cursor={cursor} />}</div>
+      <div className="experiment-viewport"><WebGLGate>{isCoursePlayback(result) ? <><CourseControlWorld result={result} cursor={cursor}/><ScientificTrace result={result} step={frame.step}/></> : isNeuralPlayback(result) ? <HorizontalMotionWorld result={result} cursor={cursor}/> : <ScenarioWorld result={result} cursor={cursor} />}</WebGLGate></div>
       <CurrentResult result={result} step={frame.step}/>
     </div>
     <section className="scenario-transport" aria-label="Playback controls">

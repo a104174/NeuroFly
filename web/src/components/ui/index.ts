@@ -8,3 +8,4 @@ export { Readout, type ReadoutProps } from "./Readout";
 export { SegmentedLinks, type SegmentedItem } from "./SegmentedLinks";
 export { StatePanel, type StatePanelProps } from "./StatePanel";
 export { Tooltip } from "./Tooltip";
+export { Viewport3D, type ViewportRenderProps, type ViewportState } from "./Viewport3D";

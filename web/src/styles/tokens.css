@@ -132,6 +132,8 @@
 :root {
   /* 3D stage: dark in both themes (brief question 3). */
   --stage-bg: #0a0c0d;
+  /* Text on the stage and on glass panels over it. */
+  --stage-ink: #f2f4f4;
   /* Grid lines on the stage. Design choice: ink at 8% on the stage. */
   --stage-grid: rgba(242, 244, 244, 0.08);
   --neuron-lc4: #7fb2ff;

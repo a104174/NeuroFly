@@ -17,7 +17,7 @@ pull request to `main` opened at the end (not merged by the agent).
 | 4 Content pages | Science, Status and limits, Glossary | Committed and pushed | `79c1f8b` |
 | 5 Home | Hero, status strip, explainer, gallery | Committed and pushed | `e690fdc` |
 | 6 Lists and details | Scenarios and Experiments pages, plus the two detail pages | Committed and pushed (lists `937ab5b`; detail pages in the next commit, see "Phase 6b") | see `git log` |
-| 7 3D frame and Neurons | `Viewport3D` and the Neurons pages | Not started | |
+| 7 3D frame and Neurons | `Viewport3D` and the Neurons pages | Committed and pushed (see `git log`) | see `git log` |
 | 8 Cockpit and Lab | Layers, shared clock, responsive strategy, Lab overview | Not started | |
 | 9 Polish and removal | Transitions, audit, delete old CSS | Not started | |
 
@@ -235,6 +235,31 @@ accessibility 100, best practices 100, SEO 100.
   link. The link goes to all experiments: there is no scenario field to filter by.
 - Guide captions are generic or reuse existing scenario text; no new scientific claims.
 - Verified: tsc, lint, tests; axe 0 on 12 variants (3 pages x 2 widths x 2 themes).
+
+## Phase 7: 3D frame and Neurons (details)
+
+- **`Viewport3D`** (`components/ui/Viewport3D.tsx`): frame with title, kind label, reserved aspect ratio,
+  legend, controls and a text description. States: loading, ready, degraded, no-webgl, context-lost,
+  missing-data (the `paused` and `poster` states are not used yet). Pauses rendering offscreen and in a
+  hidden tab (`frameloop="never"`), catches `webglcontextlost` and offers "Restart 3D view". Three tiers
+  (`lib/viewportTier.ts`), dpr cap, and a frame-rate watch that drops a tier after 3 s under 30 fps
+  and says so. The watch only runs when `playing` is set; the Neurons view renders on demand, so
+  the tier drop is exercised in phase 8.
+- **Neurons** (`/morphology`, `/morphology/[id]`) on `PageShell`: cards, a Structural badge, the intro
+  "This is the reconstructed shape of real neurons, not a simulation", the stage in `Viewport3D`, Reset
+  view, **Save image** (PNG with a provenance footer drawn into it), and Isolate selected body / Show all.
+  Unknown IDs return a real 404 (`(list)` route group, layout, not-found with the ID).
+  The legacy `.morphology-*` rules moved from `globals.css` to `styles/morphology.css`, tokenised. The
+  compact Cockpit inspector still uses its old shell.
+- **WebGL off:** the scenario stage and the experiment replay no longer render blank. `WebGLGate` shows
+  "3D isn't available on this device" (the numbers below are the data alternative).
+- Wording: "Verified CircuitContract" became "Integrity-checked". New `StatePanel` state `context-lost`.
+- Not done: "toggle synapses" (the data has only schematic connectors, shown by the existing toggle);
+  Web Worker parsing of large geometry (the geometry is small and built in the main thread); a poster
+  state.
+- Verified: tsc, lint, 577 tests (6 new), build. Playwright (`scratchpad` script, 11 checks): WebGL off
+  message, canvas drawn, PNG download, context loss then restart, unknown ID 404, reduced motion tokens.
+  axe 0 on the Neurons pages (light/dark, phone/desktop) and with WebGL off.
 
 ## Backend requests (not done here)
 

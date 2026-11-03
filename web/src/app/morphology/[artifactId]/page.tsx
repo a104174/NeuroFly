@@ -1,7 +1,9 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
-import { SiteHeader } from "@/components/site/SiteChrome";
+import { PageShell } from "@/components/site/PageShell";
+import { ButtonLink, StatePanel } from "@/components/ui";
+import styles from "../(list)/page.module.css";
 import { MorphologyInspector } from "@/components/MorphologyInspector";
 import {
   getMorphologyArtifact,
@@ -40,23 +42,23 @@ export default async function MorphologyArtifactPage({
     notFound();
   }
   if (requestError || !data) {
-    throw requestError instanceof Error
-      ? requestError
-      : new Error("Morphology API returned an invalid response.");
+    const integrity = requestError instanceof NeuroflyApiError && (requestError.status === 409 || requestError.code === "artifact_integrity_failure");
+    return (
+      <PageShell title="These neuron shapes could not be read" current="/morphology">
+        <StatePanel state={integrity ? "integrity-failure" : "api-down"} actions={<ButtonLink href="/morphology">Back to Neurons</ButtonLink>} />
+      </PageShell>
+    );
   }
+  const names = data.artifact.bodies.map((body) => body.neuron_type).filter((value, index, values) => values.indexOf(value) === index).join(" + ");
   return (
-      <div className="app-shell">
-        <SiteHeader />
-        <main id="main-content" tabIndex={-1} className="main-content main-content-wide">
-          <Link className="back-link" href="/morphology">
-            ← Morphology catalogue
-          </Link>
-          <MorphologyInspector
-            artifact={data.artifact}
-            bodies={data.bodies}
-            connectivity={data.connectivity}
-          />
-        </main>
-      </div>
+    <PageShell
+      eyebrow="Neurons"
+      title={`${names} · ${data.artifact.body_ids.length} ${data.artifact.body_ids.length === 1 ? "body" : "bodies"}`}
+      current="/morphology"
+      lead={<p>This is the reconstructed shape of real neurons, not a simulation.</p>}
+    >
+      <Link className={styles.back} href="/morphology" prefetch={false}>← Neurons</Link>
+      <MorphologyInspector artifact={data.artifact} bodies={data.bodies} connectivity={data.connectivity} />
+    </PageShell>
   );
 }

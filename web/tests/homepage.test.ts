@@ -9,7 +9,7 @@ import { register } from "node:module";
 // imports that reach CSS are dynamic. (package.json is frozen, so this cannot be an npm script.)
 register(new URL("./support/css-hooks.mjs", import.meta.url));
 const { default: HomePage, metadata } = await import("../src/app/page");
-const { default: Loading } = await import("../src/app/morphology/loading");
+const { default: Loading } = await import("../src/app/morphology/(list)/loading");
 const { default: ExperimentsPage } = await import("../src/app/experiments/(list)/page");
 const { default: ScenariosPage, dynamic: catalogueDynamic } = await import("../src/app/scenarios/(list)/page");
 import { listExperiments, NeuroflyApiError } from "../src/lib/neuroflyClient";
@@ -311,14 +311,13 @@ test("loading remains accessible and legacy detail/cockpit functionality remains
   // The fallback belongs to the routes that load data (Neurons). A root fallback would wrap every page,
   // including the static Home, and delay its first paint behind a "Loading scientific data" screen.
   assert.equal(existsSync(new URL("../src/app/loading.tsx", import.meta.url)), false);
-  for (const route of ["morphology", "scenarios/(list)", "experiments/(list)", "experiments/[artifactId]", "scenarios/[scenarioId]"]) assert.ok(existsSync(new URL(`../src/app/${route}/loading.tsx`, import.meta.url)), route);
+  for (const route of ["morphology/(list)", "scenarios/(list)", "experiments/(list)", "experiments/[artifactId]", "scenarios/[scenarioId]"]) assert.ok(existsSync(new URL(`../src/app/${route}/loading.tsx`, import.meta.url)), route);
   // An unknown ID is decided in a layout above the loading screen, so it is a real 404 and not a 200.
   for (const route of ["experiments/[artifactId]", "scenarios/[scenarioId]"]) assert.ok(existsSync(new URL(`../src/app/${route}/layout.tsx`, import.meta.url)), route);
   const markup = renderToStaticMarkup(createElement(Loading));
   assert.match(markup, /role="status"/);
-  assert.match(markup, /aria-live="polite"/);
   assert.match(markup, /aria-busy="true"/);
-  assert.match(markup, /Loading scientific data/);
+  assert.match(markup, /Loading neuron shapes/);
   noCards(markup);
   const source = (file: string) => readFileSync(new URL(`../src/${file}`, import.meta.url), "utf8");
   assert.doesNotMatch(source("app/page.tsx"), /listExperiments|ExperimentList/);

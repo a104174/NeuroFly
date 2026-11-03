@@ -120,6 +120,11 @@ export const STATE_COPY = {
     title: "3D isn't available on this device.",
     withData: "The data below is the same.",
   },
+  contextLost: {
+    title: "The 3D view stopped.",
+    body: "The browser released the graphics context. Nothing on this page has been lost.",
+    action: "Restart 3D view",
+  },
   lowPower: {
     title: "Showing simplified shapes for smoother playback.",
     action: "Use full detail",

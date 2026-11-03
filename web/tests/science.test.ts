@@ -57,15 +57,9 @@ test("Science navigation resolves without removing homepage anchors or promoting
   for (const href of ["/visual-lab", "/scenarios"]) assert(html.includes(`href="${href}"`));
 });
 
-test("Science provides a route-scoped no-JavaScript reveal for the inherited root loading boundary", () => {
+test("Science is static and needs no no-JavaScript reveal, because there is no root loading boundary", () => {
   const html = render();
-  const fallback = html.match(/<noscript>[\s\S]*?<\/noscript>/)?.[0];
-  assert.ok(fallback);
-  assert.match(fallback, /body > \[hidden\]:has\(> \[data-themed-page\]\)/);
-  assert.match(fallback, /display: block !important/);
-  assert.match(fallback, /body:has\(> \[hidden\] > \[data-themed-page\]\) > \.app-shell/);
-  assert.match(fallback, /display: none !important/);
-  assert.doesNotMatch(fallback, /fetch|api\/|\.lab-shell/);
+  assert.doesNotMatch(html, /<noscript>/);
 });
 
 test("the architecture presents structural evidence outside an ordered runtime loop with explicit engineering roles", () => {

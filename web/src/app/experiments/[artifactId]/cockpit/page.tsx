@@ -63,7 +63,7 @@ export default async function ScientificCockpitPage({
   }
   if (!core) {
     return <div className="app-shell cockpit-shell" data-theme-scope="dark">
-      <SiteHeader variant="tool" backHref="/experiments" backLabel="Experiments" title="Cockpit" />
+      <SiteHeader tone="dark" variant="tool" backHref="/experiments" backLabel="Experiments" title="Cockpit" />
       <main id="main-content" tabIndex={-1} className="cockpit-route cockpit-route-error">
         <Link className="back-link" href="/experiments">← Experiments</Link>
         <StateMessage eyebrow="EXPERIMENT UNAVAILABLE" title="This run cannot open in the Cockpit." detail={readableFailure(coreError)} tone="error" />
@@ -109,7 +109,7 @@ export default async function ScientificCockpitPage({
 
   return (
     <div className="app-shell cockpit-shell" data-theme-scope="dark">
-      <SiteHeader variant="tool" backHref="/experiments" backLabel="Experiments" title="Cockpit" />
+      <SiteHeader tone="dark" variant="tool" backHref="/experiments" backLabel="Experiments" title="Cockpit" />
       <main id="main-content" tabIndex={-1} className="cockpit-route">
         <div className="cockpit-route-nav">
           <Link href="/experiments">← Experiments</Link>

@@ -173,7 +173,7 @@ export function ReactiveFlightSessionLab({ modeControl, behavior, authority }: {
           Accepted state {frame.step} · {frame.state} · X/Y/Z {frame.position.map(value => value.toFixed(4)).join(' / ')} · velocity {frame.velocity.map(value => value.toFixed(4)).join(' / ')} units/s
         </p>
         {error ? <p className="lab-error" role="alert">{error} The controller stopped at the last accepted body state.</p> : null}
-        {status === 'completed' ? <p className="lab-completion" role="status">{sustained ? 'Finite sustained window complete; inspect recorded episode counts and final plant state.' : mixed ? 'Walking and flight handoffs verified; second airborne exploration accepted.' : touchAndGo ? 'Landing and re-takeoff verified; second airborne exploration accepted.' : 'Finite 30-second verification window complete. This duration limit does not represent a landing decision.'}</p> : null}
+        {status === 'completed' ? <p className="lab-completion" role="status">{sustained ? 'Finite sustained window complete; inspect recorded episode counts and final plant state.' : mixed ? 'Walking and flight handoffs checked; second airborne exploration accepted.' : touchAndGo ? 'Landing and re-takeoff checked; second airborne exploration accepted.' : 'Finite 30-second verification window complete. This duration limit does not represent a landing decision.'}</p> : null}
       </div>
       <aside className="lab-sidebar" aria-label="Reactive flight mode and telemetry">
         {modeControl}

@@ -191,10 +191,6 @@
 .cockpit-grid[data-focus="world"] > :not(.cockpit-world), .cockpit-grid[data-focus="connectome"] > :not(.cockpit-structure), .cockpit-grid[data-focus="telemetry"] > :not(.cockpit-telemetry) { display: none; }
 .cockpit-grid[data-focus="connectome"] .morphology-inspector-compact .morphology-canvas-shell { height: clamp(400px, 62vh, 780px); }
 .cockpit-grid[data-focus="telemetry"] .cockpit-plot svg { min-height: 170px; }
-
-.experiment-cockpit-link { display: inline-block; margin: 5px 0 0 12px; padding: 7px 0; color: var(--cyan); font: 10px "SFMono-Regular", Consolas, monospace; }
-.experiment-cockpit-link:hover, .experiment-cockpit-link:focus-visible, .experiment-cockpit-entry:hover, .experiment-cockpit-entry:focus-visible { text-decoration: underline; outline: 1px solid var(--cyan); }
-.experiment-cockpit-entry { display: inline-block; margin: 0 0 22px 20px; color: var(--cyan); font: 10px "SFMono-Regular", Consolas, monospace; }
 .cockpit-loading-heading { flex: 0 0 auto; padding: 10px 3px; }
 .cockpit-loading-heading h1 { margin-bottom: 5px; font-size: 21px; }
 .cockpit-loading-heading p:last-child { margin: 0; color: var(--muted); font-size: 12px; }

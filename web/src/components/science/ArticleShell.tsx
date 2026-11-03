@@ -25,9 +25,7 @@ export function ArticleShell({
   return (
     <div data-themed-page className={styles.page}>
       {/* Reveals the server-rendered page when JS cannot finish the root loading boundary. */}
-      <noscript><style>{`body > [hidden]:has(> [data-themed-page]) { display: block !important; }
-        body:has(> [hidden] > [data-themed-page]) > .app-shell { display: none !important; }`}</style></noscript>
-      <SiteHeader tone="auto" current="/science" />
+      <SiteHeader current="/science" />
       <main id="main-content" tabIndex={-1} className={styles.main}>
         <header className={styles.hero}>
           <p className={styles.eyebrow}>{eyebrow}</p>
@@ -42,7 +40,7 @@ export function ArticleShell({
           <article className={styles.article}>{children}</article>
         </div>
       </main>
-      <SiteFooter tone="auto" />
+      <SiteFooter />
     </div>
   );
 }

@@ -25,9 +25,7 @@ export default function HomePage() {
   return (
     <div data-themed-page className={styles.page}>
       {/* Reveals the server-rendered page when JS cannot finish the root loading boundary. */}
-      <noscript><style>{`body > [hidden]:has(> [data-themed-page]) { display: block !important; }
-        body:has(> [hidden] > [data-themed-page]) > .app-shell { display: none !important; }`}</style></noscript>
-      <SiteHeader tone="auto" />
+      <SiteHeader />
       <main id="main-content" tabIndex={-1}>
         <section className={styles.hero} aria-labelledby="home-title">
           <div className={styles.heroCopy}>
@@ -128,7 +126,7 @@ export default function HomePage() {
           </div>
         </section>
       </main>
-      <SiteFooter tone="auto" />
+      <SiteFooter />
     </div>
   );
 }

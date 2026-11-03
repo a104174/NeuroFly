@@ -523,3 +523,7 @@ complete visual or escape circuit. The acquired `ConnectsTo` graph represents
 chemical-connectome structure. Giant Fiber downstream biology also contains
 electrical/gap-junction contributions (including circuitry involving TTMn and
 PSI), which this snapshot neither invents nor represents.
+
+## Automated quality checks
+
+`web-quality/` holds the Playwright, axe, Lighthouse and Stylelint checks for the web redesign. It is separate from `web/` because `web/package.json` is pinned by the frozen scientific protocol. See `web-quality/README.md`.

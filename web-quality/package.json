@@ -1,0 +1,27 @@
+{
+  "name": "neurofly-web-quality",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Automated checks for the NeuroFly web app (redesign brief section 11). Kept apart from web/ because web/package.json is pinned by the frozen scientific protocol.",
+  "type": "module",
+  "scripts": {
+    "install:browsers": "playwright install chromium",
+    "check": "node run.mjs",
+    "check:routes": "node run.mjs routes",
+    "check:a11y": "node run.mjs a11y",
+    "check:readonly": "node run.mjs readonly",
+    "check:keyboard": "node run.mjs keyboard",
+    "check:motion": "node run.mjs motion",
+    "check:resilience": "node run.mjs resilience",
+    "check:bundle": "node run.mjs bundle",
+    "check:lighthouse": "node lighthouse.mjs",
+    "lint:css": "stylelint \"../web/src/**/*.css\" --config .stylelintrc.json"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "4.10.1",
+    "chrome-launcher": "1.1.2",
+    "lighthouse": "12.6.1",
+    "playwright": "1.52.0",
+    "stylelint": "16.20.0"
+  }
+}

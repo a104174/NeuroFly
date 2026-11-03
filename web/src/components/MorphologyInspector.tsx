@@ -566,7 +566,7 @@ export const MorphologyInspector = memo(function MorphologyInspector({
             return <div key={bodyId}>
               <span>DNp01 BODY {bodyId} · node_index {body?.node_index ?? "unavailable"} · source side {body?.source_side ?? "unavailable"}</span>
               {state ? <>
-                <strong>{state.membraneMv.toFixed(4)} mV · filtered state {state.synapticStateMveq.toFixed(4)} mV_eq</strong>
+                <strong>{state.membraneMv.toFixed(4)} mV_eq · filtered state {state.synapticStateMveq.toFixed(4)} mV_eq</strong>
                 <small>normalized model membrane position: {state.normalizedModelMembranePosition === null ? "not available" : state.normalizedModelMembranePosition.toFixed(3)} · boundary {state.boundaryTimeMs.toFixed(3)} ms{state.spikeAtBoundary ? " · SIMULATED SPIKE at stored boundary" : ""}</small>
               </> : <small>{activity.bodyStateUnavailableReason ?? "Body-specific state unavailable."}</small>}
             </div>;

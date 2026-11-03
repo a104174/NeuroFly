@@ -226,11 +226,11 @@ export function PlaybackWorkspace({
         </div>
         <div className="legend-dnp01-a">
           <span>DNp01 · 10001 membrane</span>
-          <strong>{shown(scene.dnp01[10001].membraneMv, "mV")}</strong>
+          <strong>{shown(scene.dnp01[10001].membraneMv, "mV_eq")}</strong>
         </div>
         <div className="legend-dnp01-b">
           <span>DNp01 · 10010 membrane</span>
-          <strong>{shown(scene.dnp01[10010].membraneMv, "mV")}</strong>
+          <strong>{shown(scene.dnp01[10010].membraneMv, "mV_eq")}</strong>
         </div>
       </div>
 

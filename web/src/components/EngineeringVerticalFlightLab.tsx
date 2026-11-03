@@ -8,7 +8,7 @@ import { VERTICAL_FLIGHT_CONFIG, VerticalFlightSession, type VerticalFlightStatu
 
 const statusText: Record<VerticalFlightStatus, string> = {
   ready: 'Grounded · ready', running: 'Flight verification running', paused: 'Paused',
-  completed: 'Landing verified', failed: 'Verification failed',
+  completed: 'Landing checked', failed: 'Verification failed',
 };
 
 export function EngineeringVerticalFlightLab({ modeControl }: { modeControl: ReactNode }) {

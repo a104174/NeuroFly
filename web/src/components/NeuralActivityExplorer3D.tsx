@@ -166,7 +166,7 @@ const NeuralCanvas = memo(function NeuralCanvas({ view, selectedId, values, onCo
       frameloop="demand"
       dpr={[1, 1.25]}
       camera={{ position: [0, 5.8, 13.5], fov: 42, near: 0.1, far: 100 }}
-      fallback={<p className="neural-viewer-unavailable">WebGL is unavailable; verified source identities and model values remain listed beside the viewer.</p>}
+      fallback={<p className="neural-viewer-unavailable">WebGL is unavailable; integrity-checked source identities and model values remain listed beside the viewer.</p>}
     >
       <NeuralScene
         gesture={gesture}
@@ -266,7 +266,7 @@ export const NeuralActivityExplorer3D = memo(function NeuralActivityExplorer3D({
 
   if (loadError) {
     return <div className="neural-explorer-error" role="alert">
-      <strong>Verified MaleCNS morphology is unavailable.</strong>
+      <strong>Integrity-checked MaleCNS morphology is unavailable.</strong>
       <p>{loadError}. No substitute geometry is displayed.</p>
     </div>;
   }
@@ -276,7 +276,7 @@ export const NeuralActivityExplorer3D = memo(function NeuralActivityExplorer3D({
   }
 
   return (
-    <section className="neural-explorer" aria-label="Verified neural anatomy and live activity">
+    <section className="neural-explorer" aria-label="Neural anatomy and live activity">
       <div className="neural-explorer-heading">
         <div>
           <span className="lab-eyebrow">MALECNS v1.0 · 8 RAW SKELETONS</span>
@@ -294,7 +294,7 @@ export const NeuralActivityExplorer3D = memo(function NeuralActivityExplorer3D({
 
       <details className="neural-help"><summary>How to read this</summary><div>
         <p><strong>The fly:</strong> a continuous simulation using modeled neural signals and engineering movement rules.</p>
-        <p><strong>The neurons:</strong> verified MaleCNS shapes; their colours show computed whole-cell proxy values, not recorded activity.</p>
+        <p><strong>The neurons:</strong> integrity-checked MaleCNS shapes; their colours show computed whole-cell proxy values, not recorded activity.</p>
         <p><strong>The connection:</strong> modeled neural yaw and an engineering wall response contribute to rotation. Select a structure or use the list to inspect it.</p>
       </div></details>
       <div className="neural-presentation" role="group" aria-label="Explanation detail">
@@ -339,7 +339,7 @@ export const NeuralActivityExplorer3D = memo(function NeuralActivityExplorer3D({
               <div><dt>Selected structural routes</dt><dd>{routes.length ? routes.map((route) => `${route.source_body_id}→${route.target_body_id} (${route.structural_contact_count} contacts)`).join(" · ") : "No selected route in this motif"}</dd></div>
             </dl> : null}
             {presentation === "detailed" ? <div className="neural-relationships"><strong>Connections and model</strong><p>MaleCNS structural contacts: {routes.length ? routes.map((route) => `${route.source_body_id} → ${route.target_body_id} (${route.structural_contact_count})`).join(" · ") : "none in this selected motif"}. Contact counts are not model gains.</p><p>The computational model links HS proxies to DNp15 proxies; its yaw projection and the wall response are engineering mappings. Selecting one cell does not establish individual causation.</p></div> : <p>MaleCNS supplies anatomical structure; HS/DNp15 activity and yaw are modeled. Structural contacts are not model gains.</p>}
-          </div> : <p role="status">Select a verified structure to inspect its model state.</p>}
+          </div> : <p role="status">Select a structure to inspect its model state.</p>}
 
           <strong className="neural-list-title">Select a neuron · list or 3D</strong>
           <div className="neural-entity-list" aria-label="Select a modeled neural identity">

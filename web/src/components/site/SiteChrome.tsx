@@ -36,7 +36,7 @@ function Brand({ compact = false }: { compact?: boolean }) {
 }
 
 /** The skip link is the first focusable element on every page. Each page's <main> has id="main-content". */
-export function SiteHeader({ variant = "default", tone = "dark", current, backHref, backLabel, title }: SiteHeaderProps) {
+export function SiteHeader({ variant = "default", tone = "auto", current, backHref, backLabel, title }: SiteHeaderProps) {
   const tool = variant === "tool";
   return (
     <header className={styles.header} data-variant={variant} data-theme-scope={tone === "dark" ? "dark" : undefined}>
@@ -62,7 +62,7 @@ export function SiteHeader({ variant = "default", tone = "dark", current, backHr
   );
 }
 
-export function SiteFooter({ tone = "dark" }: { tone?: Tone }) {
+export function SiteFooter({ tone = "auto" }: { tone?: Tone }) {
   return (
     <footer className={styles.footer} data-theme-scope={tone === "dark" ? "dark" : undefined}>
       <div className={styles.footerInner}>

@@ -68,7 +68,7 @@ test("shared logo renders the canonical asset in public header, footer and inter
   for (const route of ["scenarios", "experiments"]) assert.match(readFileSync(new URL(`../src/app/${route}/(list)/page.tsx`, import.meta.url), "utf8"), /PageShell/);
   assert.match(readFileSync(new URL("../src/components/site/PageShell.tsx", import.meta.url), "utf8"), /SiteHeader[\s\S]*SiteFooter/);
   const lab = readFileSync(new URL("../src/app/visual-lab/arena/page.tsx", import.meta.url), "utf8");
-  assert.match(lab, /<SiteHeader variant="tool"/);
+  assert.match(lab, /<SiteHeader tone="dark" variant="tool"/);
   for (const route of ["morphology/(list)", "visual-lab/fly", "visual-lab/arena/research"]) {
     assert.match(readFileSync(new URL(`../src/app/${route}/page.tsx`, import.meta.url), "utf8"), /SiteHeader|PageShell/);
   }

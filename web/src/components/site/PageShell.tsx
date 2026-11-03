@@ -21,7 +21,7 @@ export function PageShell({ eyebrow, title, lead, current, children }: {
           forms) work with scripts off. */}
       <noscript><style>{`body > [hidden]:has(> [data-themed-page]) { display: block !important; }
         body:has(> [hidden] > [data-themed-page]) > [data-themed-page] { display: none !important; }`}</style></noscript>
-      <SiteHeader tone="auto" current={current} />
+      <SiteHeader current={current} />
       <main id="main-content" tabIndex={-1} className={styles.main}>
         <header className={styles.hero}>
           {eyebrow ? <p className={styles.eyebrow}>{eyebrow}</p> : null}
@@ -30,7 +30,7 @@ export function PageShell({ eyebrow, title, lead, current, children }: {
         </header>
         <div className={styles.content}>{children}</div>
       </main>
-      <SiteFooter tone="auto" />
+      <SiteFooter />
     </div>
   );
 }

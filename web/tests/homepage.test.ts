@@ -32,7 +32,8 @@ test("product homepage renders one H1, the owner's headline and statement, and a
     assert.match(markup, /href="\/science\/status"[^>]*>How much of this is real\?/);
     assert.match(markup, /href="\/visual-lab"[^>]*>Explore the Lab/);
     assert.match(markup, /<main id="main-content" tabindex="-1"/);
-    assert.match(markup, /<noscript><style>/);
+    // The root loading screen is gone, so Home needs no no-JavaScript reveal.
+    assert.doesNotMatch(markup, /<noscript>/);
     assert.deepEqual(calls, []);
     assert.doesNotMatch(markup, /<canvas|<iframe|<video/);
     assert.equal((markup.match(/class="neurofly-logo"/g) ?? []).length, 2);

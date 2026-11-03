@@ -70,7 +70,7 @@ function DNpPanel({ summary }: { summary: DNp01Summary }) {
         </div>
         <div>
           <dt>Peak membrane</dt>
-          <dd>{summary.peak_membrane_mv.toFixed(4)} mV</dd>
+          <dd>{summary.peak_membrane_mv.toFixed(4)} mV_eq</dd>
         </div>
         <div>
           <dt>Peak synaptic state</dt>

@@ -62,7 +62,7 @@ export function FlightProgramEditor({ playing, incoming, onInvalidate, onActivat
         <button disabled={locked} onClick={() => void task(validate)}>Validate Program</button>
         <button disabled={locked || !validated} onClick={() => { if (validated) { onActivate(structuredClone(validated), undefined, true); if (panel.current) panel.current.open = false; } }}>Run Program</button>
         <button disabled={locked || !validated || reference} onClick={() => void task(async () => { await library().saveProgram(validated!); const warnings = await refresh(); setMessage(`Program snapshot saved locally. ${warnings}`); })}>Save Program</button>
-        <button disabled={locked} onClick={() => void task(async () => { await library().saveRun(await getRun()); const warnings = await refresh(); setMessage(`Completed run saved as reproducible inputs and verified result identity. ${warnings}`); })}>Save Completed Run</button>
+        <button disabled={locked} onClick={() => void task(async () => { await library().saveRun(await getRun()); const warnings = await refresh(); setMessage(`Completed run saved as reproducible inputs and integrity-checked result identity. ${warnings}`); })}>Save Completed Run</button>
         <button disabled={locked || !validated} onClick={() => validated && exportJson(validated, 'neurofly-flight-program-v8_1.json')}>Export Program</button>
         <button disabled={locked} onClick={() => void task(async () => exportJson(await getRun(), 'neurofly-flight-run-v8_1.json'))}>Export Program Run</button>
       </div>

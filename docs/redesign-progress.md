@@ -17,9 +17,9 @@ pull request to `main` opened at the end (not merged by the agent).
 | 4 Content pages | Science, Status and limits, Glossary | Committed and pushed | `79c1f8b` |
 | 5 Home | Hero, status strip, explainer, gallery | Committed and pushed | `e690fdc` |
 | 6 Lists and details | Scenarios and Experiments pages, plus the two detail pages | Committed and pushed (lists `937ab5b`; detail pages in the next commit, see "Phase 6b") | see `git log` |
-| 7 3D frame and Neurons | `Viewport3D` and the Neurons pages | Committed and pushed (see `git log`) | see `git log` |
-| 8 Cockpit and Lab | Layers, shared clock, responsive strategy, Lab overview | Committed and pushed: 8a Lab in English (`4d6df84`), 8b Cockpit layers and Lab overview (see `git log`) | |
-| 9 Polish and removal | Transitions, audit, delete old CSS | Not started | |
+| 7 3D frame and Neurons | `Viewport3D` and the Neurons pages | Committed and pushed | `a4110c3` |
+| 8 Cockpit and Lab | Layers, shared clock, responsive strategy, Lab overview | Committed and pushed: 8a Lab in English, 8b Cockpit layers and Lab overview | `4d6df84`, `9f7155e` |
+| 9 Polish and final audit | Quality tooling, guards, dead CSS, final audit | Committed and pushed; legacy CSS not fully removed (see Phase 9) | see `git log` |
 
 Phases 0 to 2 were merged to `main` before the plan changed to a single branch. Each merge to
 `main` triggered a Vercel **production** deployment (see "Deployments").
@@ -303,6 +303,64 @@ accessibility 100, best practices 100, SEO 100.
   size, contrast); readouts 5 (Overview) and 3 (phone); one 3D view on phones; keyboard Space, 3, ?;
   no non-GET requests. Lab pages: axe 0 on 16 variants.
 
+## Phase 9: Polish and final audit (details)
+
+- **Tooling outside `web/`.** `web-quality/` has its own `package.json` (Playwright, axe, Lighthouse,
+  Stylelint, all pinned), a README and one runner. `web/package.json` is untouched. Groups: routes,
+  a11y (axe, both themes, 390 and 1440 px) and responsive (six widths), read-only network assertion,
+  keyboard, reduced motion, resilience, bundle (no three.js on pages without 3D), plus `lighthouse.mjs`.
+  `npm install` was not run inside `web-quality/`: the checks ran against a separate install with the same
+  versions. `lint:css` (Stylelint) was therefore **not run**; `tests/colour-guard.test.ts` enforces the
+  same rule as a ratchet.
+- **New guards in `web/tests`:** `colour-guard` (no hard-coded colours in any stylesheet except `tokens.css`;
+  the six legacy files may only shrink), `honesty-text` (no bare `mV`, no "verified" in interface text),
+  `lab-english`, `viewport`, `cockpit-layers`.
+- **Vocabulary pass:** about 15 remaining "verified" labels became "integrity-checked" or "checked", and three
+  bare `mV` readouts became `mV_eq`.
+- **Polish:** `error.tsx` and the Cockpit loading screen use `StatePanel`; the header and footer default to
+  following the theme (the Lab and Cockpit tool pages pin dark explicitly); the no-JavaScript reveal was
+  removed from Home and Science (no root loading screen remains); unused legacy CSS rules were deleted
+  (about 3 KB: dead selectors found by scanning for classes no source file uses).
+- **NOT done in phase 9 (open items):**
+  - **Old CSS is not fully removed.** `globals.css`, `cockpit.css`, `scenarios.css`, `product.css`,
+    `lab.css` and `viewer.css` still style the Cockpit panel interiors, the scenario playback, the Lab and the
+    Playback canvas. They still hold 226 hard-coded colours (ratchet limits recorded in the colour test).
+    Removing them means re-skinning those panels with the tokens, which needs a visual review by a person.
+  - **Route transitions** (View Transitions) and the optional jump menu: not built.
+  - Cockpit panel swap ("Expand"), Lab shared stage/controls frame, Lab "unavailable control with reason".
+  - Screen-reader paths, frame rate on the reference laptop, greyscale review: need a person.
+
+## Section 11 results (final run)
+
+Run against a production build (`next build`, `next start`) with the local API on the recorded dataset.
+
+| Area | Result | How checked |
+| --- | --- | --- |
+| Contrast | Pass (token ratios by unit test; axe 0 serious or critical) | `tests/tokens.test.ts`, axe |
+| Automated accessibility | Pass: 0 serious or critical on 19 routes, light and dark, 390 and 1440 px (76 runs) | `web-quality` a11y |
+| Lighthouse mobile accessibility | Pass: 98 to 100 on all 18 routes | `lighthouse.mjs` |
+| Lighthouse mobile performance | Pass: Home 97, Scenarios 99, Experiments 95, Science 96 | `lighthouse.mjs` |
+| Core Web Vitals | Partly checked: LCP measured earlier on Home and lists (0.75 to 0.82 s throttled in Chromium); INP and field data not measured | phase 5 and 6 notes |
+| Bundle: three.js on pages without 3D | Pass on 8 pages | network scripts |
+| 3D frame rate | **Not verified.** Needs the reference laptop (owner to name it) | manual |
+| 3D resilience | Pass: WebGL off, context lost and restart, unknown ID. Mesh-fetch failure covered by the data-unavailable state, not mocked | Playwright |
+| Keyboard | Pass for skip link, slider, visible focus, header path on 28 routes (phase 6). A person should do one full manual pass | Playwright |
+| Screen reader | **Not verified.** Needs VoiceOver and NVDA | manual |
+| Reduced motion | Pass: no autoplay, motion tokens zero | Playwright |
+| Colour independence | **Not verified.** Greyscale review by a person (kinds have glyph and label by design) | manual |
+| Responsive | Pass: no page-level horizontal scroll at 360, 390, 768, 1024, 1440, 1920 on every route. Target size 24 px passes axe | Playwright |
+| Mobile Cockpit | Pass in browser emulation at 390 px; **needs a real device test** | Playwright |
+| Density: Cockpit Overview | Pass: 5 readouts (limit 6); 3 on phone | `tests/cockpit-layers.test.ts`, browser |
+| Honesty: kind on every readout | Pass by type (`Readout` requires `kind`). Legacy Lab and Cockpit interiors still print numbers as plain text; route-by-route review needed | `tsc` |
+| Honesty: biological units | Pass: no bare `mV` in interface text | `tests/honesty-text.test.ts` |
+| Honesty: "verified" or success colour | Pass for text; success colour is used only for system "loaded" states | text test |
+| Vocabulary: nav, title, URL | Pass | tests |
+| Tokens: hard-coded colours | **Fail for legacy files** (226 left); new files have 0. Stylelint not run | `tests/colour-guard.test.ts` |
+| Read-only: network | Pass: no write request during a full run (the one named Server Action excepted) | Playwright |
+| Read-only: source | Pass: no write call, one Server Action that reads | `tests/read-only.test.ts` |
+| Regression: routes | Pass: 22 routes resolve as expected, unknown IDs are real 404s | `web-quality` routes |
+| Regression: tests | Pass: 586 tests | `npm test` |
+
 ## Backend requests (not done here)
 
 - Add the **scenario** and a **creation date** to the experiment summary, so the Experiments table can
@@ -366,6 +424,13 @@ Every merge to `main` deploys to Vercel production (`vercel.json` enables it for
   guessed.
 - Whether the glossary relationships in brief section 3 match the backend model (question 11).
 - Which **reference laptop** the 30 fps target is measured on (section 11).
+
+- **Frozen files** (`experimentalLocomotion.ts`, `neuralLocomotion.ts`, `neuralSteeringComparison.ts`) still hold
+  six Portuguese strings, translated at display time by `lib/frozenText.ts`. Lift the freeze if you want them
+  edited in place.
+- **Legacy CSS removal** needs a visual review of the Cockpit, Lab and scenario playback panels after they are
+  re-skinned with tokens.
+- **Reference laptop** for the 30 fps target, VoiceOver and NVDA passes, greyscale review, phone device test.
 
 ## Brief recommendations relied on
 

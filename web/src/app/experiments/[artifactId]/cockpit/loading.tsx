@@ -3,10 +3,10 @@ import { SiteHeader } from "@/components/site/SiteChrome";
 export default function ScientificCockpitLoading() {
   return (
     <div className="app-shell cockpit-shell">
-      <SiteHeader variant="tool" backHref="/experiments" backLabel="All experiments" title="Cockpit" />
+      <SiteHeader variant="tool" backHref="/experiments" backLabel="Experiments" title="Cockpit" />
       <main id="main-content" tabIndex={-1} className="cockpit-route" aria-live="polite">
         <div className="cockpit-loading-heading">
-          <p className="eyebrow">SCIENTIFIC COCKPIT / READ ONLY</p>
+          <p className="eyebrow">COCKPIT</p>
           <h1>Reading the persisted experiment…</h1>
           <p>Validating its timeline and the local MaleCNS source layers.</p>
         </div>

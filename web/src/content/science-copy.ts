@@ -109,6 +109,10 @@ export const STATE_COPY = {
     home: "Go home",
     reference: "Reference",
   },
+  integrityFailure: {
+    title: "The stored results failed their integrity check.",
+    body: "No results are shown, and none are substituted. Nothing on this page has been lost.",
+  },
   notFound: { title: "We couldn't find that page.", body: "Try one of these sections." },
   /** The ID is rendered as code between the two parts. */
   unknownId: { before: (noun: string) => `There is no ${noun} with the ID`, after: "." },

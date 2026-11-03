@@ -103,14 +103,14 @@ export function ScientificCockpit({
     <div className="scientific-cockpit">
       <div className="cockpit-masthead">
         <div className="cockpit-masthead-title">
-          <p className="eyebrow">NEUROFLY / SCIENTIFIC COCKPIT</p>
+          <p className="eyebrow">NEUROFLY / COCKPIT</p>
           <h1>Persisted experiment <span>{summary.candidate.identifier}</span></h1>
           {recordedRunPurpose(summary.experiment_config_id) ? <p>{recordedRunPurpose(summary.experiment_config_id)}</p> : null}
         </div>
         <div className="cockpit-masthead-meta" aria-label="Current run status">
           <span title={summary.artifact_id}>RUN {summary.artifact_id.slice(0, 12)}…</span>
           <span>{summary.dataset}</span>
-          <span className="cockpit-validation">VALIDATION · {summary.validation_status.replaceAll("_", " ")}</span>
+          <span className="cockpit-validation">EVALUATION · {summary.validation_status.replaceAll("_", " ")}</span>
           <span className="cockpit-playback-status">{playback.isPlaying ? "PLAYING" : "PAUSED"} · {frame.playbackTimeMs.toFixed(2)} ms</span>
           {selectedBody ? <span>SELECTED · {selectedBody.neuron_type} {selectedBody.body_id}</span> : null}
         </div>

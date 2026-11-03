@@ -70,15 +70,15 @@ export function ScenarioCockpit({ scenario, initialResult = null, initialError =
       if ("error" in response) setError(response.error);
       else {
         setResult(response.result); setRevision(r => r + 1);
-        // A reload of this URL asks the backend to validate the same preset again.
+        // A reload of this URL asks the backend to replay the same scenario again.
         window.history.replaceState(null, "", `/scenarios/${scenario.id}?replay=canonical`);
       }
     } catch { setError("Backend connection failed. No substitute simulation was loaded."); }
   }
   return <main id="main-content" tabIndex={-1} className="scenario-route">
-    <Link className="back-link" href="/scenarios">← All experiments</Link>
+    <Link className="back-link" href="/scenarios">← Scenarios</Link>
     <header className="scenario-heading"><div><p className="eyebrow">{copy.role}</p><h1>{scenario.title}</h1><p>{experimentMetadata[scenario.id].purpose}</p><div className="experiment-context"><span>{experimentMetadata[scenario.id].duration} scientific horizon</span><span>{experimentMetadata[scenario.id].input}</span><span>{experimentMetadata[scenario.id].scope}</span></div></div>
-      <button className="scenario-run" disabled={running} onClick={() => startTransition(run)}>{running ? "Preparing validated replay…" : result ? "Run again" : "Run canonical preset"}</button>
+      <button className="scenario-run" disabled={running} onClick={() => startTransition(run)}>{running ? "Preparing the recorded replay…" : result ? "Replay again" : "Replay canonical scenario"}</button>
     </header>
     {running && <ScientificPlaybackLoading/>}
     {error && <ScientificPlaybackUnavailable detail={error} retry={()=>startTransition(run)}/>}

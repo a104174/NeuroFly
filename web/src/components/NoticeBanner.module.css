@@ -1,0 +1,7 @@
+.banner { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-3); padding: var(--space-3) var(--space-4); border: 1px dashed color-mix(in srgb, var(--color-not-evaluated) 55%, transparent); border-radius: var(--radius-md); background: var(--tint-not-evaluated); color: var(--color-not-evaluated); }
+.banner p { margin: 0; font-size: var(--text-small-size); font-weight: 500; }
+.banner button, .restore { min-block-size: 32px; padding-inline: var(--space-3); border: 1px solid currentColor; border-radius: var(--radius-sm); background: transparent; color: inherit; font: inherit; font-size: var(--text-caption-size); font-weight: var(--text-caption-weight); cursor: pointer; }
+.restore { color: var(--color-ink-2); border-color: var(--color-border-control); }
+.banner button:hover, .restore:hover { background: var(--color-raised); }
+.banner button:focus-visible, .restore:focus-visible { outline: var(--focus-ring); outline-offset: var(--focus-offset); }
+@media (pointer: coarse) { .banner button, .restore { min-block-size: var(--touch-target); } }

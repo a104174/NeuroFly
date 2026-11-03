@@ -89,7 +89,7 @@ export function PlaybackWorkspace({
       <div className="section-heading section-heading-inline playback-section-heading">
         <div>
           <p className="eyebrow">IMMERSIVE PLAYBACK / PRESENTATION VIEW</p>
-          <h2 id="playback-heading">Persisted experiment in 3D</h2>
+          <h2 id="playback-heading">Experiment in 3D</h2>
         </div>
         <div className="playback-statuses">
           <span className="loaded-badge">TIMELINE SOURCE · READ ONLY</span>
@@ -139,7 +139,7 @@ export function PlaybackWorkspace({
             <strong>{playback.isPlaying ? "PLAYING" : "PAUSED"}</strong>
           </div>
           <div className="playback-validation">
-            <span>Empirical validation</span>
+            <span>Evaluation</span>
             <strong>{validationStatus.replaceAll("_", " ")}</strong>
           </div>
         </div>

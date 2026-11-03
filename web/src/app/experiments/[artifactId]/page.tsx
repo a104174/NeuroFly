@@ -46,7 +46,7 @@ export default async function ExperimentPage({
         <SiteHeader />
         <main id="main-content" tabIndex={-1} className="main-content main-content-wide">
           <Link className="back-link" href="/experiments">
-            ← all experiments
+            ← Experiments
           </Link>
           <StateMessage
             eyebrow="TIMELINE UNAVAILABLE"
@@ -63,10 +63,10 @@ export default async function ExperimentPage({
       <SiteHeader />
       <main id="main-content" tabIndex={-1} className="main-content main-content-wide">
         <Link className="back-link" href="/experiments">
-          ← all experiments
+          ← Experiments
         </Link>
         <Link className="experiment-cockpit-entry" href={`/experiments/${artifactId}/cockpit`}>
-          Open Scientific Cockpit ↗
+          Open Cockpit ↗
         </Link>
         <ExperimentSummaryView summary={data.summary} />
         <PlaybackWorkspace

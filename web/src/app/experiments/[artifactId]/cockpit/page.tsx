@@ -55,10 +55,10 @@ export default async function ScientificCockpitPage({
   }
   if (!core) {
     return <div className="app-shell cockpit-shell">
-      <SiteHeader variant="tool" backHref="/experiments" backLabel="All experiments" title="Cockpit" />
+      <SiteHeader variant="tool" backHref="/experiments" backLabel="Experiments" title="Cockpit" />
       <main id="main-content" tabIndex={-1} className="cockpit-route cockpit-route-error">
-        <Link className="back-link" href="/experiments">← all experiments</Link>
-        <StateMessage eyebrow="EXPERIMENT UNAVAILABLE" title="This run cannot open in the Scientific Cockpit." detail={readableFailure(coreError)} tone="error" />
+        <Link className="back-link" href="/experiments">← Experiments</Link>
+        <StateMessage eyebrow="EXPERIMENT UNAVAILABLE" title="This run cannot open in the Cockpit." detail={readableFailure(coreError)} tone="error" />
       </main>
     </div>;
   }
@@ -101,10 +101,10 @@ export default async function ScientificCockpitPage({
 
   return (
     <div className="app-shell cockpit-shell">
-      <SiteHeader variant="tool" backHref="/experiments" backLabel="All experiments" title="Cockpit" />
+      <SiteHeader variant="tool" backHref="/experiments" backLabel="Experiments" title="Cockpit" />
       <main id="main-content" tabIndex={-1} className="cockpit-route">
         <div className="cockpit-route-nav">
-          <Link href="/experiments">← all experiments</Link>
+          <Link href="/experiments">← Experiments</Link>
           <Link href={`/experiments/${artifactId}`}>Standalone playback ↗</Link>
         </div>
         <ScientificCockpit

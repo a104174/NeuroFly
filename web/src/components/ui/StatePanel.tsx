@@ -16,6 +16,8 @@ export type StatePanelProps = Common &
     | { state: "loading"; /** For example "313 neuron shapes". */ what: string }
     | { state: "empty"; message: string; actions?: ReactNode }
     | { state: "api-down"; actions?: ReactNode }
+    /** The service answered, but the stored data failed its hash or reconstruction checks. */
+    | { state: "integrity-failure"; actions?: ReactNode }
     | { state: "route-error"; /** Error digest or request reference. */ reference?: string; actions?: ReactNode }
     | { state: "not-found"; /** Links to the main sections. */ links?: ReactNode }
     | { state: "unknown-id"; noun: string; id: string; actions?: ReactNode }
@@ -37,6 +39,8 @@ export function StatePanel(props: StatePanelProps) {
       title = props.message; actions = props.actions; break;
     case "api-down":
       role = "alert"; tone = "error"; title = STATE_COPY.apiDown.title; body = STATE_COPY.apiDown.body; actions = props.actions; break;
+    case "integrity-failure":
+      role = "alert"; tone = "error"; title = STATE_COPY.integrityFailure.title; body = STATE_COPY.integrityFailure.body; actions = props.actions; break;
     case "route-error":
       role = "alert"; tone = "error"; title = STATE_COPY.routeError.title; actions = props.actions;
       body = props.reference ? <>{STATE_COPY.routeError.reference}: <code>{props.reference}</code></> : null; break;

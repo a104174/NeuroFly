@@ -15,8 +15,8 @@ pull request to `main` opened at the end (not merged by the agent).
 | 2 Honesty primitives | `KindBadge`, `Readout`, `ProvenanceLabel`, `Tooltip`, `StatePanel`, copy file | Merged to `main` (PR #4) | `1c14c53` |
 | 3 Shell | Header, navigation, footer, status pill, skip link, route focus | Committed and pushed | `89acf27` |
 | 4 Content pages | Science, Status and limits, Glossary | Committed and pushed | `79c1f8b` |
-| 5 Home | Hero, status strip, explainer, gallery | Committed and pushed | see `git log` |
-| 6 Lists and details | Scenarios and Experiments pages | Not started | |
+| 5 Home | Hero, status strip, explainer, gallery | Committed and pushed | `e690fdc` |
+| 6 Lists and details | Scenarios and Experiments pages | Committed and pushed (detail pages partly, see below) | see `git log` |
 | 7 3D frame and Neurons | `Viewport3D` and the Neurons pages | Not started | |
 | 8 Cockpit and Lab | Layers, shared clock, responsive strategy, Lab overview | Not started | |
 | 9 Polish and removal | Transitions, audit, delete old CSS | Not started | |
@@ -159,6 +159,95 @@ no overflow, no console errors, no non-GET requests; Scenarios and Experiments l
 pruned CSS) unchanged and clean; keyboard path 28 of 28 routes. Lighthouse mobile (Home): performance 98,
 accessibility 100, best practices 100, SEO 100.
 
+## Phase 6: Lists and details (details)
+
+**Done**
+
+- `/scenarios` rebuilt: a shared `Card` per scenario (title is the one stretched link), a stimulus
+  filter that lives in the URL (`?stimulus=`), a live result count, and each card keeps its limit and
+  the API's scientific caveat under "What this does not show". `/experiments` rebuilt: a real
+  `DataTable` (caption, scoped headers, `aria-sort`, stacked rows below 600 px), sorting
+  (`?sort=&dir=`), search (`?q=`, a plain GET form), and a dismissible, restorable note ("No experiment
+  has been evaluated against biological data yet"). The recorded run carries the owner's label,
+  "Engineering test, not a scientific experiment". Filters, sorting and search work **with JavaScript
+  off** (checked); the shared `PageShell` reveals streamed content under `<noscript>`.
+- New shared pieces: `Card`, `DataTable`, `SegmentedLinks`, `ButtonLink`, `PageShell`, `NoticeBanner`,
+  an `integrity-failure` state for `StatePanel`, and `src/lib/listing.ts` (pure filter/sort/search/URL
+  logic with its own tests).
+- **Not recorded, not invented.** The API's experiment summary has no scenario and no date, so those
+  columns read "Not recorded". The scenario filter the brief asks for is omitted for the same reason.
+- **Real 404s.** Unknown or malformed IDs now return HTTP 404 for `/experiments/[id]`,
+  `/experiments/[id]/cockpit` and `/scenarios/[id]` (they returned 200 before). A layout above each
+  detail route decides this before the page streams; the list pages moved into `(list)` route groups so
+  their loading screens no longer wrap the detail routes (URLs are unchanged). The 404 pages show the
+  unknown ID and a link back.
+- Vocabulary on the detail pages: back links "← Scenarios" and "← Experiments"; "Replay canonical
+  scenario" (decision 3); "Integrity-checked replay" (was "Replay verified"); "Evaluation: Not
+  evaluated" (was "Empirical validation"); "Cockpit" (was "Scientific Cockpit"); scenario kinds read
+  "...scenario", not "...experiment". The purpose sentence of the recorded run now says "No comparison
+  with real fly data has been made".
+- `tests/read-only.test.ts`: no source file sends a write request, and the only Server Action is
+  `loadScenarioPlayback`, which performs a GET read (decision 3). The full browser network assertion is
+  phase 9.
+- Removed: `DiscoveryShell`, `ScenarioDiscovery`, `RecordedExperiments`, `ExperimentList`, `discovery.css`
+  and the two list layouts.
+- Real Chromium under slow 4G and 4x CPU throttling, six runs each: LCP 0.74 s (Experiments), 0.75 s
+  (Scenarios). Lighthouse mobile: performance 99 and 96, accessibility 100 and 100. (Lighthouse's
+  simulation puts Experiments LCP at 2.7 s; the throttled-browser figure above is what a browser sees.)
+- Verified: type check, lint, build, 571 tests. Browser: seven page variants at 390 and 1440 px in light
+  and dark: axe 0, no overflow, no console errors, no non-GET requests; filter, sort, search, note
+  dismiss/restore and reload persistence; keyboard path 28 of 28 routes; the scenario Replay button
+  works (its one POST is the named Server Action).
+
+**Deferred from the brief's phase 6 detail pages (not done)**
+
+- Scenario detail: the full-width stage with timeline below and the two-column "what happens / what to
+  notice" and provenance area; **guided mode** (3 to 4 skippable captions tied to the timeline); the
+  "See the published experiments for this scenario" next step. The page still uses the legacy dark
+  playback UI (`scenarios.css`), with the vocabulary fixes above.
+- Experiment detail: the brief's seven-section reading order (summary, setup with kind glyphs, results
+  labelled "Model state", "What this does not show", Data with copy button). Still the legacy layout.
+- `PlaybackWorkspace`, `TimelineInspector`, `CurrentResult` keep their legacy styling; their 3D parts
+  move with phase 7, and the Cockpit with phase 8.
+- Scenario cards have **no poster**: no scenario poster images exist in the repository.
+- The `Timeline` component (`role="slider"`, `aria-valuetext`) is not built yet.
+
+**Trade-offs and small choices**
+
+- `loading.tsx` still exists for each list and detail route. The list-level loading screen is a plain
+  status panel, not a skeleton that matches the final layout.
+- Search matches name, artifact id, config id and model only (there is no scenario field).
+
+## Backend requests (not done here)
+
+- Add the **scenario** and a **creation date** to the experiment summary, so the Experiments table can
+  fill those two columns and offer the scenario filter. Until then they read "Not recorded".
+- Handle a mixed artifact folder, and symlinked artifact folders (see Constraints).
+
+## Handoff for phases 7 to 9
+
+- **Phase 7 (3D frame and Neurons).** Build `Viewport3D` with the states in brief section 6 and migrate
+  `/morphology` and `/morphology/[id]` first. Known issues to fix there: the Neurons pages still have
+  the legacy chrome content; `/morphology/[id]` has 3 axe findings (`aria-prohibited-attr` on the
+  canvas shell, `target-size` on source links); the scenario playback stage is **blank with WebGL off**
+  (decision: fix in phase 7); WebGL-off and context-lost handling; the three detail tiers.
+- **Phase 8 (Cockpit and Lab).** The Cockpit shows about 143 numbers at load against a target of 6 or
+  fewer, and has axe `color-contrast` findings on future event rows and `target-size` on summaries.
+  Translate the Lab's Portuguese strings to English (15 files, listed by searching for "A verificar",
+  "indisponível", "incompatível"). The Lab must say "Runs in your browser", state the 1e-8 comparison
+  (see `CAPABILITIES`), and tell users that saved runs stay in this browser. Add the Lab overview page
+  at `/visual-lab` and point the header's Lab link there.
+- **Phase 9 (polish).** Delete the remaining legacy CSS (`globals.css`, `cockpit.css`, `scenarios.css`,
+  `lab.css`, `viewer.css`, most of `product.css`) and `themed-page.css`; remove the `noscript` reveal
+  blocks that Home and Science still carry (root loading is gone, so they are no longer needed);
+  convert `error.tsx` and the loading screens to the themed `StatePanel` pattern; make `tone="auto"`
+  the default and remove the `data-theme-scope="dark"` pinning on the chrome. **Tooling:** Playwright,
+  axe and Stylelint cannot go in `web/package.json` (frozen). Put them in a separate folder with its own
+  `package.json` (for example `web-quality/`), or ask the owner to approve re-freezing. The audit
+  scripts used in this project are in `docs/redesign-baseline/reports/audit-script.mjs`.
+- **Open at the end:** the final report against section 11, the one pull request to `main`, and the
+  items under "Needs owner input".
+
 ## Deployments
 
 Every merge to `main` deploys to Vercel production (`vercel.json` enables it for `main`). The branch
@@ -173,6 +262,9 @@ Every merge to `main` deploys to Vercel production (`vercel.json` enables it for
 
 ## Needs owner input
 
+- **Detail pages.** Confirm that the deferred scenario and experiment detail redesign (guided captions,
+  two-column layout, seven-section experiment page) should happen after phases 7 to 9, or in a
+  dedicated pass.
 - **Hero asset.** A poster image or short muted loop taken from a real run, labelled as model output
   (brief question 6). Until then the hero shows the artistic specimen render.
 - **Roadmap.** The brief's plain-list roadmap (what is planned) is omitted: no plan is recorded in the

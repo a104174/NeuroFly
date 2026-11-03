@@ -1,0 +1,23 @@
+.note { margin-block-end: var(--space-5); }
+.tools { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: var(--space-4); margin-block-end: var(--space-4); }
+.search { display: flex; flex-wrap: wrap; align-items: end; gap: var(--space-2); }
+.search label { display: grid; gap: var(--space-1); color: var(--color-ink-2); font-size: var(--text-caption-size); font-weight: var(--text-caption-weight); }
+.search input { inline-size: min(20rem, 100%); min-block-size: var(--input-height); padding-inline: var(--space-3); border: 1px solid var(--color-border-control); border-radius: var(--radius-sm); background: var(--color-surface); color: var(--color-ink); font: inherit; font-size: var(--text-body-size); }
+.search input:focus-visible { outline: var(--focus-ring); outline-offset: var(--focus-offset); }
+.search button { min-block-size: var(--input-height); padding-inline: var(--space-4); border: 1px solid var(--color-border-control); border-radius: var(--radius-md); background: transparent; color: var(--color-ink); font: inherit; font-size: var(--text-small-size); font-weight: 600; cursor: pointer; }
+.search button:hover { background: var(--color-raised); }
+.search button:focus-visible { outline: var(--focus-ring); outline-offset: var(--focus-offset); }
+.count { margin: 0; color: var(--color-ink-2); font-size: var(--text-small-size); }
+.name { display: grid; gap: var(--space-1); }
+.name a { font-weight: 600; }
+.tag { display: inline-flex; align-items: center; gap: var(--space-1); color: var(--color-ink-2); font-size: var(--text-caption-size); font-weight: var(--text-caption-weight); }
+.id { color: var(--color-ink-2); font-family: var(--font-mono); font-size: var(--text-caption-size); font-weight: 400; overflow-wrap: anywhere; }
+.mono { font-family: var(--font-mono); font-size: var(--text-readout-size); font-variant-numeric: tabular-nums; }
+.missing { color: var(--color-ink-2); white-space: nowrap; }
+.technical { margin-block-start: var(--space-3); color: var(--color-ink-2); font-size: var(--text-small-size); }
+.technical summary { min-block-size: 24px; cursor: pointer; }
+.technical summary:focus-visible { outline: var(--focus-ring); outline-offset: var(--focus-offset); }
+.technical p { margin: var(--space-2) 0 0; font-family: var(--font-mono); overflow-wrap: anywhere; }
+.after { margin-block-start: var(--space-5); color: var(--color-ink-2); font-size: var(--text-small-size); }
+.after a { color: var(--color-accent); text-decoration: underline; text-underline-offset: 3px; }
+.after a:focus-visible { outline: var(--focus-ring); outline-offset: var(--focus-offset); border-radius: var(--radius-sm); }

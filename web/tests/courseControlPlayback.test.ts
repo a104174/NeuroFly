@@ -62,7 +62,7 @@ test("render transform is stateless and only consumes authoritative playback",()
   assert.doesNotMatch(world,/useFrame|requestAnimationFrame|setInterval|source_tau|yaw_gain/);
   const cockpit=readFileSync(new URL("../src/components/ScenarioCockpit.tsx",import.meta.url),"utf8");
   assert.match(cockpit,/isCoursePlayback/);assert.match(cockpit,/setPlaying\(false\); setCursor\(0\)/);
-  const page=readFileSync(new URL("../src/app/scenarios/page.tsx",import.meta.url),"utf8");assert.match(page,/Five executable presets/);
+  const page=readFileSync(new URL("../src/app/scenarios/(list)/page.tsx",import.meta.url),"utf8");assert.match(page,/five scenario definitions stay API-owned/);assert.match(page,/never starts a model/);
 });
 test("unavailable authority returns an error, never substitute science",async()=>{
   const saved=globalThis.fetch,savedUrl=process.env.NEUROFLY_API_BASE_URL;

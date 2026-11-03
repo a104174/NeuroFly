@@ -51,7 +51,7 @@ test("Science navigation resolves without removing homepage anchors or promoting
     if (href.startsWith("#")) assert(html.includes(`id="${href.slice(1)}"`), href);
     else if (href.startsWith("/")) {
       const path = href.startsWith("/scenarios/") ? "/scenarios/[scenarioId]" : href;
-      assert(existsSync(new URL(`web/src/app${path === "/" ? "" : path}/page.tsx`, root)), href);
+      assert(existsSync(new URL(`web/src/app${path === "/" ? "" : path}/page.tsx`, root)) || existsSync(new URL(`web/src/app${path}/(list)/page.tsx`, root)), href);
     }
   }
   for (const href of ["/visual-lab/arena", "/scenarios", "/visual-lab/arena/research"]) assert(html.includes(`href="${href}"`));

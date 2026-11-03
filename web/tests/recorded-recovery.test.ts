@@ -9,10 +9,10 @@ import { register } from "node:module";
 // Node cannot import CSS Modules. Register the test-only hook before the components load, so the
 // imports that reach CSS are dynamic. (package.json is frozen, so this cannot be an npm script.)
 register(new URL("./support/css-hooks.mjs", import.meta.url));
-const { RecordedExperiments } = await import("../src/components/discovery/RecordedExperiments");
+const { default: ExperimentsPage } = await import("../src/app/experiments/(list)/page");
 import { ExperimentSummaryView } from "../src/components/ExperimentSummaryView";
 
-test("authentic Phase 3B API metadata keeps engineering purpose and stable detail/cockpit links", () => {
+test("authentic Phase 3B API metadata keeps engineering purpose and stable detail/cockpit links", async () => {
   // Explicit integration dependency: missing pinned local data fails; no fixture fallback.
   const raw = execFileSync("python", ["-B", "-c", `
 import json, shutil, tempfile
@@ -33,13 +33,20 @@ with tempfile.TemporaryDirectory() as d:
   assert.equal(run.result_id, "8af5a3f50f0cd9fee65ce62e5421c873e95a48e32333de475545c1be7f133b45");
   assert.equal(run.duration_ms, 80);
   assert.equal(run.validation_status, "NOT_EVALUATED");
-  for (const element of [createElement(RecordedExperiments, { experiments: [run], error: null }), createElement(ExperimentSummaryView, { summary: run })]) {
-    const html = renderToStaticMarkup(element);
-    assert.match(html, /Engineering \/ UI smoke reference/);
-    assert.match(html, /Empirical validation has not been evaluated/);
-    assert.doesNotMatch(html, /biologically validated|empirically validated/i);
-  }
-  const list = renderToStaticMarkup(createElement(RecordedExperiments, { experiments: [run], error: null }));
+  // The detail view keeps the engineering purpose sentence; the list carries the owner's label.
+  const detail = renderToStaticMarkup(createElement(ExperimentSummaryView, { summary: run }));
+  assert.match(detail, /Engineering \/ UI smoke reference/);
+  assert.match(detail, /No comparison with real fly data has been made/);
+  assert.doesNotMatch(detail, /biologically validated|empirically validated/i);
+  const savedFetch = globalThis.fetch, savedBase = process.env.NEUROFLY_API_BASE_URL;
+  process.env.NEUROFLY_API_BASE_URL = "https://api.test";
+  globalThis.fetch = async () => Response.json({ schema: "experiment_http_v1", kind: "experiment_list", experiments: [JSON.parse(raw)] });
+  let list: string;
+  try { list = renderToStaticMarkup(await ExperimentsPage({ searchParams: Promise.resolve({}) })); }
+  finally { globalThis.fetch = savedFetch; if (savedBase === undefined) delete process.env.NEUROFLY_API_BASE_URL; else process.env.NEUROFLY_API_BASE_URL = savedBase; }
+  assert.match(list, /Engineering test, not a scientific experiment/);
+  assert.match(list, /Not evaluated/);
+  assert.doesNotMatch(list, /biologically validated|empirically validated/i);
   assert(list.includes(`href="/experiments/${run.artifact_id}"`));
   assert(list.includes(`href="/experiments/${run.artifact_id}/cockpit"`));
 });

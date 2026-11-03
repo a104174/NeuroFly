@@ -10,12 +10,12 @@ import { register } from "node:module";
 register(new URL("./support/css-hooks.mjs", import.meta.url));
 const { default: HomePage, metadata } = await import("../src/app/page");
 const { default: Loading } = await import("../src/app/morphology/loading");
-const { default: ExperimentsPage } = await import("../src/app/experiments/page");
-const { default: ScenariosPage, dynamic: catalogueDynamic } = await import("../src/app/scenarios/page");
+const { default: ExperimentsPage } = await import("../src/app/experiments/(list)/page");
+const { default: ScenariosPage, dynamic: catalogueDynamic } = await import("../src/app/scenarios/(list)/page");
 import { listExperiments, NeuroflyApiError } from "../src/lib/neuroflyClient";
 import { listScenarios } from "../src/lib/scenarioCatalog";
 import { parseScenarioCatalog, SCENARIO_KINDS } from "../src/lib/scenarioPlayback";
-import { experimentMetadata } from "../src/lib/scenarioPresentation";
+import { discoveryCopy, experimentMetadata } from "../src/lib/scenarioPresentation";
 import { existsSync, readdirSync } from "node:fs";
 import { LAB_HREF, SITE_LINKS } from "../src/components/site/siteContent";
 const { SiteHeader } = await import("../src/components/site/SiteChrome");
@@ -72,7 +72,8 @@ test("public links resolve to preserved routes or existing homepage anchors", ()
   for (const [, href] of markup.matchAll(/<a\b[^>]*href="([^"?#]*)(?:#([^"]*))?"/g)) {
     if (!href.startsWith("/") && href !== "") continue;
     const route = href.startsWith("/scenarios/") ? "/scenarios/[scenarioId]" : href || "/";
-    assert.ok(existsSync(new URL(`../src/app${route === "/" ? "" : route}/page.tsx`, import.meta.url)), href);
+    const base = `../src/app${route === "/" ? "" : route}`;
+    assert.ok(existsSync(new URL(`${base}/page.tsx`, import.meta.url)) || existsSync(new URL(`${base}/(list)/page.tsx`, import.meta.url)), href);
   }
   for (const [, id] of markup.matchAll(/href="(?:\/)?#([^"]+)"/g)) assert.ok(markup.includes(`id="${id}"`));
   // Phase 0 decision 5: Home is the logo, and Experiments leaves the main navigation.
@@ -189,7 +190,7 @@ const json = (payload: unknown, status = 200) => async () => new Response(
 );
 
 function noCards(markup: string) {
-  assert.doesNotMatch(markup, /class="discovery-card discovery-card--|Canonical replay available/);
+  assert.doesNotMatch(markup, /data-scenario-id=|Showing \d+ of \d+ scenarios/);
 }
 
 test("preserved catalogue route requests the genuine catalogue contract and renders five accessible scenario links", async () => {
@@ -200,16 +201,18 @@ test("preserved catalogue route requests the genuine catalogue contract and rend
     assert.equal(catalogueDynamic, "force-dynamic");
     assert.deepEqual(calls.map(c => c.url), ["https://preview.test/api/v1/scenarios"]);
     assert.equal(calls[0].options?.cache, "no-store");
-    assert.match(markup, /Explore the/);
-    assert.match(markup, /Look beneath the behaviour/);
-    assert.equal((markup.match(/class="discovery-card discovery-card--/g) ?? []).length, 5);
+    assert.match(markup, /<h1[^>]*>Scenarios<\/h1>/);
+    assert.match(markup, /A scenario is a defined situation/);
+    assert.equal((markup.match(/data-scenario-id="/g) ?? []).length, 5);
     for (const scenario of payload) {
       assert.ok(markup.includes(`href="/scenarios/${scenario.id}"`));
-      assert.ok(markup.includes(`aria-label="Open ${scenario.title}"`));
+      // One clear accessible name per card: the title is the single stretched link.
+      assert.match(markup, new RegExp(`<a[^>]*href="/scenarios/${scenario.id}"[^>]*>${discoveryCopy[scenario.id].title}</a>`));
       assert.ok(markup.includes(scenario.title));
       assert.ok(markup.includes(experimentMetadata[scenario.id].kind));
     }
-    assert.match(markup, /href="\/experiments"/);
+    // Owner decision: Experiments is linked from Scenarios, under the owner's label.
+    assert.match(markup, /<p class="note">[\s\S]*href="\/experiments"[^>]*>Engineering test, not a scientific experiment<\/a>/);
     assert.doesNotMatch(markup, /href="\/experiments\/[a-f0-9]{64}"|Completed experiments/);
     assert.deepEqual(payload, fixture());
   });
@@ -228,7 +231,8 @@ test("empty catalogue is explicit absence, never a valid fabricated canonical se
   assert.throws(() => parseScenarioCatalog([]));
   await withFetch(json([]), async () => {
     const markup = renderToStaticMarkup(await ScenariosPage());
-    assert.match(markup, /Scenarios could not load/);
+    assert.match(markup, /The data service isn&#x27;t responding\./);
+    assert.match(markup, /Technical details/);
     assert.match(markup, /role="alert"/);
     noCards(markup);
   });
@@ -244,7 +248,8 @@ for (const [label, payload] of [
     await withFetch(json(payload), async () => {
       const markup = renderToStaticMarkup(await ScenariosPage());
       assert.match(markup, /role="alert"/);
-      assert.match(markup, /Scenarios could not load/);
+      assert.match(markup, /The data service isn&#x27;t responding\./);
+    assert.match(markup, /Technical details/);
       noCards(markup);
     });
   });
@@ -258,7 +263,7 @@ test("scenario HTTP failure and unreachable backend render visible errors withou
   ]) {
     await withFetch(response, async (calls) => {
       const markup = renderToStaticMarkup(await ScenariosPage());
-      assert.match(markup, /SCENARIO API UNAVAILABLE/);
+      assert.match(markup, /The data service isn&#x27;t responding\./);
       assert.match(markup, /role="alert"/);
       noCards(markup);
       assert.deepEqual(calls.map(c => c.url), ["https://preview.test/api/v1/scenarios"]);
@@ -271,8 +276,8 @@ test("recorded experiment page preserves the 409 integrity failure without repla
     await assert.rejects(listExperiments(), (error: unknown) =>
       error instanceof NeuroflyApiError && error.code === "artifact_integrity_failure" && error.status === 409);
     const markup = renderToStaticMarkup(await ExperimentsPage());
-    assert.match(markup, /Recorded experiments are temporarily unavailable/);
-    assert.match(markup, /The current experiment archive could not be verified/);
+    assert.match(markup, /The stored results failed their integrity check\./);
+    assert.match(markup, /No results are shown, and none are substituted/);
     assert.match(markup, /Technical details/);
     assert.match(markup, /failed integrity validation/);
     assert.match(markup, /role="alert"/);
@@ -284,9 +289,9 @@ test("recorded experiment page preserves the 409 integrity failure without repla
 test("scenarios page preserves its established presentation and shared navigation", async () => {
   await withFetch(json(fixture()), async (calls) => {
     const markup = renderToStaticMarkup(await ScenariosPage());
-    assert.match(markup, /Explore the/);
-    assert.match(markup, /Look beneath the behaviour/);
-    assert.equal((markup.match(/class="discovery-card discovery-card--/g) ?? []).length, 5);
+    assert.match(markup, /<h1[^>]*>Scenarios<\/h1>/);
+    assert.match(markup, /A scenario is a defined situation/);
+    assert.equal((markup.match(/data-scenario-id="/g) ?? []).length, 5);
     assert.deepEqual(calls.map(c => c.url), ["https://preview.test/api/v1/scenarios"]);
     assert.equal((await listScenarios()).length, 5);
   });
@@ -295,7 +300,8 @@ test("scenarios page preserves its established presentation and shared navigatio
 test("scenarios page still rejects empty canonical data as an error", async () => {
   await withFetch(json([]), async () => {
     const markup = renderToStaticMarkup(await ScenariosPage());
-    assert.match(markup, /Scenarios could not load/);
+    assert.match(markup, /The data service isn&#x27;t responding\./);
+    assert.match(markup, /Technical details/);
     assert.match(markup, /role="alert"/);
     noCards(markup);
   });
@@ -305,7 +311,9 @@ test("loading remains accessible and legacy detail/cockpit functionality remains
   // The fallback belongs to the routes that load data (Neurons). A root fallback would wrap every page,
   // including the static Home, and delay its first paint behind a "Loading scientific data" screen.
   assert.equal(existsSync(new URL("../src/app/loading.tsx", import.meta.url)), false);
-  for (const route of ["morphology", "scenarios", "experiments", "experiments/[artifactId]", "scenarios/[scenarioId]"]) assert.ok(existsSync(new URL(`../src/app/${route}/loading.tsx`, import.meta.url)), route);
+  for (const route of ["morphology", "scenarios/(list)", "experiments/(list)", "experiments/[artifactId]", "scenarios/[scenarioId]"]) assert.ok(existsSync(new URL(`../src/app/${route}/loading.tsx`, import.meta.url)), route);
+  // An unknown ID is decided in a layout above the loading screen, so it is a real 404 and not a 200.
+  for (const route of ["experiments/[artifactId]", "scenarios/[scenarioId]"]) assert.ok(existsSync(new URL(`../src/app/${route}/layout.tsx`, import.meta.url)), route);
   const markup = renderToStaticMarkup(createElement(Loading));
   assert.match(markup, /role="status"/);
   assert.match(markup, /aria-live="polite"/);
@@ -314,8 +322,8 @@ test("loading remains accessible and legacy detail/cockpit functionality remains
   noCards(markup);
   const source = (file: string) => readFileSync(new URL(`../src/${file}`, import.meta.url), "utf8");
   assert.doesNotMatch(source("app/page.tsx"), /listExperiments|ExperimentList/);
-  assert.match(source("app/experiments/page.tsx"), /listExperiments|ExperimentList/);
-  assert.match(source("components/ExperimentList.tsx"), /\/experiments\/\$\{experiment.artifact_id\}\/cockpit/);
+  assert.match(source("app/experiments/(list)/page.tsx"), /listExperiments|ExperimentList/);
+  assert.match(source("app/experiments/(list)/page.tsx"), /\/experiments\/\$\{e.artifact_id\}\/cockpit/);
   assert.ok(source("app/experiments/[artifactId]/page.tsx"));
   assert.ok(source("app/experiments/[artifactId]/cockpit/page.tsx"));
 });

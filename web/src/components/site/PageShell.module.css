@@ -1,0 +1,11 @@
+.page { overflow-x: clip; }
+.main { outline: none; }
+.hero, .content { max-inline-size: var(--content-max); margin-inline: auto; padding-inline: var(--gutter); }
+.hero { padding-block: var(--space-8) var(--space-6); }
+.eyebrow { margin: 0 0 var(--space-3); color: var(--color-ink-2); font-size: var(--text-caption-size); font-weight: var(--text-caption-weight); letter-spacing: 0.08em; text-transform: uppercase; }
+.hero h1 { margin: 0; font-size: var(--text-h1-size); line-height: var(--text-h1-lh); font-weight: var(--text-h1-weight); letter-spacing: var(--text-h1-tracking); }
+.lead { margin-block-start: var(--space-4); max-inline-size: var(--measure-prose); color: var(--color-ink-2); font-size: var(--text-body-lg-size); line-height: var(--text-body-lg-lh); }
+.lead p { margin: 0 0 var(--space-2); }
+.lead a { color: var(--color-accent); text-decoration: underline; text-underline-offset: 3px; }
+.lead a:focus-visible { outline: var(--focus-ring); outline-offset: var(--focus-offset); border-radius: var(--radius-sm); }
+.content { padding-block-end: var(--section-space); }

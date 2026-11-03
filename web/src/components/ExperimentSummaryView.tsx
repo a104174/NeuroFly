@@ -105,7 +105,7 @@ export function ExperimentSummaryView({ summary }: { summary: ExperimentSummary 
         <div className="validation-flag">
           <span className="status-dot" aria-hidden="true" />
           <span>
-            <strong>Empirical validation</strong>
+            <strong>Evaluation</strong>
             <small>{summary.validation_status.replaceAll("_", " ")}</small>
           </span>
         </div>

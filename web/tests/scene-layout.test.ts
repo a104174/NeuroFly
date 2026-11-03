@@ -132,6 +132,7 @@ test("visual provenance remains presentation-only and separate from experiments"
     "utf8",
   );
   assert.match(workspaceSource, /NOT ANATOMICAL COORDINATES/);
-  assert.match(workspaceSource, /Empirical validation/);
+  // The evaluation status is shown on its own label, apart from the model values (renamed from "Empirical validation").
+  assert.match(workspaceSource, /<span>Evaluation<\/span>/);
   assert.doesNotMatch(workspaceSource, /escape triggered|motor output/i);
 });

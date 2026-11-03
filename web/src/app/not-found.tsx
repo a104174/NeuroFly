@@ -1,18 +1,11 @@
-import { SiteHeader } from "@/components/site/SiteChrome";
-import { StateMessage } from "@/components/StateMessage";
+import { PageShell } from "@/components/site/PageShell";
+import { SITE_LINKS } from "@/components/site/siteContent";
+import { ButtonLink, StatePanel } from "@/components/ui";
 
 export default function NotFound() {
   return (
-    <div className="app-shell">
-      <SiteHeader />
-      <main id="main-content" tabIndex={-1} className="main-content main-content-wide">
-        <StateMessage
-          eyebrow="EXPERIMENT NOT FOUND"
-          title="That artifact is unavailable."
-          detail="Choose a completed run from the catalogue instead."
-          tone="error"
-        />
-      </main>
-    </div>
+    <PageShell title="Page not found">
+      <StatePanel state="not-found" links={SITE_LINKS.map((link) => <ButtonLink key={link.href} variant="quiet" href={link.href}>{link.label}</ButtonLink>)} />
+    </PageShell>
   );
 }

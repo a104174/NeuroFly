@@ -1,6 +1,10 @@
+export { ButtonLink } from "./ButtonLink";
+export { Card, type CardProps } from "./Card";
+export { DataTable, type Column, type SortDirection } from "./DataTable";
 export { KindBadge, type KindBadgeProps } from "./KindBadge";
 export { KindGlyph } from "./KindGlyph";
 export { ProvenanceLabel, type ProvenanceLabelProps } from "./ProvenanceLabel";
 export { Readout, type ReadoutProps } from "./Readout";
+export { SegmentedLinks, type SegmentedItem } from "./SegmentedLinks";
 export { StatePanel, type StatePanelProps } from "./StatePanel";
 export { Tooltip } from "./Tooltip";

@@ -1,0 +1,7318 @@
+[
+ {
+  "name": "home",
+  "route": "/",
+  "width": "phone",
+  "theme": "light",
+  "status": 200,
+  "ms": 2830,
+  "title": "NeuroFly \u2014 A digital fly. A new way to explore behaviour.",
+  "lang": "en",
+  "h1": [
+   "A digital fly.A new way toexplore behaviour."
+  ],
+  "mainCount": 1,
+  "firstFocusable": "Skip to content",
+  "hOverflow": false,
+  "scrollWidth": 390,
+  "pageHeight": 7409,
+  "canvases": 0,
+  "bodyBg": "rgb(16, 20, 22)",
+  "navs": [
+   {
+    "label": "Primary navigation",
+    "visible": false,
+    "links": [
+     {
+      "text": "Home",
+      "href": "/",
+      "current": "page"
+     },
+     {
+      "text": "Lab",
+      "href": "/visual-lab/arena",
+      "current": null
+     },
+     {
+      "text": "Experiments",
+      "href": "/scenarios",
+      "current": null
+     },
+     {
+      "text": "Science",
+      "href": "/science",
+      "current": null
+     }
+    ]
+   },
+   {
+    "label": "Mobile primary navigation",
+    "visible": true,
+    "links": [
+     {
+      "text": "Home",
+      "href": "/",
+      "current": "page"
+     },
+     {
+      "text": "Lab",
+      "href": "/visual-lab/arena",
+      "current": null
+     },
+     {
+      "text": "Experiments",
+      "href": "/scenarios",
+      "current": null
+     },
+     {
+      "text": "Science",
+      "href": "/science",
+      "current": null
+     },
+     {
+      "text": "Enter the Lab \u2197",
+      "href": "/visual-lab/arena",
+      "current": null
+     }
+    ]
+   },
+   {
+    "label": "Footer navigation",
+    "visible": true,
+    "links": [
+     {
+      "text": "Home",
+      "href": "/",
+      "current": null
+     },
+     {
+      "text": "Lab",
+      "href": "/visual-lab/arena",
+      "current": null
+     },
+     {
+      "text": "Experiments",
+      "href": "/scenarios",
+      "current": null
+     },
+     {
+      "text": "Science",
+      "href": "/science",
+      "current": null
+     },
+     {
+      "text": "Recorded experiments",
+      "href": "/experiments",
+      "current": null
+     },
+     {
+      "text": "Documentation \u2197",
+      "href": "https://github.com/a104174/NeuroFly/tree/main/docs/science",
+      "current": null
+     }
+    ]
+   }
+  ],
+  "disabled": [],
+  "numeric": 14,
+  "numericSamples": [
+   "Artistic 3D model \u00b7 male specimen",
+   "An interactive 3D laboratory",
+   "01 / Meet NeuroFly",
+   "Inspect a digital specimen and explore its simulated movemen",
+   "02 / Your field of exploration",
+   "Explore the 3D Lab",
+   "Follow how selected HS/DNp15 model activity contributes to s",
+   "03 / From observation to action",
+   "01",
+   "02",
+   "03",
+   "04 / Inside the Lab",
+   "05 / The scientific foundation",
+   "NeuroFly simulates selected circuits. It is not a whole-fly "
+  ],
+  "smallText": 20,
+  "fonts": [
+   "Arial"
+  ],
+  "hiddenWrappers": 1,
+  "consoleErrors": [],
+  "nonGet": [],
+  "requestCount": 14,
+  "threeLike": 9,
+  "axe": [],
+  "shot": "home--phone--light.jpg"
+ },
+ {
+  "name": "home",
+  "route": "/",
+  "width": "phone",
+  "theme": "dark",
+  "status": 200,
+  "ms": 2309,
+  "title": "NeuroFly \u2014 A digital fly. A new way to explore behaviour.",
+  "lang": "en",
+  "h1": [
+   "A digital fly.A new way toexplore behaviour."
+  ],
+  "mainCount": 1,
+  "firstFocusable": "Skip to content",
+  "hOverflow": false,
+  "scrollWidth": 390,
+  "pageHeight": 7409,
+  "canvases": 0,
+  "bodyBg": "rgb(16, 20, 22)",
+  "navs": [
+   {
+    "label": "Primary navigation",
+    "visible": false,
+    "links": [
+     {
+      "text": "Home",
+      "href": "/",
+      "current": "page"
+     },
+     {
+      "text": "Lab",
+      "href": "/visual-lab/arena",
+      "current": null
+     },
+     {
+      "text": "Experiments",
+      "href": "/scenarios",
+      "current": null
+     },
+     {
+      "text": "Science",
+      "href": "/science",
+      "current": null
+     }
+    ]
+   },
+   {
+    "label": "Mobile primary navigation",
+    "visible": true,
+    "links": [
+     {
+      "text": "Home",
+      "href": "/",
+      "current": "page"
+     },
+     {
+      "text": "Lab",
+      "href": "/visual-lab/arena",
+      "current": null
+     },
+     {
+      "text": "Experiments",
+      "href": "/scenarios",
+      "current": null
+     },
+     {
+      "text": "Science",
+      "href": "/science",
+      "current": null
+     },
+     {
+      "text": "Enter the Lab \u2197",
+      "href": "/visual-lab/arena",
+      "current": null
+     }
+    ]
+   },
+   {
+    "label": "Footer navigation",
+    "visible": true,
+    "links": [
+     {
+      "text": "Home",
+      "href": "/",
+      "current": null
+     },
+     {
+      "text": "Lab",
+      "href": "/visual-lab/arena",
+      "current": null
+     },
+     {
+      "text": "Experiments",
+      "href": "/scenarios",
+      "current": null
+     },
+     {
+      "text": "Science",
+      "href": "/science",
+      "current": null
+     },
+     {
+      "text": "Recorded experiments",
+      "href": "/experiments",
+      "current": null
+     },
+     {
+      "text": "Documentation \u2197",
+      "href": "https://github.com/a104174/NeuroFly/tree/main/docs/science",
+      "current": null
+     }
+    ]
+   }
+  ],
+  "disabled": [],
+  "numeric": 14,
+  "numericSamples": [
+   "Artistic 3D model \u00b7 male specimen",
+   "An interactive 3D laboratory",
+   "01 / Meet NeuroFly",
+   "Inspect a digital specimen and explore its simulated movemen",
+   "02 / Your field of exploration",
+   "Explore the 3D Lab",
+   "Follow how selected HS/DNp15 model activity contributes to s",
+   "03 / From observation to action",
+   "01",
+   "02",
+   "03",
+   "04 / Inside the Lab",
+   "05 / The scientific foundation",
+   "NeuroFly simulates selected circuits. It is not a whole-fly "
+  ],
+  "smallText": 20,
+  "fonts": [
+   "Arial"
+  ],
+  "hiddenWrappers": 1,
+  "consoleErrors": [],
+  "nonGet": [],
+  "requestCount": 14,
+  "threeLike": 9,
+  "axe": [],
+  "shot": "home--phone--dark.jpg"
+ },
+ {
+  "name": "home",
+  "route": "/",
+  "width": "desktop",
+  "theme": "light",
+  "status": 200,
+  "ms": 2768,
+  "title": "NeuroFly \u2014 A digital fly. A new way to explore behaviour.",
+  "lang": "en",
+  "h1": [
+   "A digital fly.A new way toexplore behaviour."
+  ],
+  "mainCount": 1,
+  "firstFocusable": "Skip to content",
+  "hOverflow": false,
+  "scrollWidth": 1440,
+  "pageHeight": 5572,
+  "canvases": 0,
+  "bodyBg": "rgb(16, 20, 22)",
+  "navs": [
+   {
+    "label": "Primary navigation",
+    "visible": true,
+    "links": [
+     {
+      "text": "Home",
+      "href": "/",
+      "current": "page"
+     },
+     {
+      "text": "Lab",
+      "href": "/visual-lab/arena",
+      "current": null
+     },
+     {
+      "text": "Experiments",
+      "href": "/scenarios",
+      "current": null
+     },
+     {
+      "text": "Science",
+      "href": "/science",
+      "current": null
+     }
+    ]
+   },
+   {
+    "label": "Mobile primary navigation",
+    "visible": false,
+    "links": [
+     {
+      "text": "Home",
+      "href": "/",
+      "current": "page"
+     },
+     {
+      "text": "Lab",
+      "href": "/visual-lab/arena",
+      "current": null
+     },
+     {
+      "text": "Experiments",
+      "href": "/scenarios",
+      "current": null
+     },
+     {
+      "text": "Science",
+      "href": "/science",
+      "current": null
+     },
+     {
+      "text": "Enter the Lab \u2197",
+      "href": "/visual-lab/arena",
+      "current": null
+     }
+    ]
+   },
+   {
+    "label": "Footer navigation",
+    "visible": true,
+    "links": [
+     {
+      "text": "Home",
+      "href": "/",
+      "current": null
+     },
+     {
+      "text": "Lab",
+      "href": "/visual-lab/arena",
+      "current": null
+     },
+     {
+      "text": "Experiments",
+      "href": "/scenarios",
+      "current": null
+     },
+     {
+      "text": "Science",
+      "href": "/science",
+      "current": null
+     },
+     {
+      "text": "Recorded experiments",
+      "href": "/experiments",
+      "current": null
+     },
+     {
+      "text": "Documentation \u2197",
+      "href": "https://github.com/a104174/NeuroFly/tree/main/docs/science",
+      "current": null
+     }
+    ]
+   }
+  ],
+  "disabled": [],
+  "numeric": 14,
+  "numericSamples": [
+   "Artistic 3D model \u00b7 male specimen",
+   "An interactive 3D laboratory",
+   "01 / Meet NeuroFly",
+   "Inspect a digital specimen and explore its simulated movemen",
+   "02 / Your field of exploration",
+   "Explore the 3D Lab",
+   "Follow how selected HS/DNp15 model activity contributes to s",
+   "03 / From observation to action",
+   "01",
+   "02",
+   "03",
+   "04 / Inside the Lab",
+   "05 / The scientific foundation",
+   "NeuroFly simulates selected circuits. It is not a whole-fly "
+  ],
+  "smallText": 6,
+  "fonts": [
+   "Arial"
+  ],
+  "hiddenWrappers": 1,
+  "consoleErrors": [],
+  "nonGet": [],
+  "requestCount": 15,
+  "threeLike": 9,
+  "axe": [],
+  "shot": "home--desktop--light.jpg"
+ },
+ {
+  "name": "home",
+  "route": "/",
+  "width": "desktop",
+  "theme": "dark",
+  "status": 200,
+  "ms": 2445,
+  "title": "NeuroFly \u2014 A digital fly. A new way to explore behaviour.",
+  "lang": "en",
+  "h1": [
+   "A digital fly.A new way toexplore behaviour."
+  ],
+  "mainCount": 1,
+  "firstFocusable": "Skip to content",
+  "hOverflow": false,
+  "scrollWidth": 1440,
+  "pageHeight": 5572,
+  "canvases": 0,
+  "bodyBg": "rgb(16, 20, 22)",
+  "navs": [
+   {
+    "label": "Primary navigation",
+    "visible": true,
+    "links": [
+     {
+      "text": "Home",
+      "href": "/",
+      "current": "page"
+     },
+     {
+      "text": "Lab",
+      "href": "/visual-lab/arena",
+      "current": null
+     },
+     {
+      "text": "Experiments",
+      "href": "/scenarios",
+      "current": null
+     },
+     {
+      "text": "Science",
+      "href": "/science",
+      "current": null
+     }
+    ]
+   },
+   {
+    "label": "Mobile primary navigation",
+    "visible": false,
+    "links": [
+     {
+      "text": "Home",
+      "href": "/",
+      "current": "page"
+     },
+     {
+      "text": "Lab",
+      "href": "/visual-lab/arena",
+      "current": null
+     },
+     {
+      "text": "Experiments",
+      "href": "/scenarios",
+      "current": null
+     },
+     {
+      "text": "Science",
+      "href": "/science",
+      "current": null
+     },
+     {
+      "text": "Enter the Lab \u2197",
+      "href": "/visual-lab/arena",
+      "current": null
+     }
+    ]
+   },
+   {
+    "label": "Footer navigation",
+    "visible": true,
+    "links": [
+     {
+      "text": "Home",
+      "href": "/",
+      "current": null
+     },
+     {
+      "text": "Lab",
+      "href": "/visual-lab/arena",
+      "current": null
+     },
+     {
+      "text": "Experiments",
+      "href": "/scenarios",
+      "current": null
+     },
+     {
+      "text": "Science",
+      "href": "/science",
+      "current": null
+     },
+     {
+      "text": "Recorded experiments",
+      "href": "/experiments",
+      "current": null
+     },
+     {
+      "text": "Documentation \u2197",
+      "href": "https://github.com/a104174/NeuroFly/tree/main/docs/science",
+      "current": null
+     }
+    ]
+   }
+  ],
+  "disabled": [],
+  "numeric": 14,
+  "numericSamples": [
+   "Artistic 3D model \u00b7 male specimen",
+   "An interactive 3D laboratory",
+   "01 / Meet NeuroFly",
+   "Inspect a digital specimen and explore its simulated movemen",
+   "02 / Your field of exploration",
+   "Explore the 3D Lab",
+   "Follow how selected HS/DNp15 model activity contributes to s",
+   "03 / From observation to action",
+   "01",
+   "02",
+   "03",
+   "04 / Inside the Lab",
+   "05 / The scientific foundation",
+   "NeuroFly simulates selected circuits. It is not a whole-fly "
+  ],
+  "smallText": 6,
+  "fonts": [
+   "Arial"
+  ],
+  "hiddenWrappers": 1,
+  "consoleErrors": [],
+  "nonGet": [],
+  "requestCount": 15,
+  "threeLike": 9,
+  "axe": [],
+  "shot": "home--desktop--dark.jpg"
+ },
+ {
+  "name": "scenarios",
+  "route": "/scenarios",
+  "width": "phone",
+  "theme": "light",
+  "status": 200,
+  "ms": 2510,
+  "title": "Explore \u00b7 NeuroFly",
+  "lang": "en",
+  "h1": [
+   "Explore thepossibilities."
+  ],
+  "mainCount": 1,
+  "firstFocusable": "Skip to content",
+  "hOverflow": false,
+  "scrollWidth": 390,
+  "pageHeight": 5005,
+  "canvases": 0,
+  "bodyBg": "rgb(16, 20, 22)",
+  "navs": [
+   {
+    "label": "Primary navigation",
+    "visible": false,
+    "links": [
+     {
+      "text": "Home",
+      "href": "/",
+      "current": null
+     },
+     {
+      "text": "Lab",
+      "href": "/visual-lab/arena",
+      "current": null
+     },
+     {
+      "text": "Experiments",
+      "href": "/scenarios",
+      "current": "page"
+     },
+     {
+      "text": "Science",
+      "href": "/science",
+      "current": null
+     }
+    ]
+   },
+   {
+    "label": "Mobile primary navigation",
+    "visible": true,
+    "links": [
+     {
+      "text": "Home",
+      "href": "/",
+      "current": null
+     },
+     {
+      "text": "Lab",
+      "href": "/visual-lab/arena",
+      "current": null
+     },
+     {
+      "text": "Experiments",
+      "href": "/scenarios",
+      "current": "page"
+     },
+     {
+      "text": "Science",
+      "href": "/science",
+      "current": null
+     },
+     {
+      "text": "Enter the Lab \u2197",
+      "href": "/visual-lab/arena",
+      "current": null
+     }
+    ]
+   },
+   {
+    "label": "Footer navigation",
+    "visible": true,
+    "links": [
+     {
+      "text": "Home",
+      "href": "/",
+      "current": null
+     },
+     {
+      "text": "Lab",
+      "href": "/visual-lab/arena",
+      "current": null
+     },
+     {
+      "text": "Experiments",
+      "href": "/scenarios",
+      "current": null
+     },
+     {
+      "text": "Science",
+      "href": "/science",
+      "current": null
+     },
+     {
+      "text": "Recorded experiments",
+      "href": "/experiments",
+      "current": null
+     },
+     {
+      "text": "Documentation \u2197",
+      "href": "https://github.com/a104174/NeuroFly/tree/main/docs/science",
+      "current": null
+     }
+    ]
+   }
+  ],
+  "disabled": [],
+  "numeric": 13,
+  "numericSamples": [
+   "01",
+   "1.4 ms",
+   "02",
+   "1.4 ms",
+   "03",
+   "40 ms",
+   "04",
+   "50 ms",
+   "Trace a horizontal-motion descriptor through HS and DNp15 mo",
+   "Uncalibrated horizontal_motion_eq and dnp15_state_eq. Six ch",
+   "05",
+   "50 ms",
+   "Closed-loop experiment \u00b7 50 ms \u00b7 no translation. Marginal or"
+  ],
+  "smallText": 28,
+  "fonts": [
+   "Arial"
+  ],
+  "hiddenWrappers": 1,
+  "consoleErrors": [],
+  "nonGet": [],
+  "requestCount": 16,
+  "threeLike": 10,
+  "axe": [],
+  "shot": "scenarios--phone--light.jpg"
+ },
+ {
+  "name": "scenarios",
+  "route": "/scenarios",
+  "width": "phone",
+  "theme": "dark",
+  "status": 200,
+  "ms": 2353,
+  "title": "Explore \u00b7 NeuroFly",
+  "lang": "en",
+  "h1": [
+   "Explore thepossibilities."
+  ],
+  "mainCount": 1,
+  "firstFocusable": "Skip to content",
+  "hOverflow": false,
+  "scrollWidth": 390,
+  "pageHeight": 5005,
+  "canvases": 0,
+  "bodyBg": "rgb(16, 20, 22)",
+  "navs": [
+   {
+    "label": "Primary navigation",
+    "visible": false,
+    "links": [
+     {
+      "text": "Home",
+      "href": "/",
+      "current": null
+     },
+     {
+      "text": "Lab",
+      "href": "/visual-lab/arena",
+      "current": null
+     },
+     {
+      "text": "Experiments",
+      "href": "/scenarios",
+      "current": "page"
+     },
+     {
+      "text": "Science",
+      "href": "/science",
+      "current": null
+     }
+    ]
+   },
+   {
+    "label": "Mobile primary navigation",
+    "visible": true,
+    "links": [
+     {
+      "text": "Home",
+      "href": "/",
+      "current": null
+     },
+     {
+      "text": "Lab",
+      "href": "/visual-lab/arena",
+      "current": null
+     },
+     {
+      "text": "Experiments",
+      "href": "/scenarios",
+      "current": "page"
+     },
+     {
+      "text": "Science",
+      "href": "/science",
+      "current": null
+     },
+     {
+      "text": "Enter the Lab \u2197",
+      "href": "/visual-lab/arena",
+      "current": null
+     }
+    ]
+   },
+   {
+    "label": "Footer navigation",
+    "visible": true,
+    "links": [
+     {
+      "text": "Home",
+      "href": "/",
+      "current": null
+     },
+     {
+      "text": "Lab",
+      "href": "/visual-lab/arena",
+      "current": null
+     },
+     {
+      "text": "Experiments",
+      "href": "/scenarios",
+      "current": null
+     },
+     {
+      "text": "Science",
+      "href": "/science",
+      "current": null
+     },
+     {
+      "text": "Recorded experiments",
+      "href": "/experiments",
+      "current": null
+     },
+     {
+      "text": "Documentation \u2197",
+      "href": "https://github.com/a104174/NeuroFly/tree/main/docs/science",
+      "current": null
+     }
+    ]
+   }
+  ],
+  "disabled": [],
+  "numeric": 13,
+  "numericSamples": [
+   "01",
+   "1.4 ms",
+   "02",
+   "1.4 ms",
+   "03",
+   "40 ms",
+   "04",
+   "50 ms",
+   "Trace a horizontal-motion descriptor through HS and DNp15 mo",
+   "Uncalibrated horizontal_motion_eq and dnp15_state_eq. Six ch",
+   "05",
+   "50 ms",
+   "Closed-loop experiment \u00b7 50 ms \u00b7 no translation. Marginal or"
+  ],
+  "smallText": 28,
+  "fonts": [
+   "Arial"
+  ],
+  "hiddenWrappers": 1,
+  "consoleErrors": [],
+  "nonGet": [],
+  "requestCount": 16,
+  "threeLike": 10,
+  "axe": [],
+  "shot": "scenarios--phone--dark.jpg"
+ },
+ {
+  "name": "scenarios",
+  "route": "/scenarios",
+  "width": "desktop",
+  "theme": "light",
+  "status": 200,
+  "ms": 2867,
+  "title": "Explore \u00b7 NeuroFly",
+  "lang": "en",
+  "h1": [
+   "Explore thepossibilities."
+  ],
+  "mainCount": 1,
+  "firstFocusable": "Skip to content",
+  "hOverflow": false,
+  "scrollWidth": 1440,
+  "pageHeight": 3278,
+  "canvases": 0,
+  "bodyBg": "rgb(16, 20, 22)",
+  "navs": [
+   {
+    "label": "Primary navigation",
+    "visible": true,
+    "links": [
+     {
+      "text": "Home",
+      "href": "/",
+      "current": null
+     },
+     {
+      "text": "Lab",
+      "href": "/visual-lab/arena",
+      "current": null
+     },
+     {
+      "text": "Experiments",
+      "href": "/scenarios",
+      "current": "page"
+     },
+     {
+      "text": "Science",
+      "href": "/science",
+      "current": null
+     }
+    ]
+   },
+   {
+    "label": "Mobile primary navigation",
+    "visible": false,
+    "links": [
+     {
+      "text": "Home",
+      "href": "/",
+      "current": null
+     },
+     {
+      "text": "Lab",
+      "href": "/visual-lab/arena",
+      "current": null
+     },
+     {
+      "text": "Experiments",
+      "href": "/scenarios",
+      "current": "page"
+     },
+     {
+      "text": "Science",
+      "href": "/science",
+      "current": null
+     },
+     {
+      "text": "Enter the Lab \u2197",
+      "href": "/visual-lab/arena",
+      "current": null
+     }
+    ]
+   },
+   {
+    "label": "Footer navigation",
+    "visible": true,
+    "links": [
+     {
+      "text": "Home",
+      "href": "/",
+      "current": null
+     },
+     {
+      "text": "Lab",
+      "href": "/visual-lab/arena",
+      "current": null
+     },
+     {
+      "text": "Experiments",
+      "href": "/scenarios",
+      "current": null
+     },
+     {
+      "text": "Science",
+      "href": "/science",
+      "current": null
+     },
+     {
+      "text": "Recorded experiments",
+      "href": "/experiments",
+      "current": null
+     },
+     {
+      "text": "Documentation \u2197",
+      "href": "https://github.com/a104174/NeuroFly/tree/main/docs/science",
+      "current": null
+     }
+    ]
+   }
+  ],
+  "disabled": [],
+  "numeric": 13,
+  "numericSamples": [
+   "01",
+   "1.4 ms",
+   "02",
+   "1.4 ms",
+   "03",
+   "40 ms",
+   "04",
+   "50 ms",
+   "Trace a horizontal-motion descriptor through HS and DNp15 mo",
+   "Uncalibrated horizontal_motion_eq and dnp15_state_eq. Six ch",
+   "05",
+   "50 ms",
+   "Closed-loop experiment \u00b7 50 ms \u00b7 no translation. Marginal or"
+  ],
+  "smallText": 26,
+  "fonts": [
+   "Arial"
+  ],
+  "hiddenWrappers": 1,
+  "consoleErrors": [],
+  "nonGet": [],
+  "requestCount": 16,
+  "threeLike": 10,
+  "axe": [],
+  "shot": "scenarios--desktop--light.jpg"
+ },
+ {
+  "name": "scenarios",
+  "route": "/scenarios",
+  "width": "desktop",
+  "theme": "dark",
+  "status": 200,
+  "ms": 2779,
+  "title": "Explore \u00b7 NeuroFly",
+  "lang": "en",
+  "h1": [
+   "Explore thepossibilities."
+  ],
+  "mainCount": 1,
+  "firstFocusable": "Skip to content",
+  "hOverflow": false,
+  "scrollWidth": 1440,
+  "pageHeight": 3278,
+  "canvases": 0,
+  "bodyBg": "rgb(16, 20, 22)",
+  "navs": [
+   {
+    "label": "Primary navigation",
+    "visible": true,
+    "links": [
+     {
+      "text": "Home",
+      "href": "/",
+      "current": null
+     },
+     {
+      "text": "Lab",
+      "href": "/visual-lab/arena",
+      "current": null
+     },
+     {
+      "text": "Experiments",
+      "href": "/scenarios",
+      "current": "page"
+     },
+     {
+      "text": "Science",
+      "href": "/science",
+      "current": null
+     }
+    ]
+   },
+   {
+    "label": "Mobile primary navigation",
+    "visible": false,
+    "links": [
+     {
+      "text": "Home",
+      "href": "/",
+      "current": null
+     },
+     {
+      "text": "Lab",
+      "href": "/visual-lab/arena",
+      "current": null
+     },
+     {
+      "text": "Experiments",
+      "href": "/scenarios",
+      "current": "page"
+     },
+     {
+      "text": "Science",
+      "href": "/science",
+      "current": null
+     },
+     {
+      "text": "Enter the Lab \u2197",
+      "href": "/visual-lab/arena",
+      "current": null
+     }
+    ]
+   },
+   {
+    "label": "Footer navigation",
+    "visible": true,
+    "links": [
+     {
+      "text": "Home",
+      "href": "/",
+      "current": null
+     },
+     {
+      "text": "Lab",
+      "href": "/visual-lab/arena",
+      "current": null
+     },
+     {
+      "text": "Experiments",
+      "href": "/scenarios",
+      "current": null
+     },
+     {
+      "text": "Science",
+      "href": "/science",
+      "current": null
+     },
+     {
+      "text": "Recorded experiments",
+      "href": "/experiments",
+      "current": null
+     },
+     {
+      "text": "Documentation \u2197",
+      "href": "https://github.com/a104174/NeuroFly/tree/main/docs/science",
+      "current": null
+     }
+    ]
+   }
+  ],
+  "disabled": [],
+  "numeric": 13,
+  "numericSamples": [
+   "01",
+   "1.4 ms",
+   "02",
+   "1.4 ms",
+   "03",
+   "40 ms",
+   "04",
+   "50 ms",
+   "Trace a horizontal-motion descriptor through HS and DNp15 mo",
+   "Uncalibrated horizontal_motion_eq and dnp15_state_eq. Six ch",
+   "05",
+   "50 ms",
+   "Closed-loop experiment \u00b7 50 ms \u00b7 no translation. Marginal or"
+  ],
+  "smallText": 26,
+  "fonts": [
+   "Arial"
+  ],
+  "hiddenWrappers": 1,
+  "consoleErrors": [],
+  "nonGet": [],
+  "requestCount": 16,
+  "threeLike": 10,
+  "axe": [],
+  "shot": "scenarios--desktop--dark.jpg"
+ },
+ {
+  "name": "scenario-looming",
+  "route": "/scenarios/LOOMING_CIRCUIT_VALIDATION",
+  "width": "phone",
+  "theme": "light",
+  "status": 200,
+  "ms": 1879,
+  "title": "NeuroFly \u00b7 Experiment Browser",
+  "lang": "en",
+  "h1": [
+   "Looming Circuit Validation"
+  ],
+  "mainCount": 1,
+  "firstFocusable": "NeuroFlyconnectome experiment browser",
+  "hOverflow": false,
+  "scrollWidth": 390,
+  "pageHeight": 901,
+  "canvases": 0,
+  "bodyBg": "rgb(16, 20, 22)",
+  "navs": [
+   {
+    "label": "Primary navigation",
+    "visible": true,
+    "links": [
+     {
+      "text": "Experiments",
+      "href": "/experiments",
+      "current": null
+     },
+     {
+      "text": "Scenarios",
+      "href": "/scenarios",
+      "current": null
+     },
+     {
+      "text": "Morphology",
+      "href": "/morphology",
+      "current": null
+     },
+     {
+      "text": "Visual Lab",
+      "href": "/visual-lab/fly",
+      "current": null
+     }
+    ]
+   }
+  ],
+  "disabled": [],
+  "numeric": 3,
+  "numericSamples": [
+   "1.4 MS CIRCUIT MICRO-WINDOW \u00b7 START HERE",
+   "Inspect LC4 / LPLC2 \u2192 DNp01 in a short causal probe.",
+   "1.4 ms"
+  ],
+  "smallText": 5,
+  "fonts": [
+   "Arial",
+   "SFMono-Regular"
+  ],
+  "hiddenWrappers": 1,
+  "consoleErrors": [],
+  "nonGet": [],
+  "requestCount": 31,
+  "threeLike": 15,
+  "axe": [],
+  "shot": "scenario-looming--phone--light.jpg"
+ },
+ {
+  "name": "scenario-looming",
+  "route": "/scenarios/LOOMING_CIRCUIT_VALIDATION",
+  "width": "phone",
+  "theme": "dark",
+  "status": 200,
+  "ms": 2088,
+  "title": "NeuroFly \u00b7 Experiment Browser",
+  "lang": "en",
+  "h1": [
+   "Looming Circuit Validation"
+  ],
+  "mainCount": 1,
+  "firstFocusable": "NeuroFlyconnectome experiment browser",
+  "hOverflow": false,
+  "scrollWidth": 390,
+  "pageHeight": 901,
+  "canvases": 0,
+  "bodyBg": "rgb(16, 20, 22)",
+  "navs": [
+   {
+    "label": "Primary navigation",
+    "visible": true,
+    "links": [
+     {
+      "text": "Experiments",
+      "href": "/experiments",
+      "current": null
+     },
+     {
+      "text": "Scenarios",
+      "href": "/scenarios",
+      "current": null
+     },
+     {
+      "text": "Morphology",
+      "href": "/morphology",
+      "current": null
+     },
+     {
+      "text": "Visual Lab",
+      "href": "/visual-lab/fly",
+      "current": null
+     }
+    ]
+   }
+  ],
+  "disabled": [],
+  "numeric": 3,
+  "numericSamples": [
+   "1.4 MS CIRCUIT MICRO-WINDOW \u00b7 START HERE",
+   "Inspect LC4 / LPLC2 \u2192 DNp01 in a short causal probe.",
+   "1.4 ms"
+  ],
+  "smallText": 5,
+  "fonts": [
+   "Arial",
+   "SFMono-Regular"
+  ],
+  "hiddenWrappers": 1,
+  "consoleErrors": [],
+  "nonGet": [],
+  "requestCount": 31,
+  "threeLike": 15,
+  "axe": [],
+  "shot": "scenario-looming--phone--dark.jpg"
+ },
+ {
+  "name": "scenario-looming",
+  "route": "/scenarios/LOOMING_CIRCUIT_VALIDATION",
+  "width": "desktop",
+  "theme": "light",
+  "status": 200,
+  "ms": 2123,
+  "title": "NeuroFly \u00b7 Experiment Browser",
+  "lang": "en",
+  "h1": [
+   "Looming Circuit Validation"
+  ],
+  "mainCount": 1,
+  "firstFocusable": "NeuroFlyconnectome experiment browser",
+  "hOverflow": false,
+  "scrollWidth": 1440,
+  "pageHeight": 919,
+  "canvases": 0,
+  "bodyBg": "rgb(16, 20, 22)",
+  "navs": [
+   {
+    "label": "Primary navigation",
+    "visible": true,
+    "links": [
+     {
+      "text": "Experiments",
+      "href": "/experiments",
+      "current": null
+     },
+     {
+      "text": "Scenarios",
+      "href": "/scenarios",
+      "current": null
+     },
+     {
+      "text": "Morphology",
+      "href": "/morphology",
+      "current": null
+     },
+     {
+      "text": "Visual Lab",
+      "href": "/visual-lab/fly",
+      "current": null
+     }
+    ]
+   }
+  ],
+  "disabled": [],
+  "numeric": 3,
+  "numericSamples": [
+   "1.4 MS CIRCUIT MICRO-WINDOW \u00b7 START HERE",
+   "Inspect LC4 / LPLC2 \u2192 DNp01 in a short causal probe.",
+   "1.4 ms"
+  ],
+  "smallText": 2,
+  "fonts": [
+   "Arial",
+   "SFMono-Regular"
+  ],
+  "hiddenWrappers": 1,
+  "consoleErrors": [],
+  "nonGet": [],
+  "requestCount": 31,
+  "threeLike": 15,
+  "axe": [],
+  "shot": "scenario-looming--desktop--light.jpg"
+ },
+ {
+  "name": "scenario-looming",
+  "route": "/scenarios/LOOMING_CIRCUIT_VALIDATION",
+  "width": "desktop",
+  "theme": "dark",
+  "status": 200,
+  "ms": 2091,
+  "title": "NeuroFly \u00b7 Experiment Browser",
+  "lang": "en",
+  "h1": [
+   "Looming Circuit Validation"
+  ],
+  "mainCount": 1,
+  "firstFocusable": "NeuroFlyconnectome experiment browser",
+  "hOverflow": false,
+  "scrollWidth": 1440,
+  "pageHeight": 919,
+  "canvases": 0,
+  "bodyBg": "rgb(16, 20, 22)",
+  "navs": [
+   {
+    "label": "Primary navigation",
+    "visible": true,
+    "links": [
+     {
+      "text": "Experiments",
+      "href": "/experiments",
+      "current": null
+     },
+     {
+      "text": "Scenarios",
+      "href": "/scenarios",
+      "current": null
+     },
+     {
+      "text": "Morphology",
+      "href": "/morphology",
+      "current": null
+     },
+     {
+      "text": "Visual Lab",
+      "href": "/visual-lab/fly",
+      "current": null
+     }
+    ]
+   }
+  ],
+  "disabled": [],
+  "numeric": 3,
+  "numericSamples": [
+   "1.4 MS CIRCUIT MICRO-WINDOW \u00b7 START HERE",
+   "Inspect LC4 / LPLC2 \u2192 DNp01 in a short causal probe.",
+   "1.4 ms"
+  ],
+  "smallText": 2,
+  "fonts": [
+   "Arial",
+   "SFMono-Regular"
+  ],
+  "hiddenWrappers": 1,
+  "consoleErrors": [],
+  "nonGet": [],
+  "requestCount": 31,
+  "threeLike": 15,
+  "axe": [],
+  "shot": "scenario-looming--desktop--dark.jpg"
+ },
+ {
+  "name": "scenario-looming-replay",
+  "route": "/scenarios/LOOMING_CIRCUIT_VALIDATION?replay=canonical",
+  "width": "phone",
+  "theme": "light",
+  "status": 200,
+  "ms": 12917,
+  "title": "NeuroFly \u00b7 Experiment Browser",
+  "lang": "en",
+  "h1": [
+   "Looming Circuit Validation"
+  ],
+  "mainCount": 1,
+  "firstFocusable": "NeuroFlyconnectome experiment browser",
+  "hOverflow": false,
+  "scrollWidth": 390,
+  "pageHeight": 2567,
+  "canvases": 1,
+  "bodyBg": "rgb(16, 20, 22)",
+  "navs": [
+   {
+    "label": "Primary navigation",
+    "visible": true,
+    "links": [
+     {
+      "text": "Experiments",
+      "href": "/experiments",
+      "current": null
+     },
+     {
+      "text": "Scenarios",
+      "href": "/scenarios",
+      "current": null
+     },
+     {
+      "text": "Morphology",
+      "href": "/morphology",
+      "current": null
+     },
+     {
+      "text": "Visual Lab",
+      "href": "/visual-lab/fly",
+      "current": null
+     }
+    ]
+   }
+  ],
+  "disabled": [],
+  "numeric": 66,
+  "numericSamples": [
+   "1.4 MS CIRCUIT MICRO-WINDOW \u00b7 START HERE",
+   "Inspect LC4 / LPLC2 \u2192 DNp01 in a short causal probe.",
+   "1.4 ms",
+   "2",
+   "19",
+   "/ 311 exposed",
+   "DNp01 remains subthreshold.",
+   "Visual input changed and DNp01 depolarized, but the pinned m",
+   "0.0",
+   "DNp01 R -52.000 / L -52.000 mV_eq. 19 sensory bodies exposed",
+   "MaleCNS LC4 / LPLC2 \u2192 DNp01 structural routing.",
+   "0",
+   "14",
+   "0.0",
+   "1.4",
+   "ms simulation shown over 6 s playback \u00b7 rendering only, scie",
+   "0 ms \u00b7",
+   "1.4",
+   "0",
+   "0.0",
+   "01",
+   "02",
+   "LC4 / LPLC2",
+   "19 / 311 bodies exposed",
+   "03",
+   "DNp01",
+   "0 spikes in this run",
+   "04",
+   "05",
+   "DNp01 \u00b7 R / L",
+   "R -52.000 / L -52.000",
+   "19 / 311 bodies",
+   "Radius 2 relative-column steps",
+   "0 DNp01 model spikes in run \u00b7 No recorded motor command",
+   "0.0",
+   "0",
+   "4.000000",
+   "0.000000",
+   "0.000000",
+   "0"
+  ],
+  "smallText": 65,
+  "fonts": [
+   "Arial",
+   "SFMono-Regular",
+   "monospace"
+  ],
+  "hiddenWrappers": 1,
+  "consoleErrors": [],
+  "nonGet": [],
+  "requestCount": 35,
+  "threeLike": 18,
+  "axe": [],
+  "shot": "scenario-looming-replay--phone--light.jpg"
+ },
+ {
+  "name": "scenario-looming-replay",
+  "route": "/scenarios/LOOMING_CIRCUIT_VALIDATION?replay=canonical",
+  "width": "phone",
+  "theme": "dark",
+  "status": 200,
+  "ms": 13239,
+  "title": "NeuroFly \u00b7 Experiment Browser",
+  "lang": "en",
+  "h1": [
+   "Looming Circuit Validation"
+  ],
+  "mainCount": 1,
+  "firstFocusable": "NeuroFlyconnectome experiment browser",
+  "hOverflow": false,
+  "scrollWidth": 390,
+  "pageHeight": 2567,
+  "canvases": 1,
+  "bodyBg": "rgb(16, 20, 22)",
+  "navs": [
+   {
+    "label": "Primary navigation",
+    "visible": true,
+    "links": [
+     {
+      "text": "Experiments",
+      "href": "/experiments",
+      "current": null
+     },
+     {
+      "text": "Scenarios",
+      "href": "/scenarios",
+      "current": null
+     },
+     {
+      "text": "Morphology",
+      "href": "/morphology",
+      "current": null
+     },
+     {
+      "text": "Visual Lab",
+      "href": "/visual-lab/fly",
+      "current": null
+     }
+    ]
+   }
+  ],
+  "disabled": [],
+  "numeric": 66,
+  "numericSamples": [
+   "1.4 MS CIRCUIT MICRO-WINDOW \u00b7 START HERE",
+   "Inspect LC4 / LPLC2 \u2192 DNp01 in a short causal probe.",
+   "1.4 ms",
+   "2",
+   "19",
+   "/ 311 exposed",
+   "DNp01 remains subthreshold.",
+   "Visual input changed and DNp01 depolarized, but the pinned m",
+   "0.0",
+   "DNp01 R -52.000 / L -52.000 mV_eq. 19 sensory bodies exposed",
+   "MaleCNS LC4 / LPLC2 \u2192 DNp01 structural routing.",
+   "0",
+   "14",
+   "0.0",
+   "1.4",
+   "ms simulation shown over 6 s playback \u00b7 rendering only, scie",
+   "0 ms \u00b7",
+   "1.4",
+   "0",
+   "0.0",
+   "01",
+   "02",
+   "LC4 / LPLC2",
+   "19 / 311 bodies exposed",
+   "03",
+   "DNp01",
+   "0 spikes in this run",
+   "04",
+   "05",
+   "DNp01 \u00b7 R / L",
+   "R -52.000 / L -52.000",
+   "19 / 311 bodies",
+   "Radius 2 relative-column steps",
+   "0 DNp01 model spikes in run \u00b7 No recorded motor command",
+   "0.0",
+   "0",
+   "4.000000",
+   "0.000000",
+   "0.000000",
+   "0"
+  ],
+  "smallText": 65,
+  "fonts": [
+   "Arial",
+   "SFMono-Regular",
+   "monospace"
+  ],
+  "hiddenWrappers": 1,
+  "consoleErrors": [],
+  "nonGet": [],
+  "requestCount": 35,
+  "threeLike": 18,
+  "axe": [],
+  "shot": "scenario-looming-replay--phone--dark.jpg"
+ },
+ {
+  "name": "scenario-looming-replay",
+  "route": "/scenarios/LOOMING_CIRCUIT_VALIDATION?replay=canonical",
+  "width": "desktop",
+  "theme": "light",
+  "status": 200,
+  "ms": 13593,
+  "title": "NeuroFly \u00b7 Experiment Browser",
+  "lang": "en",
+  "h1": [
+   "Looming Circuit Validation"
+  ],
+  "mainCount": 1,
+  "firstFocusable": "NeuroFlyconnectome experiment browser",
+  "hOverflow": false,
+  "scrollWidth": 1440,
+  "pageHeight": 1683,
+  "canvases": 1,
+  "bodyBg": "rgb(16, 20, 22)",
+  "navs": [
+   {
+    "label": "Primary navigation",
+    "visible": true,
+    "links": [
+     {
+      "text": "Experiments",
+      "href": "/experiments",
+      "current": null
+     },
+     {
+      "text": "Scenarios",
+      "href": "/scenarios",
+      "current": null
+     },
+     {
+      "text": "Morphology",
+      "href": "/morphology",
+      "current": null
+     },
+     {
+      "text": "Visual Lab",
+      "href": "/visual-lab/fly",
+      "current": null
+     }
+    ]
+   }
+  ],
+  "disabled": [],
+  "numeric": 66,
+  "numericSamples": [
+   "1.4 MS CIRCUIT MICRO-WINDOW \u00b7 START HERE",
+   "Inspect LC4 / LPLC2 \u2192 DNp01 in a short causal probe.",
+   "1.4 ms",
+   "2",
+   "19",
+   "/ 311 exposed",
+   "DNp01 remains subthreshold.",
+   "Visual input changed and DNp01 depolarized, but the pinned m",
+   "0.0",
+   "DNp01 R -52.000 / L -52.000 mV_eq. 19 sensory bodies exposed",
+   "MaleCNS LC4 / LPLC2 \u2192 DNp01 structural routing.",
+   "0",
+   "14",
+   "0.0",
+   "1.4",
+   "ms simulation shown over 6 s playback \u00b7 rendering only, scie",
+   "0 ms \u00b7",
+   "1.4",
+   "0",
+   "0.0",
+   "01",
+   "02",
+   "LC4 / LPLC2",
+   "19 / 311 bodies exposed",
+   "03",
+   "DNp01",
+   "0 spikes in this run",
+   "04",
+   "05",
+   "DNp01 \u00b7 R / L",
+   "R -52.000 / L -52.000",
+   "19 / 311 bodies",
+   "Radius 2 relative-column steps",
+   "0 DNp01 model spikes in run \u00b7 No recorded motor command",
+   "0.0",
+   "0",
+   "4.000000",
+   "0.000000",
+   "0.000000",
+   "0"
+  ],
+  "smallText": 56,
+  "fonts": [
+   "Arial",
+   "SFMono-Regular",
+   "monospace"
+  ],
+  "hiddenWrappers": 1,
+  "consoleErrors": [],
+  "nonGet": [],
+  "requestCount": 35,
+  "threeLike": 18,
+  "axe": [],
+  "shot": "scenario-looming-replay--desktop--light.jpg"
+ },
+ {
+  "name": "scenario-looming-replay",
+  "route": "/scenarios/LOOMING_CIRCUIT_VALIDATION?replay=canonical",
+  "width": "desktop",
+  "theme": "dark",
+  "status": 200,
+  "ms": 13599,
+  "title": "NeuroFly \u00b7 Experiment Browser",
+  "lang": "en",
+  "h1": [
+   "Looming Circuit Validation"
+  ],
+  "mainCount": 1,
+  "firstFocusable": "NeuroFlyconnectome experiment browser",
+  "hOverflow": false,
+  "scrollWidth": 1440,
+  "pageHeight": 1683,
+  "canvases": 1,
+  "bodyBg": "rgb(16, 20, 22)",
+  "navs": [
+   {
+    "label": "Primary navigation",
+    "visible": true,
+    "links": [
+     {
+      "text": "Experiments",
+      "href": "/experiments",
+      "current": null
+     },
+     {
+      "text": "Scenarios",
+      "href": "/scenarios",
+      "current": null
+     },
+     {
+      "text": "Morphology",
+      "href": "/morphology",
+      "current": null
+     },
+     {
+      "text": "Visual Lab",
+      "href": "/visual-lab/fly",
+      "current": null
+     }
+    ]
+   }
+  ],
+  "disabled": [],
+  "numeric": 66,
+  "numericSamples": [
+   "1.4 MS CIRCUIT MICRO-WINDOW \u00b7 START HERE",
+   "Inspect LC4 / LPLC2 \u2192 DNp01 in a short causal probe.",
+   "1.4 ms",
+   "2",
+   "19",
+   "/ 311 exposed",
+   "DNp01 remains subthreshold.",
+   "Visual input changed and DNp01 depolarized, but the pinned m",
+   "0.0",
+   "DNp01 R -52.000 / L -52.000 mV_eq. 19 sensory bodies exposed",
+   "MaleCNS LC4 / LPLC2 \u2192 DNp01 structural routing.",
+   "0",
+   "14",
+   "0.0",
+   "1.4",
+   "ms simulation shown over 6 s playback \u00b7 rendering only, scie",
+   "0 ms \u00b7",
+   "1.4",
+   "0",
+   "0.0",
+   "01",
+   "02",
+   "LC4 / LPLC2",
+   "19 / 311 bodies exposed",
+   "03",
+   "DNp01",
+   "0 spikes in this run",
+   "04",
+   "05",
+   "DNp01 \u00b7 R / L",
+   "R -52.000 / L -52.000",
+   "19 / 311 bodies",
+   "Radius 2 relative-column steps",
+   "0 DNp01 model spikes in run \u00b7 No recorded motor command",
+   "0.0",
+   "0",
+   "4.000000",
+   "0.000000",
+   "0.000000",
+   "0"
+  ],
+  "smallText": 56,
+  "fonts": [
+   "Arial",
+   "SFMono-Regular",
+   "monospace"
+  ],
+  "hiddenWrappers": 1,
+  "consoleErrors": [],
+  "nonGet": [],
+  "requestCount": 35,
+  "threeLike": 18,
+  "axe": [],
+  "shot": "scenario-looming-replay--desktop--dark.jpg"
+ },
+ {
+  "name": "scenario-course-replay",
+  "route": "/scenarios/EXPLORATORY_COURSE_CONTROL?replay=canonical",
+  "width": "phone",
+  "theme": "light",
+  "status": 200,
+  "ms": 6236,
+  "title": "NeuroFly \u00b7 Experiment Browser",
+  "lang": "en",
+  "h1": [
+   "Exploratory Course Control"
+  ],
+  "mainCount": 1,
+  "firstFocusable": "NeuroFlyconnectome experiment browser",
+  "hOverflow": false,
+  "scrollWidth": 390,
+  "pageHeight": 3192,
+  "canvases": 1,
+  "bodyBg": "rgb(16, 20, 22)",
+  "navs": [
+   {
+    "label": "Primary navigation",
+    "visible": true,
+    "links": [
+     {
+      "text": "Experiments",
+      "href": "/experiments",
+      "current": null
+     },
+     {
+      "text": "Scenarios",
+      "href": "/scenarios",
+      "current": null
+     },
+     {
+      "text": "Morphology",
+      "href": "/morphology",
+      "current": null
+     },
+     {
+      "text": "Visual Lab",
+      "href": "/visual-lab/fly",
+      "current": null
+     }
+    ]
+   }
+  ],
+  "disabled": [],
+  "numeric": 113,
+  "numericSamples": [
+   "50 ms",
+   "0.000000000",
+   "+0.000332771",
+   "An external perturbation initiates neural-mediated counter-r",
+   "0.0",
+   "Model-space orientation +0.000000000. External perturbation ",
+   "MaleCNS selected chemical routes + evidence-supported qualit",
+   "0",
+   "500",
+   "0.0",
+   "50.0",
+   "ms simulation shown over 6 s playback \u00b7 rendering only, scie",
+   "0\u2192",
+   "1",
+   "50",
+   "0",
+   "0.0",
+   "01",
+   "02",
+   "03",
+   "04",
+   "DNp15",
+   "05",
+   "06",
+   "+0.000000000",
+   "R +0.000000 / L +0.000000",
+   "DNp15 \u00b7 R / L",
+   "R +0.000000 / L +0.000000",
+   "dnp15_state_eq",
+   "+0.000000",
+   "dnp15_state_eq",
+   "+0.000000",
+   "0 / 500 intervals clipped",
+   "10015",
+   "+0.000000",
+   "10016",
+   "+0.000000",
+   "10023",
+   "+0.000000",
+   "10034"
+  ],
+  "smallText": 91,
+  "fonts": [
+   "Arial",
+   "SFMono-Regular",
+   "monospace"
+  ],
+  "hiddenWrappers": 1,
+  "consoleErrors": [],
+  "nonGet": [],
+  "requestCount": 35,
+  "threeLike": 18,
+  "axe": [],
+  "shot": "scenario-course-replay--phone--light.jpg"
+ },
+ {
+  "name": "scenario-course-replay",
+  "route": "/scenarios/EXPLORATORY_COURSE_CONTROL?replay=canonical",
+  "width": "phone",
+  "theme": "dark",
+  "status": 200,
+  "ms": 6189,
+  "title": "NeuroFly \u00b7 Experiment Browser",
+  "lang": "en",
+  "h1": [
+   "Exploratory Course Control"
+  ],
+  "mainCount": 1,
+  "firstFocusable": "NeuroFlyconnectome experiment browser",
+  "hOverflow": false,
+  "scrollWidth": 390,
+  "pageHeight": 3192,
+  "canvases": 1,
+  "bodyBg": "rgb(16, 20, 22)",
+  "navs": [
+   {
+    "label": "Primary navigation",
+    "visible": true,
+    "links": [
+     {
+      "text": "Experiments",
+      "href": "/experiments",
+      "current": null
+     },
+     {
+      "text": "Scenarios",
+      "href": "/scenarios",
+      "current": null
+     },
+     {
+      "text": "Morphology",
+      "href": "/morphology",
+      "current": null
+     },
+     {
+      "text": "Visual Lab",
+      "href": "/visual-lab/fly",
+      "current": null
+     }
+    ]
+   }
+  ],
+  "disabled": [],
+  "numeric": 113,
+  "numericSamples": [
+   "50 ms",
+   "0.000000000",
+   "+0.000332771",
+   "An external perturbation initiates neural-mediated counter-r",
+   "0.0",
+   "Model-space orientation +0.000000000. External perturbation ",
+   "MaleCNS selected chemical routes + evidence-supported qualit",
+   "0",
+   "500",
+   "0.0",
+   "50.0",
+   "ms simulation shown over 6 s playback \u00b7 rendering only, scie",
+   "0\u2192",
+   "1",
+   "50",
+   "0",
+   "0.0",
+   "01",
+   "02",
+   "03",
+   "04",
+   "DNp15",
+   "05",
+   "06",
+   "+0.000000000",
+   "R +0.000000 / L +0.000000",
+   "DNp15 \u00b7 R / L",
+   "R +0.000000 / L +0.000000",
+   "dnp15_state_eq",
+   "+0.000000",
+   "dnp15_state_eq",
+   "+0.000000",
+   "0 / 500 intervals clipped",
+   "10015",
+   "+0.000000",
+   "10016",
+   "+0.000000",
+   "10023",
+   "+0.000000",
+   "10034"
+  ],
+  "smallText": 91,
+  "fonts": [
+   "Arial",
+   "SFMono-Regular",
+   "monospace"
+  ],
+  "hiddenWrappers": 1,
+  "consoleErrors": [],
+  "nonGet": [],
+  "requestCount": 35,
+  "threeLike": 18,
+  "axe": [],
+  "shot": "scenario-course-replay--phone--dark.jpg"
+ },
+ {
+  "name": "scenario-course-replay",
+  "route": "/scenarios/EXPLORATORY_COURSE_CONTROL?replay=canonical",
+  "width": "desktop",
+  "theme": "light",
+  "status": 200,
+  "ms": 6295,
+  "title": "NeuroFly \u00b7 Experiment Browser",
+  "lang": "en",
+  "h1": [
+   "Exploratory Course Control"
+  ],
+  "mainCount": 1,
+  "firstFocusable": "NeuroFlyconnectome experiment browser",
+  "hOverflow": false,
+  "scrollWidth": 1440,
+  "pageHeight": 1980,
+  "canvases": 1,
+  "bodyBg": "rgb(16, 20, 22)",
+  "navs": [
+   {
+    "label": "Primary navigation",
+    "visible": true,
+    "links": [
+     {
+      "text": "Experiments",
+      "href": "/experiments",
+      "current": null
+     },
+     {
+      "text": "Scenarios",
+      "href": "/scenarios",
+      "current": null
+     },
+     {
+      "text": "Morphology",
+      "href": "/morphology",
+      "current": null
+     },
+     {
+      "text": "Visual Lab",
+      "href": "/visual-lab/fly",
+      "current": null
+     }
+    ]
+   }
+  ],
+  "disabled": [],
+  "numeric": 113,
+  "numericSamples": [
+   "50 ms",
+   "0.000000000",
+   "+0.000332771",
+   "An external perturbation initiates neural-mediated counter-r",
+   "0.0",
+   "Model-space orientation +0.000000000. External perturbation ",
+   "MaleCNS selected chemical routes + evidence-supported qualit",
+   "0",
+   "500",
+   "0.0",
+   "50.0",
+   "ms simulation shown over 6 s playback \u00b7 rendering only, scie",
+   "0\u2192",
+   "1",
+   "50",
+   "0",
+   "0.0",
+   "01",
+   "02",
+   "03",
+   "04",
+   "DNp15",
+   "05",
+   "06",
+   "+0.000000000",
+   "R +0.000000 / L +0.000000",
+   "DNp15 \u00b7 R / L",
+   "R +0.000000 / L +0.000000",
+   "dnp15_state_eq",
+   "+0.000000",
+   "dnp15_state_eq",
+   "+0.000000",
+   "0 / 500 intervals clipped",
+   "10015",
+   "+0.000000",
+   "10016",
+   "+0.000000",
+   "10023",
+   "+0.000000",
+   "10034"
+  ],
+  "smallText": 81,
+  "fonts": [
+   "Arial",
+   "SFMono-Regular",
+   "monospace"
+  ],
+  "hiddenWrappers": 1,
+  "consoleErrors": [],
+  "nonGet": [],
+  "requestCount": 35,
+  "threeLike": 18,
+  "axe": [],
+  "shot": "scenario-course-replay--desktop--light.jpg"
+ },
+ {
+  "name": "scenario-course-replay",
+  "route": "/scenarios/EXPLORATORY_COURSE_CONTROL?replay=canonical",
+  "width": "desktop",
+  "theme": "dark",
+  "status": 200,
+  "ms": 6246,
+  "title": "NeuroFly \u00b7 Experiment Browser",
+  "lang": "en",
+  "h1": [
+   "Exploratory Course Control"
+  ],
+  "mainCount": 1,
+  "firstFocusable": "NeuroFlyconnectome experiment browser",
+  "hOverflow": false,
+  "scrollWidth": 1440,
+  "pageHeight": 1980,
+  "canvases": 1,
+  "bodyBg": "rgb(16, 20, 22)",
+  "navs": [
+   {
+    "label": "Primary navigation",
+    "visible": true,
+    "links": [
+     {
+      "text": "Experiments",
+      "href": "/experiments",
+      "current": null
+     },
+     {
+      "text": "Scenarios",
+      "href": "/scenarios",
+      "current": null
+     },
+     {
+      "text": "Morphology",
+      "href": "/morphology",
+      "current": null
+     },
+     {
+      "text": "Visual Lab",
+      "href": "/visual-lab/fly",
+      "current": null
+     }
+    ]
+   }
+  ],
+  "disabled": [],
+  "numeric": 113,
+  "numericSamples": [
+   "50 ms",
+   "0.000000000",
+   "+0.000332771",
+   "An external perturbation initiates neural-mediated counter-r",
+   "0.0",
+   "Model-space orientation +0.000000000. External perturbation ",
+   "MaleCNS selected chemical routes + evidence-supported qualit",
+   "0",
+   "500",
+   "0.0",
+   "50.0",
+   "ms simulation shown over 6 s playback \u00b7 rendering only, scie",
+   "0\u2192",
+   "1",
+   "50",
+   "0",
+   "0.0",
+   "01",
+   "02",
+   "03",
+   "04",
+   "DNp15",
+   "05",
+   "06",
+   "+0.000000000",
+   "R +0.000000 / L +0.000000",
+   "DNp15 \u00b7 R / L",
+   "R +0.000000 / L +0.000000",
+   "dnp15_state_eq",
+   "+0.000000",
+   "dnp15_state_eq",
+   "+0.000000",
+   "0 / 500 intervals clipped",
+   "10015",
+   "+0.000000",
+   "10016",
+   "+0.000000",
+   "10023",
+   "+0.000000",
+   "10034"
+  ],
+  "smallText": 81,
+  "fonts": [
+   "Arial",
+   "SFMono-Regular",
+   "monospace"
+  ],
+  "hiddenWrappers": 1,
+  "consoleErrors": [],
+  "nonGet": [],
+  "requestCount": 35,
+  "threeLike": 18,
+  "axe": [],
+  "shot": "scenario-course-replay--desktop--dark.jpg"
+ },
+ {
+  "name": "experiments",
+  "route": "/experiments",
+  "width": "phone",
+  "theme": "light",
+  "status": 200,
+  "ms": 1943,
+  "title": "Recorded experiments \u00b7 NeuroFly",
+  "lang": "en",
+  "h1": [
+   "Return tothe evidence."
+  ],
+  "mainCount": 1,
+  "firstFocusable": "Skip to content",
+  "hOverflow": false,
+  "scrollWidth": 390,
+  "pageHeight": 1754,
+  "canvases": 0,
+  "bodyBg": "rgb(16, 20, 22)",
+  "navs": [
+   {
+    "label": "Primary navigation",
+    "visible": false,
+    "links": [
+     {
+      "text": "Home",
+      "href": "/",
+      "current": null
+     },
+     {
+      "text": "Lab",
+      "href": "/visual-lab/arena",
+      "current": null
+     },
+     {
+      "text": "Experiments",
+      "href": "/scenarios",
+      "current": null
+     },
+     {
+      "text": "Science",
+      "href": "/science",
+      "current": null
+     }
+    ]
+   },
+   {
+    "label": "Mobile primary navigation",
+    "visible": true,
+    "links": [
+     {
+      "text": "Home",
+      "href": "/",
+      "current": null
+     },
+     {
+      "text": "Lab",
+      "href": "/visual-lab/arena",
+      "current": null
+     },
+     {
+      "text": "Experiments",
+      "href": "/scenarios",
+      "current": null
+     },
+     {
+      "text": "Science",
+      "href": "/science",
+      "current": null
+     },
+     {
+      "text": "Enter the Lab \u2197",
+      "href": "/visual-lab/arena",
+      "current": null
+     }
+    ]
+   },
+   {
+    "label": "Footer navigation",
+    "visible": true,
+    "links": [
+     {
+      "text": "Home",
+      "href": "/",
+      "current": null
+     },
+     {
+      "text": "Lab",
+      "href": "/visual-lab/arena",
+      "current": null
+     },
+     {
+      "text": "Experiments",
+      "href": "/scenarios",
+      "current": null
+     },
+     {
+      "text": "Science",
+      "href": "/science",
+      "current": null
+     },
+     {
+      "text": "Recorded experiments",
+      "href": "/experiments",
+      "current": null
+     },
+     {
+      "text": "Documentation \u2197",
+      "href": "https://github.com/a104174/NeuroFly/tree/main/docs/science",
+      "current": null
+     }
+    ]
+   }
+  ],
+  "disabled": [],
+  "numeric": 7,
+  "numericSamples": [
+   "1",
+   "80",
+   "63a73b7ea3ba10a5850b166598f134a2dc0a752bf93c550e2371ee8d5b1b",
+   "looming_giant_fiber_v1",
+   "1",
+   "male-cns:v1.0",
+   "0.1"
+  ],
+  "smallText": 6,
+  "fonts": [
+   "Arial"
+  ],
+  "hiddenWrappers": 1,
+  "consoleErrors": [],
+  "nonGet": [],
+  "requestCount": 14,
+  "threeLike": 9,
+  "axe": [],
+  "shot": "experiments--phone--light.jpg"
+ },
+ {
+  "name": "experiments",
+  "route": "/experiments",
+  "width": "phone",
+  "theme": "dark",
+  "status": 200,
+  "ms": 1920,
+  "title": "Recorded experiments \u00b7 NeuroFly",
+  "lang": "en",
+  "h1": [
+   "Return tothe evidence."
+  ],
+  "mainCount": 1,
+  "firstFocusable": "Skip to content",
+  "hOverflow": false,
+  "scrollWidth": 390,
+  "pageHeight": 1754,
+  "canvases": 0,
+  "bodyBg": "rgb(16, 20, 22)",
+  "navs": [
+   {
+    "label": "Primary navigation",
+    "visible": false,
+    "links": [
+     {
+      "text": "Home",
+      "href": "/",
+      "current": null
+     },
+     {
+      "text": "Lab",
+      "href": "/visual-lab/arena",
+      "current": null
+     },
+     {
+      "text": "Experiments",
+      "href": "/scenarios",
+      "current": null
+     },
+     {
+      "text": "Science",
+      "href": "/science",
+      "current": null
+     }
+    ]
+   },
+   {
+    "label": "Mobile primary navigation",
+    "visible": true,
+    "links": [
+     {
+      "text": "Home",
+      "href": "/",
+      "current": null
+     },
+     {
+      "text": "Lab",
+      "href": "/visual-lab/arena",
+      "current": null
+     },
+     {
+      "text": "Experiments",
+      "href": "/scenarios",
+      "current": null
+     },
+     {
+      "text": "Science",
+      "href": "/science",
+      "current": null
+     },
+     {
+      "text": "Enter the Lab \u2197",
+      "href": "/visual-lab/arena",
+      "current": null
+     }
+    ]
+   },
+   {
+    "label": "Footer navigation",
+    "visible": true,
+    "links": [
+     {
+      "text": "Home",
+      "href": "/",
+      "current": null
+     },
+     {
+      "text": "Lab",
+      "href": "/visual-lab/arena",
+      "current": null
+     },
+     {
+      "text": "Experiments",
+      "href": "/scenarios",
+      "current": null
+     },
+     {
+      "text": "Science",
+      "href": "/science",
+      "current": null
+     },
+     {
+      "text": "Recorded experiments",
+      "href": "/experiments",
+      "current": null
+     },
+     {
+      "text": "Documentation \u2197",
+      "href": "https://github.com/a104174/NeuroFly/tree/main/docs/science",
+      "current": null
+     }
+    ]
+   }
+  ],
+  "disabled": [],
+  "numeric": 7,
+  "numericSamples": [
+   "1",
+   "80",
+   "63a73b7ea3ba10a5850b166598f134a2dc0a752bf93c550e2371ee8d5b1b",
+   "looming_giant_fiber_v1",
+   "1",
+   "male-cns:v1.0",
+   "0.1"
+  ],
+  "smallText": 6,
+  "fonts": [
+   "Arial"
+  ],
+  "hiddenWrappers": 1,
+  "consoleErrors": [],
+  "nonGet": [],
+  "requestCount": 14,
+  "threeLike": 9,
+  "axe": [],
+  "shot": "experiments--phone--dark.jpg"
+ },
+ {
+  "name": "experiments",
+  "route": "/experiments",
+  "width": "desktop",
+  "theme": "light",
+  "status": 200,
+  "ms": 2076,
+  "title": "Recorded experiments \u00b7 NeuroFly",
+  "lang": "en",
+  "h1": [
+   "Return tothe evidence."
+  ],
+  "mainCount": 1,
+  "firstFocusable": "Skip to content",
+  "hOverflow": false,
+  "scrollWidth": 1440,
+  "pageHeight": 1429,
+  "canvases": 0,
+  "bodyBg": "rgb(16, 20, 22)",
+  "navs": [
+   {
+    "label": "Primary navigation",
+    "visible": true,
+    "links": [
+     {
+      "text": "Home",
+      "href": "/",
+      "current": null
+     },
+     {
+      "text": "Lab",
+      "href": "/visual-lab/arena",
+      "current": null
+     },
+     {
+      "text": "Experiments",
+      "href": "/scenarios",
+      "current": null
+     },
+     {
+      "text": "Science",
+      "href": "/science",
+      "current": null
+     }
+    ]
+   },
+   {
+    "label": "Mobile primary navigation",
+    "visible": false,
+    "links": [
+     {
+      "text": "Home",
+      "href": "/",
+      "current": null
+     },
+     {
+      "text": "Lab",
+      "href": "/visual-lab/arena",
+      "current": null
+     },
+     {
+      "text": "Experiments",
+      "href": "/scenarios",
+      "current": null
+     },
+     {
+      "text": "Science",
+      "href": "/science",
+      "current": null
+     },
+     {
+      "text": "Enter the Lab \u2197",
+      "href": "/visual-lab/arena",
+      "current": null
+     }
+    ]
+   },
+   {
+    "label": "Footer navigation",
+    "visible": true,
+    "links": [
+     {
+      "text": "Home",
+      "href": "/",
+      "current": null
+     },
+     {
+      "text": "Lab",
+      "href": "/visual-lab/arena",
+      "current": null
+     },
+     {
+      "text": "Experiments",
+      "href": "/scenarios",
+      "current": null
+     },
+     {
+      "text": "Science",
+      "href": "/science",
+      "current": null
+     },
+     {
+      "text": "Recorded experiments",
+      "href": "/experiments",
+      "current": null
+     },
+     {
+      "text": "Documentation \u2197",
+      "href": "https://github.com/a104174/NeuroFly/tree/main/docs/science",
+      "current": null
+     }
+    ]
+   }
+  ],
+  "disabled": [],
+  "numeric": 7,
+  "numericSamples": [
+   "1",
+   "80",
+   "63a73b7ea3ba10a5850b166598f134a2dc0a752bf93c550e2371ee8d5b1b",
+   "looming_giant_fiber_v1",
+   "1",
+   "male-cns:v1.0",
+   "0.1"
+  ],
+  "smallText": 4,
+  "fonts": [
+   "Arial"
+  ],
+  "hiddenWrappers": 1,
+  "consoleErrors": [],
+  "nonGet": [],
+  "requestCount": 14,
+  "threeLike": 9,
+  "axe": [],
+  "shot": "experiments--desktop--light.jpg"
+ },
+ {
+  "name": "experiments",
+  "route": "/experiments",
+  "width": "desktop",
+  "theme": "dark",
+  "status": 200,
+  "ms": 2020,
+  "title": "Recorded experiments \u00b7 NeuroFly",
+  "lang": "en",
+  "h1": [
+   "Return tothe evidence."
+  ],
+  "mainCount": 1,
+  "firstFocusable": "Skip to content",
+  "hOverflow": false,
+  "scrollWidth": 1440,
+  "pageHeight": 1429,
+  "canvases": 0,
+  "bodyBg": "rgb(16, 20, 22)",
+  "navs": [
+   {
+    "label": "Primary navigation",
+    "visible": true,
+    "links": [
+     {
+      "text": "Home",
+      "href": "/",
+      "current": null
+     },
+     {
+      "text": "Lab",
+      "href": "/visual-lab/arena",
+      "current": null
+     },
+     {
+      "text": "Experiments",
+      "href": "/scenarios",
+      "current": null
+     },
+     {
+      "text": "Science",
+      "href": "/science",
+      "current": null
+     }
+    ]
+   },
+   {
+    "label": "Mobile primary navigation",
+    "visible": false,
+    "links": [
+     {
+      "text": "Home",
+      "href": "/",
+      "current": null
+     },
+     {
+      "text": "Lab",
+      "href": "/visual-lab/arena",
+      "current": null
+     },
+     {
+      "text": "Experiments",
+      "href": "/scenarios",
+      "current": null
+     },
+     {
+      "text": "Science",
+      "href": "/science",
+      "current": null
+     },
+     {
+      "text": "Enter the Lab \u2197",
+      "href": "/visual-lab/arena",
+      "current": null
+     }
+    ]
+   },
+   {
+    "label": "Footer navigation",
+    "visible": true,
+    "links": [
+     {
+      "text": "Home",
+      "href": "/",
+      "current": null
+     },
+     {
+      "text": "Lab",
+      "href": "/visual-lab/arena",
+      "current": null
+     },
+     {
+      "text": "Experiments",
+      "href": "/scenarios",
+      "current": null
+     },
+     {
+      "text": "Science",
+      "href": "/science",
+      "current": null
+     },
+     {
+      "text": "Recorded experiments",
+      "href": "/experiments",
+      "current": null
+     },
+     {
+      "text": "Documentation \u2197",
+      "href": "https://github.com/a104174/NeuroFly/tree/main/docs/science",
+      "current": null
+     }
+    ]
+   }
+  ],
+  "disabled": [],
+  "numeric": 7,
+  "numericSamples": [
+   "1",
+   "80",
+   "63a73b7ea3ba10a5850b166598f134a2dc0a752bf93c550e2371ee8d5b1b",
+   "looming_giant_fiber_v1",
+   "1",
+   "male-cns:v1.0",
+   "0.1"
+  ],
+  "smallText": 4,
+  "fonts": [
+   "Arial"
+  ],
+  "hiddenWrappers": 1,
+  "consoleErrors": [],
+  "nonGet": [],
+  "requestCount": 14,
+  "threeLike": 9,
+  "axe": [],
+  "shot": "experiments--desktop--dark.jpg"
+ },
+ {
+  "name": "experiment-detail",
+  "route": "/experiments/63a73b7ea3ba10a5850b166598f134a2dc0a752bf93c550e2371ee8d5b1bf656",
+  "width": "phone",
+  "theme": "light",
+  "status": 200,
+  "ms": 2663,
+  "title": "NeuroFly \u00b7 Experiment Browser",
+  "lang": "en",
+  "h1": [
+   "looming_giant_fiber_v1"
+  ],
+  "mainCount": 1,
+  "firstFocusable": "NeuroFlyconnectome experiment browser",
+  "hOverflow": false,
+  "scrollWidth": 390,
+  "pageHeight": 5305,
+  "canvases": 1,
+  "bodyBg": "rgb(16, 20, 22)",
+  "navs": [
+   {
+    "label": "Primary navigation",
+    "visible": true,
+    "links": [
+     {
+      "text": "Experiments",
+      "href": "/experiments",
+      "current": null
+     },
+     {
+      "text": "Scenarios",
+      "href": "/scenarios",
+      "current": null
+     },
+     {
+      "text": "Morphology",
+      "href": "/morphology",
+      "current": null
+     },
+     {
+      "text": "Visual Lab",
+      "href": "/visual-lab/fly",
+      "current": null
+     }
+    ]
+   }
+  ],
+  "disabled": [],
+  "numeric": 88,
+  "numericSamples": [
+   "looming_giant_fiber_v1",
+   "run across the selected LC4/LPLC2 \u2192 DNp01 circuit.",
+   "male-cns:v1.0",
+   "looming_giant_fiber_v1",
+   "1",
+   "direct_visual_to_dnp01_v1",
+   "level_p_instantaneous_bounded_v1",
+   "phase2e_v1",
+   "phase2b_v1",
+   "63a73b7ea3ba10a5850b166598f134a2dc0a752bf93c550e2371ee8d5b1b",
+   "ui_smoke_phase2f_reference_v1",
+   "8af5a3f50f0cd9fee65ce62e5421c873e95a48e32333de475545c1be7f13",
+   "80",
+   "0.1",
+   "G_LC4",
+   "20",
+   "G_LPLC2",
+   "20",
+   "1",
+   "0.4",
+   "0.005",
+   "LC4",
+   "126",
+   "756",
+   "126",
+   "13.9 ms",
+   "0.9754",
+   "19.5084",
+   "LPLC2",
+   "185",
+   "370",
+   "185",
+   "40 ms",
+   "0.6977",
+   "13.9546",
+   "DNp01 readouts",
+   "DNp01 \u00b7",
+   "10001",
+   "1",
+   "69.3 ms"
+  ],
+  "smallText": 120,
+  "fonts": [
+   "Arial",
+   "SFMono-Regular"
+  ],
+  "hiddenWrappers": 1,
+  "consoleErrors": [],
+  "nonGet": [],
+  "requestCount": 42,
+  "threeLike": 23,
+  "axe": [
+   {
+    "id": "aria-prohibited-attr",
+    "impact": "serious",
+    "help": "Elements must only use permitted ARIA attributes",
+    "nodes": 1,
+    "targets": [
+     ".playback-canvas-shell"
+    ]
+   }
+  ],
+  "shot": "experiment-detail--phone--light.jpg"
+ },
+ {
+  "name": "experiment-detail",
+  "route": "/experiments/63a73b7ea3ba10a5850b166598f134a2dc0a752bf93c550e2371ee8d5b1bf656",
+  "width": "phone",
+  "theme": "dark",
+  "status": 200,
+  "ms": 2619,
+  "title": "NeuroFly \u00b7 Experiment Browser",
+  "lang": "en",
+  "h1": [
+   "looming_giant_fiber_v1"
+  ],
+  "mainCount": 1,
+  "firstFocusable": "NeuroFlyconnectome experiment browser",
+  "hOverflow": false,
+  "scrollWidth": 390,
+  "pageHeight": 5305,
+  "canvases": 1,
+  "bodyBg": "rgb(16, 20, 22)",
+  "navs": [
+   {
+    "label": "Primary navigation",
+    "visible": true,
+    "links": [
+     {
+      "text": "Experiments",
+      "href": "/experiments",
+      "current": null
+     },
+     {
+      "text": "Scenarios",
+      "href": "/scenarios",
+      "current": null
+     },
+     {
+      "text": "Morphology",
+      "href": "/morphology",
+      "current": null
+     },
+     {
+      "text": "Visual Lab",
+      "href": "/visual-lab/fly",
+      "current": null
+     }
+    ]
+   }
+  ],
+  "disabled": [],
+  "numeric": 88,
+  "numericSamples": [
+   "looming_giant_fiber_v1",
+   "run across the selected LC4/LPLC2 \u2192 DNp01 circuit.",
+   "male-cns:v1.0",
+   "looming_giant_fiber_v1",
+   "1",
+   "direct_visual_to_dnp01_v1",
+   "level_p_instantaneous_bounded_v1",
+   "phase2e_v1",
+   "phase2b_v1",
+   "63a73b7ea3ba10a5850b166598f134a2dc0a752bf93c550e2371ee8d5b1b",
+   "ui_smoke_phase2f_reference_v1",
+   "8af5a3f50f0cd9fee65ce62e5421c873e95a48e32333de475545c1be7f13",
+   "80",
+   "0.1",
+   "G_LC4",
+   "20",
+   "G_LPLC2",
+   "20",
+   "1",
+   "0.4",
+   "0.005",
+   "LC4",
+   "126",
+   "756",
+   "126",
+   "13.9 ms",
+   "0.9754",
+   "19.5084",
+   "LPLC2",
+   "185",
+   "370",
+   "185",
+   "40 ms",
+   "0.6977",
+   "13.9546",
+   "DNp01 readouts",
+   "DNp01 \u00b7",
+   "10001",
+   "1",
+   "69.3 ms"
+  ],
+  "smallText": 120,
+  "fonts": [
+   "Arial",
+   "SFMono-Regular"
+  ],
+  "hiddenWrappers": 1,
+  "consoleErrors": [],
+  "nonGet": [],
+  "requestCount": 42,
+  "threeLike": 23,
+  "axe": [
+   {
+    "id": "aria-prohibited-attr",
+    "impact": "serious",
+    "help": "Elements must only use permitted ARIA attributes",
+    "nodes": 1,
+    "targets": [
+     ".playback-canvas-shell"
+    ]
+   }
+  ],
+  "shot": "experiment-detail--phone--dark.jpg"
+ },
+ {
+  "name": "experiment-detail",
+  "route": "/experiments/63a73b7ea3ba10a5850b166598f134a2dc0a752bf93c550e2371ee8d5b1bf656",
+  "width": "desktop",
+  "theme": "light",
+  "status": 200,
+  "ms": 2743,
+  "title": "NeuroFly \u00b7 Experiment Browser",
+  "lang": "en",
+  "h1": [
+   "looming_giant_fiber_v1"
+  ],
+  "mainCount": 1,
+  "firstFocusable": "NeuroFlyconnectome experiment browser",
+  "hOverflow": false,
+  "scrollWidth": 1440,
+  "pageHeight": 3259,
+  "canvases": 1,
+  "bodyBg": "rgb(16, 20, 22)",
+  "navs": [
+   {
+    "label": "Primary navigation",
+    "visible": true,
+    "links": [
+     {
+      "text": "Experiments",
+      "href": "/experiments",
+      "current": null
+     },
+     {
+      "text": "Scenarios",
+      "href": "/scenarios",
+      "current": null
+     },
+     {
+      "text": "Morphology",
+      "href": "/morphology",
+      "current": null
+     },
+     {
+      "text": "Visual Lab",
+      "href": "/visual-lab/fly",
+      "current": null
+     }
+    ]
+   }
+  ],
+  "disabled": [],
+  "numeric": 88,
+  "numericSamples": [
+   "looming_giant_fiber_v1",
+   "run across the selected LC4/LPLC2 \u2192 DNp01 circuit.",
+   "male-cns:v1.0",
+   "looming_giant_fiber_v1",
+   "1",
+   "direct_visual_to_dnp01_v1",
+   "level_p_instantaneous_bounded_v1",
+   "phase2e_v1",
+   "phase2b_v1",
+   "63a73b7ea3ba10a5850b166598f134a2dc0a752bf93c550e2371ee8d5b1b",
+   "ui_smoke_phase2f_reference_v1",
+   "8af5a3f50f0cd9fee65ce62e5421c873e95a48e32333de475545c1be7f13",
+   "80",
+   "0.1",
+   "G_LC4",
+   "20",
+   "G_LPLC2",
+   "20",
+   "1",
+   "0.4",
+   "0.005",
+   "LC4",
+   "126",
+   "756",
+   "126",
+   "13.9 ms",
+   "0.9754",
+   "19.5084",
+   "LPLC2",
+   "185",
+   "370",
+   "185",
+   "40 ms",
+   "0.6977",
+   "13.9546",
+   "DNp01 readouts",
+   "DNp01 \u00b7",
+   "10001",
+   "1",
+   "69.3 ms"
+  ],
+  "smallText": 120,
+  "fonts": [
+   "Arial",
+   "SFMono-Regular"
+  ],
+  "hiddenWrappers": 1,
+  "consoleErrors": [],
+  "nonGet": [],
+  "requestCount": 42,
+  "threeLike": 23,
+  "axe": [
+   {
+    "id": "aria-prohibited-attr",
+    "impact": "serious",
+    "help": "Elements must only use permitted ARIA attributes",
+    "nodes": 1,
+    "targets": [
+     ".playback-canvas-shell"
+    ]
+   }
+  ],
+  "shot": "experiment-detail--desktop--light.jpg"
+ },
+ {
+  "name": "experiment-detail",
+  "route": "/experiments/63a73b7ea3ba10a5850b166598f134a2dc0a752bf93c550e2371ee8d5b1bf656",
+  "width": "desktop",
+  "theme": "dark",
+  "status": 200,
+  "ms": 2642,
+  "title": "NeuroFly \u00b7 Experiment Browser",
+  "lang": "en",
+  "h1": [
+   "looming_giant_fiber_v1"
+  ],
+  "mainCount": 1,
+  "firstFocusable": "NeuroFlyconnectome experiment browser",
+  "hOverflow": false,
+  "scrollWidth": 1440,
+  "pageHeight": 3259,
+  "canvases": 1,
+  "bodyBg": "rgb(16, 20, 22)",
+  "navs": [
+   {
+    "label": "Primary navigation",
+    "visible": true,
+    "links": [
+     {
+      "text": "Experiments",
+      "href": "/experiments",
+      "current": null
+     },
+     {
+      "text": "Scenarios",
+      "href": "/scenarios",
+      "current": null
+     },
+     {
+      "text": "Morphology",
+      "href": "/morphology",
+      "current": null
+     },
+     {
+      "text": "Visual Lab",
+      "href": "/visual-lab/fly",
+      "current": null
+     }
+    ]
+   }
+  ],
+  "disabled": [],
+  "numeric": 88,
+  "numericSamples": [
+   "looming_giant_fiber_v1",
+   "run across the selected LC4/LPLC2 \u2192 DNp01 circuit.",
+   "male-cns:v1.0",
+   "looming_giant_fiber_v1",
+   "1",
+   "direct_visual_to_dnp01_v1",
+   "level_p_instantaneous_bounded_v1",
+   "phase2e_v1",
+   "phase2b_v1",
+   "63a73b7ea3ba10a5850b166598f134a2dc0a752bf93c550e2371ee8d5b1b",
+   "ui_smoke_phase2f_reference_v1",
+   "8af5a3f50f0cd9fee65ce62e5421c873e95a48e32333de475545c1be7f13",
+   "80",
+   "0.1",
+   "G_LC4",
+   "20",
+   "G_LPLC2",
+   "20",
+   "1",
+   "0.4",
+   "0.005",
+   "LC4",
+   "126",
+   "756",
+   "126",
+   "13.9 ms",
+   "0.9754",
+   "19.5084",
+   "LPLC2",
+   "185",
+   "370",
+   "185",
+   "40 ms",
+   "0.6977",
+   "13.9546",
+   "DNp01 readouts",
+   "DNp01 \u00b7",
+   "10001",
+   "1",
+   "69.3 ms"
+  ],
+  "smallText": 120,
+  "fonts": [
+   "Arial",
+   "SFMono-Regular"
+  ],
+  "hiddenWrappers": 1,
+  "consoleErrors": [],
+  "nonGet": [],
+  "requestCount": 42,
+  "threeLike": 23,
+  "axe": [
+   {
+    "id": "aria-prohibited-attr",
+    "impact": "serious",
+    "help": "Elements must only use permitted ARIA attributes",
+    "nodes": 1,
+    "targets": [
+     ".playback-canvas-shell"
+    ]
+   }
+  ],
+  "shot": "experiment-detail--desktop--dark.jpg"
+ },
+ {
+  "name": "cockpit",
+  "route": "/experiments/63a73b7ea3ba10a5850b166598f134a2dc0a752bf93c550e2371ee8d5b1bf656/cockpit",
+  "width": "phone",
+  "theme": "light",
+  "status": 200,
+  "ms": 8817,
+  "title": "NeuroFly \u00b7 Experiment Browser",
+  "lang": "en",
+  "h1": [
+   "Persisted experiment looming_giant_fiber_v1"
+  ],
+  "mainCount": 1,
+  "firstFocusable": "NeuroFlyconnectome experiment browser",
+  "hOverflow": false,
+  "scrollWidth": 390,
+  "pageHeight": 2582,
+  "canvases": 2,
+  "bodyBg": "rgb(16, 20, 22)",
+  "navs": [
+   {
+    "label": "Primary navigation",
+    "visible": true,
+    "links": [
+     {
+      "text": "Experiments",
+      "href": "/experiments",
+      "current": null
+     },
+     {
+      "text": "Scenarios",
+      "href": "/scenarios",
+      "current": null
+     },
+     {
+      "text": "Morphology",
+      "href": "/morphology",
+      "current": null
+     },
+     {
+      "text": "Visual Lab",
+      "href": "/visual-lab/fly",
+      "current": null
+     }
+    ]
+   }
+  ],
+  "disabled": [],
+  "numeric": 143,
+  "numericSamples": [
+   "looming_giant_fiber_v1",
+   "63a73b7ea3ba",
+   "male-cns:v1.0",
+   "0.00",
+   "01 / WORLD + STIMULUS",
+   "0.000",
+   "0.1993",
+   "neurofly_fly_visual_v1 \u00b7 presentation only",
+   "02 / MALECNS SOURCE STRUCTURE",
+   "DNp01",
+   "10001",
+   "DNp01",
+   "10010",
+   "LPLC2",
+   "11498",
+   "\u00b7 2 components",
+   "LC4",
+   "12032",
+   "LPLC2",
+   "14465",
+   "LC4",
+   "16128",
+   "DNp01 is a point-neuron model: body-level state is mapped un",
+   "LC4",
+   "13.2890",
+   "0.000",
+   "0.100",
+   "LPLC2",
+   "6.6519",
+   "0.000",
+   "0.100",
+   "DNp01 BODY",
+   "10001",
+   "0",
+   "-52.0000",
+   "0.0000",
+   "0.000",
+   "0.000",
+   "DNp01 BODY",
+   "10010"
+  ],
+  "smallText": 134,
+  "fonts": [
+   "Arial",
+   "SFMono-Regular"
+  ],
+  "hiddenWrappers": 1,
+  "consoleErrors": [],
+  "nonGet": [],
+  "requestCount": 42,
+  "threeLike": 21,
+  "axe": [
+   {
+    "id": "aria-prohibited-attr",
+    "impact": "serious",
+    "help": "Elements must only use permitted ARIA attributes",
+    "nodes": 1,
+    "targets": [
+     ".morphology-canvas-shell > div:nth-child(1)"
+    ]
+   },
+   {
+    "id": "color-contrast",
+    "impact": "serious",
+    "help": "Elements must meet minimum color contrast ratio thresholds",
+    "nodes": 8,
+    "targets": [
+     ".cockpit-event-future:nth-child(2) > button > time",
+     ".cockpit-event-future:nth-child(2) > button > small",
+     ".cockpit-event-future:nth-child(3) > button > time",
+     ".cockpit-event-future:nth-child(3) > button > small"
+    ]
+   },
+   {
+    "id": "target-size",
+    "impact": "serious",
+    "help": "All touch targets must be 24px large, or leave sufficient space",
+    "nodes": 2,
+    "targets": [
+     ".morphology-compact-details:nth-child(4) > summary",
+     ".morphology-compact-details:nth-child(5) > summary"
+    ]
+   }
+  ],
+  "shot": "cockpit--phone--light.jpg"
+ },
+ {
+  "name": "cockpit",
+  "route": "/experiments/63a73b7ea3ba10a5850b166598f134a2dc0a752bf93c550e2371ee8d5b1bf656/cockpit",
+  "width": "phone",
+  "theme": "dark",
+  "status": 200,
+  "ms": 8678,
+  "title": "NeuroFly \u00b7 Experiment Browser",
+  "lang": "en",
+  "h1": [
+   "Persisted experiment looming_giant_fiber_v1"
+  ],
+  "mainCount": 1,
+  "firstFocusable": "NeuroFlyconnectome experiment browser",
+  "hOverflow": false,
+  "scrollWidth": 390,
+  "pageHeight": 2582,
+  "canvases": 2,
+  "bodyBg": "rgb(16, 20, 22)",
+  "navs": [
+   {
+    "label": "Primary navigation",
+    "visible": true,
+    "links": [
+     {
+      "text": "Experiments",
+      "href": "/experiments",
+      "current": null
+     },
+     {
+      "text": "Scenarios",
+      "href": "/scenarios",
+      "current": null
+     },
+     {
+      "text": "Morphology",
+      "href": "/morphology",
+      "current": null
+     },
+     {
+      "text": "Visual Lab",
+      "href": "/visual-lab/fly",
+      "current": null
+     }
+    ]
+   }
+  ],
+  "disabled": [],
+  "numeric": 143,
+  "numericSamples": [
+   "looming_giant_fiber_v1",
+   "63a73b7ea3ba",
+   "male-cns:v1.0",
+   "0.00",
+   "01 / WORLD + STIMULUS",
+   "0.000",
+   "0.1993",
+   "neurofly_fly_visual_v1 \u00b7 presentation only",
+   "02 / MALECNS SOURCE STRUCTURE",
+   "DNp01",
+   "10001",
+   "DNp01",
+   "10010",
+   "LPLC2",
+   "11498",
+   "\u00b7 2 components",
+   "LC4",
+   "12032",
+   "LPLC2",
+   "14465",
+   "LC4",
+   "16128",
+   "DNp01 is a point-neuron model: body-level state is mapped un",
+   "LC4",
+   "13.2890",
+   "0.000",
+   "0.100",
+   "LPLC2",
+   "6.6519",
+   "0.000",
+   "0.100",
+   "DNp01 BODY",
+   "10001",
+   "0",
+   "-52.0000",
+   "0.0000",
+   "0.000",
+   "0.000",
+   "DNp01 BODY",
+   "10010"
+  ],
+  "smallText": 134,
+  "fonts": [
+   "Arial",
+   "SFMono-Regular"
+  ],
+  "hiddenWrappers": 1,
+  "consoleErrors": [],
+  "nonGet": [],
+  "requestCount": 42,
+  "threeLike": 21,
+  "axe": [
+   {
+    "id": "aria-prohibited-attr",
+    "impact": "serious",
+    "help": "Elements must only use permitted ARIA attributes",
+    "nodes": 1,
+    "targets": [
+     ".morphology-canvas-shell > div:nth-child(1)"
+    ]
+   },
+   {
+    "id": "color-contrast",
+    "impact": "serious",
+    "help": "Elements must meet minimum color contrast ratio thresholds",
+    "nodes": 8,
+    "targets": [
+     ".cockpit-event-future:nth-child(2) > button > time",
+     ".cockpit-event-future:nth-child(2) > button > small",
+     ".cockpit-event-future:nth-child(3) > button > time",
+     ".cockpit-event-future:nth-child(3) > button > small"
+    ]
+   },
+   {
+    "id": "target-size",
+    "impact": "serious",
+    "help": "All touch targets must be 24px large, or leave sufficient space",
+    "nodes": 2,
+    "targets": [
+     ".morphology-compact-details:nth-child(4) > summary",
+     ".morphology-compact-details:nth-child(5) > summary"
+    ]
+   }
+  ],
+  "shot": "cockpit--phone--dark.jpg"
+ },
+ {
+  "name": "cockpit",
+  "route": "/experiments/63a73b7ea3ba10a5850b166598f134a2dc0a752bf93c550e2371ee8d5b1bf656/cockpit",
+  "width": "desktop",
+  "theme": "light",
+  "status": 200,
+  "ms": 8842,
+  "title": "NeuroFly \u00b7 Experiment Browser",
+  "lang": "en",
+  "h1": [
+   "Persisted experiment looming_giant_fiber_v1"
+  ],
+  "mainCount": 1,
+  "firstFocusable": "NeuroFlyconnectome experiment browser",
+  "hOverflow": false,
+  "scrollWidth": 1440,
+  "pageHeight": 900,
+  "canvases": 2,
+  "bodyBg": "rgb(16, 20, 22)",
+  "navs": [
+   {
+    "label": "Primary navigation",
+    "visible": true,
+    "links": [
+     {
+      "text": "Experiments",
+      "href": "/experiments",
+      "current": null
+     },
+     {
+      "text": "Scenarios",
+      "href": "/scenarios",
+      "current": null
+     },
+     {
+      "text": "Morphology",
+      "href": "/morphology",
+      "current": null
+     },
+     {
+      "text": "Visual Lab",
+      "href": "/visual-lab/fly",
+      "current": null
+     }
+    ]
+   }
+  ],
+  "disabled": [],
+  "numeric": 143,
+  "numericSamples": [
+   "looming_giant_fiber_v1",
+   "63a73b7ea3ba",
+   "male-cns:v1.0",
+   "0.00",
+   "01 / WORLD + STIMULUS",
+   "0.000",
+   "0.1993",
+   "neurofly_fly_visual_v1 \u00b7 presentation only",
+   "02 / MALECNS SOURCE STRUCTURE",
+   "DNp01",
+   "10001",
+   "DNp01",
+   "10010",
+   "LPLC2",
+   "11498",
+   "\u00b7 2 components",
+   "LC4",
+   "12032",
+   "LPLC2",
+   "14465",
+   "LC4",
+   "16128",
+   "DNp01 is a point-neuron model: body-level state is mapped un",
+   "LC4",
+   "13.2890",
+   "0.000",
+   "0.100",
+   "LPLC2",
+   "6.6519",
+   "0.000",
+   "0.100",
+   "DNp01 BODY",
+   "10001",
+   "0",
+   "-52.0000",
+   "0.0000",
+   "0.000",
+   "0.000",
+   "DNp01 BODY",
+   "10010"
+  ],
+  "smallText": 134,
+  "fonts": [
+   "Arial",
+   "SFMono-Regular"
+  ],
+  "hiddenWrappers": 1,
+  "consoleErrors": [],
+  "nonGet": [],
+  "requestCount": 42,
+  "threeLike": 21,
+  "axe": [
+   {
+    "id": "aria-prohibited-attr",
+    "impact": "serious",
+    "help": "Elements must only use permitted ARIA attributes",
+    "nodes": 1,
+    "targets": [
+     ".morphology-canvas-shell > div:nth-child(1)"
+    ]
+   },
+   {
+    "id": "color-contrast",
+    "impact": "serious",
+    "help": "Elements must meet minimum color contrast ratio thresholds",
+    "nodes": 8,
+    "targets": [
+     ".cockpit-event-future:nth-child(2) > button > time",
+     ".cockpit-event-future:nth-child(2) > button > small",
+     ".cockpit-event-future:nth-child(3) > button > time",
+     ".cockpit-event-future:nth-child(3) > button > small"
+    ]
+   }
+  ],
+  "shot": "cockpit--desktop--light.jpg"
+ },
+ {
+  "name": "cockpit",
+  "route": "/experiments/63a73b7ea3ba10a5850b166598f134a2dc0a752bf93c550e2371ee8d5b1bf656/cockpit",
+  "width": "desktop",
+  "theme": "dark",
+  "status": 200,
+  "ms": 8804,
+  "title": "NeuroFly \u00b7 Experiment Browser",
+  "lang": "en",
+  "h1": [
+   "Persisted experiment looming_giant_fiber_v1"
+  ],
+  "mainCount": 1,
+  "firstFocusable": "NeuroFlyconnectome experiment browser",
+  "hOverflow": false,
+  "scrollWidth": 1440,
+  "pageHeight": 900,
+  "canvases": 2,
+  "bodyBg": "rgb(16, 20, 22)",
+  "navs": [
+   {
+    "label": "Primary navigation",
+    "visible": true,
+    "links": [
+     {
+      "text": "Experiments",
+      "href": "/experiments",
+      "current": null
+     },
+     {
+      "text": "Scenarios",
+      "href": "/scenarios",
+      "current": null
+     },
+     {
+      "text": "Morphology",
+      "href": "/morphology",
+      "current": null
+     },
+     {
+      "text": "Visual Lab",
+      "href": "/visual-lab/fly",
+      "current": null
+     }
+    ]
+   }
+  ],
+  "disabled": [],
+  "numeric": 143,
+  "numericSamples": [
+   "looming_giant_fiber_v1",
+   "63a73b7ea3ba",
+   "male-cns:v1.0",
+   "0.00",
+   "01 / WORLD + STIMULUS",
+   "0.000",
+   "0.1993",
+   "neurofly_fly_visual_v1 \u00b7 presentation only",
+   "02 / MALECNS SOURCE STRUCTURE",
+   "DNp01",
+   "10001",
+   "DNp01",
+   "10010",
+   "LPLC2",
+   "11498",
+   "\u00b7 2 components",
+   "LC4",
+   "12032",
+   "LPLC2",
+   "14465",
+   "LC4",
+   "16128",
+   "DNp01 is a point-neuron model: body-level state is mapped un",
+   "LC4",
+   "13.2890",
+   "0.000",
+   "0.100",
+   "LPLC2",
+   "6.6519",
+   "0.000",
+   "0.100",
+   "DNp01 BODY",
+   "10001",
+   "0",
+   "-52.0000",
+   "0.0000",
+   "0.000",
+   "0.000",
+   "DNp01 BODY",
+   "10010"
+  ],
+  "smallText": 134,
+  "fonts": [
+   "Arial",
+   "SFMono-Regular"
+  ],
+  "hiddenWrappers": 1,
+  "consoleErrors": [],
+  "nonGet": [],
+  "requestCount": 42,
+  "threeLike": 21,
+  "axe": [
+   {
+    "id": "aria-prohibited-attr",
+    "impact": "serious",
+    "help": "Elements must only use permitted ARIA attributes",
+    "nodes": 1,
+    "targets": [
+     ".morphology-canvas-shell > div:nth-child(1)"
+    ]
+   },
+   {
+    "id": "color-contrast",
+    "impact": "serious",
+    "help": "Elements must meet minimum color contrast ratio thresholds",
+    "nodes": 8,
+    "targets": [
+     ".cockpit-event-future:nth-child(2) > button > time",
+     ".cockpit-event-future:nth-child(2) > button > small",
+     ".cockpit-event-future:nth-child(3) > button > time",
+     ".cockpit-event-future:nth-child(3) > button > small"
+    ]
+   }
+  ],
+  "shot": "cockpit--desktop--dark.jpg"
+ },
+ {
+  "name": "morphology",
+  "route": "/morphology",
+  "width": "phone",
+  "theme": "light",
+  "status": 200,
+  "ms": 2152,
+  "title": "NeuroFly \u00b7 Experiment Browser",
+  "lang": "en",
+  "h1": [
+   "Raw bounded morphology samples"
+  ],
+  "mainCount": 1,
+  "firstFocusable": "NeuroFlyconnectome experiment browser",
+  "hOverflow": false,
+  "scrollWidth": 390,
+  "pageHeight": 844,
+  "canvases": 0,
+  "bodyBg": "rgb(16, 20, 22)",
+  "navs": [
+   {
+    "label": "Primary navigation",
+    "visible": true,
+    "links": [
+     {
+      "text": "Experiments",
+      "href": "/experiments",
+      "current": null
+     },
+     {
+      "text": "Scenarios",
+      "href": "/scenarios",
+      "current": null
+     },
+     {
+      "text": "Morphology",
+      "href": "/morphology",
+      "current": null
+     },
+     {
+      "text": "Visual Lab",
+      "href": "/visual-lab/fly",
+      "current": null
+     }
+    ]
+   }
+  ],
+  "disabled": [],
+  "numeric": 10,
+  "numericSamples": [
+   "DNp01",
+   "2",
+   "male-cns:v1.0",
+   "male_cns_v1_em_native_voxels",
+   "719426f0cd2db586",
+   "DNp01 + LPLC2 + LC4",
+   "6",
+   "male-cns:v1.0",
+   "male_cns_v1_em_native_voxels",
+   "a3f090d5309d9ede"
+  ],
+  "smallText": 7,
+  "fonts": [
+   "Arial",
+   "SFMono-Regular"
+  ],
+  "hiddenWrappers": 1,
+  "consoleErrors": [],
+  "nonGet": [],
+  "requestCount": 33,
+  "threeLike": 14,
+  "axe": [],
+  "shot": "morphology--phone--light.jpg"
+ },
+ {
+  "name": "morphology",
+  "route": "/morphology",
+  "width": "phone",
+  "theme": "dark",
+  "status": 200,
+  "ms": 2218,
+  "title": "NeuroFly \u00b7 Experiment Browser",
+  "lang": "en",
+  "h1": [
+   "Raw bounded morphology samples"
+  ],
+  "mainCount": 1,
+  "firstFocusable": "NeuroFlyconnectome experiment browser",
+  "hOverflow": false,
+  "scrollWidth": 390,
+  "pageHeight": 844,
+  "canvases": 0,
+  "bodyBg": "rgb(16, 20, 22)",
+  "navs": [
+   {
+    "label": "Primary navigation",
+    "visible": true,
+    "links": [
+     {
+      "text": "Experiments",
+      "href": "/experiments",
+      "current": null
+     },
+     {
+      "text": "Scenarios",
+      "href": "/scenarios",
+      "current": null
+     },
+     {
+      "text": "Morphology",
+      "href": "/morphology",
+      "current": null
+     },
+     {
+      "text": "Visual Lab",
+      "href": "/visual-lab/fly",
+      "current": null
+     }
+    ]
+   }
+  ],
+  "disabled": [],
+  "numeric": 10,
+  "numericSamples": [
+   "DNp01",
+   "2",
+   "male-cns:v1.0",
+   "male_cns_v1_em_native_voxels",
+   "719426f0cd2db586",
+   "DNp01 + LPLC2 + LC4",
+   "6",
+   "male-cns:v1.0",
+   "male_cns_v1_em_native_voxels",
+   "a3f090d5309d9ede"
+  ],
+  "smallText": 7,
+  "fonts": [
+   "Arial",
+   "SFMono-Regular"
+  ],
+  "hiddenWrappers": 1,
+  "consoleErrors": [],
+  "nonGet": [],
+  "requestCount": 33,
+  "threeLike": 14,
+  "axe": [],
+  "shot": "morphology--phone--dark.jpg"
+ },
+ {
+  "name": "morphology",
+  "route": "/morphology",
+  "width": "desktop",
+  "theme": "light",
+  "status": 200,
+  "ms": 2231,
+  "title": "NeuroFly \u00b7 Experiment Browser",
+  "lang": "en",
+  "h1": [
+   "Raw bounded morphology samples"
+  ],
+  "mainCount": 1,
+  "firstFocusable": "NeuroFlyconnectome experiment browser",
+  "hOverflow": false,
+  "scrollWidth": 1440,
+  "pageHeight": 900,
+  "canvases": 0,
+  "bodyBg": "rgb(16, 20, 22)",
+  "navs": [
+   {
+    "label": "Primary navigation",
+    "visible": true,
+    "links": [
+     {
+      "text": "Experiments",
+      "href": "/experiments",
+      "current": null
+     },
+     {
+      "text": "Scenarios",
+      "href": "/scenarios",
+      "current": null
+     },
+     {
+      "text": "Morphology",
+      "href": "/morphology",
+      "current": null
+     },
+     {
+      "text": "Visual Lab",
+      "href": "/visual-lab/fly",
+      "current": null
+     }
+    ]
+   }
+  ],
+  "disabled": [],
+  "numeric": 10,
+  "numericSamples": [
+   "DNp01",
+   "2",
+   "male-cns:v1.0",
+   "male_cns_v1_em_native_voxels",
+   "719426f0cd2db586",
+   "DNp01 + LPLC2 + LC4",
+   "6",
+   "male-cns:v1.0",
+   "male_cns_v1_em_native_voxels",
+   "a3f090d5309d9ede"
+  ],
+  "smallText": 7,
+  "fonts": [
+   "Arial",
+   "SFMono-Regular"
+  ],
+  "hiddenWrappers": 1,
+  "consoleErrors": [],
+  "nonGet": [],
+  "requestCount": 33,
+  "threeLike": 14,
+  "axe": [],
+  "shot": "morphology--desktop--light.jpg"
+ },
+ {
+  "name": "morphology",
+  "route": "/morphology",
+  "width": "desktop",
+  "theme": "dark",
+  "status": 200,
+  "ms": 2267,
+  "title": "NeuroFly \u00b7 Experiment Browser",
+  "lang": "en",
+  "h1": [
+   "Raw bounded morphology samples"
+  ],
+  "mainCount": 1,
+  "firstFocusable": "NeuroFlyconnectome experiment browser",
+  "hOverflow": false,
+  "scrollWidth": 1440,
+  "pageHeight": 900,
+  "canvases": 0,
+  "bodyBg": "rgb(16, 20, 22)",
+  "navs": [
+   {
+    "label": "Primary navigation",
+    "visible": true,
+    "links": [
+     {
+      "text": "Experiments",
+      "href": "/experiments",
+      "current": null
+     },
+     {
+      "text": "Scenarios",
+      "href": "/scenarios",
+      "current": null
+     },
+     {
+      "text": "Morphology",
+      "href": "/morphology",
+      "current": null
+     },
+     {
+      "text": "Visual Lab",
+      "href": "/visual-lab/fly",
+      "current": null
+     }
+    ]
+   }
+  ],
+  "disabled": [],
+  "numeric": 10,
+  "numericSamples": [
+   "DNp01",
+   "2",
+   "male-cns:v1.0",
+   "male_cns_v1_em_native_voxels",
+   "719426f0cd2db586",
+   "DNp01 + LPLC2 + LC4",
+   "6",
+   "male-cns:v1.0",
+   "male_cns_v1_em_native_voxels",
+   "a3f090d5309d9ede"
+  ],
+  "smallText": 7,
+  "fonts": [
+   "Arial",
+   "SFMono-Regular"
+  ],
+  "hiddenWrappers": 1,
+  "consoleErrors": [],
+  "nonGet": [],
+  "requestCount": 33,
+  "threeLike": 14,
+  "axe": [],
+  "shot": "morphology--desktop--dark.jpg"
+ },
+ {
+  "name": "morphology-detail",
+  "route": "/morphology/719426f0cd2db586b149943483abfe6519d45c4a39fb48aa1f4a566c514c84f3",
+  "width": "phone",
+  "theme": "light",
+  "status": 200,
+  "ms": 6513,
+  "title": "NeuroFly \u00b7 Experiment Browser",
+  "lang": "en",
+  "h1": [
+   "This view could not load."
+  ],
+  "mainCount": 1,
+  "firstFocusable": "NeuroFlyconnectome experiment browser",
+  "hOverflow": false,
+  "scrollWidth": 390,
+  "pageHeight": 844,
+  "canvases": 0,
+  "bodyBg": "rgb(16, 20, 22)",
+  "navs": [
+   {
+    "label": "Primary navigation",
+    "visible": true,
+    "links": [
+     {
+      "text": "Experiments",
+      "href": "/experiments",
+      "current": null
+     },
+     {
+      "text": "Scenarios",
+      "href": "/scenarios",
+      "current": null
+     },
+     {
+      "text": "Morphology",
+      "href": "/morphology",
+      "current": null
+     },
+     {
+      "text": "Visual Lab",
+      "href": "/visual-lab/fly",
+      "current": null
+     }
+    ]
+   }
+  ],
+  "disabled": [],
+  "numeric": 0,
+  "numericSamples": [],
+  "smallText": 2,
+  "fonts": [
+   "Arial",
+   "SFMono-Regular"
+  ],
+  "hiddenWrappers": 2,
+  "consoleErrors": [
+   "Error: Connectivity endpoint is outside the loaded morphology sample.\n    at http://localhost:3000/_next/static/chunks/0sboy38xrdkr2.js:1:14103\n    at Array.map (<anonymous>)\n    at http://localhost:3000/_next/static/chunks/0sboy38xrdkr2.js:1:14028\n    at Object.useMemo (http://localhost:3000/_next/",
+   "Error: Connectivity endpoint is outside the loaded morphology sample.\n    at http://localhost:3000/_next/static/chunks/0sboy38xrdkr2.js:1:14103\n    at Array.map (<anonymous>)\n    at http://localhost:3000/_next/static/chunks/0sboy38xrdkr2.js:1:14028\n    at Object.useMemo (http://localhost:3000/_next/"
+  ],
+  "nonGet": [],
+  "requestCount": 33,
+  "threeLike": 17,
+  "axe": [],
+  "shot": "morphology-detail--phone--light.jpg"
+ },
+ {
+  "name": "morphology-detail",
+  "route": "/morphology/719426f0cd2db586b149943483abfe6519d45c4a39fb48aa1f4a566c514c84f3",
+  "width": "phone",
+  "theme": "dark",
+  "status": 200,
+  "ms": 6492,
+  "title": "NeuroFly \u00b7 Experiment Browser",
+  "lang": "en",
+  "h1": [
+   "This view could not load."
+  ],
+  "mainCount": 1,
+  "firstFocusable": "NeuroFlyconnectome experiment browser",
+  "hOverflow": false,
+  "scrollWidth": 390,
+  "pageHeight": 844,
+  "canvases": 0,
+  "bodyBg": "rgb(16, 20, 22)",
+  "navs": [
+   {
+    "label": "Primary navigation",
+    "visible": true,
+    "links": [
+     {
+      "text": "Experiments",
+      "href": "/experiments",
+      "current": null
+     },
+     {
+      "text": "Scenarios",
+      "href": "/scenarios",
+      "current": null
+     },
+     {
+      "text": "Morphology",
+      "href": "/morphology",
+      "current": null
+     },
+     {
+      "text": "Visual Lab",
+      "href": "/visual-lab/fly",
+      "current": null
+     }
+    ]
+   }
+  ],
+  "disabled": [],
+  "numeric": 0,
+  "numericSamples": [],
+  "smallText": 2,
+  "fonts": [
+   "Arial",
+   "SFMono-Regular"
+  ],
+  "hiddenWrappers": 2,
+  "consoleErrors": [
+   "Error: Connectivity endpoint is outside the loaded morphology sample.\n    at http://localhost:3000/_next/static/chunks/0sboy38xrdkr2.js:1:14103\n    at Array.map (<anonymous>)\n    at http://localhost:3000/_next/static/chunks/0sboy38xrdkr2.js:1:14028\n    at Object.useMemo (http://localhost:3000/_next/",
+   "Error: Connectivity endpoint is outside the loaded morphology sample.\n    at http://localhost:3000/_next/static/chunks/0sboy38xrdkr2.js:1:14103\n    at Array.map (<anonymous>)\n    at http://localhost:3000/_next/static/chunks/0sboy38xrdkr2.js:1:14028\n    at Object.useMemo (http://localhost:3000/_next/"
+  ],
+  "nonGet": [],
+  "requestCount": 33,
+  "threeLike": 17,
+  "axe": [],
+  "shot": "morphology-detail--phone--dark.jpg"
+ },
+ {
+  "name": "morphology-detail",
+  "route": "/morphology/719426f0cd2db586b149943483abfe6519d45c4a39fb48aa1f4a566c514c84f3",
+  "width": "desktop",
+  "theme": "light",
+  "status": 200,
+  "ms": 6517,
+  "title": "NeuroFly \u00b7 Experiment Browser",
+  "lang": "en",
+  "h1": [
+   "This view could not load."
+  ],
+  "mainCount": 1,
+  "firstFocusable": "NeuroFlyconnectome experiment browser",
+  "hOverflow": false,
+  "scrollWidth": 1440,
+  "pageHeight": 900,
+  "canvases": 0,
+  "bodyBg": "rgb(16, 20, 22)",
+  "navs": [
+   {
+    "label": "Primary navigation",
+    "visible": true,
+    "links": [
+     {
+      "text": "Experiments",
+      "href": "/experiments",
+      "current": null
+     },
+     {
+      "text": "Scenarios",
+      "href": "/scenarios",
+      "current": null
+     },
+     {
+      "text": "Morphology",
+      "href": "/morphology",
+      "current": null
+     },
+     {
+      "text": "Visual Lab",
+      "href": "/visual-lab/fly",
+      "current": null
+     }
+    ]
+   }
+  ],
+  "disabled": [],
+  "numeric": 0,
+  "numericSamples": [],
+  "smallText": 2,
+  "fonts": [
+   "Arial",
+   "SFMono-Regular"
+  ],
+  "hiddenWrappers": 2,
+  "consoleErrors": [
+   "Error: Connectivity endpoint is outside the loaded morphology sample.\n    at http://localhost:3000/_next/static/chunks/0sboy38xrdkr2.js:1:14103\n    at Array.map (<anonymous>)\n    at http://localhost:3000/_next/static/chunks/0sboy38xrdkr2.js:1:14028\n    at Object.useMemo (http://localhost:3000/_next/",
+   "Error: Connectivity endpoint is outside the loaded morphology sample.\n    at http://localhost:3000/_next/static/chunks/0sboy38xrdkr2.js:1:14103\n    at Array.map (<anonymous>)\n    at http://localhost:3000/_next/static/chunks/0sboy38xrdkr2.js:1:14028\n    at Object.useMemo (http://localhost:3000/_next/"
+  ],
+  "nonGet": [],
+  "requestCount": 33,
+  "threeLike": 17,
+  "axe": [],
+  "shot": "morphology-detail--desktop--light.jpg"
+ },
+ {
+  "name": "morphology-detail",
+  "route": "/morphology/719426f0cd2db586b149943483abfe6519d45c4a39fb48aa1f4a566c514c84f3",
+  "width": "desktop",
+  "theme": "dark",
+  "status": 200,
+  "ms": 6406,
+  "title": "NeuroFly \u00b7 Experiment Browser",
+  "lang": "en",
+  "h1": [
+   "This view could not load."
+  ],
+  "mainCount": 1,
+  "firstFocusable": "NeuroFlyconnectome experiment browser",
+  "hOverflow": false,
+  "scrollWidth": 1440,
+  "pageHeight": 900,
+  "canvases": 0,
+  "bodyBg": "rgb(16, 20, 22)",
+  "navs": [
+   {
+    "label": "Primary navigation",
+    "visible": true,
+    "links": [
+     {
+      "text": "Experiments",
+      "href": "/experiments",
+      "current": null
+     },
+     {
+      "text": "Scenarios",
+      "href": "/scenarios",
+      "current": null
+     },
+     {
+      "text": "Morphology",
+      "href": "/morphology",
+      "current": null
+     },
+     {
+      "text": "Visual Lab",
+      "href": "/visual-lab/fly",
+      "current": null
+     }
+    ]
+   }
+  ],
+  "disabled": [],
+  "numeric": 0,
+  "numericSamples": [],
+  "smallText": 2,
+  "fonts": [
+   "Arial",
+   "SFMono-Regular"
+  ],
+  "hiddenWrappers": 2,
+  "consoleErrors": [
+   "Error: Connectivity endpoint is outside the loaded morphology sample.\n    at http://localhost:3000/_next/static/chunks/0sboy38xrdkr2.js:1:14103\n    at Array.map (<anonymous>)\n    at http://localhost:3000/_next/static/chunks/0sboy38xrdkr2.js:1:14028\n    at Object.useMemo (http://localhost:3000/_next/",
+   "Error: Connectivity endpoint is outside the loaded morphology sample.\n    at http://localhost:3000/_next/static/chunks/0sboy38xrdkr2.js:1:14103\n    at Array.map (<anonymous>)\n    at http://localhost:3000/_next/static/chunks/0sboy38xrdkr2.js:1:14028\n    at Object.useMemo (http://localhost:3000/_next/"
+  ],
+  "nonGet": [],
+  "requestCount": 33,
+  "threeLike": 17,
+  "axe": [],
+  "shot": "morphology-detail--desktop--dark.jpg"
+ },
+ {
+  "name": "lab-arena",
+  "route": "/visual-lab/arena",
+  "width": "phone",
+  "theme": "light",
+  "status": 200,
+  "ms": 6227,
+  "title": "Explore \u00b7 NeuroFly Lab",
+  "lang": "en",
+  "h1": [
+   "Explore."
+  ],
+  "mainCount": 1,
+  "firstFocusable": "Skip to laboratory",
+  "hOverflow": false,
+  "scrollWidth": 390,
+  "pageHeight": 1606,
+  "canvases": 1,
+  "bodyBg": "rgb(16, 20, 22)",
+  "navs": [
+   {
+    "label": "Laboratory navigation",
+    "visible": true,
+    "links": [
+     {
+      "text": "Home \u2197",
+      "href": "/",
+      "current": null
+     },
+     {
+      "text": "Research archive",
+      "href": "/scenarios",
+      "current": null
+     }
+    ]
+   }
+  ],
+  "disabled": [],
+  "numeric": 13,
+  "numericSamples": [
+   "CC BY 4.0",
+   "Live local browser computation with engineering propulsion a",
+   "CC BY 4.0",
+   "00:00:00",
+   "Inspect verified neural anatomy \u00b7 3D",
+   "Constant engineering propulsion at 0.18 arena units/s, with ",
+   "0.0000 / 0.1103 / 0.1219",
+   "1.5708",
+   "0.0000",
+   "0.0000",
+   "0",
+   "0",
+   "Continuous Arena Navigation v3 \u00b7 20 ms body intervals \u00b7 200 "
+  ],
+  "smallText": 11,
+  "fonts": [
+   "Arial"
+  ],
+  "hiddenWrappers": 1,
+  "consoleErrors": [],
+  "nonGet": [],
+  "requestCount": 34,
+  "threeLike": 16,
+  "axe": [],
+  "shot": "lab-arena--phone--light.jpg"
+ },
+ {
+  "name": "lab-arena",
+  "route": "/visual-lab/arena",
+  "width": "phone",
+  "theme": "dark",
+  "status": 200,
+  "ms": 6609,
+  "title": "Explore \u00b7 NeuroFly Lab",
+  "lang": "en",
+  "h1": [
+   "Explore."
+  ],
+  "mainCount": 1,
+  "firstFocusable": "Skip to laboratory",
+  "hOverflow": false,
+  "scrollWidth": 390,
+  "pageHeight": 1606,
+  "canvases": 1,
+  "bodyBg": "rgb(16, 20, 22)",
+  "navs": [
+   {
+    "label": "Laboratory navigation",
+    "visible": true,
+    "links": [
+     {
+      "text": "Home \u2197",
+      "href": "/",
+      "current": null
+     },
+     {
+      "text": "Research archive",
+      "href": "/scenarios",
+      "current": null
+     }
+    ]
+   }
+  ],
+  "disabled": [],
+  "numeric": 13,
+  "numericSamples": [
+   "CC BY 4.0",
+   "Live local browser computation with engineering propulsion a",
+   "CC BY 4.0",
+   "00:00:00",
+   "Inspect verified neural anatomy \u00b7 3D",
+   "Constant engineering propulsion at 0.18 arena units/s, with ",
+   "0.0000 / 0.1103 / 0.1219",
+   "1.5708",
+   "0.0000",
+   "0.0000",
+   "0",
+   "0",
+   "Continuous Arena Navigation v3 \u00b7 20 ms body intervals \u00b7 200 "
+  ],
+  "smallText": 11,
+  "fonts": [
+   "Arial"
+  ],
+  "hiddenWrappers": 1,
+  "consoleErrors": [],
+  "nonGet": [],
+  "requestCount": 34,
+  "threeLike": 16,
+  "axe": [],
+  "shot": "lab-arena--phone--dark.jpg"
+ },
+ {
+  "name": "lab-arena",
+  "route": "/visual-lab/arena",
+  "width": "desktop",
+  "theme": "light",
+  "status": 200,
+  "ms": 7749,
+  "title": "Explore \u00b7 NeuroFly Lab",
+  "lang": "en",
+  "h1": [
+   "Explore."
+  ],
+  "mainCount": 1,
+  "firstFocusable": "Skip to laboratory",
+  "hOverflow": false,
+  "scrollWidth": 1440,
+  "pageHeight": 1113,
+  "canvases": 1,
+  "bodyBg": "rgb(16, 20, 22)",
+  "navs": [
+   {
+    "label": "Laboratory navigation",
+    "visible": true,
+    "links": [
+     {
+      "text": "Home \u2197",
+      "href": "/",
+      "current": null
+     },
+     {
+      "text": "Research archive",
+      "href": "/scenarios",
+      "current": null
+     }
+    ]
+   }
+  ],
+  "disabled": [],
+  "numeric": 13,
+  "numericSamples": [
+   "CC BY 4.0",
+   "Live local browser computation with engineering propulsion a",
+   "CC BY 4.0",
+   "00:00:00",
+   "Inspect verified neural anatomy \u00b7 3D",
+   "Constant engineering propulsion at 0.18 arena units/s, with ",
+   "0.0000 / 0.1103 / 0.1219",
+   "1.5708",
+   "0.0000",
+   "0.0000",
+   "0",
+   "0",
+   "Continuous Arena Navigation v3 \u00b7 20 ms body intervals \u00b7 200 "
+  ],
+  "smallText": 12,
+  "fonts": [
+   "Arial"
+  ],
+  "hiddenWrappers": 1,
+  "consoleErrors": [],
+  "nonGet": [],
+  "requestCount": 34,
+  "threeLike": 16,
+  "axe": [],
+  "shot": "lab-arena--desktop--light.jpg"
+ },
+ {
+  "name": "lab-arena",
+  "route": "/visual-lab/arena",
+  "width": "desktop",
+  "theme": "dark",
+  "status": 200,
+  "ms": 7706,
+  "title": "Explore \u00b7 NeuroFly Lab",
+  "lang": "en",
+  "h1": [
+   "Explore."
+  ],
+  "mainCount": 1,
+  "firstFocusable": "Skip to laboratory",
+  "hOverflow": false,
+  "scrollWidth": 1440,
+  "pageHeight": 1113,
+  "canvases": 1,
+  "bodyBg": "rgb(16, 20, 22)",
+  "navs": [
+   {
+    "label": "Laboratory navigation",
+    "visible": true,
+    "links": [
+     {
+      "text": "Home \u2197",
+      "href": "/",
+      "current": null
+     },
+     {
+      "text": "Research archive",
+      "href": "/scenarios",
+      "current": null
+     }
+    ]
+   }
+  ],
+  "disabled": [],
+  "numeric": 13,
+  "numericSamples": [
+   "CC BY 4.0",
+   "Live local browser computation with engineering propulsion a",
+   "CC BY 4.0",
+   "00:00:00",
+   "Inspect verified neural anatomy \u00b7 3D",
+   "Constant engineering propulsion at 0.18 arena units/s, with ",
+   "0.0000 / 0.1103 / 0.1219",
+   "1.5708",
+   "0.0000",
+   "0.0000",
+   "0",
+   "0",
+   "Continuous Arena Navigation v3 \u00b7 20 ms body intervals \u00b7 200 "
+  ],
+  "smallText": 12,
+  "fonts": [
+   "Arial"
+  ],
+  "hiddenWrappers": 1,
+  "consoleErrors": [],
+  "nonGet": [],
+  "requestCount": 34,
+  "threeLike": 16,
+  "axe": [],
+  "shot": "lab-arena--desktop--dark.jpg"
+ },
+ {
+  "name": "lab-research",
+  "route": "/visual-lab/arena/research",
+  "width": "phone",
+  "theme": "light",
+  "status": 200,
+  "ms": 19902,
+  "title": "Laboratory research tools \u00b7 NeuroFly",
+  "lang": "en",
+  "h1": [
+   "Laboratory research tools."
+  ],
+  "mainCount": 1,
+  "firstFocusable": "NeuroFlyconnectome experiment browser",
+  "hOverflow": false,
+  "scrollWidth": 390,
+  "pageHeight": 1793,
+  "canvases": 1,
+  "bodyBg": "rgb(16, 20, 22)",
+  "navs": [
+   {
+    "label": "Primary navigation",
+    "visible": true,
+    "links": [
+     {
+      "text": "Experiments",
+      "href": "/experiments",
+      "current": null
+     },
+     {
+      "text": "Scenarios",
+      "href": "/scenarios",
+      "current": null
+     },
+     {
+      "text": "Morphology",
+      "href": "/morphology",
+      "current": null
+     },
+     {
+      "text": "Visual Lab",
+      "href": "/visual-lab/fly",
+      "current": null
+     }
+    ]
+   }
+  ],
+  "disabled": [
+   {
+    "text": "",
+    "title": null,
+    "describedby": null
+   }
+  ],
+  "numeric": 15,
+  "numericSamples": [
+   "Experimental Neural Flight Steering v9",
+   "Experimental 3D Flight v8",
+   "Flight Visual Preview v7.1",
+   "Motor-to-Gait Bridge v7",
+   "Experimental Locomotion v0",
+   "Experimental Locomotion v1",
+   "Independent Visual Stimuli v5",
+   "Moving Visual Stimuli v4",
+   "Continuous Arena Navigation v3",
+   "Interactive Neural Locomotion v2",
+   "V2-F / MALE DROSOPHILA",
+   "A+C v0.1 / Controlled chamber",
+   "Articulated Gait v6",
+   "CC BY 4.0",
+   "CC BY 4.0"
+  ],
+  "smallText": 13,
+  "fonts": [
+   "Arial",
+   "SFMono-Regular"
+  ],
+  "hiddenWrappers": 1,
+  "consoleErrors": [],
+  "nonGet": [],
+  "requestCount": 54,
+  "threeLike": 24,
+  "axe": [],
+  "shot": "lab-research--phone--light.jpg"
+ },
+ {
+  "name": "lab-research",
+  "route": "/visual-lab/arena/research",
+  "width": "phone",
+  "theme": "dark",
+  "status": 200,
+  "ms": 19680,
+  "title": "Laboratory research tools \u00b7 NeuroFly",
+  "lang": "en",
+  "h1": [
+   "Laboratory research tools."
+  ],
+  "mainCount": 1,
+  "firstFocusable": "NeuroFlyconnectome experiment browser",
+  "hOverflow": false,
+  "scrollWidth": 390,
+  "pageHeight": 1793,
+  "canvases": 1,
+  "bodyBg": "rgb(16, 20, 22)",
+  "navs": [
+   {
+    "label": "Primary navigation",
+    "visible": true,
+    "links": [
+     {
+      "text": "Experiments",
+      "href": "/experiments",
+      "current": null
+     },
+     {
+      "text": "Scenarios",
+      "href": "/scenarios",
+      "current": null
+     },
+     {
+      "text": "Morphology",
+      "href": "/morphology",
+      "current": null
+     },
+     {
+      "text": "Visual Lab",
+      "href": "/visual-lab/fly",
+      "current": null
+     }
+    ]
+   }
+  ],
+  "disabled": [
+   {
+    "text": "",
+    "title": null,
+    "describedby": null
+   }
+  ],
+  "numeric": 15,
+  "numericSamples": [
+   "Experimental Neural Flight Steering v9",
+   "Experimental 3D Flight v8",
+   "Flight Visual Preview v7.1",
+   "Motor-to-Gait Bridge v7",
+   "Experimental Locomotion v0",
+   "Experimental Locomotion v1",
+   "Independent Visual Stimuli v5",
+   "Moving Visual Stimuli v4",
+   "Continuous Arena Navigation v3",
+   "Interactive Neural Locomotion v2",
+   "V2-F / MALE DROSOPHILA",
+   "A+C v0.1 / Controlled chamber",
+   "Articulated Gait v6",
+   "CC BY 4.0",
+   "CC BY 4.0"
+  ],
+  "smallText": 13,
+  "fonts": [
+   "Arial",
+   "SFMono-Regular"
+  ],
+  "hiddenWrappers": 1,
+  "consoleErrors": [],
+  "nonGet": [],
+  "requestCount": 54,
+  "threeLike": 24,
+  "axe": [],
+  "shot": "lab-research--phone--dark.jpg"
+ },
+ {
+  "name": "lab-research",
+  "route": "/visual-lab/arena/research",
+  "width": "desktop",
+  "theme": "light",
+  "status": 200,
+  "ms": 7266,
+  "title": "Laboratory research tools \u00b7 NeuroFly",
+  "lang": "en",
+  "h1": [
+   "Laboratory research tools."
+  ],
+  "mainCount": 1,
+  "firstFocusable": "NeuroFlyconnectome experiment browser",
+  "hOverflow": false,
+  "scrollWidth": 1440,
+  "pageHeight": 1280,
+  "canvases": 1,
+  "bodyBg": "rgb(16, 20, 22)",
+  "navs": [
+   {
+    "label": "Primary navigation",
+    "visible": true,
+    "links": [
+     {
+      "text": "Experiments",
+      "href": "/experiments",
+      "current": null
+     },
+     {
+      "text": "Scenarios",
+      "href": "/scenarios",
+      "current": null
+     },
+     {
+      "text": "Morphology",
+      "href": "/morphology",
+      "current": null
+     },
+     {
+      "text": "Visual Lab",
+      "href": "/visual-lab/fly",
+      "current": null
+     }
+    ]
+   }
+  ],
+  "disabled": [
+   {
+    "text": "",
+    "title": null,
+    "describedby": null
+   }
+  ],
+  "numeric": 15,
+  "numericSamples": [
+   "Experimental Neural Flight Steering v9",
+   "Experimental 3D Flight v8",
+   "Flight Visual Preview v7.1",
+   "Motor-to-Gait Bridge v7",
+   "Experimental Locomotion v0",
+   "Experimental Locomotion v1",
+   "Independent Visual Stimuli v5",
+   "Moving Visual Stimuli v4",
+   "Continuous Arena Navigation v3",
+   "Interactive Neural Locomotion v2",
+   "V2-F / MALE DROSOPHILA",
+   "A+C v0.1 / Controlled chamber",
+   "Articulated Gait v6",
+   "CC BY 4.0",
+   "CC BY 4.0"
+  ],
+  "smallText": 7,
+  "fonts": [
+   "Arial",
+   "SFMono-Regular"
+  ],
+  "hiddenWrappers": 1,
+  "consoleErrors": [],
+  "nonGet": [],
+  "requestCount": 54,
+  "threeLike": 24,
+  "axe": [],
+  "shot": "lab-research--desktop--light.jpg"
+ },
+ {
+  "name": "lab-research",
+  "route": "/visual-lab/arena/research",
+  "width": "desktop",
+  "theme": "dark",
+  "status": 200,
+  "ms": 7143,
+  "title": "Laboratory research tools \u00b7 NeuroFly",
+  "lang": "en",
+  "h1": [
+   "Laboratory research tools."
+  ],
+  "mainCount": 1,
+  "firstFocusable": "NeuroFlyconnectome experiment browser",
+  "hOverflow": false,
+  "scrollWidth": 1440,
+  "pageHeight": 1280,
+  "canvases": 1,
+  "bodyBg": "rgb(16, 20, 22)",
+  "navs": [
+   {
+    "label": "Primary navigation",
+    "visible": true,
+    "links": [
+     {
+      "text": "Experiments",
+      "href": "/experiments",
+      "current": null
+     },
+     {
+      "text": "Scenarios",
+      "href": "/scenarios",
+      "current": null
+     },
+     {
+      "text": "Morphology",
+      "href": "/morphology",
+      "current": null
+     },
+     {
+      "text": "Visual Lab",
+      "href": "/visual-lab/fly",
+      "current": null
+     }
+    ]
+   }
+  ],
+  "disabled": [
+   {
+    "text": "",
+    "title": null,
+    "describedby": null
+   }
+  ],
+  "numeric": 15,
+  "numericSamples": [
+   "Experimental Neural Flight Steering v9",
+   "Experimental 3D Flight v8",
+   "Flight Visual Preview v7.1",
+   "Motor-to-Gait Bridge v7",
+   "Experimental Locomotion v0",
+   "Experimental Locomotion v1",
+   "Independent Visual Stimuli v5",
+   "Moving Visual Stimuli v4",
+   "Continuous Arena Navigation v3",
+   "Interactive Neural Locomotion v2",
+   "V2-F / MALE DROSOPHILA",
+   "A+C v0.1 / Controlled chamber",
+   "Articulated Gait v6",
+   "CC BY 4.0",
+   "CC BY 4.0"
+  ],
+  "smallText": 7,
+  "fonts": [
+   "Arial",
+   "SFMono-Regular"
+  ],
+  "hiddenWrappers": 1,
+  "consoleErrors": [],
+  "nonGet": [],
+  "requestCount": 54,
+  "threeLike": 24,
+  "axe": [],
+  "shot": "lab-research--desktop--dark.jpg"
+ },
+ {
+  "name": "lab-fly",
+  "route": "/visual-lab/fly",
+  "width": "phone",
+  "theme": "light",
+  "status": 200,
+  "ms": 5869,
+  "title": "Fly \u00b7 Visual Lab \u00b7 NeuroFly",
+  "lang": "en",
+  "h1": [
+   "A closer look."
+  ],
+  "mainCount": 1,
+  "firstFocusable": "NeuroFlyconnectome experiment browser",
+  "hOverflow": false,
+  "scrollWidth": 390,
+  "pageHeight": 1103,
+  "canvases": 1,
+  "bodyBg": "rgb(16, 20, 22)",
+  "navs": [
+   {
+    "label": "Primary navigation",
+    "visible": true,
+    "links": [
+     {
+      "text": "Experiments",
+      "href": "/experiments",
+      "current": null
+     },
+     {
+      "text": "Scenarios",
+      "href": "/scenarios",
+      "current": null
+     },
+     {
+      "text": "Morphology",
+      "href": "/morphology",
+      "current": null
+     },
+     {
+      "text": "Visual Lab",
+      "href": "/visual-lab/fly",
+      "current": null
+     }
+    ]
+   }
+  ],
+  "disabled": [],
+  "numeric": 3,
+  "numericSamples": [
+   "ASSET PREVIEW \u00b7 V2-F",
+   "V2-F / MALE DROSOPHILA",
+   "CC BY 4.0"
+  ],
+  "smallText": 11,
+  "fonts": [
+   "Arial",
+   "SFMono-Regular"
+  ],
+  "hiddenWrappers": 1,
+  "consoleErrors": [],
+  "nonGet": [],
+  "requestCount": 46,
+  "threeLike": 21,
+  "axe": [],
+  "shot": "lab-fly--phone--light.jpg"
+ },
+ {
+  "name": "lab-fly",
+  "route": "/visual-lab/fly",
+  "width": "phone",
+  "theme": "dark",
+  "status": 200,
+  "ms": 5921,
+  "title": "Fly \u00b7 Visual Lab \u00b7 NeuroFly",
+  "lang": "en",
+  "h1": [
+   "A closer look."
+  ],
+  "mainCount": 1,
+  "firstFocusable": "NeuroFlyconnectome experiment browser",
+  "hOverflow": false,
+  "scrollWidth": 390,
+  "pageHeight": 1103,
+  "canvases": 1,
+  "bodyBg": "rgb(16, 20, 22)",
+  "navs": [
+   {
+    "label": "Primary navigation",
+    "visible": true,
+    "links": [
+     {
+      "text": "Experiments",
+      "href": "/experiments",
+      "current": null
+     },
+     {
+      "text": "Scenarios",
+      "href": "/scenarios",
+      "current": null
+     },
+     {
+      "text": "Morphology",
+      "href": "/morphology",
+      "current": null
+     },
+     {
+      "text": "Visual Lab",
+      "href": "/visual-lab/fly",
+      "current": null
+     }
+    ]
+   }
+  ],
+  "disabled": [],
+  "numeric": 3,
+  "numericSamples": [
+   "ASSET PREVIEW \u00b7 V2-F",
+   "V2-F / MALE DROSOPHILA",
+   "CC BY 4.0"
+  ],
+  "smallText": 11,
+  "fonts": [
+   "Arial",
+   "SFMono-Regular"
+  ],
+  "hiddenWrappers": 1,
+  "consoleErrors": [],
+  "nonGet": [],
+  "requestCount": 46,
+  "threeLike": 21,
+  "axe": [],
+  "shot": "lab-fly--phone--dark.jpg"
+ },
+ {
+  "name": "lab-fly",
+  "route": "/visual-lab/fly",
+  "width": "desktop",
+  "theme": "light",
+  "status": 200,
+  "ms": 5949,
+  "title": "Fly \u00b7 Visual Lab \u00b7 NeuroFly",
+  "lang": "en",
+  "h1": [
+   "A closer look."
+  ],
+  "mainCount": 1,
+  "firstFocusable": "NeuroFlyconnectome experiment browser",
+  "hOverflow": false,
+  "scrollWidth": 1440,
+  "pageHeight": 1029,
+  "canvases": 1,
+  "bodyBg": "rgb(16, 20, 22)",
+  "navs": [
+   {
+    "label": "Primary navigation",
+    "visible": true,
+    "links": [
+     {
+      "text": "Experiments",
+      "href": "/experiments",
+      "current": null
+     },
+     {
+      "text": "Scenarios",
+      "href": "/scenarios",
+      "current": null
+     },
+     {
+      "text": "Morphology",
+      "href": "/morphology",
+      "current": null
+     },
+     {
+      "text": "Visual Lab",
+      "href": "/visual-lab/fly",
+      "current": null
+     }
+    ]
+   }
+  ],
+  "disabled": [],
+  "numeric": 3,
+  "numericSamples": [
+   "ASSET PREVIEW \u00b7 V2-F",
+   "V2-F / MALE DROSOPHILA",
+   "CC BY 4.0"
+  ],
+  "smallText": 6,
+  "fonts": [
+   "Arial",
+   "SFMono-Regular"
+  ],
+  "hiddenWrappers": 1,
+  "consoleErrors": [],
+  "nonGet": [],
+  "requestCount": 46,
+  "threeLike": 21,
+  "axe": [],
+  "shot": "lab-fly--desktop--light.jpg"
+ },
+ {
+  "name": "lab-fly",
+  "route": "/visual-lab/fly",
+  "width": "desktop",
+  "theme": "dark",
+  "status": 200,
+  "ms": 5932,
+  "title": "Fly \u00b7 Visual Lab \u00b7 NeuroFly",
+  "lang": "en",
+  "h1": [
+   "A closer look."
+  ],
+  "mainCount": 1,
+  "firstFocusable": "NeuroFlyconnectome experiment browser",
+  "hOverflow": false,
+  "scrollWidth": 1440,
+  "pageHeight": 1029,
+  "canvases": 1,
+  "bodyBg": "rgb(16, 20, 22)",
+  "navs": [
+   {
+    "label": "Primary navigation",
+    "visible": true,
+    "links": [
+     {
+      "text": "Experiments",
+      "href": "/experiments",
+      "current": null
+     },
+     {
+      "text": "Scenarios",
+      "href": "/scenarios",
+      "current": null
+     },
+     {
+      "text": "Morphology",
+      "href": "/morphology",
+      "current": null
+     },
+     {
+      "text": "Visual Lab",
+      "href": "/visual-lab/fly",
+      "current": null
+     }
+    ]
+   }
+  ],
+  "disabled": [],
+  "numeric": 3,
+  "numericSamples": [
+   "ASSET PREVIEW \u00b7 V2-F",
+   "V2-F / MALE DROSOPHILA",
+   "CC BY 4.0"
+  ],
+  "smallText": 6,
+  "fonts": [
+   "Arial",
+   "SFMono-Regular"
+  ],
+  "hiddenWrappers": 1,
+  "consoleErrors": [],
+  "nonGet": [],
+  "requestCount": 46,
+  "threeLike": 21,
+  "axe": [],
+  "shot": "lab-fly--desktop--dark.jpg"
+ },
+ {
+  "name": "science",
+  "route": "/science",
+  "width": "phone",
+  "theme": "light",
+  "status": 200,
+  "ms": 2358,
+  "title": "Science & Project \u00b7 NeuroFly",
+  "lang": "en",
+  "h1": [
+   "The science behinda digital organism."
+  ],
+  "mainCount": 1,
+  "firstFocusable": "Skip to content",
+  "hOverflow": false,
+  "scrollWidth": 390,
+  "pageHeight": 11258,
+  "canvases": 0,
+  "bodyBg": "rgb(16, 20, 22)",
+  "navs": [
+   {
+    "label": "Primary navigation",
+    "visible": false,
+    "links": [
+     {
+      "text": "Home",
+      "href": "/",
+      "current": null
+     },
+     {
+      "text": "Lab",
+      "href": "/visual-lab/arena",
+      "current": null
+     },
+     {
+      "text": "Experiments",
+      "href": "/scenarios",
+      "current": null
+     },
+     {
+      "text": "Science",
+      "href": "/science",
+      "current": "page"
+     }
+    ]
+   },
+   {
+    "label": "Mobile primary navigation",
+    "visible": true,
+    "links": [
+     {
+      "text": "Home",
+      "href": "/",
+      "current": null
+     },
+     {
+      "text": "Lab",
+      "href": "/visual-lab/arena",
+      "current": null
+     },
+     {
+      "text": "Experiments",
+      "href": "/scenarios",
+      "current": null
+     },
+     {
+      "text": "Science",
+      "href": "/science",
+      "current": "page"
+     },
+     {
+      "text": "Enter the Lab \u2197",
+      "href": "/visual-lab/arena",
+      "current": null
+     }
+    ]
+   },
+   {
+    "label": "On this page",
+    "visible": true,
+    "links": [
+     {
+      "text": "The loop",
+      "href": "#architecture",
+      "current": null
+     },
+     {
+      "text": "Data & model",
+      "href": "#foundations",
+      "current": null
+     },
+     {
+      "text": "Experiments",
+      "href": "#evidence",
+      "current": null
+     },
+     {
+      "text": "Methodology",
+      "href": "#methodology",
+      "current": null
+     },
+     {
+      "text": "Limits & sources",
+      "href": "#limits",
+      "current": null
+     }
+    ]
+   },
+   {
+    "label": "Footer navigation",
+    "visible": true,
+    "links": [
+     {
+      "text": "Home",
+      "href": "/",
+      "current": null
+     },
+     {
+      "text": "Lab",
+      "href": "/visual-lab/arena",
+      "current": null
+     },
+     {
+      "text": "Experiments",
+      "href": "/scenarios",
+      "current": null
+     },
+     {
+      "text": "Science",
+      "href": "/science",
+      "current": null
+     },
+     {
+      "text": "Recorded experiments",
+      "href": "/experiments",
+      "current": null
+     },
+     {
+      "text": "Documentation \u2197",
+      "href": "https://github.com/a104174/NeuroFly/tree/main/docs/science",
+      "current": null
+     }
+    ]
+   }
+  ],
+  "disabled": [],
+  "numeric": 40,
+  "numericSamples": [
+   "Artistic 3D model \u00b7 male specimen",
+   "01 / From connection to behaviour",
+   "01",
+   "02",
+   "Selected HS and DNp15 proxy states evolve through explicit n",
+   "03",
+   "04",
+   "Conceptual architecture diagram \u00b7 Explore ground navigation.",
+   "02 / The evidence and the choices",
+   "male-cns:v1.0",
+   "Inputs, state variables, timescales and transfer rules are e",
+   "In the selected HS/DNp15 model, structural contact counts ar",
+   "03 / Selected, not exhaustive",
+   "The current steering path keeps six HS source identities and",
+   "Three HS proxies on each side feed that side\u2019s DNp15 proxy t",
+   "NeuroFly also implements LC4/LPLC2 \u2192 DNp01 models for its lo",
+   "The HS/DNp15 kernel averages the three selected source state",
+   "An actual Lab capture. The visible specimen is an artistic 3",
+   "04 / A body in a world",
+   "01",
+   "Explore combines forward propulsion, neural heading influenc",
+   "02",
+   "03",
+   "Where does DNg100/T1 fit?",
+   "The experimental DNg100/T1 pathway retains its shadow-only s",
+   "05 / Ask a bounded question",
+   "1.4 ms",
+   "50 ms",
+   "A controlled horizontal-motion descriptor passes through the",
+   "50 ms",
+   "06 / Make the result inspectable",
+   "07 / Read the boundary",
+   "The empirical HS/DNp15 audit did not establish agreement wit",
+   "01",
+   "02",
+   "Erginkaya et al. \u00b7 Nature Neuroscience, 2025",
+   "03",
+   "The selected HS/DNp15 model",
+   "04",
+   "05"
+  ],
+  "smallText": 23,
+  "fonts": [
+   "Arial",
+   "SFMono-Regular"
+  ],
+  "hiddenWrappers": 1,
+  "consoleErrors": [],
+  "nonGet": [],
+  "requestCount": 15,
+  "threeLike": 9,
+  "axe": [],
+  "shot": "science--phone--light.jpg"
+ },
+ {
+  "name": "science",
+  "route": "/science",
+  "width": "phone",
+  "theme": "dark",
+  "status": 200,
+  "ms": 2188,
+  "title": "Science & Project \u00b7 NeuroFly",
+  "lang": "en",
+  "h1": [
+   "The science behinda digital organism."
+  ],
+  "mainCount": 1,
+  "firstFocusable": "Skip to content",
+  "hOverflow": false,
+  "scrollWidth": 390,
+  "pageHeight": 11258,
+  "canvases": 0,
+  "bodyBg": "rgb(16, 20, 22)",
+  "navs": [
+   {
+    "label": "Primary navigation",
+    "visible": false,
+    "links": [
+     {
+      "text": "Home",
+      "href": "/",
+      "current": null
+     },
+     {
+      "text": "Lab",
+      "href": "/visual-lab/arena",
+      "current": null
+     },
+     {
+      "text": "Experiments",
+      "href": "/scenarios",
+      "current": null
+     },
+     {
+      "text": "Science",
+      "href": "/science",
+      "current": "page"
+     }
+    ]
+   },
+   {
+    "label": "Mobile primary navigation",
+    "visible": true,
+    "links": [
+     {
+      "text": "Home",
+      "href": "/",
+      "current": null
+     },
+     {
+      "text": "Lab",
+      "href": "/visual-lab/arena",
+      "current": null
+     },
+     {
+      "text": "Experiments",
+      "href": "/scenarios",
+      "current": null
+     },
+     {
+      "text": "Science",
+      "href": "/science",
+      "current": "page"
+     },
+     {
+      "text": "Enter the Lab \u2197",
+      "href": "/visual-lab/arena",
+      "current": null
+     }
+    ]
+   },
+   {
+    "label": "On this page",
+    "visible": true,
+    "links": [
+     {
+      "text": "The loop",
+      "href": "#architecture",
+      "current": null
+     },
+     {
+      "text": "Data & model",
+      "href": "#foundations",
+      "current": null
+     },
+     {
+      "text": "Experiments",
+      "href": "#evidence",
+      "current": null
+     },
+     {
+      "text": "Methodology",
+      "href": "#methodology",
+      "current": null
+     },
+     {
+      "text": "Limits & sources",
+      "href": "#limits",
+      "current": null
+     }
+    ]
+   },
+   {
+    "label": "Footer navigation",
+    "visible": true,
+    "links": [
+     {
+      "text": "Home",
+      "href": "/",
+      "current": null
+     },
+     {
+      "text": "Lab",
+      "href": "/visual-lab/arena",
+      "current": null
+     },
+     {
+      "text": "Experiments",
+      "href": "/scenarios",
+      "current": null
+     },
+     {
+      "text": "Science",
+      "href": "/science",
+      "current": null
+     },
+     {
+      "text": "Recorded experiments",
+      "href": "/experiments",
+      "current": null
+     },
+     {
+      "text": "Documentation \u2197",
+      "href": "https://github.com/a104174/NeuroFly/tree/main/docs/science",
+      "current": null
+     }
+    ]
+   }
+  ],
+  "disabled": [],
+  "numeric": 40,
+  "numericSamples": [
+   "Artistic 3D model \u00b7 male specimen",
+   "01 / From connection to behaviour",
+   "01",
+   "02",
+   "Selected HS and DNp15 proxy states evolve through explicit n",
+   "03",
+   "04",
+   "Conceptual architecture diagram \u00b7 Explore ground navigation.",
+   "02 / The evidence and the choices",
+   "male-cns:v1.0",
+   "Inputs, state variables, timescales and transfer rules are e",
+   "In the selected HS/DNp15 model, structural contact counts ar",
+   "03 / Selected, not exhaustive",
+   "The current steering path keeps six HS source identities and",
+   "Three HS proxies on each side feed that side\u2019s DNp15 proxy t",
+   "NeuroFly also implements LC4/LPLC2 \u2192 DNp01 models for its lo",
+   "The HS/DNp15 kernel averages the three selected source state",
+   "An actual Lab capture. The visible specimen is an artistic 3",
+   "04 / A body in a world",
+   "01",
+   "Explore combines forward propulsion, neural heading influenc",
+   "02",
+   "03",
+   "Where does DNg100/T1 fit?",
+   "The experimental DNg100/T1 pathway retains its shadow-only s",
+   "05 / Ask a bounded question",
+   "1.4 ms",
+   "50 ms",
+   "A controlled horizontal-motion descriptor passes through the",
+   "50 ms",
+   "06 / Make the result inspectable",
+   "07 / Read the boundary",
+   "The empirical HS/DNp15 audit did not establish agreement wit",
+   "01",
+   "02",
+   "Erginkaya et al. \u00b7 Nature Neuroscience, 2025",
+   "03",
+   "The selected HS/DNp15 model",
+   "04",
+   "05"
+  ],
+  "smallText": 23,
+  "fonts": [
+   "Arial",
+   "SFMono-Regular"
+  ],
+  "hiddenWrappers": 1,
+  "consoleErrors": [],
+  "nonGet": [],
+  "requestCount": 15,
+  "threeLike": 9,
+  "axe": [],
+  "shot": "science--phone--dark.jpg"
+ },
+ {
+  "name": "science",
+  "route": "/science",
+  "width": "desktop",
+  "theme": "light",
+  "status": 200,
+  "ms": 2499,
+  "title": "Science & Project \u00b7 NeuroFly",
+  "lang": "en",
+  "h1": [
+   "The science behinda digital organism."
+  ],
+  "mainCount": 1,
+  "firstFocusable": "Skip to content",
+  "hOverflow": false,
+  "scrollWidth": 1440,
+  "pageHeight": 7266,
+  "canvases": 0,
+  "bodyBg": "rgb(16, 20, 22)",
+  "navs": [
+   {
+    "label": "Primary navigation",
+    "visible": true,
+    "links": [
+     {
+      "text": "Home",
+      "href": "/",
+      "current": null
+     },
+     {
+      "text": "Lab",
+      "href": "/visual-lab/arena",
+      "current": null
+     },
+     {
+      "text": "Experiments",
+      "href": "/scenarios",
+      "current": null
+     },
+     {
+      "text": "Science",
+      "href": "/science",
+      "current": "page"
+     }
+    ]
+   },
+   {
+    "label": "Mobile primary navigation",
+    "visible": false,
+    "links": [
+     {
+      "text": "Home",
+      "href": "/",
+      "current": null
+     },
+     {
+      "text": "Lab",
+      "href": "/visual-lab/arena",
+      "current": null
+     },
+     {
+      "text": "Experiments",
+      "href": "/scenarios",
+      "current": null
+     },
+     {
+      "text": "Science",
+      "href": "/science",
+      "current": "page"
+     },
+     {
+      "text": "Enter the Lab \u2197",
+      "href": "/visual-lab/arena",
+      "current": null
+     }
+    ]
+   },
+   {
+    "label": "On this page",
+    "visible": true,
+    "links": [
+     {
+      "text": "The loop",
+      "href": "#architecture",
+      "current": null
+     },
+     {
+      "text": "Data & model",
+      "href": "#foundations",
+      "current": null
+     },
+     {
+      "text": "Experiments",
+      "href": "#evidence",
+      "current": null
+     },
+     {
+      "text": "Methodology",
+      "href": "#methodology",
+      "current": null
+     },
+     {
+      "text": "Limits & sources",
+      "href": "#limits",
+      "current": null
+     }
+    ]
+   },
+   {
+    "label": "Footer navigation",
+    "visible": true,
+    "links": [
+     {
+      "text": "Home",
+      "href": "/",
+      "current": null
+     },
+     {
+      "text": "Lab",
+      "href": "/visual-lab/arena",
+      "current": null
+     },
+     {
+      "text": "Experiments",
+      "href": "/scenarios",
+      "current": null
+     },
+     {
+      "text": "Science",
+      "href": "/science",
+      "current": null
+     },
+     {
+      "text": "Recorded experiments",
+      "href": "/experiments",
+      "current": null
+     },
+     {
+      "text": "Documentation \u2197",
+      "href": "https://github.com/a104174/NeuroFly/tree/main/docs/science",
+      "current": null
+     }
+    ]
+   }
+  ],
+  "disabled": [],
+  "numeric": 40,
+  "numericSamples": [
+   "Artistic 3D model \u00b7 male specimen",
+   "01 / From connection to behaviour",
+   "01",
+   "02",
+   "Selected HS and DNp15 proxy states evolve through explicit n",
+   "03",
+   "04",
+   "Conceptual architecture diagram \u00b7 Explore ground navigation.",
+   "02 / The evidence and the choices",
+   "male-cns:v1.0",
+   "Inputs, state variables, timescales and transfer rules are e",
+   "In the selected HS/DNp15 model, structural contact counts ar",
+   "03 / Selected, not exhaustive",
+   "The current steering path keeps six HS source identities and",
+   "Three HS proxies on each side feed that side\u2019s DNp15 proxy t",
+   "NeuroFly also implements LC4/LPLC2 \u2192 DNp01 models for its lo",
+   "The HS/DNp15 kernel averages the three selected source state",
+   "An actual Lab capture. The visible specimen is an artistic 3",
+   "04 / A body in a world",
+   "01",
+   "Explore combines forward propulsion, neural heading influenc",
+   "02",
+   "03",
+   "Where does DNg100/T1 fit?",
+   "The experimental DNg100/T1 pathway retains its shadow-only s",
+   "05 / Ask a bounded question",
+   "1.4 ms",
+   "50 ms",
+   "A controlled horizontal-motion descriptor passes through the",
+   "50 ms",
+   "06 / Make the result inspectable",
+   "07 / Read the boundary",
+   "The empirical HS/DNp15 audit did not establish agreement wit",
+   "01",
+   "02",
+   "Erginkaya et al. \u00b7 Nature Neuroscience, 2025",
+   "03",
+   "The selected HS/DNp15 model",
+   "04",
+   "05"
+  ],
+  "smallText": 13,
+  "fonts": [
+   "Arial",
+   "SFMono-Regular"
+  ],
+  "hiddenWrappers": 1,
+  "consoleErrors": [],
+  "nonGet": [],
+  "requestCount": 15,
+  "threeLike": 9,
+  "axe": [],
+  "shot": "science--desktop--light.jpg"
+ },
+ {
+  "name": "science",
+  "route": "/science",
+  "width": "desktop",
+  "theme": "dark",
+  "status": 200,
+  "ms": 2441,
+  "title": "Science & Project \u00b7 NeuroFly",
+  "lang": "en",
+  "h1": [
+   "The science behinda digital organism."
+  ],
+  "mainCount": 1,
+  "firstFocusable": "Skip to content",
+  "hOverflow": false,
+  "scrollWidth": 1440,
+  "pageHeight": 7266,
+  "canvases": 0,
+  "bodyBg": "rgb(16, 20, 22)",
+  "navs": [
+   {
+    "label": "Primary navigation",
+    "visible": true,
+    "links": [
+     {
+      "text": "Home",
+      "href": "/",
+      "current": null
+     },
+     {
+      "text": "Lab",
+      "href": "/visual-lab/arena",
+      "current": null
+     },
+     {
+      "text": "Experiments",
+      "href": "/scenarios",
+      "current": null
+     },
+     {
+      "text": "Science",
+      "href": "/science",
+      "current": "page"
+     }
+    ]
+   },
+   {
+    "label": "Mobile primary navigation",
+    "visible": false,
+    "links": [
+     {
+      "text": "Home",
+      "href": "/",
+      "current": null
+     },
+     {
+      "text": "Lab",
+      "href": "/visual-lab/arena",
+      "current": null
+     },
+     {
+      "text": "Experiments",
+      "href": "/scenarios",
+      "current": null
+     },
+     {
+      "text": "Science",
+      "href": "/science",
+      "current": "page"
+     },
+     {
+      "text": "Enter the Lab \u2197",
+      "href": "/visual-lab/arena",
+      "current": null
+     }
+    ]
+   },
+   {
+    "label": "On this page",
+    "visible": true,
+    "links": [
+     {
+      "text": "The loop",
+      "href": "#architecture",
+      "current": null
+     },
+     {
+      "text": "Data & model",
+      "href": "#foundations",
+      "current": null
+     },
+     {
+      "text": "Experiments",
+      "href": "#evidence",
+      "current": null
+     },
+     {
+      "text": "Methodology",
+      "href": "#methodology",
+      "current": null
+     },
+     {
+      "text": "Limits & sources",
+      "href": "#limits",
+      "current": null
+     }
+    ]
+   },
+   {
+    "label": "Footer navigation",
+    "visible": true,
+    "links": [
+     {
+      "text": "Home",
+      "href": "/",
+      "current": null
+     },
+     {
+      "text": "Lab",
+      "href": "/visual-lab/arena",
+      "current": null
+     },
+     {
+      "text": "Experiments",
+      "href": "/scenarios",
+      "current": null
+     },
+     {
+      "text": "Science",
+      "href": "/science",
+      "current": null
+     },
+     {
+      "text": "Recorded experiments",
+      "href": "/experiments",
+      "current": null
+     },
+     {
+      "text": "Documentation \u2197",
+      "href": "https://github.com/a104174/NeuroFly/tree/main/docs/science",
+      "current": null
+     }
+    ]
+   }
+  ],
+  "disabled": [],
+  "numeric": 40,
+  "numericSamples": [
+   "Artistic 3D model \u00b7 male specimen",
+   "01 / From connection to behaviour",
+   "01",
+   "02",
+   "Selected HS and DNp15 proxy states evolve through explicit n",
+   "03",
+   "04",
+   "Conceptual architecture diagram \u00b7 Explore ground navigation.",
+   "02 / The evidence and the choices",
+   "male-cns:v1.0",
+   "Inputs, state variables, timescales and transfer rules are e",
+   "In the selected HS/DNp15 model, structural contact counts ar",
+   "03 / Selected, not exhaustive",
+   "The current steering path keeps six HS source identities and",
+   "Three HS proxies on each side feed that side\u2019s DNp15 proxy t",
+   "NeuroFly also implements LC4/LPLC2 \u2192 DNp01 models for its lo",
+   "The HS/DNp15 kernel averages the three selected source state",
+   "An actual Lab capture. The visible specimen is an artistic 3",
+   "04 / A body in a world",
+   "01",
+   "Explore combines forward propulsion, neural heading influenc",
+   "02",
+   "03",
+   "Where does DNg100/T1 fit?",
+   "The experimental DNg100/T1 pathway retains its shadow-only s",
+   "05 / Ask a bounded question",
+   "1.4 ms",
+   "50 ms",
+   "A controlled horizontal-motion descriptor passes through the",
+   "50 ms",
+   "06 / Make the result inspectable",
+   "07 / Read the boundary",
+   "The empirical HS/DNp15 audit did not establish agreement wit",
+   "01",
+   "02",
+   "Erginkaya et al. \u00b7 Nature Neuroscience, 2025",
+   "03",
+   "The selected HS/DNp15 model",
+   "04",
+   "05"
+  ],
+  "smallText": 13,
+  "fonts": [
+   "Arial",
+   "SFMono-Regular"
+  ],
+  "hiddenWrappers": 1,
+  "consoleErrors": [],
+  "nonGet": [],
+  "requestCount": 15,
+  "threeLike": 9,
+  "axe": [],
+  "shot": "science--desktop--dark.jpg"
+ },
+ {
+  "name": "not-found",
+  "route": "/does-not-exist",
+  "width": "phone",
+  "theme": "light",
+  "status": 404,
+  "ms": 1830,
+  "title": "NeuroFly \u00b7 Experiment Browser",
+  "lang": "en",
+  "h1": [
+   "That artifact is unavailable."
+  ],
+  "mainCount": 1,
+  "firstFocusable": "NeuroFlyconnectome experiment browser",
+  "hOverflow": false,
+  "scrollWidth": 390,
+  "pageHeight": 844,
+  "canvases": 0,
+  "bodyBg": "rgb(16, 20, 22)",
+  "navs": [
+   {
+    "label": "Primary navigation",
+    "visible": true,
+    "links": [
+     {
+      "text": "Experiments",
+      "href": "/experiments",
+      "current": null
+     },
+     {
+      "text": "Scenarios",
+      "href": "/scenarios",
+      "current": null
+     },
+     {
+      "text": "Morphology",
+      "href": "/morphology",
+      "current": null
+     },
+     {
+      "text": "Visual Lab",
+      "href": "/visual-lab/fly",
+      "current": null
+     }
+    ]
+   }
+  ],
+  "disabled": [],
+  "numeric": 0,
+  "numericSamples": [],
+  "smallText": 1,
+  "fonts": [
+   "Arial",
+   "SFMono-Regular"
+  ],
+  "hiddenWrappers": 1,
+  "consoleErrors": [
+   "Failed to load resource: the server responded with a status of 404 (Not Found)"
+  ],
+  "nonGet": [],
+  "requestCount": 30,
+  "threeLike": 14,
+  "axe": [],
+  "shot": "not-found--phone--light.jpg"
+ },
+ {
+  "name": "not-found",
+  "route": "/does-not-exist",
+  "width": "phone",
+  "theme": "dark",
+  "status": 404,
+  "ms": 1846,
+  "title": "NeuroFly \u00b7 Experiment Browser",
+  "lang": "en",
+  "h1": [
+   "That artifact is unavailable."
+  ],
+  "mainCount": 1,
+  "firstFocusable": "NeuroFlyconnectome experiment browser",
+  "hOverflow": false,
+  "scrollWidth": 390,
+  "pageHeight": 844,
+  "canvases": 0,
+  "bodyBg": "rgb(16, 20, 22)",
+  "navs": [
+   {
+    "label": "Primary navigation",
+    "visible": true,
+    "links": [
+     {
+      "text": "Experiments",
+      "href": "/experiments",
+      "current": null
+     },
+     {
+      "text": "Scenarios",
+      "href": "/scenarios",
+      "current": null
+     },
+     {
+      "text": "Morphology",
+      "href": "/morphology",
+      "current": null
+     },
+     {
+      "text": "Visual Lab",
+      "href": "/visual-lab/fly",
+      "current": null
+     }
+    ]
+   }
+  ],
+  "disabled": [],
+  "numeric": 0,
+  "numericSamples": [],
+  "smallText": 1,
+  "fonts": [
+   "Arial",
+   "SFMono-Regular"
+  ],
+  "hiddenWrappers": 1,
+  "consoleErrors": [
+   "Failed to load resource: the server responded with a status of 404 (Not Found)"
+  ],
+  "nonGet": [],
+  "requestCount": 30,
+  "threeLike": 14,
+  "axe": [],
+  "shot": "not-found--phone--dark.jpg"
+ },
+ {
+  "name": "not-found",
+  "route": "/does-not-exist",
+  "width": "desktop",
+  "theme": "light",
+  "status": 404,
+  "ms": 1833,
+  "title": "NeuroFly \u00b7 Experiment Browser",
+  "lang": "en",
+  "h1": [
+   "That artifact is unavailable."
+  ],
+  "mainCount": 1,
+  "firstFocusable": "NeuroFlyconnectome experiment browser",
+  "hOverflow": false,
+  "scrollWidth": 1440,
+  "pageHeight": 900,
+  "canvases": 0,
+  "bodyBg": "rgb(16, 20, 22)",
+  "navs": [
+   {
+    "label": "Primary navigation",
+    "visible": true,
+    "links": [
+     {
+      "text": "Experiments",
+      "href": "/experiments",
+      "current": null
+     },
+     {
+      "text": "Scenarios",
+      "href": "/scenarios",
+      "current": null
+     },
+     {
+      "text": "Morphology",
+      "href": "/morphology",
+      "current": null
+     },
+     {
+      "text": "Visual Lab",
+      "href": "/visual-lab/fly",
+      "current": null
+     }
+    ]
+   }
+  ],
+  "disabled": [],
+  "numeric": 0,
+  "numericSamples": [],
+  "smallText": 1,
+  "fonts": [
+   "Arial",
+   "SFMono-Regular"
+  ],
+  "hiddenWrappers": 1,
+  "consoleErrors": [
+   "Failed to load resource: the server responded with a status of 404 (Not Found)"
+  ],
+  "nonGet": [],
+  "requestCount": 30,
+  "threeLike": 14,
+  "axe": [],
+  "shot": "not-found--desktop--light.jpg"
+ },
+ {
+  "name": "not-found",
+  "route": "/does-not-exist",
+  "width": "desktop",
+  "theme": "dark",
+  "status": 404,
+  "ms": 1851,
+  "title": "NeuroFly \u00b7 Experiment Browser",
+  "lang": "en",
+  "h1": [
+   "That artifact is unavailable."
+  ],
+  "mainCount": 1,
+  "firstFocusable": "NeuroFlyconnectome experiment browser",
+  "hOverflow": false,
+  "scrollWidth": 1440,
+  "pageHeight": 900,
+  "canvases": 0,
+  "bodyBg": "rgb(16, 20, 22)",
+  "navs": [
+   {
+    "label": "Primary navigation",
+    "visible": true,
+    "links": [
+     {
+      "text": "Experiments",
+      "href": "/experiments",
+      "current": null
+     },
+     {
+      "text": "Scenarios",
+      "href": "/scenarios",
+      "current": null
+     },
+     {
+      "text": "Morphology",
+      "href": "/morphology",
+      "current": null
+     },
+     {
+      "text": "Visual Lab",
+      "href": "/visual-lab/fly",
+      "current": null
+     }
+    ]
+   }
+  ],
+  "disabled": [],
+  "numeric": 0,
+  "numericSamples": [],
+  "smallText": 1,
+  "fonts": [
+   "Arial",
+   "SFMono-Regular"
+  ],
+  "hiddenWrappers": 1,
+  "consoleErrors": [
+   "Failed to load resource: the server responded with a status of 404 (Not Found)"
+  ],
+  "nonGet": [],
+  "requestCount": 30,
+  "threeLike": 14,
+  "axe": [],
+  "shot": "not-found--desktop--dark.jpg"
+ },
+ {
+  "name": "unknown-experiment",
+  "route": "/experiments/abc123",
+  "width": "phone",
+  "theme": "light",
+  "status": 200,
+  "ms": 1857,
+  "title": "NeuroFly \u00b7 Experiment Browser",
+  "lang": "en",
+  "h1": [
+   "This experiment could not be read."
+  ],
+  "mainCount": 1,
+  "firstFocusable": "NeuroFlyconnectome experiment browser",
+  "hOverflow": false,
+  "scrollWidth": 390,
+  "pageHeight": 844,
+  "canvases": 0,
+  "bodyBg": "rgb(16, 20, 22)",
+  "navs": [
+   {
+    "label": "Primary navigation",
+    "visible": true,
+    "links": [
+     {
+      "text": "Experiments",
+      "href": "/experiments",
+      "current": null
+     },
+     {
+      "text": "Scenarios",
+      "href": "/scenarios",
+      "current": null
+     },
+     {
+      "text": "Morphology",
+      "href": "/morphology",
+      "current": null
+     },
+     {
+      "text": "Visual Lab",
+      "href": "/visual-lab/fly",
+      "current": null
+     }
+    ]
+   }
+  ],
+  "disabled": [],
+  "numeric": 0,
+  "numericSamples": [],
+  "smallText": 2,
+  "fonts": [
+   "Arial",
+   "SFMono-Regular"
+  ],
+  "hiddenWrappers": 1,
+  "consoleErrors": [],
+  "nonGet": [],
+  "requestCount": 32,
+  "threeLike": 16,
+  "axe": [],
+  "shot": "unknown-experiment--phone--light.jpg"
+ },
+ {
+  "name": "unknown-experiment",
+  "route": "/experiments/abc123",
+  "width": "phone",
+  "theme": "dark",
+  "status": 200,
+  "ms": 2083,
+  "title": "NeuroFly \u00b7 Experiment Browser",
+  "lang": "en",
+  "h1": [
+   "This experiment could not be read."
+  ],
+  "mainCount": 1,
+  "firstFocusable": "NeuroFlyconnectome experiment browser",
+  "hOverflow": false,
+  "scrollWidth": 390,
+  "pageHeight": 844,
+  "canvases": 0,
+  "bodyBg": "rgb(16, 20, 22)",
+  "navs": [
+   {
+    "label": "Primary navigation",
+    "visible": true,
+    "links": [
+     {
+      "text": "Experiments",
+      "href": "/experiments",
+      "current": null
+     },
+     {
+      "text": "Scenarios",
+      "href": "/scenarios",
+      "current": null
+     },
+     {
+      "text": "Morphology",
+      "href": "/morphology",
+      "current": null
+     },
+     {
+      "text": "Visual Lab",
+      "href": "/visual-lab/fly",
+      "current": null
+     }
+    ]
+   }
+  ],
+  "disabled": [],
+  "numeric": 0,
+  "numericSamples": [],
+  "smallText": 2,
+  "fonts": [
+   "Arial",
+   "SFMono-Regular"
+  ],
+  "hiddenWrappers": 1,
+  "consoleErrors": [],
+  "nonGet": [],
+  "requestCount": 32,
+  "threeLike": 16,
+  "axe": [],
+  "shot": "unknown-experiment--phone--dark.jpg"
+ },
+ {
+  "name": "unknown-experiment",
+  "route": "/experiments/abc123",
+  "width": "desktop",
+  "theme": "light",
+  "status": 200,
+  "ms": 1859,
+  "title": "NeuroFly \u00b7 Experiment Browser",
+  "lang": "en",
+  "h1": [
+   "This experiment could not be read."
+  ],
+  "mainCount": 1,
+  "firstFocusable": "NeuroFlyconnectome experiment browser",
+  "hOverflow": false,
+  "scrollWidth": 1440,
+  "pageHeight": 900,
+  "canvases": 0,
+  "bodyBg": "rgb(16, 20, 22)",
+  "navs": [
+   {
+    "label": "Primary navigation",
+    "visible": true,
+    "links": [
+     {
+      "text": "Experiments",
+      "href": "/experiments",
+      "current": null
+     },
+     {
+      "text": "Scenarios",
+      "href": "/scenarios",
+      "current": null
+     },
+     {
+      "text": "Morphology",
+      "href": "/morphology",
+      "current": null
+     },
+     {
+      "text": "Visual Lab",
+      "href": "/visual-lab/fly",
+      "current": null
+     }
+    ]
+   }
+  ],
+  "disabled": [],
+  "numeric": 0,
+  "numericSamples": [],
+  "smallText": 2,
+  "fonts": [
+   "Arial",
+   "SFMono-Regular"
+  ],
+  "hiddenWrappers": 1,
+  "consoleErrors": [],
+  "nonGet": [],
+  "requestCount": 32,
+  "threeLike": 16,
+  "axe": [],
+  "shot": "unknown-experiment--desktop--light.jpg"
+ },
+ {
+  "name": "unknown-experiment",
+  "route": "/experiments/abc123",
+  "width": "desktop",
+  "theme": "dark",
+  "status": 200,
+  "ms": 1844,
+  "title": "NeuroFly \u00b7 Experiment Browser",
+  "lang": "en",
+  "h1": [
+   "This experiment could not be read."
+  ],
+  "mainCount": 1,
+  "firstFocusable": "NeuroFlyconnectome experiment browser",
+  "hOverflow": false,
+  "scrollWidth": 1440,
+  "pageHeight": 900,
+  "canvases": 0,
+  "bodyBg": "rgb(16, 20, 22)",
+  "navs": [
+   {
+    "label": "Primary navigation",
+    "visible": true,
+    "links": [
+     {
+      "text": "Experiments",
+      "href": "/experiments",
+      "current": null
+     },
+     {
+      "text": "Scenarios",
+      "href": "/scenarios",
+      "current": null
+     },
+     {
+      "text": "Morphology",
+      "href": "/morphology",
+      "current": null
+     },
+     {
+      "text": "Visual Lab",
+      "href": "/visual-lab/fly",
+      "current": null
+     }
+    ]
+   }
+  ],
+  "disabled": [],
+  "numeric": 0,
+  "numericSamples": [],
+  "smallText": 2,
+  "fonts": [
+   "Arial",
+   "SFMono-Regular"
+  ],
+  "hiddenWrappers": 1,
+  "consoleErrors": [],
+  "nonGet": [],
+  "requestCount": 32,
+  "threeLike": 16,
+  "axe": [],
+  "shot": "unknown-experiment--desktop--dark.jpg"
+ },
+ {
+  "name": "interaction:run-canonical-preset",
+  "buttonFound": 1,
+  "url": "/scenarios/BASELINE_CONTROL",
+  "nonGet": [
+   {
+    "method": "POST",
+    "url": "/scenarios/BASELINE_CONTROL",
+    "action": "server-action"
+   }
+  ]
+ },
+ {
+  "name": "morphology-six",
+  "route": "/morphology/a3f090d5309d9ede0e9e0f78343a618a4bafba3fea91e5a27d37927d5ec55f79",
+  "width": "phone",
+  "theme": "light",
+  "status": 200,
+  "ms": 5235,
+  "title": "NeuroFly \u00b7 Experiment Browser",
+  "lang": "en",
+  "h1": [
+   "MaleCNS morphology inspection"
+  ],
+  "mainCount": 1,
+  "firstFocusable": "NeuroFlyconnectome experiment browser",
+  "hOverflow": false,
+  "scrollWidth": 390,
+  "pageHeight": 5203,
+  "canvases": 1,
+  "bodyBg": "rgb(16, 20, 22)",
+  "navs": [
+   {
+    "label": "Primary navigation",
+    "visible": true,
+    "links": [
+     {
+      "text": "Experiments",
+      "href": "/experiments",
+      "current": null
+     },
+     {
+      "text": "Scenarios",
+      "href": "/scenarios",
+      "current": null
+     },
+     {
+      "text": "Morphology",
+      "href": "/morphology",
+      "current": null
+     },
+     {
+      "text": "Visual Lab",
+      "href": "/visual-lab/fly",
+      "current": null
+     }
+    ]
+   }
+  ],
+  "disabled": [],
+  "numeric": 135,
+  "numericSamples": [
+   "6",
+   "DNp01",
+   "10001",
+   "DNp01",
+   "10010",
+   "LPLC2",
+   "11498",
+   "\u00b7 2 components",
+   "LC4",
+   "12032",
+   "LPLC2",
+   "14465",
+   "LC4",
+   "16128",
+   "LC4",
+   "LPLC2",
+   "DNp01",
+   "DNp01",
+   "10001",
+   "DNp01",
+   "10010",
+   "LPLC2",
+   "11498",
+   "LC4",
+   "12032",
+   "LPLC2",
+   "14465",
+   "LC4",
+   "16128",
+   "DNp01",
+   "10001",
+   "DNp01",
+   "10010",
+   "LPLC2",
+   "11498",
+   "LC4",
+   "12032",
+   "LPLC2",
+   "14465",
+   "LC4"
+  ],
+  "smallText": 53,
+  "fonts": [
+   "Arial",
+   "SFMono-Regular"
+  ],
+  "hiddenWrappers": 1,
+  "consoleErrors": [],
+  "nonGet": [],
+  "requestCount": 33,
+  "threeLike": 17,
+  "axe": [
+   {
+    "id": "aria-prohibited-attr",
+    "impact": "serious",
+    "help": "Elements must only use permitted ARIA attributes",
+    "nodes": 1,
+    "targets": [
+     ".morphology-canvas-shell > div:nth-child(1)"
+    ]
+   },
+   {
+    "id": "target-size",
+    "impact": "serious",
+    "help": "All touch targets must be 24px large, or leave sufficient space",
+    "nodes": 6,
+    "targets": [
+     "li:nth-child(1) > a[target=\"_blank\"][rel=\"noreferrer\"]",
+     "li:nth-child(2) > a[target=\"_blank\"][rel=\"noreferrer\"]",
+     "li:nth-child(3) > a[target=\"_blank\"][rel=\"noreferrer\"]",
+     "li:nth-child(4) > a[target=\"_blank\"][rel=\"noreferrer\"]"
+    ]
+   }
+  ],
+  "shot": "morphology-six--phone--light.jpg"
+ },
+ {
+  "name": "morphology-six",
+  "route": "/morphology/a3f090d5309d9ede0e9e0f78343a618a4bafba3fea91e5a27d37927d5ec55f79",
+  "width": "phone",
+  "theme": "dark",
+  "status": 200,
+  "ms": 4969,
+  "title": "NeuroFly \u00b7 Experiment Browser",
+  "lang": "en",
+  "h1": [
+   "MaleCNS morphology inspection"
+  ],
+  "mainCount": 1,
+  "firstFocusable": "NeuroFlyconnectome experiment browser",
+  "hOverflow": false,
+  "scrollWidth": 390,
+  "pageHeight": 5203,
+  "canvases": 1,
+  "bodyBg": "rgb(16, 20, 22)",
+  "navs": [
+   {
+    "label": "Primary navigation",
+    "visible": true,
+    "links": [
+     {
+      "text": "Experiments",
+      "href": "/experiments",
+      "current": null
+     },
+     {
+      "text": "Scenarios",
+      "href": "/scenarios",
+      "current": null
+     },
+     {
+      "text": "Morphology",
+      "href": "/morphology",
+      "current": null
+     },
+     {
+      "text": "Visual Lab",
+      "href": "/visual-lab/fly",
+      "current": null
+     }
+    ]
+   }
+  ],
+  "disabled": [],
+  "numeric": 135,
+  "numericSamples": [
+   "6",
+   "DNp01",
+   "10001",
+   "DNp01",
+   "10010",
+   "LPLC2",
+   "11498",
+   "\u00b7 2 components",
+   "LC4",
+   "12032",
+   "LPLC2",
+   "14465",
+   "LC4",
+   "16128",
+   "LC4",
+   "LPLC2",
+   "DNp01",
+   "DNp01",
+   "10001",
+   "DNp01",
+   "10010",
+   "LPLC2",
+   "11498",
+   "LC4",
+   "12032",
+   "LPLC2",
+   "14465",
+   "LC4",
+   "16128",
+   "DNp01",
+   "10001",
+   "DNp01",
+   "10010",
+   "LPLC2",
+   "11498",
+   "LC4",
+   "12032",
+   "LPLC2",
+   "14465",
+   "LC4"
+  ],
+  "smallText": 53,
+  "fonts": [
+   "Arial",
+   "SFMono-Regular"
+  ],
+  "hiddenWrappers": 1,
+  "consoleErrors": [],
+  "nonGet": [],
+  "requestCount": 33,
+  "threeLike": 17,
+  "axe": [
+   {
+    "id": "aria-prohibited-attr",
+    "impact": "serious",
+    "help": "Elements must only use permitted ARIA attributes",
+    "nodes": 1,
+    "targets": [
+     ".morphology-canvas-shell > div:nth-child(1)"
+    ]
+   },
+   {
+    "id": "target-size",
+    "impact": "serious",
+    "help": "All touch targets must be 24px large, or leave sufficient space",
+    "nodes": 6,
+    "targets": [
+     "li:nth-child(1) > a[target=\"_blank\"][rel=\"noreferrer\"]",
+     "li:nth-child(2) > a[target=\"_blank\"][rel=\"noreferrer\"]",
+     "li:nth-child(3) > a[target=\"_blank\"][rel=\"noreferrer\"]",
+     "li:nth-child(4) > a[target=\"_blank\"][rel=\"noreferrer\"]"
+    ]
+   }
+  ],
+  "shot": "morphology-six--phone--dark.jpg"
+ },
+ {
+  "name": "morphology-six",
+  "route": "/morphology/a3f090d5309d9ede0e9e0f78343a618a4bafba3fea91e5a27d37927d5ec55f79",
+  "width": "desktop",
+  "theme": "light",
+  "status": 200,
+  "ms": 5078,
+  "title": "NeuroFly \u00b7 Experiment Browser",
+  "lang": "en",
+  "h1": [
+   "MaleCNS morphology inspection"
+  ],
+  "mainCount": 1,
+  "firstFocusable": "NeuroFlyconnectome experiment browser",
+  "hOverflow": false,
+  "scrollWidth": 1440,
+  "pageHeight": 3421,
+  "canvases": 1,
+  "bodyBg": "rgb(16, 20, 22)",
+  "navs": [
+   {
+    "label": "Primary navigation",
+    "visible": true,
+    "links": [
+     {
+      "text": "Experiments",
+      "href": "/experiments",
+      "current": null
+     },
+     {
+      "text": "Scenarios",
+      "href": "/scenarios",
+      "current": null
+     },
+     {
+      "text": "Morphology",
+      "href": "/morphology",
+      "current": null
+     },
+     {
+      "text": "Visual Lab",
+      "href": "/visual-lab/fly",
+      "current": null
+     }
+    ]
+   }
+  ],
+  "disabled": [],
+  "numeric": 135,
+  "numericSamples": [
+   "6",
+   "DNp01",
+   "10001",
+   "DNp01",
+   "10010",
+   "LPLC2",
+   "11498",
+   "\u00b7 2 components",
+   "LC4",
+   "12032",
+   "LPLC2",
+   "14465",
+   "LC4",
+   "16128",
+   "LC4",
+   "LPLC2",
+   "DNp01",
+   "DNp01",
+   "10001",
+   "DNp01",
+   "10010",
+   "LPLC2",
+   "11498",
+   "LC4",
+   "12032",
+   "LPLC2",
+   "14465",
+   "LC4",
+   "16128",
+   "DNp01",
+   "10001",
+   "DNp01",
+   "10010",
+   "LPLC2",
+   "11498",
+   "LC4",
+   "12032",
+   "LPLC2",
+   "14465",
+   "LC4"
+  ],
+  "smallText": 53,
+  "fonts": [
+   "Arial",
+   "SFMono-Regular"
+  ],
+  "hiddenWrappers": 1,
+  "consoleErrors": [],
+  "nonGet": [],
+  "requestCount": 33,
+  "threeLike": 17,
+  "axe": [
+   {
+    "id": "aria-prohibited-attr",
+    "impact": "serious",
+    "help": "Elements must only use permitted ARIA attributes",
+    "nodes": 1,
+    "targets": [
+     ".morphology-canvas-shell > div:nth-child(1)"
+    ]
+   },
+   {
+    "id": "target-size",
+    "impact": "serious",
+    "help": "All touch targets must be 24px large, or leave sufficient space",
+    "nodes": 6,
+    "targets": [
+     "li:nth-child(1) > a[target=\"_blank\"][rel=\"noreferrer\"]",
+     "li:nth-child(2) > a[target=\"_blank\"][rel=\"noreferrer\"]",
+     "li:nth-child(3) > a[target=\"_blank\"][rel=\"noreferrer\"]",
+     "li:nth-child(4) > a[target=\"_blank\"][rel=\"noreferrer\"]"
+    ]
+   }
+  ],
+  "shot": "morphology-six--desktop--light.jpg"
+ },
+ {
+  "name": "morphology-six",
+  "route": "/morphology/a3f090d5309d9ede0e9e0f78343a618a4bafba3fea91e5a27d37927d5ec55f79",
+  "width": "desktop",
+  "theme": "dark",
+  "status": 200,
+  "ms": 5055,
+  "title": "NeuroFly \u00b7 Experiment Browser",
+  "lang": "en",
+  "h1": [
+   "MaleCNS morphology inspection"
+  ],
+  "mainCount": 1,
+  "firstFocusable": "NeuroFlyconnectome experiment browser",
+  "hOverflow": false,
+  "scrollWidth": 1440,
+  "pageHeight": 3421,
+  "canvases": 1,
+  "bodyBg": "rgb(16, 20, 22)",
+  "navs": [
+   {
+    "label": "Primary navigation",
+    "visible": true,
+    "links": [
+     {
+      "text": "Experiments",
+      "href": "/experiments",
+      "current": null
+     },
+     {
+      "text": "Scenarios",
+      "href": "/scenarios",
+      "current": null
+     },
+     {
+      "text": "Morphology",
+      "href": "/morphology",
+      "current": null
+     },
+     {
+      "text": "Visual Lab",
+      "href": "/visual-lab/fly",
+      "current": null
+     }
+    ]
+   }
+  ],
+  "disabled": [],
+  "numeric": 135,
+  "numericSamples": [
+   "6",
+   "DNp01",
+   "10001",
+   "DNp01",
+   "10010",
+   "LPLC2",
+   "11498",
+   "\u00b7 2 components",
+   "LC4",
+   "12032",
+   "LPLC2",
+   "14465",
+   "LC4",
+   "16128",
+   "LC4",
+   "LPLC2",
+   "DNp01",
+   "DNp01",
+   "10001",
+   "DNp01",
+   "10010",
+   "LPLC2",
+   "11498",
+   "LC4",
+   "12032",
+   "LPLC2",
+   "14465",
+   "LC4",
+   "16128",
+   "DNp01",
+   "10001",
+   "DNp01",
+   "10010",
+   "LPLC2",
+   "11498",
+   "LC4",
+   "12032",
+   "LPLC2",
+   "14465",
+   "LC4"
+  ],
+  "smallText": 53,
+  "fonts": [
+   "Arial",
+   "SFMono-Regular"
+  ],
+  "hiddenWrappers": 1,
+  "consoleErrors": [],
+  "nonGet": [],
+  "requestCount": 33,
+  "threeLike": 17,
+  "axe": [
+   {
+    "id": "aria-prohibited-attr",
+    "impact": "serious",
+    "help": "Elements must only use permitted ARIA attributes",
+    "nodes": 1,
+    "targets": [
+     ".morphology-canvas-shell > div:nth-child(1)"
+    ]
+   },
+   {
+    "id": "target-size",
+    "impact": "serious",
+    "help": "All touch targets must be 24px large, or leave sufficient space",
+    "nodes": 6,
+    "targets": [
+     "li:nth-child(1) > a[target=\"_blank\"][rel=\"noreferrer\"]",
+     "li:nth-child(2) > a[target=\"_blank\"][rel=\"noreferrer\"]",
+     "li:nth-child(3) > a[target=\"_blank\"][rel=\"noreferrer\"]",
+     "li:nth-child(4) > a[target=\"_blank\"][rel=\"noreferrer\"]"
+    ]
+   }
+  ],
+  "shot": "morphology-six--desktop--dark.jpg"
+ },
+ {
+  "name": "unknown-experiment-hex",
+  "route": "/experiments/0000000000000000000000000000000000000000000000000000000000000000",
+  "width": "phone",
+  "theme": "light",
+  "status": 200,
+  "ms": 1823,
+  "title": "NeuroFly \u00b7 Experiment Browser",
+  "lang": "en",
+  "h1": [
+   "That artifact is unavailable."
+  ],
+  "mainCount": 1,
+  "firstFocusable": "NeuroFlyconnectome experiment browser",
+  "hOverflow": false,
+  "scrollWidth": 390,
+  "pageHeight": 844,
+  "canvases": 0,
+  "bodyBg": "rgb(16, 20, 22)",
+  "navs": [
+   {
+    "label": "Primary navigation",
+    "visible": true,
+    "links": [
+     {
+      "text": "Experiments",
+      "href": "/experiments",
+      "current": null
+     },
+     {
+      "text": "Scenarios",
+      "href": "/scenarios",
+      "current": null
+     },
+     {
+      "text": "Morphology",
+      "href": "/morphology",
+      "current": null
+     },
+     {
+      "text": "Visual Lab",
+      "href": "/visual-lab/fly",
+      "current": null
+     }
+    ]
+   }
+  ],
+  "disabled": [],
+  "numeric": 0,
+  "numericSamples": [],
+  "smallText": 1,
+  "fonts": [
+   "Arial",
+   "SFMono-Regular"
+  ],
+  "hiddenWrappers": 2,
+  "consoleErrors": [],
+  "nonGet": [],
+  "requestCount": 32,
+  "threeLike": 16,
+  "axe": [],
+  "shot": "unknown-experiment-hex--phone--light.jpg"
+ },
+ {
+  "name": "unknown-experiment-hex",
+  "route": "/experiments/0000000000000000000000000000000000000000000000000000000000000000",
+  "width": "phone",
+  "theme": "dark",
+  "status": 200,
+  "ms": 1842,
+  "title": "NeuroFly \u00b7 Experiment Browser",
+  "lang": "en",
+  "h1": [
+   "That artifact is unavailable."
+  ],
+  "mainCount": 1,
+  "firstFocusable": "NeuroFlyconnectome experiment browser",
+  "hOverflow": false,
+  "scrollWidth": 390,
+  "pageHeight": 844,
+  "canvases": 0,
+  "bodyBg": "rgb(16, 20, 22)",
+  "navs": [
+   {
+    "label": "Primary navigation",
+    "visible": true,
+    "links": [
+     {
+      "text": "Experiments",
+      "href": "/experiments",
+      "current": null
+     },
+     {
+      "text": "Scenarios",
+      "href": "/scenarios",
+      "current": null
+     },
+     {
+      "text": "Morphology",
+      "href": "/morphology",
+      "current": null
+     },
+     {
+      "text": "Visual Lab",
+      "href": "/visual-lab/fly",
+      "current": null
+     }
+    ]
+   }
+  ],
+  "disabled": [],
+  "numeric": 0,
+  "numericSamples": [],
+  "smallText": 1,
+  "fonts": [
+   "Arial",
+   "SFMono-Regular"
+  ],
+  "hiddenWrappers": 2,
+  "consoleErrors": [],
+  "nonGet": [],
+  "requestCount": 32,
+  "threeLike": 16,
+  "axe": [],
+  "shot": "unknown-experiment-hex--phone--dark.jpg"
+ },
+ {
+  "name": "unknown-experiment-hex",
+  "route": "/experiments/0000000000000000000000000000000000000000000000000000000000000000",
+  "width": "desktop",
+  "theme": "light",
+  "status": 200,
+  "ms": 1849,
+  "title": "NeuroFly \u00b7 Experiment Browser",
+  "lang": "en",
+  "h1": [
+   "That artifact is unavailable."
+  ],
+  "mainCount": 1,
+  "firstFocusable": "NeuroFlyconnectome experiment browser",
+  "hOverflow": false,
+  "scrollWidth": 1440,
+  "pageHeight": 900,
+  "canvases": 0,
+  "bodyBg": "rgb(16, 20, 22)",
+  "navs": [
+   {
+    "label": "Primary navigation",
+    "visible": true,
+    "links": [
+     {
+      "text": "Experiments",
+      "href": "/experiments",
+      "current": null
+     },
+     {
+      "text": "Scenarios",
+      "href": "/scenarios",
+      "current": null
+     },
+     {
+      "text": "Morphology",
+      "href": "/morphology",
+      "current": null
+     },
+     {
+      "text": "Visual Lab",
+      "href": "/visual-lab/fly",
+      "current": null
+     }
+    ]
+   }
+  ],
+  "disabled": [],
+  "numeric": 0,
+  "numericSamples": [],
+  "smallText": 1,
+  "fonts": [
+   "Arial",
+   "SFMono-Regular"
+  ],
+  "hiddenWrappers": 2,
+  "consoleErrors": [],
+  "nonGet": [],
+  "requestCount": 32,
+  "threeLike": 16,
+  "axe": [],
+  "shot": "unknown-experiment-hex--desktop--light.jpg"
+ },
+ {
+  "name": "unknown-experiment-hex",
+  "route": "/experiments/0000000000000000000000000000000000000000000000000000000000000000",
+  "width": "desktop",
+  "theme": "dark",
+  "status": 200,
+  "ms": 1866,
+  "title": "NeuroFly \u00b7 Experiment Browser",
+  "lang": "en",
+  "h1": [
+   "That artifact is unavailable."
+  ],
+  "mainCount": 1,
+  "firstFocusable": "NeuroFlyconnectome experiment browser",
+  "hOverflow": false,
+  "scrollWidth": 1440,
+  "pageHeight": 900,
+  "canvases": 0,
+  "bodyBg": "rgb(16, 20, 22)",
+  "navs": [
+   {
+    "label": "Primary navigation",
+    "visible": true,
+    "links": [
+     {
+      "text": "Experiments",
+      "href": "/experiments",
+      "current": null
+     },
+     {
+      "text": "Scenarios",
+      "href": "/scenarios",
+      "current": null
+     },
+     {
+      "text": "Morphology",
+      "href": "/morphology",
+      "current": null
+     },
+     {
+      "text": "Visual Lab",
+      "href": "/visual-lab/fly",
+      "current": null
+     }
+    ]
+   }
+  ],
+  "disabled": [],
+  "numeric": 0,
+  "numericSamples": [],
+  "smallText": 1,
+  "fonts": [
+   "Arial",
+   "SFMono-Regular"
+  ],
+  "hiddenWrappers": 2,
+  "consoleErrors": [],
+  "nonGet": [],
+  "requestCount": 32,
+  "threeLike": 16,
+  "axe": [],
+  "shot": "unknown-experiment-hex--desktop--dark.jpg"
+ },
+ {
+  "name": "interaction:run-canonical-preset",
+  "buttonFound": 1,
+  "url": "/scenarios/BASELINE_CONTROL",
+  "nonGet": [
+   {
+    "method": "POST",
+    "url": "/scenarios/BASELINE_CONTROL",
+    "action": "server-action"
+   }
+  ]
+ }
+]

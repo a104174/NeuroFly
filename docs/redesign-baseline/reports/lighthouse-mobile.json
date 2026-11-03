@@ -1,0 +1,114 @@
+{
+ "cockpit": {
+  "url": "/experiments/63a73b7ea3ba10a5850b166598f134a2dc0a752bf93c550e2371ee8d5b1bf656/cockpit",
+  "scores": {
+   "performance": 65,
+   "accessibility": 89,
+   "best-practices": 96,
+   "seo": 100
+  },
+  "first-contentful-paint": "2.6\u00a0s",
+  "largest-contentful-paint": "5.2\u00a0s",
+  "total-blocking-time": "460\u00a0ms",
+  "cumulative-layout-shift": "0.001",
+  "speed-index": "3.2\u00a0s",
+  "lighthouse": "12.6.1",
+  "formFactor": "mobile"
+ },
+ "experiments": {
+  "url": "/experiments",
+  "scores": {
+   "performance": 99,
+   "accessibility": 100,
+   "best-practices": 100,
+   "seo": 100
+  },
+  "first-contentful-paint": "0.9\u00a0s",
+  "largest-contentful-paint": "2.2\u00a0s",
+  "total-blocking-time": "60\u00a0ms",
+  "cumulative-layout-shift": "0",
+  "speed-index": "0.9\u00a0s",
+  "lighthouse": "12.6.1",
+  "formFactor": "mobile"
+ },
+ "home": {
+  "url": "/",
+  "scores": {
+   "performance": 99,
+   "accessibility": 100,
+   "best-practices": 100,
+   "seo": 100
+  },
+  "first-contentful-paint": "0.9\u00a0s",
+  "largest-contentful-paint": "2.1\u00a0s",
+  "total-blocking-time": "20\u00a0ms",
+  "cumulative-layout-shift": "0",
+  "speed-index": "1.1\u00a0s",
+  "lighthouse": "12.6.1",
+  "formFactor": "mobile"
+ },
+ "lab-arena": {
+  "url": "/visual-lab/arena",
+  "scores": {
+   "performance": 59,
+   "accessibility": 100,
+   "best-practices": 100,
+   "seo": 100
+  },
+  "first-contentful-paint": "0.9\u00a0s",
+  "largest-contentful-paint": "3.4\u00a0s",
+  "total-blocking-time": "163,390\u00a0ms",
+  "cumulative-layout-shift": "0",
+  "speed-index": "4.6\u00a0s",
+  "lighthouse": "12.6.1",
+  "formFactor": "mobile"
+ },
+ "morphology": {
+  "url": "/morphology",
+  "scores": {
+   "performance": 99,
+   "accessibility": 100,
+   "best-practices": 100,
+   "seo": 100
+  },
+  "first-contentful-paint": "0.9\u00a0s",
+  "largest-contentful-paint": "2.2\u00a0s",
+  "total-blocking-time": "30\u00a0ms",
+  "cumulative-layout-shift": "0",
+  "speed-index": "0.9\u00a0s",
+  "lighthouse": "12.6.1",
+  "formFactor": "mobile"
+ },
+ "scenarios": {
+  "url": "/scenarios",
+  "scores": {
+   "performance": 98,
+   "accessibility": 100,
+   "best-practices": 100,
+   "seo": 100
+  },
+  "first-contentful-paint": "0.9\u00a0s",
+  "largest-contentful-paint": "2.4\u00a0s",
+  "total-blocking-time": "20\u00a0ms",
+  "cumulative-layout-shift": "0",
+  "speed-index": "0.9\u00a0s",
+  "lighthouse": "12.6.1",
+  "formFactor": "mobile"
+ },
+ "science": {
+  "url": "/science",
+  "scores": {
+   "performance": 96,
+   "accessibility": 100,
+   "best-practices": 100,
+   "seo": 100
+  },
+  "first-contentful-paint": "1.1\u00a0s",
+  "largest-contentful-paint": "2.8\u00a0s",
+  "total-blocking-time": "20\u00a0ms",
+  "cumulative-layout-shift": "0",
+  "speed-index": "1.1\u00a0s",
+  "lighthouse": "12.6.1",
+  "formFactor": "mobile"
+ }
+}

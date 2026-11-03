@@ -1,0 +1,1300 @@
+[
+ {
+  "name": "scenario-looming-replay",
+  "route": "/scenarios/LOOMING_CIRCUIT_VALIDATION?replay=canonical",
+  "width": "phone",
+  "theme": "light",
+  "status": 200,
+  "ms": 15440,
+  "title": "NeuroFly \u00b7 Experiment Browser",
+  "lang": "en",
+  "h1": [
+   "Looming Circuit Validation"
+  ],
+  "mainCount": 1,
+  "firstFocusable": "NeuroFlyconnectome experiment browser",
+  "hOverflow": false,
+  "scrollWidth": 390,
+  "pageHeight": 2567,
+  "canvases": 1,
+  "bodyBg": "rgb(16, 20, 22)",
+  "navs": [
+   {
+    "label": "Primary navigation",
+    "visible": true,
+    "links": [
+     {
+      "text": "Experiments",
+      "href": "/experiments",
+      "current": null
+     },
+     {
+      "text": "Scenarios",
+      "href": "/scenarios",
+      "current": null
+     },
+     {
+      "text": "Morphology",
+      "href": "/morphology",
+      "current": null
+     },
+     {
+      "text": "Visual Lab",
+      "href": "/visual-lab/fly",
+      "current": null
+     }
+    ]
+   }
+  ],
+  "disabled": [],
+  "numeric": 66,
+  "numericSamples": [
+   "1.4 MS CIRCUIT MICRO-WINDOW \u00b7 START HERE",
+   "Inspect LC4 / LPLC2 \u2192 DNp01 in a short causal probe.",
+   "1.4 ms",
+   "2",
+   "19",
+   "/ 311 exposed",
+   "DNp01 remains subthreshold.",
+   "Visual input changed and DNp01 depolarized, but the pinned m",
+   "0.0",
+   "DNp01 R -52.000 / L -52.000 mV_eq. 19 sensory bodies exposed",
+   "MaleCNS LC4 / LPLC2 \u2192 DNp01 structural routing.",
+   "0",
+   "14",
+   "0.0",
+   "1.4",
+   "ms simulation shown over 6 s playback \u00b7 rendering only, scie",
+   "0 ms \u00b7",
+   "1.4",
+   "0",
+   "0.0",
+   "01",
+   "02",
+   "LC4 / LPLC2",
+   "19 / 311 bodies exposed",
+   "03",
+   "DNp01",
+   "0 spikes in this run",
+   "04",
+   "05",
+   "DNp01 \u00b7 R / L",
+   "R -52.000 / L -52.000",
+   "19 / 311 bodies",
+   "Radius 2 relative-column steps",
+   "0 DNp01 model spikes in run \u00b7 No recorded motor command",
+   "0.0",
+   "0",
+   "4.000000",
+   "0.000000",
+   "0.000000",
+   "0"
+  ],
+  "smallText": 65,
+  "fonts": [
+   "Arial",
+   "SFMono-Regular",
+   "monospace"
+  ],
+  "hiddenWrappers": 1,
+  "consoleErrors": [
+   "THREE.WebGLRenderer: A WebGL context could not be created. Reason:  disabled by enterprise policy or commandline switch",
+   "THREE.WebGLRenderer: A WebGL context could not be created. Reason:  disabled by enterprise policy or commandline switch",
+   "THREE.WebGLRenderer: THREE.WebGLRenderer: Error creating WebGL context.",
+   "pageerror: Error: THREE.WebGLRenderer: Error creating WebGL context."
+  ],
+  "nonGet": [],
+  "requestCount": 34,
+  "threeLike": 18,
+  "axe": null,
+  "shot": "scenario-looming-replay--phone--light.jpg"
+ },
+ {
+  "name": "scenario-looming-replay",
+  "route": "/scenarios/LOOMING_CIRCUIT_VALIDATION?replay=canonical",
+  "width": "desktop",
+  "theme": "light",
+  "status": 200,
+  "ms": 12093,
+  "title": "NeuroFly \u00b7 Experiment Browser",
+  "lang": "en",
+  "h1": [
+   "Looming Circuit Validation"
+  ],
+  "mainCount": 1,
+  "firstFocusable": "NeuroFlyconnectome experiment browser",
+  "hOverflow": false,
+  "scrollWidth": 1440,
+  "pageHeight": 1683,
+  "canvases": 1,
+  "bodyBg": "rgb(16, 20, 22)",
+  "navs": [
+   {
+    "label": "Primary navigation",
+    "visible": true,
+    "links": [
+     {
+      "text": "Experiments",
+      "href": "/experiments",
+      "current": null
+     },
+     {
+      "text": "Scenarios",
+      "href": "/scenarios",
+      "current": null
+     },
+     {
+      "text": "Morphology",
+      "href": "/morphology",
+      "current": null
+     },
+     {
+      "text": "Visual Lab",
+      "href": "/visual-lab/fly",
+      "current": null
+     }
+    ]
+   }
+  ],
+  "disabled": [],
+  "numeric": 66,
+  "numericSamples": [
+   "1.4 MS CIRCUIT MICRO-WINDOW \u00b7 START HERE",
+   "Inspect LC4 / LPLC2 \u2192 DNp01 in a short causal probe.",
+   "1.4 ms",
+   "2",
+   "19",
+   "/ 311 exposed",
+   "DNp01 remains subthreshold.",
+   "Visual input changed and DNp01 depolarized, but the pinned m",
+   "0.0",
+   "DNp01 R -52.000 / L -52.000 mV_eq. 19 sensory bodies exposed",
+   "MaleCNS LC4 / LPLC2 \u2192 DNp01 structural routing.",
+   "0",
+   "14",
+   "0.0",
+   "1.4",
+   "ms simulation shown over 6 s playback \u00b7 rendering only, scie",
+   "0 ms \u00b7",
+   "1.4",
+   "0",
+   "0.0",
+   "01",
+   "02",
+   "LC4 / LPLC2",
+   "19 / 311 bodies exposed",
+   "03",
+   "DNp01",
+   "0 spikes in this run",
+   "04",
+   "05",
+   "DNp01 \u00b7 R / L",
+   "R -52.000 / L -52.000",
+   "19 / 311 bodies",
+   "Radius 2 relative-column steps",
+   "0 DNp01 model spikes in run \u00b7 No recorded motor command",
+   "0.0",
+   "0",
+   "4.000000",
+   "0.000000",
+   "0.000000",
+   "0"
+  ],
+  "smallText": 56,
+  "fonts": [
+   "Arial",
+   "SFMono-Regular",
+   "monospace"
+  ],
+  "hiddenWrappers": 1,
+  "consoleErrors": [
+   "THREE.WebGLRenderer: A WebGL context could not be created. Reason:  disabled by enterprise policy or commandline switch",
+   "THREE.WebGLRenderer: A WebGL context could not be created. Reason:  disabled by enterprise policy or commandline switch",
+   "THREE.WebGLRenderer: THREE.WebGLRenderer: Error creating WebGL context.",
+   "pageerror: Error: THREE.WebGLRenderer: Error creating WebGL context."
+  ],
+  "nonGet": [],
+  "requestCount": 34,
+  "threeLike": 18,
+  "axe": null,
+  "shot": "scenario-looming-replay--desktop--light.jpg"
+ },
+ {
+  "name": "experiment-detail",
+  "route": "/experiments/63a73b7ea3ba10a5850b166598f134a2dc0a752bf93c550e2371ee8d5b1bf656",
+  "width": "phone",
+  "theme": "light",
+  "status": 200,
+  "ms": 1814,
+  "title": "NeuroFly \u00b7 Experiment Browser",
+  "lang": "en",
+  "h1": [
+   "looming_giant_fiber_v1"
+  ],
+  "mainCount": 1,
+  "firstFocusable": "NeuroFlyconnectome experiment browser",
+  "hOverflow": false,
+  "scrollWidth": 390,
+  "pageHeight": 5305,
+  "canvases": 0,
+  "bodyBg": "rgb(16, 20, 22)",
+  "navs": [
+   {
+    "label": "Primary navigation",
+    "visible": true,
+    "links": [
+     {
+      "text": "Experiments",
+      "href": "/experiments",
+      "current": null
+     },
+     {
+      "text": "Scenarios",
+      "href": "/scenarios",
+      "current": null
+     },
+     {
+      "text": "Morphology",
+      "href": "/morphology",
+      "current": null
+     },
+     {
+      "text": "Visual Lab",
+      "href": "/visual-lab/fly",
+      "current": null
+     }
+    ]
+   }
+  ],
+  "disabled": [],
+  "numeric": 88,
+  "numericSamples": [
+   "looming_giant_fiber_v1",
+   "run across the selected LC4/LPLC2 \u2192 DNp01 circuit.",
+   "male-cns:v1.0",
+   "looming_giant_fiber_v1",
+   "1",
+   "direct_visual_to_dnp01_v1",
+   "level_p_instantaneous_bounded_v1",
+   "phase2e_v1",
+   "phase2b_v1",
+   "63a73b7ea3ba10a5850b166598f134a2dc0a752bf93c550e2371ee8d5b1b",
+   "ui_smoke_phase2f_reference_v1",
+   "8af5a3f50f0cd9fee65ce62e5421c873e95a48e32333de475545c1be7f13",
+   "80",
+   "0.1",
+   "G_LC4",
+   "20",
+   "G_LPLC2",
+   "20",
+   "1",
+   "0.4",
+   "0.005",
+   "LC4",
+   "126",
+   "756",
+   "126",
+   "13.9 ms",
+   "0.9754",
+   "19.5084",
+   "LPLC2",
+   "185",
+   "370",
+   "185",
+   "40 ms",
+   "0.6977",
+   "13.9546",
+   "DNp01 readouts",
+   "DNp01 \u00b7",
+   "10001",
+   "1",
+   "69.3 ms"
+  ],
+  "smallText": 121,
+  "fonts": [
+   "Arial",
+   "SFMono-Regular"
+  ],
+  "hiddenWrappers": 1,
+  "consoleErrors": [],
+  "nonGet": [],
+  "requestCount": 41,
+  "threeLike": 23,
+  "axe": null,
+  "shot": "experiment-detail--phone--light.jpg"
+ },
+ {
+  "name": "experiment-detail",
+  "route": "/experiments/63a73b7ea3ba10a5850b166598f134a2dc0a752bf93c550e2371ee8d5b1bf656",
+  "width": "desktop",
+  "theme": "light",
+  "status": 200,
+  "ms": 1855,
+  "title": "NeuroFly \u00b7 Experiment Browser",
+  "lang": "en",
+  "h1": [
+   "looming_giant_fiber_v1"
+  ],
+  "mainCount": 1,
+  "firstFocusable": "NeuroFlyconnectome experiment browser",
+  "hOverflow": false,
+  "scrollWidth": 1440,
+  "pageHeight": 3259,
+  "canvases": 0,
+  "bodyBg": "rgb(16, 20, 22)",
+  "navs": [
+   {
+    "label": "Primary navigation",
+    "visible": true,
+    "links": [
+     {
+      "text": "Experiments",
+      "href": "/experiments",
+      "current": null
+     },
+     {
+      "text": "Scenarios",
+      "href": "/scenarios",
+      "current": null
+     },
+     {
+      "text": "Morphology",
+      "href": "/morphology",
+      "current": null
+     },
+     {
+      "text": "Visual Lab",
+      "href": "/visual-lab/fly",
+      "current": null
+     }
+    ]
+   }
+  ],
+  "disabled": [],
+  "numeric": 88,
+  "numericSamples": [
+   "looming_giant_fiber_v1",
+   "run across the selected LC4/LPLC2 \u2192 DNp01 circuit.",
+   "male-cns:v1.0",
+   "looming_giant_fiber_v1",
+   "1",
+   "direct_visual_to_dnp01_v1",
+   "level_p_instantaneous_bounded_v1",
+   "phase2e_v1",
+   "phase2b_v1",
+   "63a73b7ea3ba10a5850b166598f134a2dc0a752bf93c550e2371ee8d5b1b",
+   "ui_smoke_phase2f_reference_v1",
+   "8af5a3f50f0cd9fee65ce62e5421c873e95a48e32333de475545c1be7f13",
+   "80",
+   "0.1",
+   "G_LC4",
+   "20",
+   "G_LPLC2",
+   "20",
+   "1",
+   "0.4",
+   "0.005",
+   "LC4",
+   "126",
+   "756",
+   "126",
+   "13.9 ms",
+   "0.9754",
+   "19.5084",
+   "LPLC2",
+   "185",
+   "370",
+   "185",
+   "40 ms",
+   "0.6977",
+   "13.9546",
+   "DNp01 readouts",
+   "DNp01 \u00b7",
+   "10001",
+   "1",
+   "69.3 ms"
+  ],
+  "smallText": 121,
+  "fonts": [
+   "Arial",
+   "SFMono-Regular"
+  ],
+  "hiddenWrappers": 1,
+  "consoleErrors": [],
+  "nonGet": [],
+  "requestCount": 41,
+  "threeLike": 23,
+  "axe": null,
+  "shot": "experiment-detail--desktop--light.jpg"
+ },
+ {
+  "name": "cockpit",
+  "route": "/experiments/63a73b7ea3ba10a5850b166598f134a2dc0a752bf93c550e2371ee8d5b1bf656/cockpit",
+  "width": "phone",
+  "theme": "light",
+  "status": 200,
+  "ms": 7753,
+  "title": "NeuroFly \u00b7 Experiment Browser",
+  "lang": "en",
+  "h1": [
+   "Persisted experiment looming_giant_fiber_v1"
+  ],
+  "mainCount": 1,
+  "firstFocusable": "NeuroFlyconnectome experiment browser",
+  "hOverflow": false,
+  "scrollWidth": 390,
+  "pageHeight": 2594,
+  "canvases": 0,
+  "bodyBg": "rgb(16, 20, 22)",
+  "navs": [
+   {
+    "label": "Primary navigation",
+    "visible": true,
+    "links": [
+     {
+      "text": "Experiments",
+      "href": "/experiments",
+      "current": null
+     },
+     {
+      "text": "Scenarios",
+      "href": "/scenarios",
+      "current": null
+     },
+     {
+      "text": "Morphology",
+      "href": "/morphology",
+      "current": null
+     },
+     {
+      "text": "Visual Lab",
+      "href": "/visual-lab/fly",
+      "current": null
+     }
+    ]
+   }
+  ],
+  "disabled": [],
+  "numeric": 144,
+  "numericSamples": [
+   "looming_giant_fiber_v1",
+   "63a73b7ea3ba",
+   "male-cns:v1.0",
+   "0.00",
+   "01 / WORLD + STIMULUS",
+   "3D playback is unavailable in this browser.",
+   "0.000",
+   "0.1993",
+   "02 / MALECNS SOURCE STRUCTURE",
+   "3D morphology inspection is unavailable in this browser. Sou",
+   "DNp01",
+   "10001",
+   "DNp01",
+   "10010",
+   "LPLC2",
+   "11498",
+   "\u00b7 2 components",
+   "LC4",
+   "12032",
+   "LPLC2",
+   "14465",
+   "LC4",
+   "16128",
+   "DNp01 is a point-neuron model: body-level state is mapped un",
+   "LC4",
+   "13.2890",
+   "0.000",
+   "0.100",
+   "LPLC2",
+   "6.6519",
+   "0.000",
+   "0.100",
+   "DNp01 BODY",
+   "10001",
+   "0",
+   "-52.0000",
+   "0.0000",
+   "0.000",
+   "0.000",
+   "DNp01 BODY"
+  ],
+  "smallText": 135,
+  "fonts": [
+   "Arial",
+   "SFMono-Regular"
+  ],
+  "hiddenWrappers": 1,
+  "consoleErrors": [],
+  "nonGet": [],
+  "requestCount": 41,
+  "threeLike": 21,
+  "axe": null,
+  "shot": "cockpit--phone--light.jpg"
+ },
+ {
+  "name": "cockpit",
+  "route": "/experiments/63a73b7ea3ba10a5850b166598f134a2dc0a752bf93c550e2371ee8d5b1bf656/cockpit",
+  "width": "desktop",
+  "theme": "light",
+  "status": 200,
+  "ms": 7642,
+  "title": "NeuroFly \u00b7 Experiment Browser",
+  "lang": "en",
+  "h1": [
+   "Persisted experiment looming_giant_fiber_v1"
+  ],
+  "mainCount": 1,
+  "firstFocusable": "NeuroFlyconnectome experiment browser",
+  "hOverflow": false,
+  "scrollWidth": 1440,
+  "pageHeight": 900,
+  "canvases": 0,
+  "bodyBg": "rgb(16, 20, 22)",
+  "navs": [
+   {
+    "label": "Primary navigation",
+    "visible": true,
+    "links": [
+     {
+      "text": "Experiments",
+      "href": "/experiments",
+      "current": null
+     },
+     {
+      "text": "Scenarios",
+      "href": "/scenarios",
+      "current": null
+     },
+     {
+      "text": "Morphology",
+      "href": "/morphology",
+      "current": null
+     },
+     {
+      "text": "Visual Lab",
+      "href": "/visual-lab/fly",
+      "current": null
+     }
+    ]
+   }
+  ],
+  "disabled": [],
+  "numeric": 144,
+  "numericSamples": [
+   "looming_giant_fiber_v1",
+   "63a73b7ea3ba",
+   "male-cns:v1.0",
+   "0.00",
+   "01 / WORLD + STIMULUS",
+   "3D playback is unavailable in this browser.",
+   "0.000",
+   "0.1993",
+   "02 / MALECNS SOURCE STRUCTURE",
+   "3D morphology inspection is unavailable in this browser. Sou",
+   "DNp01",
+   "10001",
+   "DNp01",
+   "10010",
+   "LPLC2",
+   "11498",
+   "\u00b7 2 components",
+   "LC4",
+   "12032",
+   "LPLC2",
+   "14465",
+   "LC4",
+   "16128",
+   "DNp01 is a point-neuron model: body-level state is mapped un",
+   "LC4",
+   "13.2890",
+   "0.000",
+   "0.100",
+   "LPLC2",
+   "6.6519",
+   "0.000",
+   "0.100",
+   "DNp01 BODY",
+   "10001",
+   "0",
+   "-52.0000",
+   "0.0000",
+   "0.000",
+   "0.000",
+   "DNp01 BODY"
+  ],
+  "smallText": 135,
+  "fonts": [
+   "Arial",
+   "SFMono-Regular"
+  ],
+  "hiddenWrappers": 1,
+  "consoleErrors": [],
+  "nonGet": [],
+  "requestCount": 41,
+  "threeLike": 21,
+  "axe": null,
+  "shot": "cockpit--desktop--light.jpg"
+ },
+ {
+  "name": "morphology-six",
+  "route": "/morphology/a3f090d5309d9ede0e9e0f78343a618a4bafba3fea91e5a27d37927d5ec55f79",
+  "width": "phone",
+  "theme": "light",
+  "status": 200,
+  "ms": 4315,
+  "title": "NeuroFly \u00b7 Experiment Browser",
+  "lang": "en",
+  "h1": [
+   "MaleCNS morphology inspection"
+  ],
+  "mainCount": 1,
+  "firstFocusable": "NeuroFlyconnectome experiment browser",
+  "hOverflow": false,
+  "scrollWidth": 390,
+  "pageHeight": 5203,
+  "canvases": 0,
+  "bodyBg": "rgb(16, 20, 22)",
+  "navs": [
+   {
+    "label": "Primary navigation",
+    "visible": true,
+    "links": [
+     {
+      "text": "Experiments",
+      "href": "/experiments",
+      "current": null
+     },
+     {
+      "text": "Scenarios",
+      "href": "/scenarios",
+      "current": null
+     },
+     {
+      "text": "Morphology",
+      "href": "/morphology",
+      "current": null
+     },
+     {
+      "text": "Visual Lab",
+      "href": "/visual-lab/fly",
+      "current": null
+     }
+    ]
+   }
+  ],
+  "disabled": [],
+  "numeric": 136,
+  "numericSamples": [
+   "6",
+   "3D morphology inspection is unavailable in this browser. Sou",
+   "DNp01",
+   "10001",
+   "DNp01",
+   "10010",
+   "LPLC2",
+   "11498",
+   "\u00b7 2 components",
+   "LC4",
+   "12032",
+   "LPLC2",
+   "14465",
+   "LC4",
+   "16128",
+   "LC4",
+   "LPLC2",
+   "DNp01",
+   "DNp01",
+   "10001",
+   "DNp01",
+   "10010",
+   "LPLC2",
+   "11498",
+   "LC4",
+   "12032",
+   "LPLC2",
+   "14465",
+   "LC4",
+   "16128",
+   "DNp01",
+   "10001",
+   "DNp01",
+   "10010",
+   "LPLC2",
+   "11498",
+   "LC4",
+   "12032",
+   "LPLC2",
+   "14465"
+  ],
+  "smallText": 53,
+  "fonts": [
+   "Arial",
+   "SFMono-Regular"
+  ],
+  "hiddenWrappers": 1,
+  "consoleErrors": [],
+  "nonGet": [],
+  "requestCount": 33,
+  "threeLike": 17,
+  "axe": null,
+  "shot": "morphology-six--phone--light.jpg"
+ },
+ {
+  "name": "morphology-six",
+  "route": "/morphology/a3f090d5309d9ede0e9e0f78343a618a4bafba3fea91e5a27d37927d5ec55f79",
+  "width": "desktop",
+  "theme": "light",
+  "status": 200,
+  "ms": 4325,
+  "title": "NeuroFly \u00b7 Experiment Browser",
+  "lang": "en",
+  "h1": [
+   "MaleCNS morphology inspection"
+  ],
+  "mainCount": 1,
+  "firstFocusable": "NeuroFlyconnectome experiment browser",
+  "hOverflow": false,
+  "scrollWidth": 1440,
+  "pageHeight": 3421,
+  "canvases": 0,
+  "bodyBg": "rgb(16, 20, 22)",
+  "navs": [
+   {
+    "label": "Primary navigation",
+    "visible": true,
+    "links": [
+     {
+      "text": "Experiments",
+      "href": "/experiments",
+      "current": null
+     },
+     {
+      "text": "Scenarios",
+      "href": "/scenarios",
+      "current": null
+     },
+     {
+      "text": "Morphology",
+      "href": "/morphology",
+      "current": null
+     },
+     {
+      "text": "Visual Lab",
+      "href": "/visual-lab/fly",
+      "current": null
+     }
+    ]
+   }
+  ],
+  "disabled": [],
+  "numeric": 136,
+  "numericSamples": [
+   "6",
+   "3D morphology inspection is unavailable in this browser. Sou",
+   "DNp01",
+   "10001",
+   "DNp01",
+   "10010",
+   "LPLC2",
+   "11498",
+   "\u00b7 2 components",
+   "LC4",
+   "12032",
+   "LPLC2",
+   "14465",
+   "LC4",
+   "16128",
+   "LC4",
+   "LPLC2",
+   "DNp01",
+   "DNp01",
+   "10001",
+   "DNp01",
+   "10010",
+   "LPLC2",
+   "11498",
+   "LC4",
+   "12032",
+   "LPLC2",
+   "14465",
+   "LC4",
+   "16128",
+   "DNp01",
+   "10001",
+   "DNp01",
+   "10010",
+   "LPLC2",
+   "11498",
+   "LC4",
+   "12032",
+   "LPLC2",
+   "14465"
+  ],
+  "smallText": 53,
+  "fonts": [
+   "Arial",
+   "SFMono-Regular"
+  ],
+  "hiddenWrappers": 1,
+  "consoleErrors": [],
+  "nonGet": [],
+  "requestCount": 33,
+  "threeLike": 17,
+  "axe": null,
+  "shot": "morphology-six--desktop--light.jpg"
+ },
+ {
+  "name": "lab-arena",
+  "route": "/visual-lab/arena",
+  "width": "phone",
+  "theme": "light",
+  "status": 200,
+  "ms": 4733,
+  "title": "Explore \u00b7 NeuroFly Lab",
+  "lang": "en",
+  "h1": [
+   "Explore."
+  ],
+  "mainCount": 1,
+  "firstFocusable": "Skip to laboratory",
+  "hOverflow": false,
+  "scrollWidth": 390,
+  "pageHeight": 1606,
+  "canvases": 0,
+  "bodyBg": "rgb(16, 20, 22)",
+  "navs": [
+   {
+    "label": "Laboratory navigation",
+    "visible": true,
+    "links": [
+     {
+      "text": "Home \u2197",
+      "href": "/",
+      "current": null
+     },
+     {
+      "text": "Research archive",
+      "href": "/scenarios",
+      "current": null
+     }
+    ]
+   }
+  ],
+  "disabled": [],
+  "numeric": 14,
+  "numericSamples": [
+   "WebGL 2 is unavailable. Use a browser with WebGL enabled.",
+   "CC BY 4.0",
+   "Live local browser computation with engineering propulsion a",
+   "CC BY 4.0",
+   "00:00:00",
+   "Inspect verified neural anatomy \u00b7 3D",
+   "Constant engineering propulsion at 0.18 arena units/s, with ",
+   "0.0000 / 0.1103 / 0.1219",
+   "1.5708",
+   "0.0000",
+   "0.0000",
+   "0",
+   "0",
+   "Continuous Arena Navigation v3 \u00b7 20 ms body intervals \u00b7 200 "
+  ],
+  "smallText": 11,
+  "fonts": [
+   "Arial"
+  ],
+  "hiddenWrappers": 1,
+  "consoleErrors": [],
+  "nonGet": [],
+  "requestCount": 23,
+  "threeLike": 16,
+  "axe": null,
+  "shot": "lab-arena--phone--light.jpg"
+ },
+ {
+  "name": "lab-arena",
+  "route": "/visual-lab/arena",
+  "width": "desktop",
+  "theme": "light",
+  "status": 200,
+  "ms": 4739,
+  "title": "Explore \u00b7 NeuroFly Lab",
+  "lang": "en",
+  "h1": [
+   "Explore."
+  ],
+  "mainCount": 1,
+  "firstFocusable": "Skip to laboratory",
+  "hOverflow": false,
+  "scrollWidth": 1440,
+  "pageHeight": 1113,
+  "canvases": 0,
+  "bodyBg": "rgb(16, 20, 22)",
+  "navs": [
+   {
+    "label": "Laboratory navigation",
+    "visible": true,
+    "links": [
+     {
+      "text": "Home \u2197",
+      "href": "/",
+      "current": null
+     },
+     {
+      "text": "Research archive",
+      "href": "/scenarios",
+      "current": null
+     }
+    ]
+   }
+  ],
+  "disabled": [],
+  "numeric": 14,
+  "numericSamples": [
+   "WebGL 2 is unavailable. Use a browser with WebGL enabled.",
+   "CC BY 4.0",
+   "Live local browser computation with engineering propulsion a",
+   "CC BY 4.0",
+   "00:00:00",
+   "Inspect verified neural anatomy \u00b7 3D",
+   "Constant engineering propulsion at 0.18 arena units/s, with ",
+   "0.0000 / 0.1103 / 0.1219",
+   "1.5708",
+   "0.0000",
+   "0.0000",
+   "0",
+   "0",
+   "Continuous Arena Navigation v3 \u00b7 20 ms body intervals \u00b7 200 "
+  ],
+  "smallText": 12,
+  "fonts": [
+   "Arial"
+  ],
+  "hiddenWrappers": 1,
+  "consoleErrors": [],
+  "nonGet": [],
+  "requestCount": 23,
+  "threeLike": 16,
+  "axe": null,
+  "shot": "lab-arena--desktop--light.jpg"
+ },
+ {
+  "name": "lab-research",
+  "route": "/visual-lab/arena/research",
+  "width": "phone",
+  "theme": "light",
+  "status": 200,
+  "ms": 4739,
+  "title": "Laboratory research tools \u00b7 NeuroFly",
+  "lang": "en",
+  "h1": [
+   "Laboratory research tools."
+  ],
+  "mainCount": 1,
+  "firstFocusable": "NeuroFlyconnectome experiment browser",
+  "hOverflow": false,
+  "scrollWidth": 390,
+  "pageHeight": 1793,
+  "canvases": 0,
+  "bodyBg": "rgb(16, 20, 22)",
+  "navs": [
+   {
+    "label": "Primary navigation",
+    "visible": true,
+    "links": [
+     {
+      "text": "Experiments",
+      "href": "/experiments",
+      "current": null
+     },
+     {
+      "text": "Scenarios",
+      "href": "/scenarios",
+      "current": null
+     },
+     {
+      "text": "Morphology",
+      "href": "/morphology",
+      "current": null
+     },
+     {
+      "text": "Visual Lab",
+      "href": "/visual-lab/fly",
+      "current": null
+     }
+    ]
+   }
+  ],
+  "disabled": [
+   {
+    "text": "",
+    "title": null,
+    "describedby": null
+   }
+  ],
+  "numeric": 16,
+  "numericSamples": [
+   "Experimental Neural Flight Steering v9",
+   "Experimental 3D Flight v8",
+   "Flight Visual Preview v7.1",
+   "Motor-to-Gait Bridge v7",
+   "Experimental Locomotion v0",
+   "Experimental Locomotion v1",
+   "Independent Visual Stimuli v5",
+   "Moving Visual Stimuli v4",
+   "Continuous Arena Navigation v3",
+   "Interactive Neural Locomotion v2",
+   "V2-F / MALE DROSOPHILA",
+   "A+C v0.1 / Controlled chamber",
+   "WebGL 2 is unavailable. Use a browser with WebGL enabled.",
+   "Articulated Gait v6",
+   "CC BY 4.0",
+   "CC BY 4.0"
+  ],
+  "smallText": 13,
+  "fonts": [
+   "Arial",
+   "SFMono-Regular"
+  ],
+  "hiddenWrappers": 1,
+  "consoleErrors": [],
+  "nonGet": [],
+  "requestCount": 43,
+  "threeLike": 24,
+  "axe": null,
+  "shot": "lab-research--phone--light.jpg"
+ },
+ {
+  "name": "lab-research",
+  "route": "/visual-lab/arena/research",
+  "width": "desktop",
+  "theme": "light",
+  "status": 200,
+  "ms": 4757,
+  "title": "Laboratory research tools \u00b7 NeuroFly",
+  "lang": "en",
+  "h1": [
+   "Laboratory research tools."
+  ],
+  "mainCount": 1,
+  "firstFocusable": "NeuroFlyconnectome experiment browser",
+  "hOverflow": false,
+  "scrollWidth": 1440,
+  "pageHeight": 1280,
+  "canvases": 0,
+  "bodyBg": "rgb(16, 20, 22)",
+  "navs": [
+   {
+    "label": "Primary navigation",
+    "visible": true,
+    "links": [
+     {
+      "text": "Experiments",
+      "href": "/experiments",
+      "current": null
+     },
+     {
+      "text": "Scenarios",
+      "href": "/scenarios",
+      "current": null
+     },
+     {
+      "text": "Morphology",
+      "href": "/morphology",
+      "current": null
+     },
+     {
+      "text": "Visual Lab",
+      "href": "/visual-lab/fly",
+      "current": null
+     }
+    ]
+   }
+  ],
+  "disabled": [
+   {
+    "text": "",
+    "title": null,
+    "describedby": null
+   }
+  ],
+  "numeric": 16,
+  "numericSamples": [
+   "Experimental Neural Flight Steering v9",
+   "Experimental 3D Flight v8",
+   "Flight Visual Preview v7.1",
+   "Motor-to-Gait Bridge v7",
+   "Experimental Locomotion v0",
+   "Experimental Locomotion v1",
+   "Independent Visual Stimuli v5",
+   "Moving Visual Stimuli v4",
+   "Continuous Arena Navigation v3",
+   "Interactive Neural Locomotion v2",
+   "V2-F / MALE DROSOPHILA",
+   "A+C v0.1 / Controlled chamber",
+   "WebGL 2 is unavailable. Use a browser with WebGL enabled.",
+   "Articulated Gait v6",
+   "CC BY 4.0",
+   "CC BY 4.0"
+  ],
+  "smallText": 7,
+  "fonts": [
+   "Arial",
+   "SFMono-Regular"
+  ],
+  "hiddenWrappers": 1,
+  "consoleErrors": [],
+  "nonGet": [],
+  "requestCount": 43,
+  "threeLike": 24,
+  "axe": null,
+  "shot": "lab-research--desktop--light.jpg"
+ },
+ {
+  "name": "lab-fly",
+  "route": "/visual-lab/fly",
+  "width": "phone",
+  "theme": "light",
+  "status": 200,
+  "ms": 4743,
+  "title": "Fly \u00b7 Visual Lab \u00b7 NeuroFly",
+  "lang": "en",
+  "h1": [
+   "A closer look."
+  ],
+  "mainCount": 1,
+  "firstFocusable": "NeuroFlyconnectome experiment browser",
+  "hOverflow": false,
+  "scrollWidth": 390,
+  "pageHeight": 1103,
+  "canvases": 0,
+  "bodyBg": "rgb(16, 20, 22)",
+  "navs": [
+   {
+    "label": "Primary navigation",
+    "visible": true,
+    "links": [
+     {
+      "text": "Experiments",
+      "href": "/experiments",
+      "current": null
+     },
+     {
+      "text": "Scenarios",
+      "href": "/scenarios",
+      "current": null
+     },
+     {
+      "text": "Morphology",
+      "href": "/morphology",
+      "current": null
+     },
+     {
+      "text": "Visual Lab",
+      "href": "/visual-lab/fly",
+      "current": null
+     }
+    ]
+   }
+  ],
+  "disabled": [],
+  "numeric": 4,
+  "numericSamples": [
+   "ASSET PREVIEW \u00b7 V2-F",
+   "V2-F / MALE DROSOPHILA",
+   "WebGL 2 is unavailable. Use a browser with WebGL enabled.",
+   "CC BY 4.0"
+  ],
+  "smallText": 11,
+  "fonts": [
+   "Arial",
+   "SFMono-Regular"
+  ],
+  "hiddenWrappers": 1,
+  "consoleErrors": [],
+  "nonGet": [],
+  "requestCount": 40,
+  "threeLike": 21,
+  "axe": null,
+  "shot": "lab-fly--phone--light.jpg"
+ },
+ {
+  "name": "lab-fly",
+  "route": "/visual-lab/fly",
+  "width": "desktop",
+  "theme": "light",
+  "status": 200,
+  "ms": 4723,
+  "title": "Fly \u00b7 Visual Lab \u00b7 NeuroFly",
+  "lang": "en",
+  "h1": [
+   "A closer look."
+  ],
+  "mainCount": 1,
+  "firstFocusable": "NeuroFlyconnectome experiment browser",
+  "hOverflow": false,
+  "scrollWidth": 1440,
+  "pageHeight": 1029,
+  "canvases": 0,
+  "bodyBg": "rgb(16, 20, 22)",
+  "navs": [
+   {
+    "label": "Primary navigation",
+    "visible": true,
+    "links": [
+     {
+      "text": "Experiments",
+      "href": "/experiments",
+      "current": null
+     },
+     {
+      "text": "Scenarios",
+      "href": "/scenarios",
+      "current": null
+     },
+     {
+      "text": "Morphology",
+      "href": "/morphology",
+      "current": null
+     },
+     {
+      "text": "Visual Lab",
+      "href": "/visual-lab/fly",
+      "current": null
+     }
+    ]
+   }
+  ],
+  "disabled": [],
+  "numeric": 4,
+  "numericSamples": [
+   "ASSET PREVIEW \u00b7 V2-F",
+   "V2-F / MALE DROSOPHILA",
+   "WebGL 2 is unavailable. Use a browser with WebGL enabled.",
+   "CC BY 4.0"
+  ],
+  "smallText": 6,
+  "fonts": [
+   "Arial",
+   "SFMono-Regular"
+  ],
+  "hiddenWrappers": 1,
+  "consoleErrors": [],
+  "nonGet": [],
+  "requestCount": 40,
+  "threeLike": 21,
+  "axe": null,
+  "shot": "lab-fly--desktop--light.jpg"
+ },
+ {
+  "name": "interaction:run-canonical-preset",
+  "buttonFound": 1,
+  "url": "/scenarios/BASELINE_CONTROL",
+  "nonGet": [
+   {
+    "method": "POST",
+    "url": "/scenarios/BASELINE_CONTROL",
+    "action": "server-action"
+   }
+  ]
+ }
+]

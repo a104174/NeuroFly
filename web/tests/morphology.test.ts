@@ -502,3 +502,25 @@ test("healed and repair-link source contracts are rejected", () => {
   links[0].provenance = "NEUROFLY_ARTIFICIAL_REPAIR_LINK";
   assert.throws(() => parseMorphologyBody(repaired), /non-raw link/);
 });
+
+test("a morphology sample that does not contain the projection's bodies shows connectivity as unavailable instead of crashing", async () => {
+  const { createElement } = await import("react");
+  const { renderToStaticMarkup } = await import("react-dom/server");
+  const { MorphologyInspector } = await import("../src/components/MorphologyInspector");
+  const { projectionCoversBodies } = await import("../src/lib/connectivityView");
+  const projection = parseStructuralConnectivity(connectivityPayload());
+  const dnp01Only = [10001, 10010].map((bodyId) => parseMorphologyBody(body(bodyId as MorphologyBodyId)));
+  const sixBody = [10001, 10010, 11498, 12032, 14465, 16128].map((bodyId) =>
+    parseMorphologyBody(body(bodyId as MorphologyBodyId)),
+  );
+  assert.equal(projectionCoversBodies(projection, dnp01Only), false);
+  assert.equal(projectionCoversBodies(projection, sixBody), true);
+  assert.equal(projectionCoversBodies(projection, sixBody.slice(0, 5)), false);
+
+  const artifact = parseMorphologyArtifactSummary(summary());
+  const html = renderToStaticMarkup(
+    createElement(MorphologyInspector, { artifact, bodies: dnp01Only, connectivity: projection }),
+  );
+  assert.match(html, /Structural connectivity is not available for this sample/);
+  assert.equal(html.includes("Structural relationships in the fixed six-body sample"), false);
+});

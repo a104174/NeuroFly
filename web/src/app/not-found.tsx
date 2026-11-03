@@ -1,11 +1,11 @@
-import { AppHeader } from "@/components/AppHeader";
+import { SiteHeader } from "@/components/site/SiteChrome";
 import { StateMessage } from "@/components/StateMessage";
 
 export default function NotFound() {
   return (
     <div className="app-shell">
-      <AppHeader />
-      <main className="main-content main-content-wide">
+      <SiteHeader />
+      <main id="main-content" tabIndex={-1} className="main-content main-content-wide">
         <StateMessage
           eyebrow="EXPERIMENT NOT FOUND"
           title="That artifact is unavailable."

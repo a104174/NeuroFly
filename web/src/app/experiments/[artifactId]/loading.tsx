@@ -1,10 +1,10 @@
-import { AppHeader } from "@/components/AppHeader";
+import { SiteHeader } from "@/components/site/SiteChrome";
 
 export default function ExperimentLoading() {
   return (
     <div className="app-shell">
-      <AppHeader />
-      <main className="main-content main-content-wide">
+      <SiteHeader />
+      <main id="main-content" tabIndex={-1} className="main-content main-content-wide">
         <div className="state-message" aria-live="polite">
           <p className="eyebrow">PERSISTED RUN</p>
           <h1>Loading experiment…</h1>

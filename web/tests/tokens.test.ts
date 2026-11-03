@@ -37,7 +37,7 @@ function declarations(body: string): Record<string, string> {
 }
 const all = blocks(css);
 const find = (selector: string) => all.filter(([s]) => s === selector).map(([, b]) => declarations(b));
-const dark = Object.assign({}, ...find(":root").filter((d) => "--color-canvas" in d));
+const dark = Object.assign({}, ...find(':root,\n[data-theme-scope="dark"]'));
 const lightSystem = Object.assign({}, ...find('@media (prefers-color-scheme: light) > :root:not([data-theme="dark"])'));
 const lightExplicit = Object.assign({}, ...find(':root[data-theme="light"]'));
 
@@ -95,15 +95,26 @@ test("the two copies of the light theme are identical and cover every dark token
   }
 });
 
+test("the dark scope resolves every colour-dependent token locally", () => {
+  // A var() alias is resolved where it is declared, so aliases of colours must live in the colour blocks.
+  for (const theme of [dark, lightExplicit, lightSystem]) {
+    assert.equal(theme["--focus-ring"], "2px solid var(--color-accent)");
+  }
+  assert.equal(dark["--color-model-state"], "var(--color-ink-2)");
+  assert.match(css, /\[data-theme-scope="dark"\]/);
+  const shared = Object.assign({}, ...find(":root"));
+  assert.equal("--focus-ring" in shared, false, "focus ring must not be declared in the theme-independent block");
+});
+
 test("success colour is documented as system-state only and the stage stays dark", () => {
   assert.match(css, /System states only[\s\S]*--color-success/);
-  const root = Object.assign({}, ...find(":root"));
+  const root = Object.assign({}, ...find(":root"), ...find(':root,\n[data-theme-scope="dark"]'));
   assert.equal(root["--stage-bg"], "#0a0c0d");
   assert.equal(luminance(root["--stage-bg"]) < 0.01, true);
 });
 
 test("glass never drops below 0.82 opacity and has a solid fallback", () => {
-  const root = Object.assign({}, ...find(":root"));
+  const root = Object.assign({}, ...find(":root"), ...find(':root,\n[data-theme-scope="dark"]'));
   const alpha = Number(/rgba\([^)]*,\s*([\d.]+)\)/.exec(root["--glass-bg"])![1]);
   assert.ok(alpha >= 0.82);
   assert.match(css, /prefers-reduced-transparency/);
@@ -116,7 +127,7 @@ test("reduced motion zeroes every duration token", () => {
 });
 
 test("spacing, radii and component tokens match the brief", () => {
-  const root = Object.assign({}, ...find(":root"));
+  const root = Object.assign({}, ...find(":root"), ...find(':root,\n[data-theme-scope="dark"]'));
   const px = [4, 8, 12, 16, 24, 32, 48, 64, 96, 128, 160].map((n) => `${n}px`);
   px.forEach((value, index) => assert.equal(root[`--space-${index + 1}`], value));
   assert.equal(root["--radius-lg"], "16px");

@@ -1,10 +1,10 @@
-import { AppHeader } from "@/components/AppHeader";
+import { SiteHeader } from "@/components/site/SiteChrome";
 
 export default function ScientificCockpitLoading() {
   return (
     <div className="app-shell cockpit-shell">
-      <AppHeader />
-      <main className="cockpit-route" aria-live="polite">
+      <SiteHeader variant="tool" backHref="/experiments" backLabel="All experiments" title="Cockpit" />
+      <main id="main-content" tabIndex={-1} className="cockpit-route" aria-live="polite">
         <div className="cockpit-loading-heading">
           <p className="eyebrow">SCIENTIFIC COCKPIT / READ ONLY</p>
           <h1>Reading the persisted experiment…</h1>

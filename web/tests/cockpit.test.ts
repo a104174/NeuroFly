@@ -585,8 +585,11 @@ test("cockpit keeps one transport and scopes layout styling away from standalone
   assert.match(telemetry, /timeline\.lc4_drive_mveq/);
   assert.match(telemetry, /timeline\.lplc2_drive_mveq/);
   assert.match(telemetry, /selectedTelemetry\.membrane_mv/);
-  assert.match(css, /\.cockpit-shell \.app-header/);
+  // The Cockpit uses the 48 px tool header; its layout derives from the toolbar token, not a magic number.
+  const cockpitPage = readFileSync(new URL("../src/app/experiments/[artifactId]/cockpit/page.tsx", import.meta.url), "utf8");
+  assert.match(cockpitPage, /<SiteHeader variant="tool"/);
+  assert.match(css, /calc\(100dvh - var\(--toolbar-height\)\)/);
   assert.match(css, /\.cockpit-grid\[data-focus="connectome"\]/);
-  assert.doesNotMatch(css, /^\s*\.app-header\s*\{/m);
+  assert.doesNotMatch(css, /\.app-header/);
   assert.doesNotMatch(css, /^\s*\.morphology-inspector\s*\{/m);
 });

@@ -4,16 +4,21 @@ import test from "node:test";
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 
-import HomePage, { metadata } from "../src/app/page";
-import Loading from "../src/app/loading";
-import ExperimentsPage from "../src/app/experiments/page";
-import ScenariosPage, { dynamic as catalogueDynamic } from "../src/app/scenarios/page";
+import { register } from "node:module";
+// Node cannot import CSS Modules. Register the test-only hook before the components load, so the
+// imports that reach CSS are dynamic. (package.json is frozen, so this cannot be an npm script.)
+register(new URL("./support/css-hooks.mjs", import.meta.url));
+const { default: HomePage, metadata } = await import("../src/app/page");
+const { default: Loading } = await import("../src/app/loading");
+const { default: ExperimentsPage } = await import("../src/app/experiments/page");
+const { default: ScenariosPage, dynamic: catalogueDynamic } = await import("../src/app/scenarios/page");
 import { listExperiments, NeuroflyApiError } from "../src/lib/neuroflyClient";
 import { listScenarios } from "../src/lib/scenarioCatalog";
 import { parseScenarioCatalog, SCENARIO_KINDS } from "../src/lib/scenarioPlayback";
 import { experimentMetadata } from "../src/lib/scenarioPresentation";
 import { existsSync, readdirSync } from "node:fs";
 import { LAB_HREF, SITE_LINKS } from "../src/components/site/siteContent";
+const { SiteHeader } = await import("../src/components/site/SiteChrome");
 
 test("product homepage renders one H1, meaningful sections and the genuine laboratory CTA without fetching scientific data", async () => {
   await withFetch(async () => { throw new Error("Homepage must be independent of the scientific API"); }, async calls => {
@@ -44,7 +49,8 @@ test("public links resolve to preserved routes or existing homepage anchors", ()
     assert.ok(existsSync(new URL(`../src/app${route === "/" ? "" : route}/page.tsx`, import.meta.url)), href);
   }
   for (const [, id] of markup.matchAll(/href="(?:\/)?#([^"]+)"/g)) assert.ok(markup.includes(`id="${id}"`));
-  assert.deepEqual(SITE_LINKS.map(link => link.label), ["Home", "Lab", "Experiments", "Science"]);
+  // Phase 0 decision 5: Home is the logo, and Experiments leaves the main navigation.
+  assert.deepEqual(SITE_LINKS.map(link => link.label), ["Scenarios", "Neurons", "Lab", "Science"]);
 });
 
 test("authentic static laboratory capture is accessible and links to the existing laboratory", () => {
@@ -65,10 +71,16 @@ test("authentic static laboratory capture is accessible and links to the existin
 
 test("mobile navigation is a native keyboard disclosure and critical links are present in server HTML", () => {
   const markup = renderToStaticMarkup(createElement(HomePage));
-  assert.match(markup, /<details class="nf-mobile-menu"><summary>/);
+  assert.match(markup, /<details class="menu"><summary class="menuButton">/);
   assert.match(markup, /aria-label="Mobile primary navigation"/);
   assert.match(markup, /Skip to content/);
-  assert.match(markup, /aria-current="page"/);
+  // Home is the logo, so no primary item is current there; a section page marks exactly its own item.
+  assert.doesNotMatch(markup, /aria-current="page"/);
+  const scenarios = renderToStaticMarkup(createElement(SiteHeader, { current: "/scenarios/LOOMING_CIRCUIT_VALIDATION" }));
+  assert.equal((scenarios.match(/aria-current="page"/g) ?? []).length, 2, "one desktop link and one mobile link");
+  assert.match(scenarios, /aria-current="page"[^>]*href="\/scenarios"|href="\/scenarios"[^>]*aria-current="page"/);
+  const experiments = renderToStaticMarkup(createElement(SiteHeader, { current: "/experiments/abc" }));
+  assert.doesNotMatch(experiments, /aria-current="page"/, "Experiments is not a primary item");
   assert.doesNotMatch(markup, /role="menu"|tabindex="[1-9]/);
 });
 
@@ -86,7 +98,11 @@ test("homepage import tree stays within presentation; no neural or WebGL engine 
   const paths = [new URL("../src/app/page.tsx", import.meta.url), ...readdirSync(new URL("../src/components/site", import.meta.url)).map(file => new URL(`../src/components/site/${file}`, import.meta.url))];
   for (const path of paths) {
     const code = readFileSync(path, "utf8");
-    assert.doesNotMatch(code, /from ["'][^"']*(?:lib\/|three|react-three|FlyViewer|ArenaCourseViewer)|requestAnimationFrame|setInterval|useEffect|fetch\(/);
+    // Engines, WebGL, animation loops, data fetching and unprefetched links stay forbidden everywhere.
+    // Only the shared chrome may use useEffect (menu focus, route focus) and the tiny theme helper.
+    assert.doesNotMatch(code, /from ["'][^"']*(?:lib\/(?!theme["'])|three|react-three|FlyViewer|ArenaCourseViewer)|requestAnimationFrame|setInterval|fetch\(/);
+    const mayUseEffect = ["SiteNavigation.tsx", "RouteFocus.tsx"].some(name => path.pathname.endsWith(`/site/${name}`));
+    if (!mayUseEffect) assert.doesNotMatch(code, /useEffect/);
     for (const tag of code.matchAll(/<Link\s[^>]+>/g)) assert.match(tag[0], /prefetch=\{false\}/);
   }
   const asset = readFileSync(new URL("../public/assets/site/fly-specimen.webp", import.meta.url));

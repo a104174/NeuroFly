@@ -6,8 +6,12 @@ import { createHash } from "node:crypto";
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { BrandLogo } from "../src/components/site/BrandLogo";
-import { AppHeader } from "../src/components/AppHeader";
-import { SiteHeader, SiteFooter } from "../src/components/site/SiteChrome";
+import { register } from "node:module";
+// Node cannot import CSS Modules. Register the test-only hook before the components load, so the
+// imports that reach CSS are dynamic. (package.json is frozen, so this cannot be an npm script.)
+register(new URL("./support/css-hooks.mjs", import.meta.url));
+
+const { SiteHeader, SiteFooter } = await import("../src/components/site/SiteChrome");
 
 /** Standard PNG scanline reconstruction; checks actual pixels without an image dependency. */
 function rgba(bytes: Buffer) {
@@ -56,7 +60,7 @@ test("canonical artwork is white with genuine transparency, negative spaces and 
 });
 
 test("shared logo renders the canonical asset in public header, footer and internal research navigation", () => {
-  for (const component of [BrandLogo, AppHeader, SiteHeader, SiteFooter]) {
+  for (const component of [BrandLogo, SiteHeader, SiteFooter]) {
     const html = renderToStaticMarkup(createElement(component));
     assert.match(html, /src="\/assets\/brand\/neurofly-logo-white.png"/);
     assert.doesNotMatch(html, /src="[^\"]*neurofly-logo.png"|brand-mark|nf-brand-dot/);
@@ -64,10 +68,12 @@ test("shared logo renders the canonical asset in public header, footer and inter
   for (const route of ["scenarios", "experiments"]) assert.match(readFileSync(new URL(`../src/app/${route}/page.tsx`, import.meta.url), "utf8"), /DiscoveryShell/);
   assert.match(readFileSync(new URL("../src/components/discovery/DiscoveryShell.tsx", import.meta.url), "utf8"), /SiteHeader[\s\S]*SiteFooter/);
   const lab = readFileSync(new URL("../src/app/visual-lab/arena/page.tsx", import.meta.url), "utf8");
-  assert.match(lab, /<BrandLogo \/>/);
+  assert.match(lab, /<SiteHeader variant="tool"/);
   for (const route of ["morphology", "visual-lab/fly", "visual-lab/arena/research"]) {
-    assert.match(readFileSync(new URL(`../src/app/${route}/page.tsx`, import.meta.url), "utf8"), /AppHeader/);
+    assert.match(readFileSync(new URL(`../src/app/${route}/page.tsx`, import.meta.url), "utf8"), /SiteHeader/);
   }
+  const tool = renderToStaticMarkup(createElement(SiteHeader, { variant: "tool", backHref: "/", backLabel: "Home", title: "Lab" }));
+  assert.match(tool, /src="\/assets\/brand\/neurofly-logo-white.png"/);
 });
 
 test("logo has no white backing or simulation side effects", () => {

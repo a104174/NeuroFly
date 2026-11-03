@@ -5,7 +5,11 @@ import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { parseExperimentSummary } from "../src/lib/neuroflyClient";
 import { recordedRunPurpose } from "../src/lib/recordedExperimentPresentation";
-import { RecordedExperiments } from "../src/components/discovery/RecordedExperiments";
+import { register } from "node:module";
+// Node cannot import CSS Modules. Register the test-only hook before the components load, so the
+// imports that reach CSS are dynamic. (package.json is frozen, so this cannot be an npm script.)
+register(new URL("./support/css-hooks.mjs", import.meta.url));
+const { RecordedExperiments } = await import("../src/components/discovery/RecordedExperiments");
 import { ExperimentSummaryView } from "../src/components/ExperimentSummaryView";
 
 test("authentic Phase 3B API metadata keeps engineering purpose and stable detail/cockpit links", () => {

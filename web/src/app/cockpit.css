@@ -1,12 +1,10 @@
 .cockpit-shell { height: 100dvh; overflow: hidden; background: #091114; }
-.cockpit-shell .app-header { height: 52px; padding: 0 18px; }
-.cockpit-shell .brand-subtitle { display: none; }
 
 .cockpit-route {
   display: flex;
   flex-direction: column;
   width: 100%;
-  height: calc(100dvh - 52px);
+  height: calc(100dvh - var(--toolbar-height));
   min-height: 0;
   padding: 8px 12px 10px;
   overflow: hidden;
@@ -216,7 +214,7 @@
 
 @media (max-width: 800px) {
   .cockpit-shell { height: auto; min-height: 100dvh; overflow: visible; }
-  .cockpit-route { height: auto; min-height: calc(100dvh - 52px); overflow: visible; }
+  .cockpit-route { height: auto; min-height: calc(100dvh - var(--toolbar-height)); overflow: visible; }
   .scientific-cockpit { min-height: auto; }
   .cockpit-masthead { display: block; }
   .cockpit-masthead h1 span { display: block; margin: 4px 0 0; }

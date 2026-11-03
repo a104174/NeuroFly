@@ -4,9 +4,8 @@ import { SiteHeader, SiteFooter } from "../site/SiteChrome";
 /** Shared presentation only. Data remains owned by the existing route loaders. */
 export function DiscoveryShell({ active, children }: { active: "scenarios" | "experiments"; children?: ReactNode }) {
   return <div className="nf-site nf-discovery">
-    <a className="nf-skip-link" href="#discovery-main">Skip to content</a>
-    <SiteHeader activeHref={active === "scenarios" ? "/scenarios" : ""} />
-    <main id="discovery-main" tabIndex={-1} className="nf-container">
+    <SiteHeader current={active === "scenarios" ? "/scenarios" : ""} />
+    <main id="main-content" tabIndex={-1} className="nf-container">
       {children}
     </main>
     <SiteFooter />

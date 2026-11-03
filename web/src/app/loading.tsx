@@ -1,10 +1,10 @@
-import { AppHeader } from "@/components/AppHeader";
+import { SiteHeader } from "@/components/site/SiteChrome";
 
 export default function Loading() {
   return (
     <div className="app-shell">
-      <AppHeader />
-      <main className="main-content main-content-wide">
+      <SiteHeader />
+      <main id="main-content" tabIndex={-1} className="main-content main-content-wide">
         <div className="state-message" role="status" aria-live="polite" aria-busy="true">
           <p className="eyebrow">READ-ONLY CATALOGUE</p>
           <h1>Loading scientific data…</h1>

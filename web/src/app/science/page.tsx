@@ -25,9 +25,8 @@ export default function SciencePage() {
     {/* Match the existing homepage fallback for the inherited streaming boundary. */}
     <noscript><style>{`body > [hidden]:has(> .nf-science-page) { display: block !important; }
       body:has(> [hidden] > .nf-science-page) > .app-shell { display: none !important; }`}</style></noscript>
-    <a className="nf-skip-link" href="#science-main">Skip to content</a>
-    <SiteHeader activeHref="/science" />
-    <main id="science-main" tabIndex={-1}>
+    <SiteHeader current="/science" />
+    <main id="main-content" tabIndex={-1}>
       <section className="science-hero nf-container" aria-labelledby="science-hero-title">
         <div className="science-hero-copy">
           <p className="nf-eyebrow"><span className="nf-small-dot" aria-hidden="true" /> Science &amp; project</p>

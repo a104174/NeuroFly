@@ -3,14 +3,18 @@ import test from "node:test";
 import { readFileSync, existsSync } from "node:fs";
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
-import { RecordedExperiments } from "../src/components/discovery/RecordedExperiments";
-import { ScenarioDiscovery, discoveryCopy } from "../src/components/discovery/ScenarioDiscovery";
-import { DiscoveryShell, DiscoveryState } from "../src/components/discovery/DiscoveryShell";
+import { register } from "node:module";
+// Node cannot import CSS Modules. Register the test-only hook before the components load, so the
+// imports that reach CSS are dynamic. (package.json is frozen, so this cannot be an npm script.)
+register(new URL("./support/css-hooks.mjs", import.meta.url));
+const { RecordedExperiments } = await import("../src/components/discovery/RecordedExperiments");
+const { ScenarioDiscovery, discoveryCopy } = await import("../src/components/discovery/ScenarioDiscovery");
+const { DiscoveryShell, DiscoveryState } = await import("../src/components/discovery/DiscoveryShell");
 import { parseExperimentSummary, listExperiments, NeuroflyApiError } from "../src/lib/neuroflyClient";
 import { SCENARIO_KINDS, parseScenarioCatalog } from "../src/lib/scenarioPlayback";
-import ExperimentsPage from "../src/app/experiments/page";
-import ScenarioLoading from "../src/app/scenarios/loading";
-import ExperimentLoading from "../src/app/experiments/loading";
+const { default: ExperimentsPage } = await import("../src/app/experiments/page");
+const { default: ScenarioLoading } = await import("../src/app/scenarios/loading");
+const { default: ExperimentLoading } = await import("../src/app/experiments/loading");
 
 // Existing API parser fixture; transport test only, never a biological observation.
 function summaryFixture() {
@@ -164,12 +168,13 @@ test("shell keeps Explore primary and Recorded experiments in secondary footer n
     const html=renderToStaticMarkup(createElement(DiscoveryShell,{active},"Content"));
     assert.equal((html.match(/class="neurofly-logo"/g)||[]).length,2);
     assert.doesNotMatch(html,/class="discovery-switch"/);
-    const nav=html.match(/<nav class="nf-desktop-nav"[\s\S]*?<\/nav>/)![0];
+    const nav=html.match(/<nav[^>]*aria-label="Primary navigation"[\s\S]*?<\/nav>/)![0];
     assert.match(nav,/href="\/scenarios"/);assert.doesNotMatch(nav,/href="\/experiments"/);
-    if(active==="scenarios")assert.match(nav,/aria-current="page" href="\/scenarios"/);
+    if(active==="scenarios")assert.match(nav,/aria-current="page"[^>]*href="\/scenarios"|href="\/scenarios"[^>]*aria-current="page"/);
     else assert.doesNotMatch(nav,/aria-current="page"/);
-    const footer=html.match(/<nav aria-label="Footer navigation">[\s\S]*?<\/nav>/)![0];
-    assert.match(footer,/href="\/experiments">Recorded experiments<\/a>/);
+    const footer=html.match(/<nav aria-label="Footer navigation"[^>]*>[\s\S]*?<\/nav>/)![0];
+    // Owner decision: the one recorded run is an engineering test, and the footer says so.
+    assert.match(footer,/href="\/experiments">Engineering test, not a scientific experiment<\/a>/);
     assert.match(html,/href="\/visual-lab\/arena"/);assert.match(html,/href="\/science"/);assert.match(html,/Skip to content/);
   }
 });

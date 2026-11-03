@@ -14,8 +14,11 @@
  * Breakpoints cannot be custom properties. Use 600, 1024, 1440 and 1920 px.
  */
 
-/* ---------- Colour: dark (default) ---------- */
-:root {
+/* ---------- Colour: dark (default) ----------
+ * [data-theme-scope="dark"] pins a region to dark in any theme. Unmigrated pages and the
+ * 3D stage use it, so new components placed there stay legible until the page migrates. */
+:root,
+[data-theme-scope="dark"] {
   --color-canvas: #0a0c0d;
   --color-surface: #131618;
   --color-raised: #1c2023;
@@ -37,6 +40,9 @@
   --color-danger: #ff9c94;
   /* System states only (for example "loaded"). Never a scientific result. */
   --color-success: #74d49a;
+  --focus-ring: 2px solid var(--color-accent);
+  /* The approved emblem is white. It is inverted to black on light surfaces. */
+  --logo-filter: none;
 
   --tint-structural: #10302b;
   --tint-model: #33261a;
@@ -71,6 +77,8 @@
     --color-unavailable: #5c666a;
     --color-danger: #b3261e;
     --color-success: #1b6e3c;
+    --focus-ring: 2px solid var(--color-accent);
+    --logo-filter: invert(1);
 
     --tint-structural: #e3f2ef;
     --tint-model: #f8ecdd;
@@ -105,6 +113,8 @@
   --color-unavailable: #5c666a;
   --color-danger: #b3261e;
   --color-success: #1b6e3c;
+  --focus-ring: 2px solid var(--color-accent);
+  --logo-filter: invert(1);
 
   --tint-structural: #e3f2ef;
   --tint-model: #f8ecdd;
@@ -221,7 +231,6 @@
   --button-height-lg: 48px;
   --touch-target: 44px;
   --input-height: 40px;
-  --focus-ring: 2px solid var(--color-accent);
   --focus-offset: 2px;
   --header-height: 64px;
   --toolbar-height: 48px;

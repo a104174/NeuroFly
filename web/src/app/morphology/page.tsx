@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import { AppHeader } from "@/components/AppHeader";
+import { SiteHeader } from "@/components/site/SiteChrome";
 import { StateMessage } from "@/components/StateMessage";
 import {
   listMorphologyArtifacts,
@@ -20,8 +20,8 @@ export default async function MorphologyPage() {
   }
   return (
     <div className="app-shell">
-      <AppHeader />
-      <main className="main-content main-content-wide">
+      <SiteHeader />
+      <main id="main-content" tabIndex={-1} className="main-content main-content-wide">
         {requestError ? (
           <StateMessage
             eyebrow="MORPHOLOGY API UNAVAILABLE"

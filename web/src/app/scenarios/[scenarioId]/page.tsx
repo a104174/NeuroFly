@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { AppHeader } from "@/components/AppHeader";
+import { SiteHeader } from "@/components/site/SiteChrome";
 import { ScenarioCockpit } from "@/components/ScenarioCockpit";
 import { StateMessage } from "@/components/StateMessage";
 import { requestJson } from "@/lib/neuroflyClient";
@@ -22,9 +22,9 @@ export default async function ScenarioPage({ params, searchParams }: { params: P
   if (!SCENARIO_KINDS.some(id => id === scenarioId)) notFound();
   let definitions;
   try { definitions = await requestJson("/api/v1/scenarios", parseScenarioCatalog); }
-  catch (error) { return <div className="app-shell"><AppHeader /><main className="main-content"><StateMessage eyebrow="SCENARIO UNAVAILABLE" title="The preset could not load." detail={error instanceof Error ? error.message : "Backend unavailable."} tone="error" /></main></div>; }
+  catch (error) { return <div className="app-shell"><SiteHeader /><main id="main-content" tabIndex={-1} className="main-content"><StateMessage eyebrow="SCENARIO UNAVAILABLE" title="The preset could not load." detail={error instanceof Error ? error.message : "Backend unavailable."} tone="error" /></main></div>; }
   const scenario = definitions.find(s => s.id === scenarioId);
   if (!scenario) notFound();
   const query = await searchParams;
-  return <div className="app-shell"><AppHeader />{query.replay === "canonical" ? <Suspense fallback={<main className="scenario-route"><Link className="back-link" href="/scenarios">← All experiments</Link><header className="scenario-heading"><div><p className="eyebrow">{experimentMetadata[scenario.id].kind}</p><h1>{scenario.title}</h1><p>{experimentMetadata[scenario.id].purpose}</p></div></header><ScientificPlaybackLoading/></main>}><RestoredCockpit scenario={scenario}/></Suspense> : <ScenarioCockpit scenario={scenario}/>}</div>;
+  return <div className="app-shell"><SiteHeader />{query.replay === "canonical" ? <Suspense fallback={<main id="main-content" tabIndex={-1} className="scenario-route"><Link className="back-link" href="/scenarios">← All experiments</Link><header className="scenario-heading"><div><p className="eyebrow">{experimentMetadata[scenario.id].kind}</p><h1>{scenario.title}</h1><p>{experimentMetadata[scenario.id].purpose}</p></div></header><ScientificPlaybackLoading/></main>}><RestoredCockpit scenario={scenario}/></Suspense> : <ScenarioCockpit scenario={scenario}/>}</div>;
 }

@@ -75,7 +75,7 @@ export function ScenarioCockpit({ scenario, initialResult = null, initialError =
       }
     } catch { setError("Backend connection failed. No substitute simulation was loaded."); }
   }
-  return <main className="scenario-route">
+  return <main id="main-content" tabIndex={-1} className="scenario-route">
     <Link className="back-link" href="/scenarios">← All experiments</Link>
     <header className="scenario-heading"><div><p className="eyebrow">{copy.role}</p><h1>{scenario.title}</h1><p>{experimentMetadata[scenario.id].purpose}</p><div className="experiment-context"><span>{experimentMetadata[scenario.id].duration} scientific horizon</span><span>{experimentMetadata[scenario.id].input}</span><span>{experimentMetadata[scenario.id].scope}</span></div></div>
       <button className="scenario-run" disabled={running} onClick={() => startTransition(run)}>{running ? "Preparing validated replay…" : result ? "Run again" : "Run canonical preset"}</button>

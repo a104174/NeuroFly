@@ -22,7 +22,6 @@ export default function HomePage() {
       {/* Reveal server-rendered home content when JS cannot complete the inherited streaming boundary. */}
       <noscript><style>{`body > [hidden]:has(> .nf-site) { display: block !important; }
         body:has(> [hidden] > .nf-site) > .app-shell { display: none !important; }`}</style></noscript>
-      <a className="nf-skip-link" href="#main-content">Skip to content</a>
       <SiteHeader />
       <main id="main-content" tabIndex={-1}>
         <section className="nf-hero nf-container" aria-labelledby="hero-title">

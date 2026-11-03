@@ -1,0 +1,7 @@
+.switch { display: inline-flex; padding: 2px; border: 1px solid var(--color-border-control); border-radius: var(--radius-md); background: var(--color-raised); }
+.switch button { min-block-size: 32px; padding-inline: var(--space-3); border: 0; border-radius: calc(var(--radius-md) - 2px); background: transparent; color: var(--color-ink-2); font: inherit; font-size: var(--text-caption-size); font-weight: var(--text-caption-weight); cursor: pointer; transition: background var(--dur-fast) var(--ease-standard), color var(--dur-fast) var(--ease-standard); }
+.switch button:hover { color: var(--color-ink); }
+.switch button[aria-pressed="true"] { background: var(--color-accent); color: var(--color-on-accent); }
+.switch button:focus-visible { outline: var(--focus-ring); outline-offset: var(--focus-offset); }
+@media (pointer: coarse) { .switch button { min-block-size: var(--touch-target); } }
+@media (forced-colors: active) { .switch button[aria-pressed="true"] { outline: 2px solid CanvasText; } }

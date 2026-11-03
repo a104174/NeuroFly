@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 
+import { RouteFocus } from "@/components/site/RouteFocus";
 import { THEME_INIT_SCRIPT } from "@/lib/theme";
 import "@/styles/tokens.css";
 import "./globals.css";
@@ -23,7 +24,10 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       <head>
         <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
       </head>
-      <body>{children}</body>
+      <body>
+        <RouteFocus />
+        {children}
+      </body>
     </html>
   );
 }

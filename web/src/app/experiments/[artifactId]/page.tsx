@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
-import { AppHeader } from "@/components/AppHeader";
+import { SiteHeader } from "@/components/site/SiteChrome";
 import { ExperimentSummaryView } from "@/components/ExperimentSummaryView";
 import { PlaybackWorkspace } from "@/components/PlaybackWorkspace";
 import { StateMessage } from "@/components/StateMessage";
@@ -43,8 +43,8 @@ export default async function ExperimentPage({
         : "The experiment API returned an invalid response.";
     return (
       <div className="app-shell">
-        <AppHeader />
-        <main className="main-content main-content-wide">
+        <SiteHeader />
+        <main id="main-content" tabIndex={-1} className="main-content main-content-wide">
           <Link className="back-link" href="/experiments">
             ← all experiments
           </Link>
@@ -60,8 +60,8 @@ export default async function ExperimentPage({
   }
   return (
     <div className="app-shell">
-      <AppHeader />
-      <main className="main-content main-content-wide">
+      <SiteHeader />
+      <main id="main-content" tabIndex={-1} className="main-content main-content-wide">
         <Link className="back-link" href="/experiments">
           ← all experiments
         </Link>

@@ -3,9 +3,13 @@ import test from "node:test";
 import { existsSync, readFileSync } from "node:fs";
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
-import SciencePage, { metadata } from "../src/app/science/page";
-import HomePage from "../src/app/page";
-import { ScienceArchitecture } from "../src/components/science/ScienceArchitecture";
+import { register } from "node:module";
+// Node cannot import CSS Modules. Register the test-only hook before the components load, so the
+// imports that reach CSS are dynamic. (package.json is frozen, so this cannot be an npm script.)
+register(new URL("./support/css-hooks.mjs", import.meta.url));
+const { default: SciencePage, metadata } = await import("../src/app/science/page");
+const { default: HomePage } = await import("../src/app/page");
+const { ScienceArchitecture } = await import("../src/components/science/ScienceArchitecture");
 import { SCENARIO_KINDS } from "../src/lib/scenarioPlayback";
 import { experimentMetadata } from "../src/lib/scenarioPresentation";
 import { SITE_LINKS } from "../src/components/site/siteContent";
@@ -23,8 +27,8 @@ test("Science is a static independent explanation even when every scientific req
     assert.equal(calls, 0);
     assert.equal((html.match(/<h1\b/g) || []).length, 1);
     assert.match(html, /The science behind/);
-    assert.match(html, /<main id="science-main" tabindex="-1"/);
-    assert.match(html, /href="#science-main">Skip to content/);
+    assert.match(html, /<main id="main-content" tabindex="-1"/);
+    assert.match(html, /href="#main-content">Skip to content/);
     assert.match(String(metadata.title), /Science & Project/);
     assert.ok(metadata.description && metadata.openGraph);
     assert.doesNotMatch(html, /<canvas|<iframe|<video|data-live-/);
@@ -36,10 +40,10 @@ test("Science navigation resolves without removing homepage anchors or promoting
   assert.equal(SITE_LINKS.find(link => link.label === "Science")?.href, "/science");
   assert.match(home, /id="science"/);
   assert.match(home, /href="\/science"[^>]*>Explore the Science/);
-  const primary = html.match(/<nav class="nf-desktop-nav"[\s\S]*?<\/nav>/)![0];
-  assert.match(primary, /aria-current="page" href="\/science"/);
+  const primary = html.match(/<nav[^>]*aria-label="Primary navigation"[\s\S]*?<\/nav>/)![0];
+  assert.match(primary, /aria-current="page" href="\/science"|href="\/science"[^>]*aria-current="page"/);
   assert.doesNotMatch(primary, /href="\/experiments"/);
-  assert.match(html, /href="\/experiments">Recorded experiments/);
+  assert.match(html, /href="\/experiments">Engineering test, not a scientific experiment/);
   for (const [, href] of html.matchAll(/<a\b[^>]*href="([^"]+)"/g)) {
     if (href.startsWith("#")) assert(html.includes(`id="${href.slice(1)}"`), href);
     else if (href.startsWith("/")) {
@@ -134,7 +138,7 @@ test("references are primary sources or existing repository reports, and assets 
 
 test("presentation boundaries remain lightweight and native navigation and disclosures retain accessibility", () => {
   const html = render();
-  assert.match(html, /<details class="nf-mobile-menu"><summary>/);
+  assert.match(html, /<details class="menu"><summary class="menuButton">/);
   assert.match(html, /aria-label="Mobile primary navigation"/);
   assert.match(html, /<details class="science-disclosure"><summary>/);
   assert.doesNotMatch(html, /role="menu"|tabindex="[1-9]/);

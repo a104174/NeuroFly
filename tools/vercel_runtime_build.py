@@ -15,6 +15,14 @@ RUNTIME_INVENTORY_ID = (
 COMPRESSED_BYTES = 3795667
 INVENTORY_PATH = "docs/deployment_runtime_inventory_v3.json"
 MANIFEST_PATH = "docs/neurofly_runtime_bundle_manifest_v3.json"
+# Neuron shape artifacts delivered with Git (data/reference), not with the pinned runtime
+# bundle. Exactly these two artifacts must be present: the six-body sample used by the
+# Cockpit and the two-body DNp01 sample. Their IDs are content hashes.
+MORPHOLOGY_ROOT = "data/reference/morphology_artifacts_v1"
+MORPHOLOGY_ARTIFACT_IDS = (
+    "719426f0cd2db586b149943483abfe6519d45c4a39fb48aa1f4a566c514c84f3",
+    "a3f090d5309d9ede0e9e0f78343a618a4bafba3fea91e5a27d37927d5ec55f79",
+)
 ARCHIVE_PATH = (
     "runtime-distributions/v3/"
     "neurofly-runtime-v3-c5edf9edb0b1f08a0eb3e36808dd6ec25771be1bc575ce07e9cc3063aa6586cf.tar.gz"
@@ -38,6 +46,20 @@ def _source_file(root, relative_path):
     if not stat.S_ISREG(mode):
         raise ValueError("runtime source must be a regular file")
     return path
+
+
+def _verify_morphology(release):
+    """Fail the build unless exactly the pinned neuron shape artifacts load intact.
+
+    This reuses the API's own store, which rejects symlinks, wrong hashes and
+    artifacts whose directory name is not their content ID.
+    """
+    from neurofly.morphology_api import MorphologyArtifactStore
+
+    store = MorphologyArtifactStore(release / MORPHOLOGY_ROOT)
+    found = tuple(item.artifact.artifact_id for item in store.list_artifacts())
+    if found != MORPHOLOGY_ARTIFACT_IDS:
+        raise ValueError("neuron shape artifacts do not match the pinned set")
 
 
 def build(root):
@@ -98,6 +120,8 @@ def build(root):
         for path in (release / name).rglob("*"):
             path.chmod(0o555 if path.is_dir() else 0o444)
         (release / name).chmod(0o555)
+
+    _verify_morphology(release)
 
     print(
         "NEUROFLY RUNTIME VERIFIED "

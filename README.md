@@ -527,3 +527,7 @@ PSI), which this snapshot neither invents nor represents.
 ## Automated quality checks
 
 `web-quality/` holds the Playwright, axe, Lighthouse and Stylelint checks for the web redesign. It is separate from `web/` because `web/package.json` is pinned by the frozen scientific protocol. See `web-quality/README.md`.
+
+## Data credit and licence
+
+NeuroFly is built from the MaleCNS connectome v1.0, licensed CC BY 4.0. NeuroFly's data files are derived from it. See [docs/data-attribution.md](docs/data-attribution.md) for the credit, the paper to cite, and what was changed.

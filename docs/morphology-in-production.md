@@ -1,6 +1,6 @@
 # Making Neurons and the Cockpit connectome work in production
 
-Status: investigation only. Nothing in Vercel settings, the API, data contracts or stored data was changed.
+Status: option A is implemented on branch `feat/morphology-in-production` (PR open, not merged, not deployed). Nothing in Vercel settings, the API, data contracts or stored data was changed.
 
 ## What happens today
 
@@ -62,3 +62,61 @@ Option A does not need a Vercel settings change. It does need a production redep
 preview first and checked with the `web-quality` suite.
 
 Not verified: the live Vercel preview (behind Vercel Authentication) and Vercel's current function size limits.
+
+## Option A as implemented
+
+- **Data:** the 10 files are copied byte for byte to `data/reference/morphology_artifacts_v1/` (tracked in Git). `data/reference/` is the
+  Git-delivered reference location: the release verifier exempts it from the exact-file-set check, and the dependency tooling already treats
+  reads from it as tracked reference reads. The pinned runtime bundle (v3) is unchanged.
+- **Build:** `tools/vercel_runtime_build.py` pins the two artifact IDs and, after copying, loads them with the API's own
+  `MorphologyArtifactStore`. The build fails if the set is not exactly those two, or if any file fails the store's checks (hashes, symlinks,
+  directory name equal to the content ID).
+- **Entrypoint:** `tools/vercel_runtime_entrypoint.py` sets `NEUROFLY_MORPHOLOGY_ARTIFACT_ROOT` to the in-release copy. A value set outside is
+  overwritten; the other two local overrides are still removed. Readiness already requires the path to exist inside the release.
+- **Tests:** `tests/test_vercel_runtime.py` (5 new): tracked artifacts are exactly the pinned set and pass the store; they equal the local
+  generated copy when present; a built release serves them from inside itself and ignores an outside override; the build fails when a file is
+  changed or when the pinned set is not exact. No existing check was changed or weakened.
+- **Data check (item 1):** the 6 source skeleton files were downloaded from the official MaleCNS v1.0 location and their SHA-256 hashes equal the
+  hashes recorded in the manifests; all 55,596 recorded values equal the official numbers rounded to 32-bit floats (largest relative difference
+  5.7 × 10⁻⁸); parent links are identical. The only host referenced in the 10 files is the official MaleCNS v1.0 storage location. Other fields are
+  project metadata (identifiers, hashes) and MaleCNS neuron annotations (type, side). Nothing needing separate permission was found.
+  The licence is CC BY 4.0, per the official release page (see `docs/data-attribution.md`).
+
+### Deployment size against Vercel's current limits
+
+Read from Vercel's documentation (pages last updated August 2026): Python functions allow **500 MB** uncompressed (250 MB for other runtimes),
+a 4.5 MB request or response body, 300 s default and maximum duration on Hobby (800 s on Pro), 2 GB memory on Hobby.
+
+| Part | Size (measured by building a release) |
+| --- | --- |
+| Release (`.neurofly-release`), 275 files | 117.4 MB |
+| of which the new morphology artifacts | 3.03 MB |
+| Release without them | 114.4 MB |
+| Python dependencies (fastapi, numpy, uvicorn and their closure; 14 packages) | about 80 MB |
+| **Total, approximate** | **about 197 MB, under 500 MB (and under 250 MB)** |
+
+Largest morphology response: one body is about 0.5 MB, under the 4.5 MB limit. The real function size on Vercel was not measured (the preview is
+behind Vercel Authentication); the figure above is the sum of the release and the installed dependencies.
+
+### API time, measured locally
+
+Local machine, production build of the web app, API reading from `data/reference/morphology_artifacts_v1`, 6 timed requests each (first dropped).
+Vercel will differ (CPU, network).
+
+| Request | Median | Slowest |
+| --- | --- | --- |
+| API `/api/v1/morphology` (list) | 316 ms | 331 ms |
+| API two-body artifact | 289 ms | 303 ms |
+| API six-body artifact | 301 ms | 318 ms |
+| API one body | 280 ms | 297 ms |
+| **Neurons two-body page** | **1,080 ms** | 1,165 ms |
+| **Neurons six-body page** | **2,279 ms** | 2,328 ms |
+| Neurons list page | 334 ms | 349 ms |
+| Cockpit page (connectome included) | 2,409 ms | 2,482 ms |
+
+Each API call costs about 0.3 s because the store reloads and re-validates every artifact on every request (no cache). The six-body page needs 1
+artifact call and 6 body calls, hence about 2.3 s. Caching in the API would cut this but is an API change and is not part of this PR.
+
+### What to test in the preview
+
+See the pull request description.

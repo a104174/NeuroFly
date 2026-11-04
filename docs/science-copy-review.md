@@ -241,3 +241,23 @@ the narrower sentence now on the Science page.
 end of the Science page's Sources section. Supplied by the owner; no repository source needed. The visual asset
 credits stay as they were. The MaleCNS citation and data licence wording are still a follow-up and are not
 written.
+
+## L. MaleCNS credit (footer and Science page)
+
+Footer, every page: "Wiring and neuron shapes: MaleCNS v1.0, licensed CC BY 4.0. NeuroFly's files are derived from it (how). Model output is
+not biological data."
+
+Science page, "Data credit and licence" (`/science#data-credit`):
+
+1. "NeuroFly uses the MaleCNS v1.0 connectome. The dataset is licensed under CC BY 4.0." (links to the official release page and the licence)
+2. "NeuroFly's data files are derived from it. Only selected neurons and their connections are used. The neuron shapes are the official
+   skeleton (SWC) files converted to JSON: node coordinates, radii and parent links are the official values, stored as 32-bit numbers (largest
+   relative difference 6 × 10⁻⁸), with identifiers and checksums added. No healing, smoothing or repair was applied. Neuron type and side labels
+   are the MaleCNS annotations. The model, its activity and its results are NeuroFly's own and do not imply endorsement by the dataset's authors."
+3. "To cite the dataset's paper: Berg S et al. Sexual dimorphism in the complete connectome of the Drosophila male central nervous system.
+   bioRxiv (2025). doi:10.1101/2025.10.09.680999."
+
+Sources: the licence sentence is on https://male-cns.janelia.org/release/; title, first author and DOI are from the DOI registry (Crossref) and
+the bioRxiv page (the full author lists of the two sources differ slightly, so none is printed); the change statements were checked against the
+official files (see `docs/morphology-in-production.md`, "Data check"). **Missing:** the Cell page supplied returned HTTP 403, so its title,
+authors, DOI and volume are not cited. **Please review** the sentence "do not imply endorsement" and whether the preprint should be the cited paper.

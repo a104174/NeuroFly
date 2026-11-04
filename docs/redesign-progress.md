@@ -426,8 +426,25 @@ Lighthouse mobile 18 of 18 routes; **Stylelint fails with 226 errors** (legacy s
 **Merge not done:** your stop conditions were met (kinds sentence unconfirmed, "preregistered" unsupported as
 worded, Stylelint failing).
 
-**Follow-ups, not invented:** the MaleCNS **citation** and **data licence** wording (brief question 10), a
-named author or lab, the roadmap, the hero asset. They remain absent from the pages.
+**Owner decisions after this round (PR #5):**
+- Keep the narrower kinds wording; the legacy panels are **not** re-skinned in this PR.
+- "Some circuit checks are preregistered" accepted.
+- **Known debt, accepted for this merge only:** 226 Stylelint errors in the six legacy stylesheets
+  (`cockpit.css`, `globals.css`, `product.css`, `scenarios.css`, `lab.css`, `viewer.css`). Any Stylelint error
+  outside those six files blocks the merge.
+- Author credit "Created by Hélder Cruz" (link to https://heldercruz.dev/pt) added to the footer and the
+  Science page, next to the existing visual asset credits.
+- **Production comparison (Neurons and the Cockpit connectome).** Production
+  (`neurofly-liard.vercel.app`) today: `/api/v1/morphology` answers 503 `morphology_store_unavailable`
+  ("morphology artifact root is not configured"), `/morphology` shows "MORPHOLOGY API UNAVAILABLE", and the
+  Cockpit shows "Source structure unavailable". So both already **do not work in production**; the cause is
+  configuration (the morphology root is not set), not this PR. With the same API the PR shows its
+  "The data service isn't responding" state on Neurons and the same "Source structure unavailable" panel in
+  the Cockpit. No regression.
+
+**Follow-ups, not invented:** the MaleCNS **citation** and **data licence** wording (brief question 10), the
+roadmap, the hero asset. They remain absent from the pages. Also: configure the morphology artifact root on
+Vercel so Neurons and the Cockpit connectome work in production.
 
 ## Backend requests (not done here)
 

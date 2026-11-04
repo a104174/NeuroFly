@@ -33,3 +33,13 @@ test("the circuit-check note claims preregistration only for the checks that hav
   assert.match(page, /Some circuit checks are preregistered, such as the HS → DNp15 check\./);
   assert.doesNotMatch(page, /is a preregistered test/);
 });
+
+import { AUTHOR_HREF, AUTHOR_NAME } from "../src/components/site/siteContent";
+test("the author credit is in the footer and on the Science page, and the asset credits stay", () => {
+  assert.equal(AUTHOR_NAME, "Hélder Cruz");
+  assert.equal(AUTHOR_HREF, "https://heldercruz.dev/pt");
+  const footer = read("components/site/SiteChrome.tsx");
+  assert.match(footer, /Created by <a href=\{AUTHOR_HREF\}>\{AUTHOR_NAME\}<\/a>/);
+  assert.match(footer, /Visual assets: fly by/);
+  assert.match(read("app/science/page.tsx"), /Created by <a href=\{AUTHOR_HREF\}>\{AUTHOR_NAME\}<\/a>/);
+});

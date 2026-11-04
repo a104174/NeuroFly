@@ -4,7 +4,7 @@ import { ArticleSection, ArticleShell } from "@/components/science/ArticleShell"
 import { ScienceArchitecture } from "@/components/science/ScienceArchitecture";
 import { StageFigure } from "@/components/science/StageFigure";
 import { KindBadge, KindGlyph } from "@/components/ui";
-import { LAB_HREF, EXPERIMENTS_HREF, EXPERIMENTS_LABEL, MALECNS_HREF, SCIENCE_HREF, STATUS_HREF } from "@/components/site/siteContent";
+import { AUTHOR_HREF, AUTHOR_NAME, LAB_HREF, EXPERIMENTS_HREF, EXPERIMENTS_LABEL, MALECNS_HREF, SCIENCE_HREF, STATUS_HREF } from "@/components/site/siteContent";
 import { CAPABILITIES, CAPABILITY_GROUPS, DATA_KINDS, KIND_COPY, MALECNS_RELEASE, OPEN_QUESTIONS } from "@/content/science-copy";
 import { experimentMetadata } from "@/lib/scenarioPresentation";
 import styles from "@/components/science/Article.module.css";
@@ -179,6 +179,7 @@ export default function SciencePage() {
           ))}
         </ol>
         <p>Terms are defined in the <Link prefetch={false} href="/science/glossary">glossary</Link>. The full reports are in the <a href={SCIENCE_HREF}>scientific documentation <span aria-hidden="true">↗</span></a>. The one recorded run is listed as <Link prefetch={false} href={EXPERIMENTS_HREF}>{EXPERIMENTS_LABEL}</Link>.</p>
+        <p data-credit="author">Created by <a href={AUTHOR_HREF}>{AUTHOR_NAME}</a>.</p>
         <div className={styles.actions}>
           <Link prefetch={false} className={styles.action} href={LAB_HREF}>Enter the Lab</Link>
           <Link prefetch={false} className={styles.actionQuiet} href="/visual-lab/arena/research">Open the research tools</Link>

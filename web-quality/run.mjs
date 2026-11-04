@@ -17,6 +17,10 @@ const groups = {
       const r = await fetch(BASE + path, { redirect: "manual" });
       record("routes", name, r.status === want, `HTTP ${r.status}`);
     }
+    for (const path of ["/", "/science"]) { // The author credit links to the author's site, next to the asset credits.
+      const html = await (await fetch(BASE + path)).text();
+      record("routes", `author credit on ${path}`, /Created by <a href="https:\/\/heldercruz\.dev\/pt">Hélder Cruz<\/a>/.test(html));
+    }
   },
   async a11y() { // axe, both themes; responsive: no page-level horizontal scroll at six widths.
     const b = await launch();

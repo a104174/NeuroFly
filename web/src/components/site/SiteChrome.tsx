@@ -4,7 +4,7 @@ import { BrandLogo } from "./BrandLogo";
 import { SiteNavigation } from "./SiteNavigation";
 import { StatusPill } from "./StatusPill";
 import { ThemeSwitch } from "./ThemeSwitch";
-import { EXPERIMENTS_HREF, EXPERIMENTS_LABEL, LAB_HREF, MALECNS_HREF, SCIENCE_HREF, SCIENCE_PAGE_HREF, SITE_LINKS, STATUS_HREF } from "./siteContent";
+import { AUTHOR_HREF, AUTHOR_NAME, EXPERIMENTS_HREF, EXPERIMENTS_LABEL, LAB_HREF, MALECNS_HREF, SCIENCE_HREF, SCIENCE_PAGE_HREF, SITE_LINKS, STATUS_HREF } from "./siteContent";
 import styles from "./SiteChrome.module.css";
 
 /**
@@ -81,6 +81,7 @@ export function SiteFooter({ tone = "auto" }: { tone?: Tone }) {
         </div>
         <div className={styles.footerBottom}>
           <p>Wiring data: <a href={MALECNS_HREF}>{MALECNS_RELEASE}</a>. Model output is not biological data.</p>
+          <p>Created by <a href={AUTHOR_HREF}>{AUTHOR_NAME}</a>.</p>
           <p>Visual assets: fly by <a href="https://sketchfab.com/3d-models/wildtype-male-drosophila-melanogaster-0affd20207ca4c889bd7e1e513e04dfa">mlykouretzos</a>; lab table by <a href="https://sketchfab.com/3d-models/lab-table-a6585466b3bb4417bd0338c74328b209">zeeshanfareed</a>. <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a> · Rendered and captured for NeuroFly.</p>
         </div>
       </div>

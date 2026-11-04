@@ -6,6 +6,9 @@ export const STATUS_HREF = "/science/status";
 export const EXPERIMENTS_HREF = "/experiments";
 export const REPOSITORY_HREF = "https://github.com/a104174/NeuroFly";
 export const SCIENCE_HREF = "https://github.com/a104174/NeuroFly/tree/main/docs/science";
+/** The author credit shown in the footer and on the Science page. */
+export const AUTHOR_NAME = "Hélder Cruz";
+export const AUTHOR_HREF = "https://heldercruz.dev/pt";
 export const MALECNS_HREF = "https://male-cns.janelia.org/download/";
 
 /**

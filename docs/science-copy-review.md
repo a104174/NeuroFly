@@ -234,3 +234,10 @@ glyph in these places:
 
 Decision needed: either add kind labels to those panels (a re-skin of the legacy panels, not done), or keep
 the narrower sentence now on the Science page.
+
+## K. Author credit
+
+"Created by Hélder Cruz" (the name links to https://heldercruz.dev/pt) in the footer of every page and at the
+end of the Science page's Sources section. Supplied by the owner; no repository source needed. The visual asset
+credits stay as they were. The MaleCNS citation and data licence wording are still a follow-up and are not
+written.

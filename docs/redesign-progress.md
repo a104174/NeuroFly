@@ -460,6 +460,16 @@ see `docs/morphology-in-production.md` for the options.
   Lighthouse 18 of 18; Stylelint 226, all in the six legacy files; targeted run with morphology unconfigured:
   both Neurons pages and the desktop Cockpit pass (axe 0, no overflow, no outage wording).
 
+## Option A: neuron shapes in production (branch `feat/morphology-in-production`)
+
+- PR #6 merged (message when morphology is not configured); production confirmed to show it on Neurons, a Neurons detail page and the Cockpit.
+- Option A implemented as described in `docs/morphology-in-production.md`; MaleCNS credit (CC BY 4.0, derived-files statement, paper) added to the
+  footer, the Science page, `docs/data-attribution.md` and the README. Not merged, not deployed.
+- **Regression found in PR #5 (not fixed here):** the Python guard `tests/test_hs_dnp15_neural_validation.py::test_no_motor_frontend_or_body_dependency`
+  fails on `main` because `web/src/content/science-copy.ts` (added in #5) contains the document path `hs_dnp15_neural_validation.md`; the guard forbids
+  that name in frontend `.ts` files. Python tests were not part of the PR #5 checks. Needs an owner decision (see the PR description).
+- Missing citation details: the Cell page returned HTTP 403, so it is not cited.
+
 ## Backend requests (not done here)
 
 - Add the **scenario** and a **creation date** to the experiment summary, so the Experiments table can

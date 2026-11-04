@@ -43,3 +43,21 @@ test("the author credit is in the footer and on the Science page, and the asset 
   assert.match(footer, /Visual assets: fly by/);
   assert.match(read("app/science/page.tsx"), /Created by <a href=\{AUTHOR_HREF\}>\{AUTHOR_NAME\}<\/a>/);
 });
+
+import { CC_BY_HREF, MALECNS_PAPER, MALECNS_RELEASE_HREF } from "../src/components/site/siteContent";
+test("the MaleCNS credit names the dataset and version, links CC BY 4.0, says the files are derived, and cites the paper", () => {
+  assert.equal(CC_BY_HREF, "https://creativecommons.org/licenses/by/4.0/");
+  assert.equal(MALECNS_RELEASE_HREF, "https://male-cns.janelia.org/release/");
+  assert.equal(MALECNS_PAPER.doi, "10.1101/2025.10.09.680999");
+  assert.equal(MALECNS_PAPER.title, "Sexual dimorphism in the complete connectome of the Drosophila male central nervous system");
+  const footer = read("components/site/SiteChrome.tsx");
+  assert.match(footer, /MALECNS_RELEASE_HREF/);
+  assert.match(footer, /CC BY 4\.0/);
+  assert.match(footer, /files are derived from it/);
+  const science = read("app/science/page.tsx");
+  assert.match(science, /id="data-credit"/);
+  assert.match(science, /licensed under/);
+  assert.match(science, /derived from it/);
+  assert.match(science, /No healing, smoothing or repair was applied/);
+  assert.match(science, /MALECNS_PAPER\.href/);
+});

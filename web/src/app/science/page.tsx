@@ -4,7 +4,7 @@ import { ArticleSection, ArticleShell } from "@/components/science/ArticleShell"
 import { ScienceArchitecture } from "@/components/science/ScienceArchitecture";
 import { StageFigure } from "@/components/science/StageFigure";
 import { KindBadge, KindGlyph } from "@/components/ui";
-import { AUTHOR_HREF, AUTHOR_NAME, LAB_HREF, EXPERIMENTS_HREF, EXPERIMENTS_LABEL, MALECNS_HREF, SCIENCE_HREF, STATUS_HREF } from "@/components/site/siteContent";
+import { AUTHOR_HREF, AUTHOR_NAME, CC_BY_HREF, MALECNS_PAPER, MALECNS_RELEASE_HREF, LAB_HREF, EXPERIMENTS_HREF, EXPERIMENTS_LABEL, MALECNS_HREF, SCIENCE_HREF, STATUS_HREF } from "@/components/site/siteContent";
 import { CAPABILITIES, CAPABILITY_GROUPS, DATA_KINDS, KIND_COPY, MALECNS_RELEASE, OPEN_QUESTIONS } from "@/content/science-copy";
 import { experimentMetadata } from "@/lib/scenarioPresentation";
 import styles from "@/components/science/Article.module.css";
@@ -179,6 +179,25 @@ export default function SciencePage() {
           ))}
         </ol>
         <p>Terms are defined in the <Link prefetch={false} href="/science/glossary">glossary</Link>. The full reports are in the <a href={SCIENCE_HREF}>scientific documentation <span aria-hidden="true">↗</span></a>. The one recorded run is listed as <Link prefetch={false} href={EXPERIMENTS_HREF}>{EXPERIMENTS_LABEL}</Link>.</p>
+        <div id="data-credit" data-credit="data" className={styles.credit}>
+          <h3>Data credit and licence</h3>
+          <p>
+            NeuroFly uses the <a href={MALECNS_RELEASE_HREF}>{MALECNS_RELEASE}</a> connectome. The dataset is licensed under{" "}
+            <a href={CC_BY_HREF}>CC BY 4.0</a>.
+          </p>
+          <p>
+            NeuroFly&rsquo;s data files are derived from it. Only selected neurons and their connections are used. The neuron
+            shapes are the official skeleton (SWC) files converted to JSON: node coordinates, radii and parent links are the
+            official values, stored as 32-bit numbers (largest relative difference 6 × 10<sup>−8</sup>), with identifiers and
+            checksums added. No healing, smoothing or repair was applied. Neuron type and side labels are the MaleCNS
+            annotations. The model, its activity and its results are NeuroFly&rsquo;s own and do not imply endorsement by the
+            dataset&rsquo;s authors.
+          </p>
+          <p>
+            To cite the dataset&rsquo;s paper: {MALECNS_PAPER.authors} {MALECNS_PAPER.title}. {MALECNS_PAPER.venue} ({MALECNS_PAPER.year}).{" "}
+            <a href={MALECNS_PAPER.href}>doi:{MALECNS_PAPER.doi}</a>.
+          </p>
+        </div>
         <p data-credit="author">Created by <a href={AUTHOR_HREF}>{AUTHOR_NAME}</a>.</p>
         <div className={styles.actions}>
           <Link prefetch={false} className={styles.action} href={LAB_HREF}>Enter the Lab</Link>

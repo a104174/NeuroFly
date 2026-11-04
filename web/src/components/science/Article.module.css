@@ -128,3 +128,9 @@
 .loop figcaption { margin-block-start: var(--space-3); color: var(--color-ink-2); font-size: var(--text-caption-size); line-height: var(--text-caption-lh); }
 @media (min-width: 1024px) { .layout { grid-template-columns: 220px minmax(0, 1fr); gap: var(--space-8); } .contents { position: sticky; inset-block-start: calc(var(--header-height) + var(--space-4)); align-self: start; padding-block: 0; border-block: 0; border-inline-start: 1px solid var(--color-hairline); padding-inline-start: var(--space-4); } .contents ol { display: grid; gap: 0; } }
 @media (forced-colors: active) { .card, .figure, .loop, .table, .tableWrap, .examples li, .references a, .disclosure { border-color: CanvasText; } }
+.credit { margin-block: var(--space-6); padding: var(--space-4) var(--space-5); border: 1px solid var(--color-hairline); border-radius: var(--radius-lg); background: var(--color-surface); color: var(--color-ink); }
+.credit h3 { margin: 0 0 var(--space-3); font-size: var(--text-h3-size); line-height: var(--text-h3-lh); font-weight: var(--text-h3-weight); }
+.credit p { max-inline-size: var(--measure-prose); margin: 0 0 var(--space-3); color: var(--color-ink-2); }
+.credit p:last-child { margin-block-end: 0; }
+.credit a { color: var(--color-accent); text-decoration: underline; text-underline-offset: 3px; }
+.credit a:focus-visible { outline: var(--focus-ring); outline-offset: var(--focus-offset); border-radius: var(--radius-sm); }

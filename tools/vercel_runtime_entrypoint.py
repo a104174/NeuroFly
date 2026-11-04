@@ -4,7 +4,11 @@ import os
 import sys
 from pathlib import Path
 
-from tools.vercel_runtime_build import MANIFEST_ID, RUNTIME_INVENTORY_ID
+from tools.vercel_runtime_build import (
+    MANIFEST_ID,
+    MORPHOLOGY_ROOT,
+    RUNTIME_INVENTORY_ID,
+)
 
 
 def application(root, *, manifest_id=MANIFEST_ID, inventory_id=None):
@@ -37,11 +41,15 @@ def application(root, *, manifest_id=MANIFEST_ID, inventory_id=None):
         NEUROFLY_CIRCUIT_CONTRACT_ROOT=str(
             release / "data/derived/malecns/looming_giant_fiber_v1"
         ),
+        # Neuron shapes ship with the Git-delivered reference data (not the pinned
+        # runtime bundle). The path is inside the release; the API store checks the
+        # hashes of every artifact it loads, and the build checks the exact set.
+        NEUROFLY_MORPHOLOGY_ARTIFACT_ROOT=str(release / MORPHOLOGY_ROOT),
     )
     # These optional local overrides must never redirect a deployment to local data.
+    # (The morphology root is set above, to the in-release copy, and is not removed.)
     for name in (
         "NEUROFLY_SCENARIO_ARTIFACT_PATH",
-        "NEUROFLY_MORPHOLOGY_ARTIFACT_ROOT",
         "NEUROFLY_MOTOR_EXPERIMENT_ARTIFACT_ROOT",
     ):
         os.environ.pop(name, None)

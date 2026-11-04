@@ -380,3 +380,100 @@ def test_unknown_scientific_api_does_not_become_frontend_success(tmp_path):
         assert response.headers["content-type"] == "application/json"
     # Other /api paths remain Next-owned; no frontend API fallback exists.
     assert not list((ROOT / "web/src/app").glob("api/**/route.*"))
+
+
+# --- Neuron shapes in production (docs/morphology-in-production.md, option A) ---
+
+MORPHOLOGY_SOURCE = (
+    ROOT / "data/derived/malecns/looming_giant_fiber_v1/morphology_artifacts_v1"
+)
+SIX_BODY = "a3f090d5309d9ede0e9e0f78343a618a4bafba3fea91e5a27d37927d5ec55f79"
+TWO_BODY = "719426f0cd2db586b149943483abfe6519d45c4a39fb48aa1f4a566c514c84f3"
+
+
+def test_tracked_neuron_shapes_are_exactly_the_pinned_artifacts_and_pass_the_stores_checks():
+    from neurofly.morphology_api import MorphologyArtifactStore
+
+    root = ROOT / build.MORPHOLOGY_ROOT
+    assert build.MORPHOLOGY_ARTIFACT_IDS == (TWO_BODY, SIX_BODY)
+    assert sorted(p.name for p in root.iterdir()) == sorted(build.MORPHOLOGY_ARTIFACT_IDS)
+    # The store checks hashes, symlinks, and that each directory name is its content ID.
+    store = MorphologyArtifactStore(root)
+    assert tuple(a.artifact.artifact_id for a in store.list_artifacts()) == (
+        build.MORPHOLOGY_ARTIFACT_IDS
+    )
+    assert len(store.get_artifact(SIX_BODY).artifact.bodies) == 6
+    assert len(store.get_artifact(TWO_BODY).artifact.bodies) == 2
+    for path in root.rglob("*"):
+        assert not path.is_symlink()
+
+
+def test_tracked_neuron_shapes_match_the_local_generated_copy_when_present():
+    if not MORPHOLOGY_SOURCE.is_dir():
+        pytest.skip("generated copy is not present (it is Git-ignored)")
+    import filecmp
+
+    comparison = filecmp.dircmp(MORPHOLOGY_SOURCE, ROOT / build.MORPHOLOGY_ROOT)
+    assert not comparison.left_only and not comparison.right_only
+    assert not comparison.diff_files
+
+
+def test_release_serves_the_neuron_shapes_from_inside_itself(monkeypatch, build_root):
+    monkeypatch.setattr(sys, "path", sys.path.copy())
+    build.build(build_root)
+    monkeypatch.chdir(ROOT)
+    for name in (
+        "NEUROFLY_RUNTIME_MODE",
+        "NEUROFLY_RUNTIME_RELEASE_ROOT",
+        "NEUROFLY_RUNTIME_INVENTORY_ID",
+        "NEUROFLY_RUNTIME_MANIFEST_ID",
+        "NEUROFLY_EXPERIMENT_ARTIFACT_ROOT",
+        "NEUROFLY_CIRCUIT_CONTRACT_ROOT",
+    ):
+        monkeypatch.delenv(name, raising=False)
+    # A local override must not redirect the deployment: the in-release copy wins.
+    monkeypatch.setenv("NEUROFLY_MORPHOLOGY_ARTIFACT_ROOT", "/somewhere/else")
+    release = build_root / ".neurofly-release"
+    with TestClient(
+        application(
+            build_root,
+            manifest_id=build.MANIFEST_ID,
+            inventory_id=build.RUNTIME_INVENTORY_ID,
+        )
+    ) as client:
+        assert Path(os.environ["NEUROFLY_MORPHOLOGY_ARTIFACT_ROOT"]) == (
+            release / build.MORPHOLOGY_ROOT
+        )
+        assert client.get("/ready").status_code == 200
+        listing = client.get("/api/v1/morphology")
+        assert listing.status_code == 200
+        assert sorted(a["artifact_id"] for a in listing.json()["artifacts"]) == sorted(
+            build.MORPHOLOGY_ARTIFACT_IDS
+        )
+        six = client.get(f"/api/v1/morphology/{SIX_BODY}")
+        assert six.status_code == 200 and len(six.json()["body_ids"]) == 6
+        body = client.get(f"/api/v1/morphology/{SIX_BODY}/bodies/10001")
+        assert body.status_code == 200
+        assert client.get("/api/v1/morphology/" + "0" * 64).status_code == 404
+
+
+def test_build_fails_if_a_neuron_shape_artifact_is_missing_or_changed(
+    monkeypatch, build_root
+):
+    monkeypatch.setattr(sys, "path", sys.path.copy())
+    root = build_root / build.MORPHOLOGY_ROOT
+    victim = next((root / TWO_BODY / "bodies").glob("*.json"))
+    victim.write_text(victim.read_text()[:-2] + "  ")  # same size, different bytes
+    from neurofly.morphology_api import MorphologyApiError
+
+    with pytest.raises(MorphologyApiError):
+        build.build(build_root)
+
+
+def test_build_fails_if_the_pinned_set_of_neuron_shapes_is_not_exact(
+    monkeypatch, build_root
+):
+    monkeypatch.setattr(sys, "path", sys.path.copy())
+    shutil.rmtree(build_root / build.MORPHOLOGY_ROOT / TWO_BODY)
+    with pytest.raises(ValueError, match="pinned set"):
+        build.build(build_root)

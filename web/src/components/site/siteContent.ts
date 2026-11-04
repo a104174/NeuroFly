@@ -10,6 +10,22 @@ export const SCIENCE_HREF = "https://github.com/a104174/NeuroFly/tree/main/docs/
 export const AUTHOR_NAME = "Hélder Cruz";
 export const AUTHOR_HREF = "https://heldercruz.dev/pt";
 export const MALECNS_HREF = "https://male-cns.janelia.org/download/";
+/** Official release page; it states "The Male CNS dataset is licensed under CC-BY." */
+export const MALECNS_RELEASE_HREF = "https://male-cns.janelia.org/release/";
+export const CC_BY_HREF = "https://creativecommons.org/licenses/by/4.0/";
+export const DATA_CREDIT_HREF = "/science#data-credit";
+/**
+ * The MaleCNS paper, as given by the DOI registry (Crossref) and the bioRxiv page: title, first author and
+ * DOI. The full author list differs slightly between the two sources, so it is left to the DOI link.
+ */
+export const MALECNS_PAPER = {
+  title: "Sexual dimorphism in the complete connectome of the Drosophila male central nervous system",
+  authors: "Berg S et al.",
+  venue: "bioRxiv",
+  year: 2025,
+  doi: "10.1101/2025.10.09.680999",
+  href: "https://doi.org/10.1101/2025.10.09.680999",
+} as const;
 
 /**
  * Primary navigation (Phase 0 decisions). Home is the logo. Experiments leaves the main

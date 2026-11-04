@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 
 import { PageShell } from "@/components/site/PageShell";
 import { ButtonLink, StatePanel } from "@/components/ui";
+import { isMorphologyNotOnDeployment } from "@/lib/morphologyAvailability";
 import styles from "../(list)/page.module.css";
 import { MorphologyInspector } from "@/components/MorphologyInspector";
 import {
@@ -42,6 +43,13 @@ export default async function MorphologyArtifactPage({
     notFound();
   }
   if (requestError || !data) {
+    if (isMorphologyNotOnDeployment(requestError)) {
+      return (
+        <PageShell title="Neuron shapes" current="/morphology">
+          <StatePanel state="not-on-deployment" actions={<ButtonLink href="/scenarios">Watch a scenario</ButtonLink>} />
+        </PageShell>
+      );
+    }
     const integrity = requestError instanceof NeuroflyApiError && (requestError.status === 409 || requestError.code === "artifact_integrity_failure");
     return (
       <PageShell title="These neuron shapes could not be read" current="/morphology">

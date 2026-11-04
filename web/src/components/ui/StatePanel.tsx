@@ -23,6 +23,8 @@ export type StatePanelProps = Common &
     | { state: "unknown-id"; noun: string; id: string; actions?: ReactNode }
     | { state: "webgl-off"; /** True only when a data table or list shows the same information. */ hasDataAlternative: boolean; actions?: ReactNode }
     | { state: "context-lost"; actions?: ReactNode }
+    /** The data is not installed on this deployment. Not an outage: retrying will not help. */
+    | { state: "not-on-deployment"; actions?: ReactNode }
     | { state: "low-power"; actions?: ReactNode }
     | { state: "missing-data"; /** For example "Neuron shapes". */ what: string; detail?: string }
   );
@@ -51,6 +53,8 @@ export function StatePanel(props: StatePanelProps) {
       title = <>{STATE_COPY.unknownId.before(props.noun)} <code>{props.id}</code>{STATE_COPY.unknownId.after}</>; actions = props.actions; break;
     case "webgl-off":
       title = STATE_COPY.webglOff.title; body = props.hasDataAlternative ? STATE_COPY.webglOff.withData : null; actions = props.actions; break;
+    case "not-on-deployment":
+      role = "status"; title = STATE_COPY.notOnDeployment.title; body = STATE_COPY.notOnDeployment.body; actions = props.actions; break;
     case "context-lost":
       role = "alert"; title = STATE_COPY.contextLost.title; body = STATE_COPY.contextLost.body; actions = props.actions; break;
     case "low-power":

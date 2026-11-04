@@ -125,6 +125,11 @@ export const STATE_COPY = {
     body: "The browser released the graphics context. Nothing on this page has been lost.",
     action: "Restart 3D view",
   },
+  /** The API answered, and it says this deployment has no neuron shape data installed. */
+  notOnDeployment: {
+    title: "Neuron shape data is not available on this deployment.",
+    body: "The rest of the site is not affected: scenarios, experiments, the Lab and the science pages work without it.",
+  },
   lowPower: {
     title: "Showing simplified shapes for smoother playback.",
     action: "Use full detail",

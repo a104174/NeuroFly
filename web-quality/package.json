@@ -15,7 +15,8 @@
     "check:resilience": "node run.mjs resilience",
     "check:bundle": "node run.mjs bundle",
     "check:lighthouse": "node lighthouse.mjs",
-    "lint:css": "stylelint \"../web/src/**/*.css\" --config .stylelintrc.json"
+    "lint:css": "stylelint \"../web/src/**/*.css\" --config .stylelintrc.json",
+    "check:unconfigured-morphology": "node unconfigured-morphology.mjs"
   },
   "devDependencies": {
     "@axe-core/playwright": "4.10.1",

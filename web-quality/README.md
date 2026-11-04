@@ -26,6 +26,7 @@ What each group checks, and which section 11 row it covers:
 | `resilience` | 3D resilience: WebGL off, context lost and restart |
 | `bundle` | Bundle: three.js not loaded on pages without 3D |
 | `lighthouse.mjs` | Lighthouse mobile: accessibility 95+, performance 90+ on Home, lists and Science |
+| `check:unconfigured-morphology` | Optional: run against an API with no morphology root (like production today). Neurons and the Cockpit must say "Neuron shape data is not available on this deployment.", not that the data service is down |
 | `lint:css` | Tokens: hard-coded colours outside the tokens file. Legacy files still fail; see `docs/redesign-progress.md` |
 
 Not automated (need a person): screen reader paths, frame rate on the reference laptop, greyscale review,

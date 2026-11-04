@@ -1,0 +1,7 @@
+.grid { display: grid; gap: var(--space-5); margin: 0; padding: 0; list-style: none; grid-template-columns: repeat(auto-fill, minmax(min(100%, 22rem), 1fr)); }
+.id { font-family: var(--font-mono); font-size: var(--text-caption-size); overflow-wrap: anywhere; }
+.technical { margin-block-start: var(--space-3); color: var(--color-ink-2); font-size: var(--text-small-size); }
+.technical p { font-family: var(--font-mono); overflow-wrap: anywhere; }
+.back { display: inline-block; margin-block-end: var(--space-5); color: var(--color-accent); text-decoration: underline; text-underline-offset: 3px; font-size: var(--text-small-size); }
+.back:focus-visible { outline: var(--focus-ring); outline-offset: var(--focus-offset); border-radius: var(--radius-sm); }
+.inspector { display: block; }

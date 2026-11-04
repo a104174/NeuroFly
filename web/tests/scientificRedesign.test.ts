@@ -84,9 +84,9 @@ test("undefined, unavailable, and model zero remain semantically distinct",()=>{
   const neutral=html(TelemetryValue,{label:"Neutral proxy",value:"+0.000000",unit:"dnp15_state_eq"});assert.match(neutral,/\+0.000000/);
   const notDefined=resultHtml(neural);assert.match(notDefined,/not defined/);assert.doesNotMatch(notDefined,/0 spikes/);
   const error=html(ScientificPlaybackUnavailable,{detail:"Authority mismatch",retry:()=>{}});
-  for(const term of ["Experiment playback unavailable.","The canonical scientific artifact could not be validated.","No synthetic fallback has been substituted.","Retry","Back to experiments"])assert.ok(error.includes(term));
+  for(const term of ["Scenario playback unavailable.","The recorded replay could not pass its integrity check.","No synthetic fallback has been substituted.","Retry","Back to scenarios"])assert.ok(error.includes(term));
   assert.match(error,/role="alert"/);assert.doesNotMatch(error,/<canvas|<svg|Expected neutral/);
-  const loading=html(ScientificPlaybackLoading,{});assert.match(loading,/Validating canonical scientific playback/);assert.match(loading,/aria-busy="true"/);assert.match(loading,/loading—not a neutral result/);assert.doesNotMatch(loading,/<canvas|<svg|0\.000/);
+  const loading=html(ScientificPlaybackLoading,{});assert.match(loading,/Checking the recorded replay/);assert.match(loading,/aria-busy="true"/);assert.match(loading,/loading—not a neutral result/);assert.doesNotMatch(loading,/<canvas|<svg|0\.000/);
 });
 test("units and full authority hashes remain accessible under native disclosures",()=>{
   const units=html(UnitHelp,{});for(const unit of ["mV_eq","world_eq","horizontal_motion_eq","dnp15_state_eq","yaw_drive_eq","yaw_orientation_eq","relative_view_eq"])assert.ok(units.includes(unit));

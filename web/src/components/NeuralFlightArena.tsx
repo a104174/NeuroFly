@@ -60,7 +60,7 @@ export function NeuralFlightArena() {
         for (const c of NEURAL_FLIGHT_CONDITIONS) while (next[c].snapshot().step < boundary) next[c].advance();
         pair.current = next; setRuns(next); setCondition(verified.config.condition); cursor.current = boundary; setStep(boundary); setFrontier(boundary); setGeneration(n => n + 1);
         const run = await exportNeuralFlight(verified); setIdentity(run.artifact_id);
-        setNotice(`Verified inputs, neural states and flight history reconstructed in ${(performance.now() - start).toFixed(1)} ms.`);
+        setNotice(`Integrity-checked inputs, neural states and flight history reconstructed in ${(performance.now() - start).toFixed(1)} ms.`);
       } else {
         const engine = pair.current[condition];
         if (action === 'save') {
@@ -70,7 +70,7 @@ export function NeuralFlightArena() {
           const run = await exportNeuralFlight(engine, step); setIdentity(run.artifact_id);
           const url = URL.createObjectURL(new Blob([JSON.stringify(run)], { type: 'application/json' }));
           const link = document.createElement('a'); link.href = url; link.download = `neurofly-neural-flight-v9-${condition}.json`; link.click(); setTimeout(() => URL.revokeObjectURL(url), 1000);
-          setNotice(`Verified recorded prefix exported · ${step * 200} neural substeps.`);
+          setNotice(`Integrity-checked recorded prefix exported · ${step * 200} neural substeps.`);
         }
       }
     } catch (e) { setError(String(e)); }
@@ -116,7 +116,7 @@ export function NeuralFlightArena() {
     </dl>
     <figure className="neural-flight-timeline"><figcaption>Accepted neural intervals only · cyan R−L readout (× 3000), gold projected turn (× 45); fixed 12 s axis</figcaption><svg viewBox="0 0 600 80" role="img" aria-label="Neural readout and engineering yaw timeline"><path d="M0 40H600" stroke="currentColor" opacity=".25"/><polyline points={chart(r => r.before.mean_yaw_drive_eq ?? 0, 3000)} fill="none" stroke="#50cddd"/><polyline points={chart(r => r.yaw.neuralTurn, 45)} fill="none" stroke="#e2b96e"/></svg></figure>
     <div className="arena-replay-controls"><button disabled={!ready || playing} onClick={() => void fileAction('export')}>Export v9 run</button><button disabled={step !== 600 || playing} onClick={() => void fileAction('save')}>Save completed v9</button><button disabled={!ready || playing} onClick={() => void fileAction('open')}>Reopen saved condition</button><label>Import v9 run <input aria-label="Import v9 run" type="file" accept="application/json,.json" disabled={!ready || playing} onChange={e => { const f = e.target.files?.[0]; if(f) void fileAction('open', f); e.target.value=''; }}/></label></div>
-    {identity ? <p className="arena-artifact-id">Verified v9 artifact: {identity}</p> : null}
+    {identity ? <p className="arena-artifact-id">Integrity-checked v9 artifact: {identity}</p> : null}
     <details><summary>Source, timing and projection assumptions</summary><p>MALECNS_CONNECTOME_EVIDENCE: male-cns:v1.0 · UUID 4b2087c0fbe046bfaf0d60bc970e3e5d. HS R 10015/10016/10023 → DNp15 R 11215 (138/122/23 structural contacts); HS L 10034/10181/10419 → DNp15 L 12069 (78/126/14). Counts do not establish synaptic sign or motor calibration.</p><p>MODELED_NEURAL_DYNAMICS: existing Python-authoritative HS/DNp15 proxy equations, unit mean transfer, zero initial state. 200 old-state substeps × 0.1 ms per 20 ms body interval. Observation of completed interval i−1→i is held while neural state advances over i→i+1; its integrated readout supplies the accepted yaw command for that same body interval. No future pose or render-clock input.</p><p>ENGINEERING_FLIGHT_CONTROL_PROJECTION: Δq = sum of existing kernel increments. ω = clamp(2.5 × Δq / 0.020, −0.5, +0.5) rad/s. Neural turn = ω / 0.8; OFF and projection-zero set this contribution to zero. Applied turn = clamp(engineering turn + neural turn, −1, +1). Positive DN right−left turns heading toward +X. Engineering units, no physiological yaw calibration.</p><p>ENGINEERING_HORIZONTAL_VISUAL_PROJECTION: existing landmarks X=±0.6, Z=+0.4; perturbation uses the previously validated static Z=−0.4 world. Y altitude ignored. Model observation is a geometric bearing-change proxy, not full 3D retinal optic flow. ENGINEERING_FLIGHT_PLANT: unchanged v8 integration, contacts and 12-second command program; no neural altitude, thrust or landing decisions.</p><p className="arena-artifact-id">Source raw SHA-256: {engine?.config.neural.source_raw_sha256}<br/>Neural contract: {engine?.config.neural.source_sha256.neural}<br/>Projection identity: {NEURAL_YAW.identity}</p><p>One compact, reconstructable completed snapshot per condition in a separate origin-local store. Invalid files are rejected through full neural/body reconstruction. No cloud storage or changes to historical session libraries.</p></details>
   </section>;
 }

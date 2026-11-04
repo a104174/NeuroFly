@@ -30,7 +30,7 @@ export function CurrentResult({result,step}:{result:ScenarioPlayback;step:number
     model="Exploratory sensory projection, transfer and membrane dynamics; uncalibrated model-space coordinates.";
   }
   return <aside className="current-result" aria-label="Current scientific result">
-    <div className="result-heading"><span className="instrument-index">RESULT</span><span className="authority-status">Replay verified</span></div>
+    <div className="result-heading"><span className="instrument-index">RESULT</span><span className="authority-status" title="The stored replay passed its hash and reconstruction checks. This is not biological validation.">Integrity-checked replay</span></div>
     <h2>{title}</h2><section className="canonical-outcome"><h3>Whole canonical run</h3><p>{outcome}</p></section>
     <section className="selected-outcome"><h3>{!isNeuralPlayback(result) && !isCoursePlayback(result) && result.termination?.status === "TERMINATED_GEOMETRY_DOMAIN" ? "STOPPED · GEOMETRY DOMAIN" : step===result.frames.length-1 ? "FINAL BOUNDARY · RUN COMPLETE" : "Selected boundary"} <span>{frame.time_ms.toFixed(1)} ms</span></h3><p>{boundary}</p></section>
     <p className="result-limitation">{limitation}</p>

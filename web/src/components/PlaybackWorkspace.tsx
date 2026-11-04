@@ -9,6 +9,7 @@ import {
   type ReactNode,
 } from "react";
 
+import { WebGLGate } from "./WebGLGate";
 import { useExperimentPlayback } from "@/hooks/useExperimentPlayback";
 import type {
   ExperimentTimeline,
@@ -89,7 +90,7 @@ export function PlaybackWorkspace({
       <div className="section-heading section-heading-inline playback-section-heading">
         <div>
           <p className="eyebrow">IMMERSIVE PLAYBACK / PRESENTATION VIEW</p>
-          <h2 id="playback-heading">Persisted experiment in 3D</h2>
+          <h2 id="playback-heading">Experiment in 3D</h2>
         </div>
         <div className="playback-statuses">
           <span className="loaded-badge">TIMELINE SOURCE · READ ONLY</span>
@@ -101,15 +102,17 @@ export function PlaybackWorkspace({
 
       <div className="playback-stage">
         <div
-          className="playback-canvas-shell"
+          className="playback-canvas-shell" role="group"
           aria-label="Three-dimensional experiment presentation"
         >
+          <WebGLGate hasDataAlternative>
           <PlaybackRenderBoundary>
             <PlaybackCanvas
               sceneState={scene}
               onAssetStatusChange={handleAssetStatusChange}
             />
           </PlaybackRenderBoundary>
+          </WebGLGate>
         </div>
         <div className="playback-overlay" aria-live="polite">
           <div>
@@ -139,7 +142,7 @@ export function PlaybackWorkspace({
             <strong>{playback.isPlaying ? "PLAYING" : "PAUSED"}</strong>
           </div>
           <div className="playback-validation">
-            <span>Empirical validation</span>
+            <span>Evaluation</span>
             <strong>{validationStatus.replaceAll("_", " ")}</strong>
           </div>
         </div>
@@ -223,11 +226,11 @@ export function PlaybackWorkspace({
         </div>
         <div className="legend-dnp01-a">
           <span>DNp01 · 10001 membrane</span>
-          <strong>{shown(scene.dnp01[10001].membraneMv, "mV")}</strong>
+          <strong>{shown(scene.dnp01[10001].membraneMv, "mV_eq")}</strong>
         </div>
         <div className="legend-dnp01-b">
           <span>DNp01 · 10010 membrane</span>
-          <strong>{shown(scene.dnp01[10010].membraneMv, "mV")}</strong>
+          <strong>{shown(scene.dnp01[10010].membraneMv, "mV_eq")}</strong>
         </div>
       </div>
 

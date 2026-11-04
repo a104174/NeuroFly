@@ -155,7 +155,7 @@ export function CockpitSelectedNeuronPanel({
           {activityContext?.granularity === "BODY_SPECIFIC" ? <>
             <p className="cockpit-activity-granularity">BODY-LEVEL SIMULATED LIF STATE · uniform presentation over morphology</p>
             <dl className="cockpit-dynamic-values">
-              <div><dt>Membrane state</dt><dd>{activityContext.state.membraneMv.toFixed(4)} <small>mV</small></dd></div>
+              <div><dt>Membrane state</dt><dd>{activityContext.state.membraneMv.toFixed(4)} <small>mV_eq</small></dd></div>
               <div><dt>Filtered synaptic state</dt><dd>{activityContext.state.synapticStateMveq.toFixed(4)} <small>mV_eq</small></dd></div>
               <div><dt>Normalized model membrane position</dt><dd>{activityContext.state.normalizedModelMembranePosition === null ? "not available" : activityContext.state.normalizedModelMembranePosition.toFixed(3)}</dd></div>
               <div><dt>Stored-boundary spike</dt><dd>{activityContext.state.spikeAtBoundary ? `SIMULATED SPIKE · ${activityContext.state.spikeTimestampMs?.toFixed(3)} ms` : "NO"}</dd></div>

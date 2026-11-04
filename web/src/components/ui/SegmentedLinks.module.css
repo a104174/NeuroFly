@@ -1,0 +1,7 @@
+.group { display: inline-flex; flex-wrap: wrap; gap: 2px; padding: 2px; border: 1px solid var(--color-border-control); border-radius: var(--radius-md); background: var(--color-raised); }
+.item { display: inline-flex; align-items: center; min-block-size: 36px; padding-inline: var(--space-4); border-radius: calc(var(--radius-md) - 2px); color: var(--color-ink-2); font-size: var(--text-small-size); font-weight: 500; text-decoration: none; transition: background var(--dur-fast) var(--ease-standard), color var(--dur-fast) var(--ease-standard); }
+.item:hover { color: var(--color-ink); }
+.item[aria-current="true"] { background: var(--color-accent); color: var(--color-on-accent); }
+.item:focus-visible { outline: var(--focus-ring); outline-offset: var(--focus-offset); }
+@media (pointer: coarse) { .item { min-block-size: var(--touch-target); } }
+@media (forced-colors: active) { .item[aria-current="true"] { outline: 2px solid CanvasText; } }

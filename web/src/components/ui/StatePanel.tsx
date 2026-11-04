@@ -16,10 +16,13 @@ export type StatePanelProps = Common &
     | { state: "loading"; /** For example "313 neuron shapes". */ what: string }
     | { state: "empty"; message: string; actions?: ReactNode }
     | { state: "api-down"; actions?: ReactNode }
+    /** The service answered, but the stored data failed its hash or reconstruction checks. */
+    | { state: "integrity-failure"; actions?: ReactNode }
     | { state: "route-error"; /** Error digest or request reference. */ reference?: string; actions?: ReactNode }
     | { state: "not-found"; /** Links to the main sections. */ links?: ReactNode }
     | { state: "unknown-id"; noun: string; id: string; actions?: ReactNode }
     | { state: "webgl-off"; /** True only when a data table or list shows the same information. */ hasDataAlternative: boolean; actions?: ReactNode }
+    | { state: "context-lost"; actions?: ReactNode }
     | { state: "low-power"; actions?: ReactNode }
     | { state: "missing-data"; /** For example "Neuron shapes". */ what: string; detail?: string }
   );
@@ -37,6 +40,8 @@ export function StatePanel(props: StatePanelProps) {
       title = props.message; actions = props.actions; break;
     case "api-down":
       role = "alert"; tone = "error"; title = STATE_COPY.apiDown.title; body = STATE_COPY.apiDown.body; actions = props.actions; break;
+    case "integrity-failure":
+      role = "alert"; tone = "error"; title = STATE_COPY.integrityFailure.title; body = STATE_COPY.integrityFailure.body; actions = props.actions; break;
     case "route-error":
       role = "alert"; tone = "error"; title = STATE_COPY.routeError.title; actions = props.actions;
       body = props.reference ? <>{STATE_COPY.routeError.reference}: <code>{props.reference}</code></> : null; break;
@@ -46,6 +51,8 @@ export function StatePanel(props: StatePanelProps) {
       title = <>{STATE_COPY.unknownId.before(props.noun)} <code>{props.id}</code>{STATE_COPY.unknownId.after}</>; actions = props.actions; break;
     case "webgl-off":
       title = STATE_COPY.webglOff.title; body = props.hasDataAlternative ? STATE_COPY.webglOff.withData : null; actions = props.actions; break;
+    case "context-lost":
+      role = "alert"; title = STATE_COPY.contextLost.title; body = STATE_COPY.contextLost.body; actions = props.actions; break;
     case "low-power":
       title = STATE_COPY.lowPower.title; actions = props.actions; break;
     case "missing-data":

@@ -20,7 +20,9 @@ test("default Lab opens Explore with a real viewer, home navigation and no histo
   const html = markup();
   const page = readFileSync(new URL("../src/app/visual-lab/arena/page.tsx", import.meta.url), "utf8");
   assert.match(html, /Explore<span>\.<\/span>/);
-  assert.match(page, /href="\/" aria-label="NeuroFly home"/);
+  // Home navigation comes from the shared 48 px tool header: a back link to "/" and the logo link.
+  assert.match(page, /<SiteHeader tone="dark" variant="tool" backHref="\/" backLabel="Home"/);
+  assert.match(readFileSync(new URL("../src/components/site/SiteChrome.tsx", import.meta.url), "utf8"), /href="\/" className=\{styles\.brand\} aria-label="NeuroFly home"/);
   assert.match(html, /Exploration controls/);
   assert.match(page, /<LiveExploreArena/);
   assert.doesNotMatch(page, /ArenaCourseViewer/);

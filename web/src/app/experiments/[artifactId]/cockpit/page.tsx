@@ -1,8 +1,9 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
-import { AppHeader } from "@/components/AppHeader";
+import { SiteHeader } from "@/components/site/SiteChrome";
 import { ScientificCockpit } from "@/components/ScientificCockpit";
+import { parseLayer } from "@/lib/cockpitLayers";
 import { StateMessage } from "@/components/StateMessage";
 import {
   COCKPIT_MORPHOLOGY_ARTIFACT_ID,
@@ -21,6 +22,7 @@ import {
   type ExperimentTimeline,
   type MorphologyArtifactSummary,
   type MorphologyBody,
+  type MorphologyBodyId,
   type StructuralConnectivityProjection,
 } from "@/lib/neuroflyClient";
 
@@ -34,10 +36,16 @@ function readableFailure(error: unknown): string {
 
 export default async function ScientificCockpitPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ artifactId: string }>;
+  searchParams?: Promise<Record<string, string | string[] | undefined>>;
 }) {
   const { artifactId } = await params;
+  const query = (await searchParams) ?? {};
+  const bodyParam = Number(Array.isArray(query.body) ? query.body[0] : query.body);
+  const initialBodyId = [10001, 10010, 11498, 12032, 14465, 16128].includes(bodyParam) ? (bodyParam as MorphologyBodyId) : null;
+  const initialLayer = parseLayer(query.layer);
   let core: { summary: ExperimentSummary; timeline: ExperimentTimeline } | null = null;
   let coreError: unknown = null;
   try {
@@ -54,11 +62,11 @@ export default async function ScientificCockpitPage({
     notFound();
   }
   if (!core) {
-    return <div className="app-shell cockpit-shell">
-      <AppHeader />
-      <main className="cockpit-route cockpit-route-error">
-        <Link className="back-link" href="/experiments">← all experiments</Link>
-        <StateMessage eyebrow="EXPERIMENT UNAVAILABLE" title="This run cannot open in the Scientific Cockpit." detail={readableFailure(coreError)} tone="error" />
+    return <div className="app-shell cockpit-shell" data-theme-scope="dark">
+      <SiteHeader tone="dark" variant="tool" backHref="/experiments" backLabel="Experiments" title="Cockpit" />
+      <main id="main-content" tabIndex={-1} className="cockpit-route cockpit-route-error">
+        <Link className="back-link" href="/experiments">← Experiments</Link>
+        <StateMessage eyebrow="EXPERIMENT UNAVAILABLE" title="This run cannot open in the Cockpit." detail={readableFailure(coreError)} tone="error" />
       </main>
     </div>;
   }
@@ -100,11 +108,11 @@ export default async function ScientificCockpitPage({
   }
 
   return (
-    <div className="app-shell cockpit-shell">
-      <AppHeader />
-      <main className="cockpit-route">
+    <div className="app-shell cockpit-shell" data-theme-scope="dark">
+      <SiteHeader tone="dark" variant="tool" backHref="/experiments" backLabel="Experiments" title="Cockpit" />
+      <main id="main-content" tabIndex={-1} className="cockpit-route">
         <div className="cockpit-route-nav">
-          <Link href="/experiments">← all experiments</Link>
+          <Link href="/experiments">← Experiments</Link>
           <Link href={`/experiments/${artifactId}`}>Standalone playback ↗</Link>
         </div>
         <ScientificCockpit
@@ -115,6 +123,8 @@ export default async function ScientificCockpitPage({
           connectivity={connectivity}
           morphologyFailure={morphologyFailure}
           connectivityFailure={connectivityFailure}
+          initialBodyId={initialBodyId}
+          initialLayer={initialLayer}
         />
       </main>
     </div>

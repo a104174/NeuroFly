@@ -1,0 +1,76 @@
+.page { overflow-x: clip; }
+.page main { outline: none; }
+.page a:focus-visible { outline: var(--focus-ring); outline-offset: var(--focus-offset); border-radius: var(--radius-sm); }
+
+.hero { display: grid; gap: var(--space-7); align-items: center; max-inline-size: var(--content-max); margin-inline: auto; padding: var(--space-8) var(--gutter) var(--space-7); }
+.eyebrow { margin: 0 0 var(--space-3); color: var(--color-ink-2); font-size: var(--text-caption-size); font-weight: var(--text-caption-weight); letter-spacing: 0.08em; text-transform: uppercase; }
+.hero h1 { margin: 0; font-size: var(--text-display-size); line-height: var(--text-display-lh); font-weight: var(--text-display-weight); letter-spacing: var(--text-display-tracking); text-wrap: balance; }
+.statement { margin: var(--space-5) 0 0; max-inline-size: var(--measure-prose); color: var(--color-ink-2); font-size: var(--text-body-lg-size); line-height: var(--text-body-lg-lh); }
+.actions { display: flex; flex-wrap: wrap; gap: var(--space-3); margin-block-start: var(--space-6); }
+.primary, .quiet { display: inline-flex; align-items: center; justify-content: center; min-block-size: var(--button-height-lg); padding-inline: var(--space-5); border-radius: var(--radius-md); font-weight: 600; text-decoration: none; transition: background var(--dur-fast) var(--ease-standard); }
+.page a.primary { background: var(--color-accent); color: var(--color-on-accent); }
+.page a.primary:hover { background: color-mix(in srgb, var(--color-accent) 88%, var(--color-ink)); }
+.page a.quiet { border: 1px solid var(--color-border-control); color: var(--color-ink); }
+.page a.quiet:hover { background: var(--color-raised); }
+
+/* The 3D stage stays dark in both themes. The poster is the page's LCP element. */
+.stage { margin: 0; overflow: hidden; border: 1px solid var(--color-hairline); border-radius: var(--radius-xl); background: var(--stage-bg); color: var(--color-ink); }
+.stage img { display: block; inline-size: 100%; block-size: auto; aspect-ratio: 1500 / 1400; object-fit: cover; }
+.stage figcaption { padding: var(--space-3) var(--space-4); border-block-start: 1px solid var(--color-hairline); color: var(--color-ink-2); font-size: var(--text-caption-size); line-height: var(--text-caption-lh); }
+
+/* Status strip: real text, always visible, directly under the hero. */
+.strip { border-block: 1px solid var(--color-hairline); background: var(--color-surface); }
+.strip ul { display: grid; gap: var(--space-4); max-inline-size: var(--content-max); margin: 0 auto; padding: var(--space-5) var(--gutter); list-style: none; }
+.strip li { display: flex; gap: var(--space-3); align-items: flex-start; color: var(--color-ink); font-size: var(--text-small-size); line-height: var(--text-small-lh); }
+.strip li svg { flex: none; margin-block-start: 0.2em; }
+.strip li[data-kind="structural"] svg { color: var(--color-structural); }
+.strip li[data-kind="model-assumption"] svg { color: var(--color-model); }
+.strip li[data-kind="not-evaluated"] svg { color: var(--color-not-evaluated); }
+
+.section { max-inline-size: var(--content-max); margin-inline: auto; padding: var(--section-space) var(--gutter) 0; }
+.section:last-of-type { padding-block-end: var(--section-space); }
+.section h2 { margin: 0; font-size: var(--text-h1-size); line-height: var(--text-h1-lh); font-weight: var(--text-h1-weight); letter-spacing: var(--text-h1-tracking); }
+.sectionLead { margin: var(--space-3) 0 0; max-inline-size: var(--measure-prose); color: var(--color-ink-2); font-size: var(--text-body-lg-size); line-height: var(--text-body-lg-lh); }
+
+.layers { display: grid; gap: var(--space-4); margin: var(--space-6) 0 0; padding: 0; list-style: none; }
+.layers li { display: grid; gap: var(--space-3); align-content: start; padding: var(--card-padding); border: 1px solid var(--color-hairline); border-radius: var(--radius-lg); background: var(--color-surface); }
+.layers h3, .card h3, .path h3 { margin: 0; font-size: var(--text-h3-size); line-height: var(--text-h3-lh); font-weight: var(--text-h3-weight); letter-spacing: var(--text-h3-tracking); }
+.layers p, .card p, .path p { margin: 0; color: var(--color-ink-2); }
+.layers li > span { justify-self: start; }
+
+.gallery { display: grid; gap: var(--space-4); margin: var(--space-6) 0 0; padding: 0; list-style: none; }
+.card { position: relative; display: grid; gap: var(--space-3); align-content: start; padding: var(--card-padding); border: 1px solid var(--color-hairline); border-radius: var(--radius-lg); background: var(--color-surface); transition: border-color var(--dur-fast) var(--ease-standard); }
+.card:hover, .card:focus-within { border-color: var(--color-border-control); }
+/* One link per card, stretched over it. */
+.card h3 a { color: var(--color-ink); text-decoration: none; }
+.card h3 a::after { content: ""; position: absolute; inset: 0; border-radius: var(--radius-lg); }
+.card h3 a:focus-visible { outline: none; }
+.card h3 a:focus-visible::after { outline: var(--focus-ring); outline-offset: var(--focus-offset); }
+.cardKind { color: var(--color-ink-2); font-size: var(--text-caption-size); font-weight: var(--text-caption-weight); letter-spacing: 0.08em; text-transform: uppercase; }
+.card .cardNote { color: var(--color-ink); font-size: var(--text-caption-size); font-weight: 600; }
+.meta { display: grid; gap: var(--space-2); margin: auto 0 0; padding-block-start: var(--space-3); border-block-start: 1px solid var(--color-hairline); }
+.meta div { display: grid; gap: 2px; }
+.meta dt { color: var(--color-ink-2); font-size: var(--text-caption-size); font-weight: var(--text-caption-weight); letter-spacing: 0; }
+.meta dd { margin: 0; color: var(--color-ink); font-size: var(--text-small-size); line-height: var(--text-small-lh); font-variant-numeric: tabular-nums; }
+.labShot { margin: 0; overflow: hidden; border: 1px solid var(--color-hairline); border-radius: var(--radius-md); background: var(--stage-bg); }
+.labShot img { display: block; inline-size: 100%; block-size: auto; }
+.labShot figcaption { padding: var(--space-2) var(--space-3); color: var(--color-ink-2); font-size: var(--text-caption-size); }
+.after { margin: var(--space-5) 0 0; color: var(--color-ink-2); }
+.after a { color: var(--color-accent); text-decoration: underline; text-underline-offset: 3px; }
+
+.paths { display: grid; gap: var(--space-4); margin-block-start: var(--space-6); }
+.path { display: grid; gap: var(--space-3); align-content: start; padding: var(--card-padding); border: 1px solid var(--color-hairline); border-radius: var(--radius-lg); background: var(--color-surface); }
+.path .actions { margin-block-start: var(--space-2); }
+
+@media (min-width: 600px) {
+  .strip ul { grid-template-columns: 1fr 1fr; }
+  .layers { grid-template-columns: repeat(3, 1fr); }
+  .gallery { grid-template-columns: 1fr 1fr; }
+  .paths { grid-template-columns: 1fr 1fr; }
+}
+@media (min-width: 1024px) {
+  .hero { grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr); gap: var(--space-8); min-block-size: calc(100vh - var(--header-height) - 72px); }
+  .strip ul { grid-template-columns: repeat(4, 1fr); }
+  .gallery { grid-template-columns: repeat(4, 1fr); }
+}
+@media (forced-colors: active) { .stage, .layers li, .card, .path, .labShot, .strip { border-color: CanvasText; } .page a.primary { border: 1px solid CanvasText; } }

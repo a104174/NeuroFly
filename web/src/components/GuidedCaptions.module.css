@@ -1,0 +1,11 @@
+.guide { margin-block-start: var(--space-4); padding: var(--space-4) var(--space-5); border: 1px solid var(--color-hairline); border-radius: var(--radius-lg); background: var(--color-surface); color: var(--color-ink); }
+.step { margin: 0 0 var(--space-1); color: var(--color-ink-2); font-size: var(--text-caption-size); font-weight: var(--text-caption-weight); letter-spacing: 0.08em; text-transform: uppercase; }
+.guide h2 { margin: 0 0 var(--space-2); font-size: var(--text-h3-size); line-height: var(--text-h3-lh); font-weight: var(--text-h3-weight); }
+.guide p { margin-block: 0 var(--space-3); max-inline-size: var(--measure-prose); color: var(--color-ink-2); }
+.guide .step { color: var(--color-ink-2); }
+.actions { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+.guide .actions button, .restart.restart button { min-block-size: var(--touch-target); padding-inline: var(--space-4); border: 1px solid var(--color-border-control); border-radius: var(--radius-md); background: transparent; color: var(--color-ink); font: inherit; font-size: var(--text-small-size); font-weight: 600; cursor: pointer; }
+.guide .actions button:hover, .restart.restart button:hover { background: var(--color-raised); }
+.guide .actions button:focus-visible, .restart.restart button:focus-visible { outline: var(--focus-ring); outline-offset: var(--focus-offset); }
+.guide .actions .skip { margin-inline-start: auto; border-color: transparent !important; text-decoration: underline; }
+.restart { margin-block-start: var(--space-3); }

@@ -6,7 +6,7 @@ export function HorizontalMotionExplanation({result,frame}:{result:NeuralPlaybac
   const stages=[
     {name:"Motion input",title:frame.input_descriptor.R !== 0 ? "Right descriptor presented" : "Pulse off",detail:`R ${frame.input_descriptor.R} / L ${frame.input_descriptor.L} horizontal_motion_eq`,state:frame.input_descriptor.R !== 0 ? "ACTIVE" : "RECOVERY"},
     {name:"HS sources",title:sourceResponse ? "Identity-resolved source response" : "Sources neutral",detail:"Six signed continuous proxies",state:sourceResponse ? "RESPONDING" : "NEUTRAL"},
-    {name:"Chemical motif",title:"Six verified feedforward routes",detail:"Structural counts are not efficacy",state:"FEEDFORWARD ONLY"},
+    {name:"Chemical motif",title:"Six integrity-checked feedforward routes",detail:"Structural counts are not efficacy",state:"FEEDFORWARD ONLY"},
     {name:"DNp15 readout",title:targetResponse ? "Bilateral continuous readout" : "Targets neutral",detail:"R 11215 / L 12069 · dnp15_state_eq",state:targetResponse ? "RESPONDING" : "NEUTRAL"},
     {name:"Diagnostic only",title:"Bilateral neural-state differential",detail:"R−L · model diagnostic only",state:"NO BODY MAPPING"},
   ];
@@ -22,7 +22,7 @@ export function HorizontalMotionExplanation({result,frame}:{result:NeuralPlaybac
       <p>{frame.bilateral_differential > 0 ? "The model currently produces a larger right DNp15 proxy state." : "The bilateral diagnostic is currently neutral."}</p>
       <p>Targets: {result.targets.map(n=>`${n.type} ${n.side} · ${n.body_id}`).join(" / ")}. Scientific time {frame.time_ms.toFixed(1)} ms.</p>
     </details>
-    <details className="scenario-details"><summary>Verified motif, model units & provenance</summary>
+    <details className="scenario-details"><summary>Integrity-checked motif, model units & provenance</summary>
       <h3>Dataset / structural authority</h3><p>{result.provenance.dataset} · {result.condition_id}. Backend numerical replay, not client simulation.</p>
       <p>Six active chemical routes; contact counts are structural evidence only. No recurrent, electrical, motor or body dynamics are added.</p>
       <ul>{result.provenance.active_routes.map(e=><li key={e.source_id}>{e.source_id} → {e.target_id} · {e.structural_count} structural contacts</li>)}</ul>

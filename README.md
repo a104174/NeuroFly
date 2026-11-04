@@ -421,10 +421,12 @@ works. No generated scientific data should be committed for this view.
 
 ## Read-only browser foundation (Phase 5A)
 
-The current HomePage (`/`) explores the verified canonical scenario catalogue,
-using the same cards and playback routes as `/scenarios`. Historical completed
-Phase 3B runs remain available at `/experiments` when a compatible flat artifact
-root is configured. An incompatible root still reports its integrity error;
+The current HomePage (`/`) is a static introduction. It states the project's scope
+and its status (not evaluated against real flies), and links to the scenarios, the
+Lab and the Science pages; it makes no API requests. The scenario catalogue and its
+playback routes are at `/scenarios`. Historical completed Phase 3B runs remain
+available at `/experiments` when a compatible flat artifact root is configured; the
+interface labels the recorded run an engineering test, not a scientific experiment. An incompatible root still reports its integrity error;
 canonical scenarios are not substituted for completed experiment artifacts.
 
 The `web/` application is a small Next.js App Router slice. It consumes the
@@ -521,3 +523,7 @@ complete visual or escape circuit. The acquired `ConnectsTo` graph represents
 chemical-connectome structure. Giant Fiber downstream biology also contains
 electrical/gap-junction contributions (including circuitry involving TTMn and
 PSI), which this snapshot neither invents nor represents.
+
+## Automated quality checks
+
+`web-quality/` holds the Playwright, axe, Lighthouse and Stylelint checks for the web redesign. It is separate from `web/` because `web/package.json` is pinned by the frozen scientific protocol. See `web-quality/README.md`.

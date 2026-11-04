@@ -72,7 +72,7 @@ export function ExploreLabView({ state, playing, error, notice, neuralEnabled, o
         {complete ? <p className="lab-completion" role="status">Exploration complete. Inspect the scene, or explore again from the beginning.</p> : null}
         <div className="lab-performance-slot">{lagging ? <span className="lab-performance" role="status" title="The fixed simulation timestep remains unchanged. The timer shows simulation time, not wall-clock time."><span aria-hidden="true">◷</span> Simulation slower than real time</span> : null}</div>
         <details className="lab-neural-details" onToggle={(event) => setNeuralExplorerOpen(event.currentTarget.open)}>
-          <summary>Inspect verified neural anatomy · 3D <span aria-hidden="true">⌄</span></summary>
+          <summary>Inspect neural anatomy · 3D <span aria-hidden="true">⌄</span></summary>
           <div className="lab-neural-details-content">
             {neuralExplorerOpen ? <NeuralActivityExplorer3D snapshot={activitySnapshot} activityError={activityError} recentSamples={recentSamples} /> : null}
           </div>

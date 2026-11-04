@@ -1,0 +1,78 @@
+/* Cockpit layers (phase 8). Overview, Detail and Raw. Tokens only; the Cockpit is pinned to dark. */
+.cockpit-shell:has(.cockpit-layered) { height: auto; min-height: 100dvh; overflow: visible; }
+.cockpit-route:has(.cockpit-layered) { height: auto; min-height: calc(100dvh - var(--toolbar-height)); overflow: visible; }
+.cockpit-layered { display: block; color: var(--color-ink); }
+.cockpit-layered .cockpit-masthead { display: flex; flex-wrap: wrap; gap: var(--space-3) var(--space-5); padding-block: var(--space-3); }
+.cockpit-layered .cockpit-masthead .eyebrow { color: var(--color-ink-2); font-size: var(--text-caption-size); letter-spacing: 0.08em; text-transform: uppercase; }
+.cockpit-layered .cockpit-masthead h1 { font-size: var(--text-h2-size); font-weight: var(--text-h2-weight); }
+.cockpit-toolbar { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-3); }
+.cockpit-replay-note { color: var(--color-ink); font-size: var(--text-small-size); font-weight: 600; }
+.cockpit-layer-switch, .cockpit-tabs { display: inline-flex; border: 1px solid var(--color-border-control); border-radius: var(--radius-md); overflow: hidden; }
+.cockpit-layer-switch button, .cockpit-tabs button, .cockpit-shortcuts-button, .cockpit-phone-note button { min-block-size: var(--button-height-md); padding-inline: var(--space-4); border: 0; background: transparent; color: var(--color-ink); font: inherit; font-size: var(--text-small-size); font-weight: 600; cursor: pointer; }
+.cockpit-shortcuts-button, .cockpit-phone-note button { border: 1px solid var(--color-border-control); border-radius: var(--radius-md); }
+.cockpit-layer-switch button[aria-pressed="true"], .cockpit-tabs button[aria-pressed="true"] { background: var(--color-accent); color: var(--color-on-accent); }
+.cockpit-layer-switch button:focus-visible, .cockpit-tabs button:focus-visible, .cockpit-shortcuts-button:focus-visible, .cockpit-phone-note button:focus-visible { outline: var(--focus-ring); outline-offset: -2px; }
+kbd { margin-inline-start: var(--space-1); padding: 0 var(--space-1); border: 1px solid currentColor; border-radius: var(--radius-sm); font-family: var(--font-mono); font-size: var(--text-caption-size); opacity: 0.85; }
+.cockpit-shortcuts { margin-block: var(--space-3); padding: var(--space-4); border: 1px solid var(--color-hairline); border-radius: var(--radius-lg); background: var(--color-surface); }
+.cockpit-shortcuts dl { display: grid; gap: var(--space-2); margin: 0; }
+.cockpit-shortcuts div { display: flex; gap: var(--space-4); }
+.cockpit-shortcuts dt { min-inline-size: 7rem; }
+.cockpit-shortcuts dd { margin: 0; color: var(--color-ink-2); }
+.cockpit-phone-note { margin: var(--space-3) 0; padding: var(--space-3) var(--space-4); border: 1px solid var(--color-hairline); border-radius: var(--radius-lg); background: var(--color-surface); color: var(--color-ink); font-size: var(--text-small-size); }
+.cockpit-phone-note button { margin-block-start: var(--space-2); }
+.cockpit-copied { margin-inline-start: var(--space-2); color: var(--color-ink-2); }
+
+/* Main area: one large view; the connectome is the small panel; Detail adds a 320 px panel. */
+.cockpit-main { display: grid; gap: var(--space-4); margin-block: var(--space-4); grid-template-columns: minmax(0, 1fr); align-items: start; }
+.cockpit-stage-column { display: grid; gap: var(--space-3); min-inline-size: 0; }
+.cockpit-side-column, .cockpit-detail-panel { min-inline-size: 0; }
+.cockpit-layered .cockpit-world { block-size: auto; border: 1px solid var(--color-hairline); border-radius: var(--radius-lg); overflow: hidden; }
+.cockpit-layered .cockpit-world-stage { block-size: clamp(280px, 52vh, 640px); flex: none; }
+[data-width="phone"] .cockpit-world-stage { block-size: auto; aspect-ratio: 4 / 5; }
+.cockpit-layered .cockpit-structure { block-size: auto; max-block-size: 640px; border: 1px solid var(--color-hairline); border-radius: var(--radius-lg); }
+.cockpit-readouts { display: grid; grid-template-columns: repeat(auto-fill, minmax(9.5rem, 1fr)); gap: var(--space-3); }
+[data-width="phone"] .cockpit-readouts { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+@media (min-width: 1024px) {
+  .cockpit-main { grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); }
+  .cockpit-main[data-detail="open"] { grid-template-columns: minmax(0, 2fr) minmax(0, 1fr) var(--panel-width); }
+}
+/* In Overview, the small connectome shows the 3D view and its heading only; controls and tables wait for Detail. */
+[data-layer="overview"] .cockpit-structure .morphology-inspector-compact > :not(.morphology-heading-row):not(.morphology-canvas-shell) { display: none; }
+[data-layer="overview"] .cockpit-structure .morphology-canvas-shell { min-block-size: 260px; }
+[data-layer="overview"] .cockpit-structure .morphology-canvas-shell canvas { min-block-size: 260px; }
+[data-layer="overview"] .cockpit-world-footer { display: none; }
+
+.cockpit-accordion { border: 1px solid var(--color-hairline); border-radius: var(--radius-lg); background: var(--color-surface); margin-block-end: var(--space-3); }
+.cockpit-accordion > summary { min-block-size: var(--touch-target); display: flex; align-items: center; padding-inline: var(--space-4); color: var(--color-ink); font-weight: 600; cursor: pointer; }
+.cockpit-accordion > summary:focus-visible { outline: var(--focus-ring); outline-offset: -2px; }
+.cockpit-accordion > :not(summary) { max-inline-size: 100%; overflow-x: auto; }
+@media (prefers-reduced-motion: no-preference) {
+  .cockpit-main > * { animation: cockpit-in var(--dur-slow) var(--ease-standard); }
+  @keyframes cockpit-in { from { opacity: 0; transform: translateX(16px); } to { opacity: 1; transform: none; } }
+}
+
+.cockpit-layered .scientific-cockpit-timeline, .cockpit-layered > [data-state] { margin-block-start: var(--space-4); }
+.cockpit-raw { margin-block-start: var(--space-5); padding: var(--space-4); border: 1px solid var(--color-hairline); border-radius: var(--radius-lg); background: var(--color-surface); }
+.cockpit-raw h2 { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-3); margin: 0 0 var(--space-3); font-size: var(--text-h3-size); }
+.cockpit-raw-scroll { overflow-x: auto; }
+.cockpit-raw table { inline-size: 100%; border-collapse: collapse; font-size: var(--text-small-size); }
+.cockpit-raw caption { text-align: start; color: var(--color-ink-2); padding-block-end: var(--space-2); }
+.cockpit-raw th, .cockpit-raw td { padding: var(--space-2) var(--space-3); border-block-end: 1px solid var(--color-hairline); text-align: start; font-weight: 400; }
+.cockpit-raw thead th { color: var(--color-ink-2); font-weight: 600; }
+.cockpit-raw td, .cockpit-raw code { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+.cockpit-raw-ids { display: grid; gap: var(--space-2); margin: var(--space-4) 0 0; }
+.cockpit-raw-ids dt { color: var(--color-ink-2); font-size: var(--text-caption-size); }
+.cockpit-raw-ids dd { margin: 0; overflow-wrap: anywhere; }
+/* Legacy rules that fail the contrast and target-size checks. */
+.cockpit-event-future time, .cockpit-event-future small { color: var(--color-ink-2); opacity: 1; }
+.cockpit-layered summary { min-block-size: 24px; }
+.cockpit-layered .morphology-compact-details > summary { display: flex; align-items: center; min-block-size: 24px; }
+.cockpit-events li.cockpit-event-future { opacity: 1; }
+.cockpit-events li.cockpit-event-future time, .cockpit-events li.cockpit-event-future small { color: var(--color-ink-2); }
+/* The legacy grid assigns named areas to these panels; the layered layout places them itself. */
+.cockpit-layered .cockpit-world, .cockpit-layered .cockpit-structure, .cockpit-layered .cockpit-run, .cockpit-layered .cockpit-selected, .cockpit-layered .cockpit-telemetry, .cockpit-layered .cockpit-events { grid-area: auto; }
+.cockpit-layered .cockpit-world, .cockpit-layered .cockpit-structure { display: block; }
+.cockpit-layered .cockpit-world-stage { position: relative; min-block-size: 280px; }
+.cockpit-layered .cockpit-panel { padding: var(--space-3); }
+/* "Expand" (panel swap) is not built yet; the buttons would do nothing, so they are hidden. */
+.cockpit-layered .cockpit-focus-button { display: none; }

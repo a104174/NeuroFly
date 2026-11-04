@@ -154,12 +154,17 @@ test("StatePanel: every state names what happened and uses the right role", () =
   const alert = (state: Parameters<typeof StatePanel>[0]) => /role="alert"/.test(html(h(StatePanel, state)));
   assert.equal(alert({ state: "api-down" }), true);
   assert.equal(alert({ state: "route-error", reference: "abc" }), true);
+  assert.equal(alert({ state: "integrity-failure" }), true);
   assert.equal(alert({ state: "empty", message: "No experiments match these filters." }), false);
   assert.equal(alert({ state: "not-found" }), false);
   assert.equal(alert({ state: "missing-data", what: "Neuron shapes" }), false);
 
   const down = html(h(StatePanel, { state: "api-down" }));
   assert.ok(down.includes(STATE_COPY.apiDown.title) && down.includes(STATE_COPY.apiDown.body.replace("'", "&#x27;")) || text(down).includes("Nothing on this page has been lost."));
+  const integrity = text(html(h(StatePanel, { state: "integrity-failure" })));
+  assert.ok(integrity.includes("The stored results failed their integrity check."));
+  assert.ok(integrity.includes("none are substituted"));
+  assert.doesNotMatch(integrity, /responding|verified/);
   const unknown = html(h(StatePanel, { state: "unknown-id", noun: "experiment", id: "abc123" }));
   assert.match(unknown, /There is no experiment with the ID <code[^>]*>abc123<\/code>\./);
   const loading = html(h(StatePanel, { state: "loading", what: "313 neuron shapes" }));

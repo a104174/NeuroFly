@@ -1,6 +1,10 @@
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
+import { register } from "node:module";
 import { test } from "node:test";
+
+// Node cannot import CSS Modules; see tests/support/css-hooks.mjs.
+register(new URL("./support/css-hooks.mjs", import.meta.url));
 
 import {
   parseMorphologyArtifactSummary,

@@ -86,7 +86,7 @@ export function EngineeringFlightArena() {
       try { p = await importFlightProgram({ schema: 'engineering_flight_program_v8_1', classification: 'ENGINEERING_ONLY_NOT_A_NEURAL_EXPERIMENT', id: newFlightId(), name: 'Imported v8 flight', source_program_id: null, trial: config, content_sha256: await flightHash(config) }); } catch { /* Preserve the wider historical v8 replay contract; authoring stays bounded to v8.1. */ }
       activeProgram.current = p; setIncoming(p); setRunLabel(p?.name ?? 'Legacy v8 replay (outside v8.1 authoring limits)'); setRunnable(true); setOutcome(flightOutcome(next, snapshot.step));
       engine.current = next; cursor.current = snapshot.step; setTrial(config); setPreset(config.presentation.preset); setFrame(snapshot); setRecordedFrames(next.frames()); setLastStep(snapshot.step); setEvents(next.events().filter(e => e.kind !== 'COMMAND')); setFullRecorded(false); setCompareReference(false); setTrajectorySource(`${p?.id ?? 'legacy'}:${p?.content_sha256 ?? 'verified'}:${++runSequence.current}`); setError(null);
-      setNotice(`Engineering inputs replayed and all telemetry verified in ${(performance.now() - start).toFixed(2)} ms. Original scientific library untouched.`);
+      setNotice(`Engineering inputs replayed and all telemetry integrity-checked in ${(performance.now() - start).toFixed(2)} ms. Original scientific library untouched.`);
     } catch (e) { setError(String(e)); }
   }
   const wings = flightWingsV8(frame.time, frame.state, Math.max(0, frame.position[1] - FLIGHT_MODEL.ground_y), preset);

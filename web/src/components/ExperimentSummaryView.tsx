@@ -70,7 +70,7 @@ function DNpPanel({ summary }: { summary: DNp01Summary }) {
         </div>
         <div>
           <dt>Peak membrane</dt>
-          <dd>{summary.peak_membrane_mv.toFixed(4)} mV</dd>
+          <dd>{summary.peak_membrane_mv.toFixed(4)} mV_eq</dd>
         </div>
         <div>
           <dt>Peak synaptic state</dt>
@@ -105,7 +105,7 @@ export function ExperimentSummaryView({ summary }: { summary: ExperimentSummary 
         <div className="validation-flag">
           <span className="status-dot" aria-hidden="true" />
           <span>
-            <strong>Empirical validation</strong>
+            <strong>Evaluation</strong>
             <small>{summary.validation_status.replaceAll("_", " ")}</small>
           </span>
         </div>

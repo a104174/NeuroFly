@@ -1,0 +1,22 @@
+/* Glue for pages that have migrated to the tokens. A migrated page renders inside an element with
+ * data-themed-page; this lets the document behind it (overscroll, scrollbars, native controls)
+ * follow the theme instead of the legacy dark body. It is removed with the legacy CSS in phase 9. */
+html:has([data-themed-page]),
+body:has([data-themed-page]) {
+  background: var(--color-canvas);
+  color: var(--color-ink);
+}
+html:has([data-themed-page]) { color-scheme: dark; }
+@media (prefers-color-scheme: light) {
+  html:not([data-theme="dark"]):has([data-themed-page]) { color-scheme: light; }
+}
+html[data-theme="light"]:has([data-themed-page]) { color-scheme: light; }
+
+[data-themed-page] {
+  min-block-size: 100vh;
+  background: var(--color-canvas);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  font-size: var(--text-body-size);
+  line-height: var(--text-body-lh);
+}

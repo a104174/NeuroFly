@@ -4,28 +4,36 @@ import test from "node:test";
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 
-import HomePage, { metadata } from "../src/app/page";
-import Loading from "../src/app/loading";
-import ExperimentsPage from "../src/app/experiments/page";
-import ScenariosPage, { dynamic as catalogueDynamic } from "../src/app/scenarios/page";
+import { register } from "node:module";
+// Node cannot import CSS Modules. Register the test-only hook before the components load, so the
+// imports that reach CSS are dynamic. (package.json is frozen, so this cannot be an npm script.)
+register(new URL("./support/css-hooks.mjs", import.meta.url));
+const { default: HomePage, metadata } = await import("../src/app/page");
+const { default: Loading } = await import("../src/app/morphology/(list)/loading");
+const { default: ExperimentsPage } = await import("../src/app/experiments/(list)/page");
+const { default: ScenariosPage, dynamic: catalogueDynamic } = await import("../src/app/scenarios/(list)/page");
 import { listExperiments, NeuroflyApiError } from "../src/lib/neuroflyClient";
 import { listScenarios } from "../src/lib/scenarioCatalog";
 import { parseScenarioCatalog, SCENARIO_KINDS } from "../src/lib/scenarioPlayback";
-import { experimentMetadata } from "../src/lib/scenarioPresentation";
+import { discoveryCopy, experimentMetadata } from "../src/lib/scenarioPresentation";
 import { existsSync, readdirSync } from "node:fs";
 import { LAB_HREF, SITE_LINKS } from "../src/components/site/siteContent";
+const { SiteHeader } = await import("../src/components/site/SiteChrome");
 
-test("product homepage renders one H1, meaningful sections and the genuine laboratory CTA without fetching scientific data", async () => {
+test("product homepage renders one H1, the owner's headline and statement, and a genuine path to the scenarios, without fetching scientific data", async () => {
   await withFetch(async () => { throw new Error("Homepage must be independent of the scientific API"); }, async calls => {
     const markup = renderToStaticMarkup(createElement(HomePage));
     assert.equal((markup.match(/<h1\b/g) ?? []).length, 1);
-    assert.match(markup, /A digital fly\./);
-    assert.match(markup, /explore behaviour\./);
-    assert.match(markup, /href="\/visual-lab\/arena"[^>]*>Enter the Lab/);
-    for (const id of ["main-content", "about", "explore", "science"]) assert.ok(markup.includes(`id="${id}"`));
-    for (const term of ["Environment", "Neural model", "Behaviour", "Replay. Compare.", "Launch the Laboratory", "Enter NeuroFly Lab"]) assert.ok(markup.includes(term));
+    assert.match(markup, /<h1[^>]*>Selected fruit fly circuits, modelled from the connectome\.<\/h1>/);
+    assert.match(markup, /NeuroFly is a research model of selected fruit fly neural circuits, built from the MaleCNS connectome and connected to a simplified simulated body\./);
+    assert.match(markup, /Research project/);
+    // The primary action opens one recorded run, ready to play with no setup.
+    assert.match(markup, /href="\/scenarios\/LOOMING_CIRCUIT_VALIDATION\?replay=canonical"[^>]*>Watch the looming scenario/);
+    assert.match(markup, /href="\/science\/status"[^>]*>How much of this is real\?/);
+    assert.match(markup, /href="\/visual-lab"[^>]*>Explore the Lab/);
     assert.match(markup, /<main id="main-content" tabindex="-1"/);
-    assert.match(markup, /<noscript><style>/);
+    // The root loading screen is gone, so Home needs no no-JavaScript reveal.
+    assert.doesNotMatch(markup, /<noscript>/);
     assert.deepEqual(calls, []);
     assert.doesNotMatch(markup, /<canvas|<iframe|<video/);
     assert.equal((markup.match(/class="neurofly-logo"/g) ?? []).length, 2);
@@ -34,29 +42,59 @@ test("product homepage renders one H1, meaningful sections and the genuine labor
   });
 });
 
+test("the status strip states scope and status as real text, with the owner's wording and no summed count", () => {
+  const markup = renderToStaticMarkup(createElement(HomePage));
+  const strip = markup.match(/<section class="strip" aria-label="Scope and status">[\s\S]*?<\/section>/)![0];
+  assert.equal((strip.match(/<li\b/g) ?? []).length, 4);
+  for (const fact of ["Two selected circuits: looming (313 bodies) and HS → DNp15 (8 bodies). Not a whole brain.", "Wiring from MaleCNS v1.0", "Kinematic body, no muscle or wing physics", "Not yet evaluated against real flies"]) assert.ok(strip.includes(fact), fact);
+  assert.doesNotMatch(strip, /\b321\b/);
+  // Each fact carries its kind as a named glyph, so the kind does not depend on colour.
+  for (const kind of ["Structural", "Model assumption", "Not evaluated"]) assert.ok(strip.includes(`aria-label="${kind}"`), kind);
+  // The strip comes directly after the hero.
+  assert.ok(markup.indexOf('aria-labelledby="home-title"') < markup.indexOf('aria-label="Scope and status"'));
+  assert.ok(markup.indexOf('aria-label="Scope and status"') < markup.indexOf('id="layers-title"'));
+});
+
+test("the hero poster is the eager, high-priority image and is described as an artistic model", () => {
+  const markup = renderToStaticMarkup(createElement(HomePage));
+  const poster = markup.match(/<img[^>]*src="\/assets\/site\/fly-specimen.webp"[^>]*>/)![0];
+  assert.match(poster, /fetchPriority="high"/);
+  assert.match(poster, /loading="eager"/);
+  assert.match(poster, /width="1500" height="1400"/);
+  assert.match(poster, /alt="Three-quarter render[^"]*not a reconstruction of the connectome\."/);
+  assert.match(markup, /artistic 3D asset, not anatomy reconstructed from MaleCNS/);
+  for (const file of ["fly-specimen.webp", "fly-specimen-small.webp"]) assert.ok(existsSync(new URL(`../public/assets/site/${file}`, import.meta.url)), file);
+});
+
 test("public links resolve to preserved routes or existing homepage anchors", () => {
-  assert.equal(LAB_HREF, "/visual-lab/arena");
+  assert.equal(LAB_HREF, "/visual-lab");
   const markup = renderToStaticMarkup(createElement(HomePage));
   // React may emit image preload links; this checks navigation anchors only.
   for (const [, href] of markup.matchAll(/<a\b[^>]*href="([^"?#]*)(?:#([^"]*))?"/g)) {
     if (!href.startsWith("/") && href !== "") continue;
-    const route = href || "/";
-    assert.ok(existsSync(new URL(`../src/app${route === "/" ? "" : route}/page.tsx`, import.meta.url)), href);
+    const route = href.startsWith("/scenarios/") ? "/scenarios/[scenarioId]" : href || "/";
+    const base = `../src/app${route === "/" ? "" : route}`;
+    assert.ok(existsSync(new URL(`${base}/page.tsx`, import.meta.url)) || existsSync(new URL(`${base}/(list)/page.tsx`, import.meta.url)), href);
   }
   for (const [, id] of markup.matchAll(/href="(?:\/)?#([^"]+)"/g)) assert.ok(markup.includes(`id="${id}"`));
-  assert.deepEqual(SITE_LINKS.map(link => link.label), ["Home", "Lab", "Experiments", "Science"]);
+  // Phase 0 decision 5: Home is the logo, and Experiments leaves the main navigation.
+  assert.deepEqual(SITE_LINKS.map(link => link.label), ["Scenarios", "Neurons", "Lab", "Science"]);
 });
 
-test("authentic static laboratory capture is accessible and links to the existing laboratory", () => {
+test("authentic static laboratory capture is accessible, labelled as running in the browser, and links to the existing laboratory", () => {
   const markup = renderToStaticMarkup(createElement(HomePage));
-  const card = markup.match(/<a[^>]*class="nf-feature-card nf-feature-main"[^>]*>([\s\S]*?)<\/a>/)?.[0];
+  const card = markup.match(/<li class="card"><p class="cardKind">Lab<\/p>[\s\S]*?<\/li>/)?.[0];
   assert.ok(card);
-  assert.match(card, /href="\/visual-lab\/arena"/);
+  assert.match(card, /href="\/visual-lab"/);
   assert.match(card, /src="\/assets\/site\/neurofly-lab-preview.webp"/);
   assert.match(card, /width="1294" height="718" loading="lazy"/);
   assert.match(card, /alt="Screenshot of the NeuroFly 3D laboratory/);
   assert.match(card, /Actual Lab viewport/);
-  assert.match(card, /Static capture/);
+  assert.match(card, /static capture/);
+  // Owner decision 2: the Lab says it runs in the browser, and is never called Replay.
+  assert.match(card, /Runs in your browser/);
+  assert.match(card, /no muscle or wing physics/);
+  assert.doesNotMatch(card, /replay/i);
   assert.doesNotMatch(markup, /nf-room-diagram|nf-room-cube/);
   const image = readFileSync(new URL("../public/assets/site/neurofly-lab-preview.webp", import.meta.url));
   assert.equal(image.subarray(8, 12).toString(), "WEBP");
@@ -65,28 +103,57 @@ test("authentic static laboratory capture is accessible and links to the existin
 
 test("mobile navigation is a native keyboard disclosure and critical links are present in server HTML", () => {
   const markup = renderToStaticMarkup(createElement(HomePage));
-  assert.match(markup, /<details class="nf-mobile-menu"><summary>/);
+  assert.match(markup, /<details class="menu"><summary class="menuButton">/);
   assert.match(markup, /aria-label="Mobile primary navigation"/);
   assert.match(markup, /Skip to content/);
-  assert.match(markup, /aria-current="page"/);
+  // Home is the logo, so no primary item is current there; a section page marks exactly its own item.
+  assert.doesNotMatch(markup, /aria-current="page"/);
+  const scenarios = renderToStaticMarkup(createElement(SiteHeader, { current: "/scenarios/LOOMING_CIRCUIT_VALIDATION" }));
+  assert.equal((scenarios.match(/aria-current="page"/g) ?? []).length, 2, "one desktop link and one mobile link");
+  assert.match(scenarios, /aria-current="page"[^>]*href="\/scenarios"|href="\/scenarios"[^>]*aria-current="page"/);
+  const experiments = renderToStaticMarkup(createElement(SiteHeader, { current: "/experiments/abc" }));
+  assert.doesNotMatch(experiments, /aria-current="page"/, "Experiments is not a primary item");
   assert.doesNotMatch(markup, /role="menu"|tabindex="[1-9]/);
 });
 
-test("scientific copy distinguishes selected connectivity, modelling and artistic presentation", () => {
+test("scientific copy distinguishes wiring, modelling and output, and keeps every disclosure visible", () => {
   const markup = renderToStaticMarkup(createElement(HomePage));
-  for (const phrase of ["MaleCNS", "selected circuits", "not physiological calibration", "not a whole-fly physiological emulation", "artistic 3D asset", "engineering projection"]) assert.ok(markup.includes(phrase), phrase);
-  assert.doesNotMatch(markup, /conscious digital|complete digital brain|biologically exact|all 166,000|living fly emulation|real biological learning/i);
+  const body = markup.replace(/<style[\s\S]*?<\/style>/g, " ").replace(/<[^>]+>/g, " ").replace(/&#x27;/g, "'").replace(/\s+/g, " ");
+  for (const phrase of ["MaleCNS", "Two selected circuits", "Not a whole brain", "Not yet evaluated against real flies", "artistic 3D asset", "no muscle or wing physics", "Three layers, kept apart", "chosen for the model, and some follow published models", "not a measurement from a fly", "wiring, not signal strength"]) assert.ok(body.includes(phrase), phrase);
+  // The three layers carry their kinds as labelled badges.
+  const layers = markup.match(/<ol class="layers">[\s\S]*?<\/ol>/)![0];
+  for (const kind of ["structural", "model-assumption", "model-state"]) assert.ok(layers.includes(`data-kind="${kind}"`), kind);
+  // Retired and overclaiming wording stays out of the interface.
+  assert.doesNotMatch(body, /digital (organism|fly)|conscious digital|complete digital brain|biologically exact|bio-?accurate|all 166,000|living fly emulation|real biological learning|\bverified\b|\bvalidation\b/i);
+  assert.doesNotMatch(body, /(?:^|[\s(])(?:m|µ)V(?![\w_])|\bHz\b|firing rate/);
   assert.match(markup, /creativecommons.org\/licenses\/by\/4.0/);
   assert.match(markup, /mlykouretzos/);
-  assert.match(String(metadata.title), /NeuroFly/);
-  assert.ok(metadata.description && metadata.openGraph);
+});
+
+test("the gallery lists three canonical scenarios and the Lab, each with one stretched link and real durations", () => {
+  const markup = renderToStaticMarkup(createElement(HomePage));
+  const gallery = markup.match(/<ul class="gallery">[\s\S]*?<\/ul>/)![0];
+  assert.equal((gallery.match(/<li class="card">/g) ?? []).length, 4);
+  assert.equal((gallery.match(/<a\b/g) ?? []).length, 4, "one link per card");
+  for (const id of ["LOOMING_CIRCUIT_VALIDATION", "HORIZONTAL_MOTION_NEURAL_VALIDATION", "EXPLORATORY_COURSE_CONTROL"] as const) {
+    assert.ok(gallery.includes(`href="/scenarios/${id}"`), id);
+    assert.ok(gallery.includes(experimentMetadata[id].duration), id);
+    assert.ok(SCENARIO_KINDS.some(kind => kind === id), id);
+  }
+  assert.doesNotMatch(gallery, /Neural-only validation/);
 });
 
 test("homepage import tree stays within presentation; no neural or WebGL engine and no speculative route prefetch", () => {
   const paths = [new URL("../src/app/page.tsx", import.meta.url), ...readdirSync(new URL("../src/components/site", import.meta.url)).map(file => new URL(`../src/components/site/${file}`, import.meta.url))];
   for (const path of paths) {
     const code = readFileSync(path, "utf8");
-    assert.doesNotMatch(code, /from ["'][^"']*(?:lib\/|three|react-three|FlyViewer|ArenaCourseViewer)|requestAnimationFrame|setInterval|useEffect|fetch\(/);
+    // Engines, WebGL, animation loops, data fetching and unprefetched links stay forbidden everywhere.
+    // Only the shared chrome may use useEffect (menu focus, route focus) and the tiny theme helper.
+    // Allowed under lib/: the theme helper and scenarioPresentation (display data only), plus type-only imports.
+    const runtime = code.replace(/^import type .*$/gm, "");
+    assert.doesNotMatch(runtime, /from ["'][^"']*(?:lib\/(?!(?:theme|scenarioPresentation)["'])|three|react-three|FlyViewer|ArenaCourseViewer)|requestAnimationFrame|setInterval|fetch\(/);
+    const mayUseEffect = ["SiteNavigation.tsx", "RouteFocus.tsx"].some(name => path.pathname.endsWith(`/site/${name}`));
+    if (!mayUseEffect) assert.doesNotMatch(code, /useEffect/);
     for (const tag of code.matchAll(/<Link\s[^>]+>/g)) assert.match(tag[0], /prefetch=\{false\}/);
   }
   const asset = readFileSync(new URL("../public/assets/site/fly-specimen.webp", import.meta.url));
@@ -124,7 +191,7 @@ const json = (payload: unknown, status = 200) => async () => new Response(
 );
 
 function noCards(markup: string) {
-  assert.doesNotMatch(markup, /class="discovery-card discovery-card--|Canonical replay available/);
+  assert.doesNotMatch(markup, /data-scenario-id=|Showing \d+ of \d+ scenarios/);
 }
 
 test("preserved catalogue route requests the genuine catalogue contract and renders five accessible scenario links", async () => {
@@ -135,16 +202,18 @@ test("preserved catalogue route requests the genuine catalogue contract and rend
     assert.equal(catalogueDynamic, "force-dynamic");
     assert.deepEqual(calls.map(c => c.url), ["https://preview.test/api/v1/scenarios"]);
     assert.equal(calls[0].options?.cache, "no-store");
-    assert.match(markup, /Explore the/);
-    assert.match(markup, /Look beneath the behaviour/);
-    assert.equal((markup.match(/class="discovery-card discovery-card--/g) ?? []).length, 5);
+    assert.match(markup, /<h1[^>]*>Scenarios<\/h1>/);
+    assert.match(markup, /A scenario is a defined situation/);
+    assert.equal((markup.match(/data-scenario-id="/g) ?? []).length, 5);
     for (const scenario of payload) {
       assert.ok(markup.includes(`href="/scenarios/${scenario.id}"`));
-      assert.ok(markup.includes(`aria-label="Open ${scenario.title}"`));
+      // One clear accessible name per card: the title is the single stretched link.
+      assert.match(markup, new RegExp(`<a[^>]*href="/scenarios/${scenario.id}"[^>]*>${discoveryCopy[scenario.id].title}</a>`));
       assert.ok(markup.includes(scenario.title));
       assert.ok(markup.includes(experimentMetadata[scenario.id].kind));
     }
-    assert.match(markup, /href="\/experiments"/);
+    // Owner decision: Experiments is linked from Scenarios, under the owner's label.
+    assert.match(markup, /<p class="note">[\s\S]*href="\/experiments"[^>]*>Engineering test, not a scientific experiment<\/a>/);
     assert.doesNotMatch(markup, /href="\/experiments\/[a-f0-9]{64}"|Completed experiments/);
     assert.deepEqual(payload, fixture());
   });
@@ -163,7 +232,8 @@ test("empty catalogue is explicit absence, never a valid fabricated canonical se
   assert.throws(() => parseScenarioCatalog([]));
   await withFetch(json([]), async () => {
     const markup = renderToStaticMarkup(await ScenariosPage());
-    assert.match(markup, /Scenarios could not load/);
+    assert.match(markup, /The data service isn&#x27;t responding\./);
+    assert.match(markup, /Technical details/);
     assert.match(markup, /role="alert"/);
     noCards(markup);
   });
@@ -179,7 +249,8 @@ for (const [label, payload] of [
     await withFetch(json(payload), async () => {
       const markup = renderToStaticMarkup(await ScenariosPage());
       assert.match(markup, /role="alert"/);
-      assert.match(markup, /Scenarios could not load/);
+      assert.match(markup, /The data service isn&#x27;t responding\./);
+    assert.match(markup, /Technical details/);
       noCards(markup);
     });
   });
@@ -193,7 +264,7 @@ test("scenario HTTP failure and unreachable backend render visible errors withou
   ]) {
     await withFetch(response, async (calls) => {
       const markup = renderToStaticMarkup(await ScenariosPage());
-      assert.match(markup, /SCENARIO API UNAVAILABLE/);
+      assert.match(markup, /The data service isn&#x27;t responding\./);
       assert.match(markup, /role="alert"/);
       noCards(markup);
       assert.deepEqual(calls.map(c => c.url), ["https://preview.test/api/v1/scenarios"]);
@@ -206,8 +277,8 @@ test("recorded experiment page preserves the 409 integrity failure without repla
     await assert.rejects(listExperiments(), (error: unknown) =>
       error instanceof NeuroflyApiError && error.code === "artifact_integrity_failure" && error.status === 409);
     const markup = renderToStaticMarkup(await ExperimentsPage());
-    assert.match(markup, /Recorded experiments are temporarily unavailable/);
-    assert.match(markup, /The current experiment archive could not be verified/);
+    assert.match(markup, /The stored results failed their integrity check\./);
+    assert.match(markup, /No results are shown, and none are substituted/);
     assert.match(markup, /Technical details/);
     assert.match(markup, /failed integrity validation/);
     assert.match(markup, /role="alert"/);
@@ -219,9 +290,9 @@ test("recorded experiment page preserves the 409 integrity failure without repla
 test("scenarios page preserves its established presentation and shared navigation", async () => {
   await withFetch(json(fixture()), async (calls) => {
     const markup = renderToStaticMarkup(await ScenariosPage());
-    assert.match(markup, /Explore the/);
-    assert.match(markup, /Look beneath the behaviour/);
-    assert.equal((markup.match(/class="discovery-card discovery-card--/g) ?? []).length, 5);
+    assert.match(markup, /<h1[^>]*>Scenarios<\/h1>/);
+    assert.match(markup, /A scenario is a defined situation/);
+    assert.equal((markup.match(/data-scenario-id="/g) ?? []).length, 5);
     assert.deepEqual(calls.map(c => c.url), ["https://preview.test/api/v1/scenarios"]);
     assert.equal((await listScenarios()).length, 5);
   });
@@ -230,23 +301,29 @@ test("scenarios page preserves its established presentation and shared navigatio
 test("scenarios page still rejects empty canonical data as an error", async () => {
   await withFetch(json([]), async () => {
     const markup = renderToStaticMarkup(await ScenariosPage());
-    assert.match(markup, /Scenarios could not load/);
+    assert.match(markup, /The data service isn&#x27;t responding\./);
+    assert.match(markup, /Technical details/);
     assert.match(markup, /role="alert"/);
     noCards(markup);
   });
 });
 
 test("loading remains accessible and legacy detail/cockpit functionality remains available", () => {
+  // The fallback belongs to the routes that load data (Neurons). A root fallback would wrap every page,
+  // including the static Home, and delay its first paint behind a "Loading scientific data" screen.
+  assert.equal(existsSync(new URL("../src/app/loading.tsx", import.meta.url)), false);
+  for (const route of ["morphology/(list)", "scenarios/(list)", "experiments/(list)", "experiments/[artifactId]", "scenarios/[scenarioId]"]) assert.ok(existsSync(new URL(`../src/app/${route}/loading.tsx`, import.meta.url)), route);
+  // An unknown ID is decided in a layout above the loading screen, so it is a real 404 and not a 200.
+  for (const route of ["experiments/[artifactId]", "scenarios/[scenarioId]"]) assert.ok(existsSync(new URL(`../src/app/${route}/layout.tsx`, import.meta.url)), route);
   const markup = renderToStaticMarkup(createElement(Loading));
   assert.match(markup, /role="status"/);
-  assert.match(markup, /aria-live="polite"/);
   assert.match(markup, /aria-busy="true"/);
-  assert.match(markup, /Loading scientific data/);
+  assert.match(markup, /Loading neuron shapes/);
   noCards(markup);
   const source = (file: string) => readFileSync(new URL(`../src/${file}`, import.meta.url), "utf8");
   assert.doesNotMatch(source("app/page.tsx"), /listExperiments|ExperimentList/);
-  assert.match(source("app/experiments/page.tsx"), /listExperiments|ExperimentList/);
-  assert.match(source("components/ExperimentList.tsx"), /\/experiments\/\$\{experiment.artifact_id\}\/cockpit/);
+  assert.match(source("app/experiments/(list)/page.tsx"), /listExperiments|ExperimentList/);
+  assert.match(source("app/experiments/(list)/page.tsx"), /\/experiments\/\$\{e.artifact_id\}\/cockpit/);
   assert.ok(source("app/experiments/[artifactId]/page.tsx"));
   assert.ok(source("app/experiments/[artifactId]/cockpit/page.tsx"));
 });

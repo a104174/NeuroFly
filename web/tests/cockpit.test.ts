@@ -573,8 +573,9 @@ test("cockpit keeps one transport and scopes layout styling away from standalone
   const telemetry = readFileSync(new URL("../src/components/CockpitTelemetry.tsx", import.meta.url), "utf8");
   const css = readFileSync(new URL("../src/app/cockpit.css", import.meta.url), "utf8");
   assert.equal(cockpit.match(/useExperimentPlayback\(timeline\)/g)?.length, 1);
-  assert.equal(cockpit.match(/Canonical experiment playback controls/g)?.length, 1);
-  assert.match(cockpit, /data-focus=\{focusedPanel \?\? "none"\}/);
+  // One shared clock drives one Timeline; world, connectome, readouts and events all read the same frame.
+  assert.equal(cockpit.match(/<Timeline\b/g)?.length, 1);
+  assert.match(cockpit, /data-layer=\{layer\}/);
   assert.match(cockpit, /playback\.play/);
   assert.match(cockpit, /playback\.pause/);
   assert.match(cockpit, /playback\.reset/);
@@ -585,8 +586,11 @@ test("cockpit keeps one transport and scopes layout styling away from standalone
   assert.match(telemetry, /timeline\.lc4_drive_mveq/);
   assert.match(telemetry, /timeline\.lplc2_drive_mveq/);
   assert.match(telemetry, /selectedTelemetry\.membrane_mv/);
-  assert.match(css, /\.cockpit-shell \.app-header/);
+  // The Cockpit uses the 48 px tool header; its layout derives from the toolbar token, not a magic number.
+  const cockpitPage = readFileSync(new URL("../src/app/experiments/[artifactId]/cockpit/page.tsx", import.meta.url), "utf8");
+  assert.match(cockpitPage, /<SiteHeader tone="dark" variant="tool"/);
+  assert.match(css, /calc\(100dvh - var\(--toolbar-height\)\)/);
   assert.match(css, /\.cockpit-grid\[data-focus="connectome"\]/);
-  assert.doesNotMatch(css, /^\s*\.app-header\s*\{/m);
+  assert.doesNotMatch(css, /\.app-header/);
   assert.doesNotMatch(css, /^\s*\.morphology-inspector\s*\{/m);
 });

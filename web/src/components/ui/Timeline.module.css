@@ -1,0 +1,18 @@
+.timeline { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-3) var(--space-4); min-block-size: var(--timeline-height); padding: var(--space-3) var(--panel-padding); border: 1px solid var(--color-hairline); border-radius: var(--radius-lg); background: var(--color-surface); color: var(--color-ink); }
+.play { min-inline-size: 5rem; min-block-size: var(--button-height-md); padding-inline: var(--space-4); border: 0; border-radius: var(--radius-md); background: var(--color-accent); color: var(--color-on-accent); font: inherit; font-size: var(--text-small-size); font-weight: 600; cursor: pointer; }
+.play:active { transform: scale(0.98); }
+.play:focus-visible, .rate select:focus-visible, .marker:focus-visible { outline: var(--focus-ring); outline-offset: var(--focus-offset); }
+.trackWrap { position: relative; flex: 1 1 14rem; min-inline-size: 10rem; }
+.track { position: relative; block-size: 24px; cursor: pointer; touch-action: none; border-radius: var(--radius-sm); }
+.track:focus-visible { outline: var(--focus-ring); outline-offset: var(--focus-offset); }
+.rail, .fill { position: absolute; inset-block-start: 10px; block-size: 4px; border-radius: var(--radius-full); }
+.rail { inset-inline: 0; background: var(--color-hairline); }
+.fill { inset-inline-start: 0; background: var(--color-accent); }
+.thumb { position: absolute; inset-block-start: 4px; inline-size: 16px; block-size: 16px; margin-inline-start: -8px; border-radius: var(--radius-full); background: var(--color-accent); border: 2px solid var(--color-surface); }
+.markers { position: relative; block-size: 24px; }
+.marker { position: absolute; inset-block-start: 0; inline-size: 24px; block-size: 24px; margin-inline-start: -12px; padding: 0; border: 0; background: transparent; cursor: pointer; }
+.marker::before { content: ""; position: absolute; inset-block: 4px; inset-inline-start: 11px; inline-size: 2px; background: var(--color-ink-2); }
+.time { font-family: var(--font-mono); font-size: var(--text-readout-size); font-variant-numeric: tabular-nums; min-inline-size: 11ch; }
+.rate { display: flex; align-items: center; gap: var(--space-2); color: var(--color-ink-2); font-size: var(--text-small-size); }
+.rate select { min-block-size: var(--button-height-md); padding-inline: var(--space-2); border: 1px solid var(--color-border-control); border-radius: var(--radius-sm); background: var(--color-surface); color: var(--color-ink); font: inherit; }
+.empty { margin: 0; color: var(--color-ink-2); }

@@ -1,6 +1,9 @@
 "use client";
 
 import { Canvas, useThree } from "@react-three/fiber";
+import { Viewport3D } from "@/components/ui/Viewport3D";
+import { KindBadge } from "@/components/ui/KindBadge";
+import { MALECNS_RELEASE } from "@/content/science-copy";
 import {
   memo,
   useEffect,
@@ -196,6 +199,21 @@ const StructuralConnectivityLines = memo(function StructuralConnectivityLines({
   ));
 });
 
+type CaptureFn = () => string | null;
+
+/** Registers a function that draws the current frame to a PNG data URL. */
+function CaptureBridge({ captureRef }: { captureRef: { current: CaptureFn | null } }) {
+  const { gl, scene, camera } = useThree();
+  useEffect(() => {
+    captureRef.current = () => {
+      gl.render(scene, camera); // Render now so the drawing buffer is still readable.
+      return gl.domElement.toDataURL("image/png");
+    };
+    return () => { captureRef.current = null; };
+  }, [captureRef, gl, scene, camera]);
+  return null;
+}
+
 function MorphologyScene({
   bodies,
   transform,
@@ -208,7 +226,9 @@ function MorphologyScene({
   connectors,
   activityByBodyId,
   showSimulatedState,
+  capture,
 }: {
+  capture: { current: CaptureFn | null };
   bodies: readonly MorphologyBody[];
   transform: MorphologyViewTransform;
   visibility: Readonly<Record<MorphologyBodyId, boolean>>;
@@ -244,6 +264,7 @@ function MorphologyScene({
       )}
       {showConnectivity ? <StructuralConnectivityLines connectors={connectors} /> : null}
       <CameraControls focusRequest={focusRequest} transform={transform} onFocused={onFocused} />
+      <CaptureBridge captureRef={capture} />
     </>
   );
 }
@@ -314,6 +335,8 @@ export const MorphologyInspector = memo(function MorphologyInspector({
     getServerMorphologyWebGLCapability,
   );
   const webglView = selectMorphologyWebGLView(webglCapability);
+  const capture = useRef<CaptureFn | null>(null);
+  const [shotNote, setShotNote] = useState("");
   const webglAvailable = webglCapability === "available";
   const selectedBody = bodies.find((body) => body.body_id === selection.bodyId) ?? null;
   const selectedComponent = selectedBody?.components.find(
@@ -332,6 +355,40 @@ export const MorphologyInspector = memo(function MorphologyInspector({
     : connectivity?.edges.filter((edge) =>
       edge.pre_body_id === selectedBody.body_id || edge.post_body_id === selectedBody.body_id,
     ) ?? [];
+
+  function saveImage() {
+    const url = capture.current?.();
+    if (!url) { setShotNote("The image could not be captured."); return; }
+    const image = new Image();
+    image.onload = () => {
+      const lines = [
+        "NeuroFly. Reconstructed shapes of real neurons (Structural), not a simulation.",
+        `Source: ${MALECNS_RELEASE}. Artifact ${artifact.artifact_id}.`,
+        "Raw source skeletons in native voxel axes. Camera, colours and scale are presentation only.",
+      ];
+      const pad = 12, line = 18;
+      const out = document.createElement("canvas");
+      out.width = image.width; out.height = image.height + pad * 2 + line * lines.length;
+      const ctx = out.getContext("2d");
+      if (!ctx) { setShotNote("The image could not be captured."); return; }
+      ctx.fillStyle = "#0a0c0d"; ctx.fillRect(0, 0, out.width, out.height);
+      ctx.drawImage(image, 0, 0);
+      ctx.fillStyle = "#f2f4f4"; ctx.font = "13px sans-serif";
+      lines.forEach((text, i) => ctx.fillText(text, pad, image.height + pad + line * (i + 1) - 4));
+      const link = document.createElement("a");
+      link.download = `neurofly-neurons-${artifact.artifact_id.slice(0, 8)}.png`;
+      link.href = out.toDataURL("image/png");
+      link.click();
+      setShotNote("Image saved with its provenance text.");
+    };
+    image.src = url;
+  }
+
+  function isolate(bodyId: MorphologyBodyId | null) {
+    setVisibility((current) => Object.fromEntries(
+      (Object.keys(current) as unknown as MorphologyBodyId[]).map((id) => [id, bodyId === null || Number(id) === bodyId]),
+    ) as Record<MorphologyBodyId, boolean>);
+  }
 
   function requestFocus(kind: FocusRequest["kind"], bounds: MorphologyBounds | null) {
     setFocusRequest((current) => ({ token: current.token + 1, kind, bounds }));
@@ -385,16 +442,13 @@ export const MorphologyInspector = memo(function MorphologyInspector({
         <div>
           <p className="eyebrow">MALECNS RAW MORPHOLOGY / BOUNDED SAMPLE</p>
           {compact ? <h2 id="morphology-heading">Connectome / neural structure</h2> :
-            <h1 id="morphology-heading">MaleCNS morphology inspection</h1>}
-          {!compact ? <p>
-            {bodies.length} source skeletons in one shared native-frame view. This
-            is separate from experiment playback and is not aligned to the fly
-            visual asset.
-          </p> : null}
+            <h2 id="morphology-heading">Shapes and source data</h2>}
+          {!compact ? <p className="morphology-intro"><KindBadge kind="structural" /> {bodies.length} source skeletons share one native-frame view. It is separate from experiment playback and is not aligned to the fly visual asset.</p> : null}
         </div>
         <span className="morphology-mode">RAW · heal=False</span>
       </div>
 
+{compact ? (
       <div className="morphology-canvas-shell">
         {webglView === "placeholder" ? (
           <div className="morphology-webgl-pending" role="status">
@@ -409,9 +463,11 @@ export const MorphologyInspector = memo(function MorphologyInspector({
           <Canvas
             camera={{ position: [8.5, 6.5, 10.5], fov: 42, near: 0.01, far: 100 }}
             frameloop="demand"
+            role="img"
             aria-label="Raw MaleCNS skeleton morphology view"
           >
             <MorphologyScene
+              capture={capture}
               bodies={bodies}
               transform={transform}
               visibility={visibility}
@@ -436,6 +492,53 @@ export const MorphologyInspector = memo(function MorphologyInspector({
           ))}
         </div>
       </div>
+      ) : (
+      <Viewport3D
+        title="Reconstructed neuron shapes"
+        kind="structural"
+        aspect="16 / 10"
+        description={`${bodies.length} source skeletons of real neurons in one shared native-frame view. Orbit with the mouse or touch. Body details are listed below.`}
+        legend={<div className="morphology-legend" aria-label="Body color key">
+          {bodies.map((body) => (
+            <span key={body.body_id}>
+              <i style={{ backgroundColor: BODY_COLORS[body.body_id] }} />
+              {body.neuron_type} {body.body_id} · source side {body.source_side}
+              {body.component_count > 1 ? ` · ${body.component_count} components` : ""}
+            </span>
+          ))}
+        </div>}
+        controls={<>
+          <button type="button" className="morphology-stage-button" onClick={() => requestFocus("global", null)}>Reset view</button>
+          <button type="button" className="morphology-stage-button" onClick={saveImage}>Save image</button>
+        </>}
+      >
+        {({ visible, dpr }) => (
+          <Canvas
+            camera={{ position: [8.5, 6.5, 10.5], fov: 42, near: 0.01, far: 100 }}
+            frameloop={visible ? "demand" : "never"}
+            dpr={dpr}
+            role="img"
+            aria-label="Raw MaleCNS skeleton morphology view"
+          >
+            <MorphologyScene
+              capture={capture}
+              bodies={bodies}
+              transform={transform}
+              visibility={visibility}
+              showReference={showReference}
+              selection={selection}
+              focusRequest={focusRequest}
+              onFocused={setFocusKind}
+              showConnectivity={showConnectivity}
+              connectors={connectors}
+              activityByBodyId={compact ? activityByBodyId : {}}
+              showSimulatedState={compact && showSimulatedState}
+            />
+          </Canvas>
+        )}
+      </Viewport3D>
+      )}
+      <p className="morphology-shot-note" role="status">{shotNote}</p>
 
       {compact && activity ? <section className="morphology-activity" aria-label="Experiment state mapped to source structure">
         <div className="morphology-activity-legend">
@@ -462,7 +565,7 @@ export const MorphologyInspector = memo(function MorphologyInspector({
             return <div key={bodyId}>
               <span>DNp01 BODY {bodyId} · node_index {body?.node_index ?? "unavailable"} · source side {body?.source_side ?? "unavailable"}</span>
               {state ? <>
-                <strong>{state.membraneMv.toFixed(4)} mV · filtered state {state.synapticStateMveq.toFixed(4)} mV_eq</strong>
+                <strong>{state.membraneMv.toFixed(4)} mV_eq · filtered state {state.synapticStateMveq.toFixed(4)} mV_eq</strong>
                 <small>normalized model membrane position: {state.normalizedModelMembranePosition === null ? "not available" : state.normalizedModelMembranePosition.toFixed(3)} · boundary {state.boundaryTimeMs.toFixed(3)} ms{state.spikeAtBoundary ? " · SIMULATED SPIKE at stored boundary" : ""}</small>
               </> : <small>{activity.bodyStateUnavailableReason ?? "Body-specific state unavailable."}</small>}
             </div>;
@@ -529,6 +632,10 @@ export const MorphologyInspector = memo(function MorphologyInspector({
             </button>
           ))}
         </div>
+        {!compact ? <div className="morphology-isolate">
+          <button type="button" disabled={!selectedBody} onClick={() => isolate(selection.bodyId)}>Isolate selected body</button>
+          <button type="button" onClick={() => isolate(null)}>Show all bodies</button>
+        </div> : null}
         {selectedBody ? (
           <>
             <p aria-live="polite">
@@ -588,15 +695,15 @@ export const MorphologyInspector = memo(function MorphologyInspector({
           Lines show directed structural relationships from the CircuitContract. Connector positions and straight paths are schematic anchors at transformed raw body-bounds centers; no synapse locations are present or claimed. Structural weight is not physiological efficacy. Morphology coordinates remain MaleCNS source data. This layer displays no neural activity.
         </p>
         <p>
-          Source: {connectivity.source_contract.source}, {connectivity.source_contract.dataset}; verified `neurons.jsonl` and `connections.jsonl` SHA-256 provenance. Projection direction: LC4/LPLC2 → DNp01. The six-body projection is not a population-wide connectivity summary.
+          Source: {connectivity.source_contract.source}, {connectivity.source_contract.dataset}; integrity-checked `neurons.jsonl` and `connections.jsonl` SHA-256 provenance. Projection direction: LC4/LPLC2 → DNp01. The six-body projection is not a population-wide connectivity summary.
         </p></details> : <><p>
           Lines show directed structural relationships from the CircuitContract. Connector positions and straight paths are schematic anchors at transformed raw body-bounds centers; no synapse locations are present or claimed. Structural weight is not physiological efficacy. Morphology coordinates remain MaleCNS source data. This layer displays no neural activity.
         </p>
         <p>
-          Source: {connectivity.source_contract.source}, {connectivity.source_contract.dataset}; verified `neurons.jsonl` and `connections.jsonl` SHA-256 provenance. Projection direction: LC4/LPLC2 → DNp01. The six-body projection is not a population-wide connectivity summary.
+          Source: {connectivity.source_contract.source}, {connectivity.source_contract.dataset}; integrity-checked `neurons.jsonl` and `connections.jsonl` SHA-256 provenance. Projection direction: LC4/LPLC2 → DNp01. The six-body projection is not a population-wide connectivity summary.
         </p></>}
         {!compact ? <details>
-          <summary>Verified CircuitContract file hashes</summary>
+          <summary>Integrity-checked CircuitContract file hashes</summary>
           <ul>
             {connectivity.source_contract.integrity.sha256_by_file.map((entry) => (
               <li key={entry.file}>{entry.file} SHA-256: {entry.sha256}</li>

@@ -45,14 +45,14 @@ function Playback({ result }: { result: ScenarioPlayback }) {
   const meta = experimentMetadata[result.scenario.id];
   const captions: Caption[] = [
     { title: "Start of the run", text: scenarioCopy[result.scenario.id].observation, step: 0 },
-    { title: "Stored model state", text: "Every frame is a stored model state with its model time. Scrubbing replays the record; nothing is computed in your browser.", step: Math.floor(last / 2) },
+    { title: "Stored model state", text: "Every frame is a stored model state with its model time. Scrubbing replays the record; no simulation runs in your browser.", step: Math.floor(last / 2) },
     { title: "End of the run", text: `Recorded outcome: ${meta.outcome}. ${meta.limit}`, step: last },
   ];
   const goTo = (step: number) => { setPlaying(false); setCursor(Math.max(0, Math.min(last, step))); };
   return <div className="scientific-playback">
     <GuidedCaptions captions={captions} onGoTo={goTo}/>
     <div className="experiment-main">
-      <div className="experiment-viewport"><WebGLGate>{isCoursePlayback(result) ? <><CourseControlWorld result={result} cursor={cursor}/><ScientificTrace result={result} step={frame.step}/></> : isNeuralPlayback(result) ? <HorizontalMotionWorld result={result} cursor={cursor}/> : <ScenarioWorld result={result} cursor={cursor} />}</WebGLGate></div>
+      <div className="experiment-viewport"><WebGLGate hasDataAlternative>{isCoursePlayback(result) ? <><CourseControlWorld result={result} cursor={cursor}/><ScientificTrace result={result} step={frame.step}/></> : isNeuralPlayback(result) ? <HorizontalMotionWorld result={result} cursor={cursor}/> : <ScenarioWorld result={result} cursor={cursor} />}</WebGLGate></div>
       <CurrentResult result={result} step={frame.step}/>
     </div>
     <section className="scenario-transport" aria-label="Playback controls">

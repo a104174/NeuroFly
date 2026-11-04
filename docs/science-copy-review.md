@@ -18,7 +18,7 @@ Generated parts (section A) are produced from `science-copy.ts`, so they match w
 | Kind | Label | Tooltip text | Repository source |
 | --- | --- | --- | --- |
 | structural | Structural | From the MaleCNS v1.0 connectome. Describes physical wiring, not signal strength. | docs/redesign-brief.md section 3 and 7 (owner's definitions); MaleCNS description in docs/science/ |
-| model-assumption | Model assumption | Chosen for the model, not measured from the fly. | docs/redesign-brief.md section 3 and 7 |
+| model-assumption | Model assumption | Chosen for the model; not validated here. | docs/redesign-brief.md section 3 and 7 |
 | model-state | Model state | Simulation output in model units. Not a biological measurement. | docs/redesign-brief.md section 3 and 7; Phase 0 decision 4 (units) |
 | not-evaluated | Not evaluated | No comparison with real fly data has been made for this result. This is not a failure. | docs/science/neurofly_v1_scientific_status.json (no empirical validation) |
 | unavailable | Not available yet | Deliberately off or not built yet. The reason is on the Status and limits page. | docs/redesign-brief.md section 7 |
@@ -70,13 +70,13 @@ Relationships follow redesign brief section 3. **Open question 11: do they match
 | Term | Definition | Group |
 | --- | --- | --- |
 | Scenario | A defined situation: which stimulus, which circuit, which settings. Like a recipe. NeuroFly offers five canonical scenarios, recorded in advance. | objects |
-| Run | One execution of a scenario. The model is deterministic, so the same inputs give the same run. A run is a model run, not a trial with a real fly. | objects |
+| Run | One execution of the model. The model is deterministic, so the same inputs give the same run. A run is a model run, not a trial with a real fly. | objects |
 | Experiment | A completed run published here with its status and provenance. Publishing does not mean evaluated: today's recorded run is an engineering test, not a scientific experiment. | objects |
 | Artifact | The stored data package behind an experiment or a neuron. It appears only as an identifier and a link. | objects |
 | Cockpit | The synchronised view of the world, the connectome and the telemetry for one experiment. It plays back a completed run; it does not control a live simulation. | objects |
 | Structural | Taken from the MaleCNS v1.0 connectome, which maps the physical wiring. Examples: neuron shape, which neurons connect. | kinds |
 | Contact count | How many synaptic contacts were mapped between two neurons. It does not measure signal strength. | kinds |
-| Model assumption | A value or rule chosen to make the model work, not measured from the fly. Examples: gain settings, neuron-model parameters. | kinds |
+| Model assumption | A value or rule chosen for the model; not validated here. Some are starting values taken from published models and general fruit fly electrophysiology. Examples: the gain settings G_LC4 and G_LPLC2, and neuron-model parameters such as resting potential and threshold. | kinds |
 | Model state | A number the simulation produces, in model units such as mV_eq. It is not a biological measurement. | kinds |
 | Not evaluated | No comparison with real fly data has been made for this result. It is not a failure. All current experiments have this status. | kinds |
 | Not available yet | A capability that is deliberately off or not built yet. The Status and limits page gives the reason for each. | kinds |
@@ -105,7 +105,7 @@ Headline, statement and the four status facts are the owner's wording (Phase 0 d
 | status fact (model-assumption) | Kinematic body, no muscle or wing physics |
 | status fact (not-evaluated) | Not yet evaluated against real flies |
 | layer: The connectome (structural) | Which identified neurons connect, taken from the MaleCNS v1.0 connectome. It describes wiring, not signal strength. |
-| layer: The neuron model (model-assumption) | Explicit rules for how each neuron's state changes over time. They are chosen for the model, not measured from the fly. |
+| layer: The neuron model (model-assumption) | Explicit rules for how each neuron's state changes over time. They are chosen for the model, and some follow published models. They are not validated here. |
 | layer: The output (model-state) | What the simulation produces, in model units such as mV_eq. It is a model result, not a measurement from a fly. |
 | Lab card | Explore the Lab. Walking and flight modes in a 3D enclosure. Movement follows engineering rules with a neural steering influence, and there is no muscle or wing physics. (Runs in your browser) |
 
@@ -123,9 +123,9 @@ Headline, statement and the four status facts are the owner's wording (Phase 0 d
 
 | Where | Wording | Source |
 | --- | --- | --- |
-| Scope paragraph (`data-claim="scope"`) | "NeuroFly models two selected circuits from the MaleCNS v1.0 connectome: the looming circuit, where the visual neurons LC4 and LPLC2 feed DNp01 (313 bodies), and the HS → DNp15 steering circuit (8 bodies). They are separate models with their own states and outputs, so their counts are not added together. Neither is a whole brain, and no result has been compared with data from real flies." | Body counts and circuits: Phase 0 decision 5 (owner's wording for the status strip); `docs/science/neurofly_v1_scientific_status.json`. The sentence "separate models ... not added together" is the owner's rule that counts are never added. |
-| Kinds paragraph (`data-claim="kinds"`) | "Every number on this site says what kind it is, with a label and a shape, so a screenshot still tells the truth without the text around it." | Brief section 7. No repository report. |
-| Circuit-check note (`data-claim="circuitcheck"`) | "A "circuit check" runs the model through the selected circuit and confirms that it executes as specified. It is not biological validation: it does not compare the result with real fly data." | Phase 0 decision 1 (owner: "Circuit check", not "Validation"). The description of what a circuit check does is my paraphrase: please confirm it matches the project's checks (`docs/science/hs_dnp15_neural_validation.md`). |
+| Scope paragraph (`data-claim="scope"`). "Separate models" confirmed: `docs/science/hs_dnp15_neural_validation.md` says the HS → DNp15 model is "an isolated signed continuous-proxy kernel, not a copy of the looming exposure model or a relabelled DNp01 LIF"; the looming model is a spiking LIF (`docs/science/neural_simulation_core.md`). | "NeuroFly models two selected circuits from the MaleCNS v1.0 connectome: the looming circuit, where the visual neurons LC4 and LPLC2 feed DNp01 (313 bodies), and the HS → DNp15 steering circuit (8 bodies). They are separate models with their own states and outputs, so their counts are not added together. Neither is a whole brain, and no result has been compared with data from real flies." | Body counts and circuits: Phase 0 decision 5 (owner's wording for the status strip); `docs/science/neurofly_v1_scientific_status.json`. The sentence "separate models ... not added together" is the owner's rule that counts are never added. |
+| Kinds paragraph (`data-claim="kinds"`) | "Where a value is labelled by kind, the label comes with a shape. Some older panels (scenario playback, parts of the Cockpit and the Lab tools) do not carry kind labels yet." **Your requested sentence ("Scientific values on this site are labelled by kind, with a label and a shape.") could not be confirmed**: see "Kind labelling audit" below. | Brief section 7. No repository report. |
+| Circuit-check note (`data-claim="circuitcheck"`) | "A "circuit check" runs the model through the selected circuit and confirms that it executes as specified. Some circuit checks are preregistered, such as the HS → DNp15 check. A circuit check is not biological validation: it does not compare the result with real fly data." **"A circuit check is a preregistered test" could not be confirmed for all checks.** Preregistered: the HS → DNp15 check (`docs/science/hs_dnp15_neural_validation.md`, `hs_dnp15_neural_validation_preregistration.json`) and the 40 ms looming world experiment (`looming_world_experiment_preregistration.json`). Not preregistered: the 1.4 ms looming circuit micro-window and the baseline control (`docs/science/neurofly_v1_initial_circuit_validation.md` lists only the world experiment as preregistered). | Phase 0 decision 1 (owner: "Circuit check", not "Validation"). |
 | Open questions lead-in | "The project's own v1 status records these as unresolved:" followed by the list in A4 | `docs/science/neurofly_v1_scientific_status.json` |
 | Status and limits lead | "NeuroFly is a research model. This page lists what it can and cannot do, and why. Anything switched off is deliberate, not a fault, and each reason comes from a project report that you can open." | Brief section 5. "Deliberate, not a fault" is my wording. |
 
@@ -189,7 +189,48 @@ This section changed after your review request: each Lab tool now states only wh
 | Where | Wording | Source |
 | --- | --- | --- |
 | Experiments banner | "No experiment has been evaluated against biological data yet." | Brief section 5 (suggested wording) and `neurofly_v1_scientific_status.json` |
-| Recorded run tag | "Engineering test, not a scientific experiment" | Phase 0 decision 6 (owner's label) |
+| Recorded run tag | "Engineering test, not a scientific experiment" | Phase 0 decision 5 (owner's label) |
 | Scenario cards | Each shows its existing scientific caveat under "What this does not show" | Existing API text (`scientific_caveat`) |
 | Viewport states | "3D isn't available on this device.", "The 3D view stopped.", "{what} not included in this artifact." | New, factual |
 | Not recorded | "Not recorded" for the experiment scenario and date, and for the body model | The API has no such fields (backend request in `redesign-progress.md`) |
+
+## I. Where the model parameters come from (traced)
+
+Source: `docs/science/neural_model_selection.md`, section "Parameter provenance and identifiability" (a table
+with an evidence class per parameter). The repository itself says the values are "starting points ... not
+frozen biological truths".
+
+| Parameter | Value | Evidence class in the repository | Accurate wording |
+| --- | --- | --- | --- |
+| Resting potential, reset potential | −52 | `PUBLISHED_MODEL_ASSUMPTION` (Shiu and Kakaria precedent; Drosophila electrophysiology priors) | Taken from published models and general fly electrophysiology; not measured for these cells |
+| Threshold | −45 | `DROSOPHILA_PRIOR` (Gouwens, Wilson and Shiu precedent) | Same |
+| Membrane time constant (20 ms), filter decay (5 ms) | | `PUBLISHED_MODEL_ASSUMPTION` | Same |
+| Refractory interval (2.2 ms), chemical delay (1.8 ms), edge sign | | `DROSOPHILA_PRIOR` | Same |
+| Gains G_LC4, G_LPLC2 and the synapse-count scale `k_syn` | configured | `NEUROFLY_FREE_PARAMETER` (no MaleCNS physiological conversion) | Chosen for the model |
+| Baseline drive | 0 | `PUBLISHED_MODEL_ASSUMPTION`, "not measured here" | Chosen for the model |
+| Resistance and capacitance | | `UNRESOLVED` | Not used |
+| Gain settings exist? | | **Yes**: `G_LC4` and `G_LPLC2` are free parameters in the experiment summary (`lc4_gain_mv_eq`, `lplc2_gain_mv_eq`) | The "gain settings" example is kept |
+
+So some parameters are drawn from published modelling work and fly electrophysiology priors. The words "not
+measured from the fly" were removed from the Model assumption tooltip, glossary entry, Home layer text and
+Cockpit provenance row. The unit note "model-equivalent, not measured" (owner's decision 4) stays, because it
+describes the output values. Peak membrane values keep `mV_eq`.
+
+## J. Kind labelling audit (item 1)
+
+The sentence "Scientific values on this site are labelled by kind, with a label and a shape" is **not true
+everywhere**. A browser audit of 17 routes, plus reading the panels, finds values without a kind label and
+glyph in these places:
+
+- Scenarios list: the horizon of each scenario ("1.4 ms", "40 ms", "50 ms").
+- Scenario playback panels (current result, telemetry, explanation, trace): numbers carry text tags such as
+  "mV_eq", but no kind label or shape.
+- Experiment page: the replay overlay (time, angular size) and the timeline inspector.
+- Cockpit: Run identity numbers, selected-neuron values, plot readouts and event times use older "SIMULATED"
+  tags, not kind labels with shapes. The Overview readouts and the Raw table do have kinds.
+- Lab Explore live readouts (for example propulsion, heading) and every Lab research tool panel.
+- Neurons detail source-data numbers (node counts and coordinates): the page carries one Structural label,
+  not one per value.
+
+Decision needed: either add kind labels to those panels (a re-skin of the legacy panels, not done), or keep
+the narrower sentence now on the Science page.

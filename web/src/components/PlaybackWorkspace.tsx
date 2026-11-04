@@ -105,7 +105,7 @@ export function PlaybackWorkspace({
           className="playback-canvas-shell" role="group"
           aria-label="Three-dimensional experiment presentation"
         >
-          <WebGLGate>
+          <WebGLGate hasDataAlternative>
           <PlaybackRenderBoundary>
             <PlaybackCanvas
               sceneState={scene}

@@ -119,7 +119,7 @@ test("mobile navigation is a native keyboard disclosure and critical links are p
 test("scientific copy distinguishes wiring, modelling and output, and keeps every disclosure visible", () => {
   const markup = renderToStaticMarkup(createElement(HomePage));
   const body = markup.replace(/<style[\s\S]*?<\/style>/g, " ").replace(/<[^>]+>/g, " ").replace(/&#x27;/g, "'").replace(/\s+/g, " ");
-  for (const phrase of ["MaleCNS", "Two selected circuits", "Not a whole brain", "Not yet evaluated against real flies", "artistic 3D asset", "no muscle or wing physics", "Three layers, kept apart", "chosen for the model, not measured from the fly", "not a measurement from a fly", "wiring, not signal strength"]) assert.ok(body.includes(phrase), phrase);
+  for (const phrase of ["MaleCNS", "Two selected circuits", "Not a whole brain", "Not yet evaluated against real flies", "artistic 3D asset", "no muscle or wing physics", "Three layers, kept apart", "chosen for the model, and some follow published models", "not a measurement from a fly", "wiring, not signal strength"]) assert.ok(body.includes(phrase), phrase);
   // The three layers carry their kinds as labelled badges.
   const layers = markup.match(/<ol class="layers">[\s\S]*?<\/ol>/)![0];
   for (const kind of ["structural", "model-assumption", "model-state"]) assert.ok(layers.includes(`data-kind="${kind}"`), kind);

@@ -37,7 +37,7 @@ export const KIND_COPY: Readonly<Record<DataKind, KindCopy>> = {
   "model-assumption": {
     label: "Model assumption",
     glyph: "hollow diamond",
-    tooltip: "Chosen for the model, not measured from the fly.",
+    tooltip: "Chosen for the model; not validated here.",
   },
   "model-state": {
     label: "Model state",
@@ -152,7 +152,7 @@ export const HOME_COPY = {
   ],
   layers: [
     { kind: "structural", title: "The connectome", text: `Which identified neurons connect, taken from the ${MALECNS_RELEASE} connectome. It describes wiring, not signal strength.` },
-    { kind: "model-assumption", title: "The neuron model", text: "Explicit rules for how each neuron's state changes over time. They are chosen for the model, not measured from the fly." },
+    { kind: "model-assumption", title: "The neuron model", text: "Explicit rules for how each neuron's state changes over time. They are chosen for the model, and some follow published models. They are not validated here." },
     { kind: "model-state", title: "The output", text: "What the simulation produces, in model units such as mV_eq. It is a model result, not a measurement from a fly." },
   ],
   lab: {
@@ -287,13 +287,13 @@ export const GLOSSARY_GROUPS: Readonly<Record<GlossaryGroup, { title: string; in
 };
 export const GLOSSARY: readonly GlossaryEntry[] = [
   { id: "scenario", term: "Scenario", group: "objects", meaning: "A defined situation: which stimulus, which circuit, which settings. Like a recipe. NeuroFly offers five canonical scenarios, recorded in advance." },
-  { id: "run", term: "Run", group: "objects", meaning: "One execution of a scenario. The model is deterministic, so the same inputs give the same run. A run is a model run, not a trial with a real fly." },
+  { id: "run", term: "Run", group: "objects", meaning: "One execution of the model. The model is deterministic, so the same inputs give the same run. A run is a model run, not a trial with a real fly." },
   { id: "experiment", term: "Experiment", group: "objects", meaning: "A completed run published here with its status and provenance. Publishing does not mean evaluated: today's recorded run is an engineering test, not a scientific experiment." },
   { id: "artifact", term: "Artifact", group: "objects", meaning: "The stored data package behind an experiment or a neuron. It appears only as an identifier and a link." },
   { id: "cockpit", term: "Cockpit", group: "objects", meaning: "The synchronised view of the world, the connectome and the telemetry for one experiment. It plays back a completed run; it does not control a live simulation." },
   { id: "structural", term: KIND_COPY.structural.label, group: "kinds", meaning: `Taken from the ${MALECNS_RELEASE} connectome, which maps the physical wiring. Examples: neuron shape, which neurons connect.` },
   { id: "contact-count", term: "Contact count", group: "kinds", meaning: "How many synaptic contacts were mapped between two neurons. It does not measure signal strength." },
-  { id: "model-assumption", term: KIND_COPY["model-assumption"].label, group: "kinds", meaning: "A value or rule chosen to make the model work, not measured from the fly. Examples: gain settings, neuron-model parameters." },
+  { id: "model-assumption", term: KIND_COPY["model-assumption"].label, group: "kinds", meaning: "A value or rule chosen for the model; not validated here. Some are starting values taken from published models and general fruit fly electrophysiology. Examples: the gain settings G_LC4 and G_LPLC2, and neuron-model parameters such as resting potential and threshold." },
   { id: "model-state", term: KIND_COPY["model-state"].label, group: "kinds", meaning: "A number the simulation produces, in model units such as mV_eq. It is not a biological measurement." },
   { id: "not-evaluated", term: KIND_COPY["not-evaluated"].label, group: "kinds", meaning: "No comparison with real fly data has been made for this result. It is not a failure. All current experiments have this status." },
   { id: "unavailable", term: KIND_COPY.unavailable.label, group: "kinds", meaning: "A capability that is deliberately off or not built yet. The Status and limits page gives the reason for each." },

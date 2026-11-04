@@ -76,9 +76,11 @@ const groups = {
   async resilience() { // WebGL off, context lost, unknown mesh source.
     let b = await launch(["--disable-webgl", "--disable-3d-apis"]); let p = await (await b.newContext()).newPage();
     await p.goto(BASE + `/morphology/${MOR_SIX}`, { waitUntil: "networkidle" }); await p.waitForTimeout(800);
-    record("resilience", "WebGL off: message and data", /3D isn't available/.test(await p.locator("main").innerText()) && /Dataset/i.test(await p.locator("main").innerText()));
+    const neurons = await p.locator("main").innerText();
+    record("resilience", "WebGL off: message, no claim that the data is the same, details still listed", /3D isn't available/.test(neurons) && !/data below is the same/i.test(neurons) && /Dataset/i.test(neurons));
     await p.goto(BASE + "/scenarios/LOOMING_CIRCUIT_VALIDATION?replay=canonical", { waitUntil: "networkidle" }); await p.waitForTimeout(3000);
-    record("resilience", "WebGL off: scenario stage is not blank", /3D isn't available/.test(await p.locator("main").innerText()));
+    const stage = await p.locator("main").innerText();
+    record("resilience", "WebGL off: scenario stage is not blank and the numbers below are available", /3D isn't available/.test(stage) && /data below is the same/i.test(stage));
     await b.close();
     b = await launch(); p = await (await b.newContext()).newPage();
     await p.goto(BASE + `/morphology/${MOR_SIX}`, { waitUntil: "networkidle" }); await p.waitForTimeout(2500);

@@ -497,8 +497,7 @@ export const MorphologyInspector = memo(function MorphologyInspector({
         title="Reconstructed neuron shapes"
         kind="structural"
         aspect="16 / 10"
-        dataAlternative
-        description={`${bodies.length} source skeletons of real neurons in one shared native-frame view. Orbit with the mouse or touch. The same body details are listed below.`}
+        description={`${bodies.length} source skeletons of real neurons in one shared native-frame view. Orbit with the mouse or touch. Body details are listed below.`}
         legend={<div className="morphology-legend" aria-label="Body color key">
           {bodies.map((body) => (
             <span key={body.body_id}>

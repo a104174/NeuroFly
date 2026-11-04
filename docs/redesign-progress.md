@@ -393,6 +393,42 @@ Run against a production build (`next build`, `next start`) with the local API o
    recorded" for scenario and date, and "Body model: Not recorded in this experiment summary."
 5. **`docs/science-copy-review.md`** lists all new scientific wording with location and repository source.
 
+## Copy round 2 (owner's ten scientific-copy items)
+
+| # | Request | Result |
+| --- | --- | --- |
+| 1 | Kinds sentence: "Scientific values on this site are labelled by kind, with a label and a shape." | **Not confirmed.** Legacy panels show values without a kind label and shape (list in `docs/science-copy-review.md`, section J). The Science page now says: "Where a value is labelled by kind, the label comes with a shape. Some older panels (scenario playback, parts of the Cockpit and the Lab tools) do not carry kind labels yet." Needs an owner decision. |
+| 2 | Trace the model parameters | Traced in `docs/science/neural_model_selection.md` (evidence class per parameter). Rest, reset and threshold, tau_m, tau_s, refractory, delay and signs come from published models and fruit fly electrophysiology priors (`PUBLISHED_MODEL_ASSUMPTION` or `DROSOPHILA_PRIOR`); gains and `k_syn` are free parameters. "Not measured from the fly" was removed everywhere it described parameters. Tooltip is now "Chosen for the model; not validated here." |
+| 3 | "no simulation runs in your browser" | Done (scenario replay caption). |
+| 4 | "The data below is the same" only with a data alternative | Done: the gate defaults to no alternative; only the scenario stage and the experiment replay (numbers for the same moment on the page) claim one. Neurons no longer does. |
+| 5 | Run definition | Done, exact wording. |
+| 6 | Two circuits are separate models | Confirmed: `docs/science/hs_dnp15_neural_validation.md` ("an isolated signed continuous-proxy kernel, not a copy of the looming exposure model or a relabelled DNp01 LIF") against the spiking LIF in `neural_simulation_core.md`. Claim kept. |
+| 7 | "A circuit check is a preregistered test ..." | **Not supported for all checks.** Preregistered: the HS → DNp15 check and the 40 ms world experiment. Not preregistered: the 1.4 ms looming micro-window and the baseline control. The note now says "Some circuit checks are preregistered, such as the HS → DNp15 check." |
+| 8 | Keep `mV_eq`; "gain settings" | `mV_eq` kept. Gain settings exist (`G_LC4`, `G_LPLC2`, free parameters), so the example stays and names them. |
+| 9 | Can the Vercel preview reach the data API? | See below. |
+| 10 | Decision number for the recorded-run label | It is **decision 5** (Wording), not 6. Fixed in `docs/science-copy-review.md`. |
+
+**Vercel preview (item 9).** The preview exists
+(`neurofly-git-redesign-site-implementation-hd-dev.vercel.app`, status success) but sits behind Vercel
+Authentication (every path answers a 302 to a login page), so it **could not be tested from outside**.
+From the configuration: `vercel.json` deploys a FastAPI backend service and a Next.js frontend, binds the
+backend URL to `NEUROFLY_API_BASE_URL`, and rewrites `/api/v1/*` to the backend, so a preview is wired to its own
+API. The backend ships the pinned runtime bundle v3 (`tools/vercel_runtime_build.py`,
+`docs/deployment_runtime_inventory_v3.json`). That inventory lists the recorded experiments and the looming
+circuit data but **no morphology artifacts**, so on Vercel the Neurons pages and the Cockpit's connectome
+panel will probably show their "unavailable" states unless the morphology root is configured another way. I
+could not confirm that. Scenarios (replay Server Action, up to 300 s) and Experiments should work if the
+bundle's data is complete; the Lab runs from static files in the browser. Not verified: any of this on the
+live preview.
+
+**Checks for this round:** `npm test` 592 pass; `tsc`, `eslint` and `next build` clean; `web-quality` 220 of 220;
+Lighthouse mobile 18 of 18 routes; **Stylelint fails with 226 errors** (legacy stylesheets, unchanged).
+**Merge not done:** your stop conditions were met (kinds sentence unconfirmed, "preregistered" unsupported as
+worded, Stylelint failing).
+
+**Follow-ups, not invented:** the MaleCNS **citation** and **data licence** wording (brief question 10), a
+named author or lab, the roadmap, the hero asset. They remain absent from the pages.
+
 ## Backend requests (not done here)
 
 - Add the **scenario** and a **creation date** to the experiment summary, so the Experiments table can

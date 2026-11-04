@@ -120,7 +120,7 @@ export default function SciencePage() {
             </li>
           ))}
         </ul>
-        <p data-claim="circuitcheck">A “circuit check” runs the model through the selected circuit and confirms that it executes as specified. It is not biological validation: it does not compare the result with real fly data.</p>
+        <p data-claim="circuitcheck">A “circuit check” runs the model through the selected circuit and confirms that it executes as specified. Some circuit checks are preregistered, such as the HS → DNp15 check. A circuit check is not biological validation: it does not compare the result with real fly data.</p>
         <p><Link prefetch={false} href="/scenarios">Explore all five scenarios <span aria-hidden="true">→</span></Link></p>
 
         <h3>A result needs a trail of evidence</h3>
@@ -133,7 +133,7 @@ export default function SciencePage() {
       </ArticleSection>
 
       <ArticleSection id="numbers" title="What each number means">
-        <p data-claim="kinds">Every number on this site says what kind it is, with a label and a shape, so a screenshot still tells the truth without the text around it.</p>
+        <p data-claim="kinds">Where a value is labelled by kind, the label comes with a shape. Some older panels (scenario playback, parts of the Cockpit and the Lab tools) do not carry kind labels yet.</p>
         <dl className={styles.kinds}>
           {DATA_KINDS.map((kind) => (
             <div key={kind}><dt><KindBadge kind={kind} /></dt><dd>{KIND_COPY[kind].tooltip}</dd></div>

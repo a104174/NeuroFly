@@ -50,7 +50,7 @@ const CockpitProvenance = memo(function CockpitProvenance({
         <div><dt>Morphology</dt><dd>{morphology ? `${morphology.artifact_id} · ${morphology.generation.source_mode}` : "unavailable"}</dd></div>
         <div><dt>Structural projection</dt><dd>{connectivity?.projection.id ?? "unavailable"}</dd></div>
         <div><dt>Encoder population mapping</dt><dd>{summary.encoder.population_policy}</dd></div>
-        <div><dt>LIF membrane references</dt><dd>{summary.neural_model.membrane_state_references.rest_mv} mV_eq rest · {summary.neural_model.membrane_state_references.threshold_mv} mV_eq threshold (model references, not measured)</dd></div>
+        <div><dt>LIF membrane references</dt><dd>{summary.neural_model.membrane_state_references.rest_mv} mV_eq rest · {summary.neural_model.membrane_state_references.threshold_mv} mV_eq threshold (model reference values, chosen for the model and not validated here)</dd></div>
         <div><dt>Source coordinate frame</dt><dd>{morphology ? `${morphology.coordinate_frame_id} · ${morphology.coordinate_unit}` : "unavailable"}</dd></div>
       </dl>
       <p>Structural weight is a connectome count. The morphology connectors and world scene use separate presentation geometry; they do not locate synapses or align the fly to MaleCNS coordinates.</p>

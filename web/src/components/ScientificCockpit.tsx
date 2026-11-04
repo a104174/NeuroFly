@@ -25,6 +25,7 @@ import type {
 import { selectMorphologyBody, type MorphologySelection } from "@/lib/morphologyView";
 import { PLAYBACK_RATES, type PlaybackRate } from "@/lib/playback";
 import { KindBadge, Readout, Timeline, type TimelineMarker } from "@/components/ui";
+import { STATE_COPY } from "@/content/science-copy";
 import { experimentName } from "@/lib/recordedExperimentPresentation";
 import {
   COCKPIT_LAYERS, PHONE_MAX, effectiveLayer, layerFromKey, overviewReadouts, widthClass,
@@ -136,6 +137,7 @@ export function ScientificCockpit({
   bodies,
   connectivity,
   morphologyFailure,
+  morphologyNotOnDeployment = false,
   connectivityFailure,
   initialBodyId = null,
   initialLayer = null,
@@ -146,6 +148,8 @@ export function ScientificCockpit({
   bodies: readonly MorphologyBody[];
   connectivity: StructuralConnectivityProjection | null;
   morphologyFailure: string | null;
+  /** The API says this deployment has no neuron shape data installed. */
+  morphologyNotOnDeployment?: boolean;
   connectivityFailure: string | null;
   initialBodyId?: MorphologyBodyId | null;
   initialLayer?: CockpitLayer | null;
@@ -242,7 +246,7 @@ export function ScientificCockpit({
   ) : (
     <div className="cockpit-structural-empty" role="status">
       <h2>Source structure unavailable</h2>
-      <p>{morphologyFailure ?? "The six-body morphology artifact could not be loaded."}</p>
+      <p>{morphologyNotOnDeployment ? STATE_COPY.notOnDeployment.title : morphologyFailure ?? "The six-body morphology artifact could not be loaded."}</p>
       <p>Experiment playback and stored telemetry remain available.</p>
     </div>
   );

@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { SiteHeader } from "@/components/site/SiteChrome";
 import { ScientificCockpit } from "@/components/ScientificCockpit";
 import { parseLayer } from "@/lib/cockpitLayers";
+import { isMorphologyNotOnDeployment } from "@/lib/morphologyAvailability";
 import { StateMessage } from "@/components/StateMessage";
 import {
   COCKPIT_MORPHOLOGY_ARTIFACT_ID,
@@ -78,6 +79,7 @@ export default async function ScientificCockpitPage({
   let morphology: MorphologyArtifactSummary | null = null;
   let bodies: MorphologyBody[] = [];
   let morphologyFailure: string | null = null;
+  let morphologyNotOnDeployment = false;
   if (morphologyResult.status === "fulfilled") {
     try {
       const loaded = morphologyResult.value;
@@ -91,6 +93,7 @@ export default async function ScientificCockpitPage({
       morphologyFailure = readableFailure(error);
     }
   } else {
+    morphologyNotOnDeployment = isMorphologyNotOnDeployment(morphologyResult.reason);
     morphologyFailure = readableFailure(morphologyResult.reason);
   }
 
@@ -122,6 +125,7 @@ export default async function ScientificCockpitPage({
           bodies={bodies}
           connectivity={connectivity}
           morphologyFailure={morphologyFailure}
+          morphologyNotOnDeployment={morphologyNotOnDeployment}
           connectivityFailure={connectivityFailure}
           initialBodyId={initialBodyId}
           initialLayer={initialLayer}

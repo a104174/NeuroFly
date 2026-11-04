@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { PageShell } from "@/components/site/PageShell";
 import { ButtonLink, Card, KindBadge, StatePanel } from "@/components/ui";
+import { isMorphologyNotOnDeployment } from "@/lib/morphologyAvailability";
 import { listMorphologyArtifacts, NeuroflyApiError, type MorphologyArtifactSummary } from "@/lib/neuroflyClient";
 import styles from "./page.module.css";
 
@@ -18,8 +19,12 @@ function label(artifact: MorphologyArtifactSummary): string {
 export default async function MorphologyPage() {
   let artifacts: MorphologyArtifactSummary[] | null = null;
   let failure: string | null = null;
+  let notOnDeployment = false;
   try { artifacts = await listMorphologyArtifacts(); }
-  catch (error) { failure = error instanceof NeuroflyApiError ? error.message : "The morphology API could not be reached."; }
+  catch (error) {
+    notOnDeployment = isMorphologyNotOnDeployment(error);
+    failure = error instanceof NeuroflyApiError ? error.message : "The morphology API could not be reached.";
+  }
   return (
     <PageShell
       eyebrow="Structural"
@@ -27,7 +32,9 @@ export default async function MorphologyPage() {
       current="/morphology"
       lead={<p>This is the reconstructed shape of real neurons, not a simulation. Each sample is a set of source skeletons from the MaleCNS connectome.</p>}
     >
-      {failure ? (
+      {notOnDeployment ? (
+        <StatePanel state="not-on-deployment" actions={<><ButtonLink href="/scenarios">Watch a scenario</ButtonLink><ButtonLink variant="quiet" href="/science/status">What is available</ButtonLink></>} />
+      ) : failure ? (
         <>
           <StatePanel state="api-down" actions={<ButtonLink href="/morphology">Retry</ButtonLink>} />
           <details className={styles.technical}><summary>Technical details</summary><p>{failure}</p></details>

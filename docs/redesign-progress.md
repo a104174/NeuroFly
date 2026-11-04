@@ -443,8 +443,22 @@ worded, Stylelint failing).
   the Cockpit. No regression.
 
 **Follow-ups, not invented:** the MaleCNS **citation** and **data licence** wording (brief question 10), the
-roadmap, the hero asset. They remain absent from the pages. Also: configure the morphology artifact root on
-Vercel so Neurons and the Cockpit connectome work in production.
+roadmap, the hero asset. They remain absent from the pages. Also: Neurons and the Cockpit connectome need a
+code change to work in production, not a Vercel setting (the entrypoint removes the morphology root variable);
+see `docs/morphology-in-production.md` for the options.
+
+## Morphology in production (investigation and message change)
+
+- Investigation: `docs/morphology-in-production.md` (cause, five options with cost and risk, recommendation).
+  Short version: the Vercel entrypoint removes the morphology root variable and the 3.1 MB of artifacts are
+  not in Git or in the pinned runtime bundle, so a Vercel setting alone cannot fix it. Recommended: show an
+  accurate message now, then ship the artifacts with the Git-delivered part of the release (option A).
+- Message: when the API answers `morphology_store_unavailable`, the Neurons pages and the Cockpit connectome
+  panel say "Neuron shape data is not available on this deployment." A real outage still says the data service
+  is not responding (tested both ways).
+- Checks: unit tests, `tsc`, `eslint`, `next build`; `web-quality` 222 of 222 (morphology configured);
+  Lighthouse 18 of 18; Stylelint 226, all in the six legacy files; targeted run with morphology unconfigured:
+  both Neurons pages and the desktop Cockpit pass (axe 0, no overflow, no outage wording).
 
 ## Backend requests (not done here)
 
